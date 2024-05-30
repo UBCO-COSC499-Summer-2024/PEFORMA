@@ -5,6 +5,7 @@
 - 12:00AM -> 1:30PM  --- Proofread and edited planning document
 - 3:30PM -> 4:30PM --- Recorded my part for video (task size: small)
 - 6:00PM -> 8:00PM --- Re-recorded my part (task size: small) and then small meeting finalizing document
+
 PLANNING DOCUMENT: COMPLETE
 
 2024-05-29:
