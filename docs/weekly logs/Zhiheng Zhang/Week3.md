@@ -21,3 +21,13 @@ team chat about project plan
 ###  14:00-20:00 / 4h
 
 React learning & practice
+
+## 5/30
+
+###  12:00-19:00 / 4h
+
+team meeting
+
+DFD Lv.1 drawing
+
+look up API might use
