@@ -219,6 +219,7 @@ N/A
   * Figure out Clockify & its integration w/ GitHub
   * Learn TravisCI
   * Progress in learning React
+  * Meeting w/ client (5/31/2024)
 
 ### Progress Update (since 5/29/2024)
 <table>
@@ -284,5 +285,3 @@ I completed editing the project plan (due date) and making template for individa
   * Help with fininalizng UI design
   * Database ER diagrams & finish design doc 
   * Edit & finalize design doc (due date)
-
-
