@@ -21,16 +21,16 @@
         <td>5/24/2024 
         </td>
         <!-- Task/Issue # -->
-        <td>Task D
+        <td>
         </td>
         <!-- Start Time -->
-        <td>8:00 AM
+        <td>
         </td>
         <!-- End Time -->
-        <td>5:00 PM
+        <td>
         </td>
         <!-- Hours -->
-        <td>8
+        <td>
         </td>
     </tr>
     <tr>
@@ -38,16 +38,16 @@
         <td>5/25/2024 
         </td>
         <!-- Task/Issue # -->
-        <td>
+        <td>React Learning
         </td>
         <!-- Start Time -->
-        <td>
+        <td>12:00 PM
         </td>
         <!-- End Time -->
-        <td>
+        <td>2:00 PM
         </td>
         <!-- Hours -->
-        <td>
+        <td>2
         </td>
     </tr>
     <tr>
@@ -55,16 +55,16 @@
         <td>5/26/2024 
         </td>
         <!-- Task/Issue # -->
-        <td>
+        <td>Drafting project with whole team
         </td>
         <!-- Start Time -->
-        <td>
+        <td>10:00 AM
         </td>
         <!-- End Time -->
-        <td>
+        <td>4:00 PM
         </td>
         <!-- Hours -->
-        <td>
+        <td>4
         </td>
     </tr>
     <tr>
@@ -89,16 +89,16 @@
         <td>5/28/2024 
         </td>
         <!-- Task/Issue # -->
-        <td>
+        <td>Making slides for requirements video 
         </td>
         <!-- Start Time -->
-        <td>
+        <td>8:30 AM
         </td>
         <!-- End Time -->
-        <td>
+        <td>2:30 PM
         </td>
         <!-- Hours -->
-        <td>
+        <td>6
         </td>
     </tr>
     <tr>
@@ -106,15 +106,14 @@
             <strong>TOTAL HOURS</strong>
         </td>
         <!-- Total Hours -->
-        <td><strong>8</strong>
+        <td><strong>12</strong>
         </td>
     </tr>
 </table>
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * Finish editing & finalizing project plan
+  * Make my portion of requirements video
 
 ### Progress Update (since 5/24/2024)
 <table>
@@ -126,37 +125,21 @@
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>
         </td>
         <!-- Status -->
-        <td>Complete
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task B
-        </td>
-        <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task C
-        </td>
-        <!-- Status -->
-        <td>In Progress
+        <td>
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+N/A
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Finish current tasks
+  * #3: Make template for individuals logs
+  * Figure out how to use Clockify & its integration with GitHub
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Friday (5/31/2024)
@@ -180,16 +163,24 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
         <td>5/29/2024 
         </td>
         <!-- Task/Issue # -->
-        <td>Task D
+        <td>
+            Make my portin of requirements video (including writing up scripts for myself)  
+            Editing and finalizing project plan & type up in Markdown on GitHub
         </td>
         <!-- Start Time -->
-        <td>8:00 AM
+        <td>
+            1:00 PM  
+            6:00 PM
         </td>
         <!-- End Time -->
-        <td>5:00 PM
+        <td>
+            2:00 PM  
+            10:30 PM
         </td>
         <!-- Hours -->
-        <td>8
+        <td>
+            1<br/>
+            4.5 
         </td>
     </tr>
     <tr>
@@ -197,16 +188,16 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
         <td>5/30/2024 
         </td>
         <!-- Task/Issue # -->
-        <td>
+        <td>#3: Make templates for individual logs
         </td>
         <!-- Start Time -->
-        <td>
+        <td>12:00 AM
         </td>
         <!-- End Time -->
-        <td>
+        <td>1:00 AM
         </td>
         <!-- Hours -->
-        <td>
+        <td>1
         </td>
     </tr>
     <tr>
@@ -214,15 +205,16 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
             <strong>TOTAL HOURS</strong>
         </td>
         <!-- Total Hours -->
-        <td><strong>8</strong>
+        <td><strong>6.5</strong>
         </td>
     </tr>
 </table>
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #5: Start & finish use case diagram and use case descriptions
+  * Figure out Clockify & its integration w/ GitHub
+  * Learn TravisCI
+  * Progress in learning React
 
 ### Progress Update (since 5/29/2024)
 <table>
@@ -234,23 +226,31 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>Finish editing & finalizing project plan
         </td>
         <!-- Status -->
-        <td>Complete
+        <td>Completed
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>Make my portion of requirements video
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Completed
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>#3: Make templates for individual logs
+        </td>
+        <!-- Status -->
+        <td>Completed
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Figure out Clockify & its integration w/ GitHub
         </td>
         <!-- Status -->
         <td>In Progress
@@ -259,11 +259,12 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I completed editing the project plan (due date) and making template for individaul logs as planned, but still have to figure out Clockify and set it up for the team.
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Finish the design doc, in particular, the use case diagram and use case descriptions
+  * Clockify set up
+  * Help with fininalizng UI design
+  * Database ER diagrams 
 
 
