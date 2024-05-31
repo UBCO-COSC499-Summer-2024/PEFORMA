@@ -120,11 +120,15 @@
     <tr>
         <td><strong>TASK/ISSUE #</strong>
         </td>
+        <td><strong>SIZE</strong>
+        </td>
         <td><strong>STATUS</strong>
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
+        <td>
+        <!-- Size -->
         <td>
         </td>
         <!-- Status -->
@@ -221,12 +225,17 @@ N/A
     <tr>
         <td><strong>TASK/ISSUE #</strong>
         </td>
+        <td><strong>SIZE</strong>
+        </td>
         <td><strong>STATUS</strong>
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
         <td>Finish editing & finalizing project plan
+        </td>
+        <!-- Size -->
+        <td>Medium
         </td>
         <!-- Status -->
         <td>Completed
@@ -235,6 +244,8 @@ N/A
     <tr>
         <!-- Task/Issue # -->
         <td>Make my portion of requirements video
+        </td><!-- Size -->
+        <td>Small
         </td>
         <!-- Status -->
         <td>Completed
@@ -244,6 +255,9 @@ N/A
         <!-- Task/Issue # -->
         <td>#3: Make templates for individual logs
         </td>
+        <!-- Size -->
+        <td>Small
+        </td>
         <!-- Status -->
         <td>Completed
         </td>
@@ -251,6 +265,9 @@ N/A
     <tr>
         <!-- Task/Issue # -->
         <td>Figure out Clockify & its integration w/ GitHub
+        </td>
+        <!-- Size -->
+        <td>Small
         </td>
         <!-- Status -->
         <td>In Progress
@@ -265,6 +282,7 @@ I completed editing the project plan (due date) and making template for individa
   * Finish the design doc, in particular, the use case diagram and use case descriptions
   * Clockify set up
   * Help with fininalizng UI design
-  * Database ER diagrams 
+  * Database ER diagrams & finish design doc 
+  * Edit & finalize design doc (due date)
 
 
