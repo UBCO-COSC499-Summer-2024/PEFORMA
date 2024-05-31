@@ -13,4 +13,5 @@
 
 # May 30th
 - 12:00 PM ~ 12:30 PM | Team short meeting planning for project design document
-- 12:30 PM ~ 14:00 PM | UI Design (Figma)
+- 12:30 PM ~ 14:00 PM | UI Design (Main) (Figma) 
+- 15:30 PM ~ 19:00 PM | UI Design (Log in, main dashboard, dashboard for each departments), (Figma)
