@@ -13,3 +13,4 @@ PLANNING DOCUMENT: COMPLETE
 
 2024-05-30:
 - 12:00PM -> 12:30PM --- Short meeting discussing our plan of attack for the design phase
+- 3:00PM -> 6:00PM --- Started designing UI with Kevin using Figma (task size: medium)
