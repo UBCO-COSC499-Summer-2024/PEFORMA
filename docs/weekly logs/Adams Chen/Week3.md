@@ -137,7 +137,7 @@
     </tr>
 </table>
 
-### Weekly Goal Review
+### Cycle Goal Review
 N/A
 
 ### Next Cycle Goals
@@ -275,7 +275,7 @@ N/A
     </tr>
 </table>
 
-### Weekly Goal Review
+### Cycle Goal Review
 I completed editing the project plan (due date) and making template for individaul logs as planned, but still have to figure out Clockify and set it up for the team.
 
 ### Next Cycle Goals
