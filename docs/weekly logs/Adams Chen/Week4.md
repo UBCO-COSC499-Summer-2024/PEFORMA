@@ -3,6 +3,8 @@
 
 ## Wednesday (6/5/2024)
 
+![alt text]([http://url/to/img.png](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_Time_Report_Detailed_05_26_2024-06_01_2024.png))
+
 ### Timesheet
 <table>
     <tr>
