@@ -4,7 +4,7 @@
 ## Wednesday (6/5/2024)
 
 ### Timesheet
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_Time_Report_Detailed_05_26_2024-06_01_2024.png)
+![alt text](image_url_here)
 
 ### Current Tasks
   * #1: Task 1
@@ -57,7 +57,7 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
 ## Friday (6/7/2024)
 
 ### Timesheet
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_Time_Report_Detailed_05_26_2024-06_01_2024.png)
+![alt text](image_url_here)
 
 ### Current Tasks
   * #1: Task 1

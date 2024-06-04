@@ -1,7 +1,7 @@
 
-# Week 9
+# Week 13
 
-## Wednesday (7/10/2024)
+## Wednesday (8/7/2024)
 
 ### Timesheet
 ![alt text](image_url_here)
@@ -11,7 +11,7 @@
   * #2: Task 2
   * #3: Task 3
 
-### Progress Update (since 7/5/2024)
+### Progress Update (since 8/2/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
@@ -54,7 +54,7 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
   * Goal 3
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-## Friday (7/12/2024)
+## Friday (8/9/2024)
 
 ### Timesheet
 ![alt text](image_url_here)
@@ -64,7 +64,7 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
   * #2: Task 2
   * #3: Task 3
 
-### Progress Update (since 7/10/2024)
+### Progress Update (since 8/7/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
