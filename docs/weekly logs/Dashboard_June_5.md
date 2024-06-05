@@ -42,6 +42,8 @@
 | Converting finalized design doc to Markdown      | Adams  | 1 hour |
 | Creating slides for design video        | Subaru, Adams  | 3 hrs |
 | Creating design video        | Kevin, Jeremy, Zhiheng, Subaru, Adams  | 2 hrs |
+| Setting up docker & basic infrastructure for project (including    | Adams  | 30 mins |
+| Testing instracture w/ Hello, World! (use CRA)    | Adams  | 30 mins |
 | Creating dashboard for June 7       | Adams  | 30 mins |
 
 ## Burn-up Chart (Velocity)
