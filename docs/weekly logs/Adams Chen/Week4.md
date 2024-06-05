@@ -7,9 +7,8 @@
 ![alt text](image_url_here)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #1: Finalizing DFD1, UCD, use case descriptions, ERD
+  * #2: Finailizing design doc and convert to Markdown
 
 ### Progress Update (since 5/31/2024)
 <table>
@@ -49,9 +48,9 @@
 I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Create slides for design video
+  * Shoot my portion of design video
+  * Initiate coding process
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Friday (6/7/2024)
