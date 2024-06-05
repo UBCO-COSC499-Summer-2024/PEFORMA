@@ -43,10 +43,18 @@
         <td>In Progress
         </td>
     </tr>
+     <tr>
+        <!-- Task/Issue # -->
+        <td>System Architecture
+        </td>
+        <!-- Status -->
+        <td>Completed
+        </td>
+    </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A and Task B as planned, but TaskC requires more thinking and needs to decide how much deep we should decompose.  
+I completed DFD diagram and system architecture as planned, but ER diagram requires more thinking and needs to decide how much deep we should decompose.  
 
 ### Next Cycle Goals
   * Finalize ER diagram
