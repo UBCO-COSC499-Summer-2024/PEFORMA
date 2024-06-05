@@ -46,13 +46,11 @@
 
 ## Burn-up Chart (Velocity)
 
-[Image or Chart of Burn-up Chart]
-
-* **Note:** This chart should show the cumulative work completed over time, compared to the total scope of the project.
+![](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Dashboards/burn%20up%20charts/Screenshot%202024-06-05%20at%201.21.07%20AM.png)
 
 ## Time Tracking
 
-### Team Time
+
 
 
 
