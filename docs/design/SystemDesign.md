@@ -12,7 +12,9 @@ Recall the system architecture slides and tell us which architecture pattern you
 
 ## Use Case Models
 
-Extending from your requirements, the team will need to develop a set of usage scenarios for each user group documented as properly dressed use cases  (including diagrams following the UML syntax and descriptions as presented in class).   You may also want to include journey lines with some use cases. 
+    Extending from your requirements, the team will need to develop a set of usage scenarios for each user group documented as properly dressed use cases  (including diagrams following the UML syntax and descriptions as presented in class).   You may also want to include journey lines with some use cases. 
+
+![UCD](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/Department%20management%20system%20use%20case%20diagram.png)
 
 ## Database Design 
 
