@@ -22,7 +22,7 @@
 | Creating UI mockups for instructor view         | N/A               | In Review         | Kevin, Jeremy      | 
 | Creating UI mockups for department head/staff view      | N/A               | In Review         | Kevin, Jeremy     | 
 | Creating UI mockups for admin view        | N/A               | In Review         | Kevin, Jeremy      | 
-| Coding UI template for instructor view        | N/A               | Complete        | Zhiheng    |  
+| Coding UI template for instructor/dept head & staff/admin view        | N/A               | Complete        | Zhiheng    |  
 
 ## Next Cycle Planning
 
