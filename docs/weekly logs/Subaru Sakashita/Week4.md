@@ -5,7 +5,7 @@
 ## Wednesday (6/5/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/Clockify_Week4.png)
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/Clockify_Week4_2.png)
 
 ### Current Tasks
   * #1: Finalize ER diagram 1
