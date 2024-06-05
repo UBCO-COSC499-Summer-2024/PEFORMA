@@ -1,0 +1,77 @@
+.dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 20%;
+    background-color: #002244;
+    color: black;
+    padding: 20px;
+  }
+
+  .sidebar-header h1{
+    color: white;
+  }
+
+  .sidebar-header hr{
+    height: 3px;
+    background-color: white;
+  }
+  
+  .sidebar nav a {
+    display: block;
+    padding: 10px;
+    background: white;
+    color: black;
+    text-decoration: none;
+  }
+  
+  
+  .web-head {
+    width: 80%;
+    margin: 0;
+    height: 10%;
+    position: absolute;
+    top: 0%;
+    bottom: 20%;
+  }
+
+  .web-head input{
+    width: 40%;
+    position: relative;
+    left: 5%;
+    margin: 0;
+  }
+
+  .web-head button{
+    background-color: red;
+    position: absolute;
+    right: 0%;
+  }
+
+  .web-head img{
+    max-height: 90%;
+    position: absolute;
+    width:auto;
+    right: 5%;
+    margin: 0;
+  }  
+  
+  .card-container {
+    padding: 15%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+  
+  .card {
+    background-color: rgb(230, 230, 230);
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .card img {
+    max-width: 100%;
+    height: auto;
+  }
