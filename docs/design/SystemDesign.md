@@ -679,7 +679,7 @@ The following use case diagram illustrates the key interactions between users an
 
 ## Database Design 
 
-                Provide an ER diagram of the entities and relationships you anticipate having in your system (this will most likely change, but you need a starting point).  In a few sentences, explain why the data is modelled this way and what is the purpose of each table/attribute.  For this part, you only need to have ONE diagram and an explanation.
+        Provide an ER diagram of the entities and relationships you anticipate having in your system (this will most likely change, but you need a starting point).  In a few sentences, explain why the data is modelled this way and what is the purpose of each table/attribute.  For this part, you only need to have ONE diagram and an explanation.
 
 The following Entity-Relationship Diagram (ERD) illustrates the database structure for the CMPS Department Management System. It outlines the key entities (tables) and their relationships, providing a visual representation of how data is organized and connected within the system
 
@@ -699,7 +699,11 @@ The following Entity-Relationship Diagram (ERD) illustrates the database structu
 
 ## Data Flow Diagram (Level 0/Level 1)
 
-                The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance),
+        The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance),
+
+### Data Flow Diagram: Level 0
+
+
 
 ## User Interface (UI) Design
 
