@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  frontend:
+    build: ./app/frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app/frontend:/app
+    command: npm start
+    depends_on:
+      - backend
+
+  backend:
+    build: ./app/backend
+    ports:
+      - "3001:3001"  # 로컬 포트를 5001로 변경
+    volumes:
+      - ./app/backend:/app
+    environment:
+      - POSTGRES_USER=capstone
+      - POSTGRES_PASSWORD=teamsix
+      - POSTGRES_DB=capstone
+      - DB_HOST=postgres
+      - DB_PORT=5432
+    command: npm start
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: capstone
+      POSTGRES_PASSWORD: teamsix
+      POSTGRES_DB: capstone
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
