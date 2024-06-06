@@ -708,7 +708,7 @@ The following diagrams illustrate the flow of information within the CMPS Depart
 ![DFD0](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/Data%20flow%20diagram_%20Level%200.png
 )
 
-### Data Flow Diagram: Level 0
+### Data Flow Diagram: Level 1
 
 ![DFD1](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/Data%20flow%20diagram_%20Level%201.png)
 
