@@ -2,13 +2,17 @@
 
 ## Introduction
 
-Start with a brief introduction of **what** you are building, reminding the reader of the high-level usage scenarios (project purpose).   Complete each section with the required components.  Don't forget that you can include [images in your markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#images).  
+        Start with a brief introduction of **what** you are building, reminding the reader of the high-level usage scenarios (project purpose).   Complete each section with the required components.  Don't forget that you can include [images in your markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#images).  
 
-Start each section with a lead-in, detailing what it is.  Also, do not just have a collection of images.   Each diagram must be explained clearly. **Do not assume that the reader understands the intentions of your designs**.
+        Start each section with a lead-in, detailing what it is.  Also, do not just have a collection of images.   Each diagram must be explained clearly. **Do not assume that the reader understands the intentions of your designs**.
+
+We are developing a responsive web application designed to streamline the management of the CMPS department. This tool will centralize information on instructor activities, enhancing visibility and efficiency, ultimately contributing to a higher quality student experience. By providing a comprehensive view of teaching assignments, service contributions, and performance data, the system will empower the department to make data-driven decisions that optimize resource allocation and faculty support.
 
 ## System Architecture Design
 
         Recall the system architecture slides and tell us which architecture pattern you are using and why (it may also be something not in the slides or be a combination). Provide more details about the components you have written, and where these components fit in the overall architecture so we can visualize how you have decomposed your system. Basically, this should all be captured in ONE diagram with the components on them and a few sentences explaining (i) why you chose this architecture and (ii) why the components are where you put them. If you want to just focus on a certain aspect of your system and not show the entire architecture for your system in the diagram, that should be fine as well.
+
+The CMPS Department Management System is designed with a modular architecture to ensure scalability, maintainability, and security. The following diagram illustrates the key components and their interactions.
 
 ### System Architecure Diagram
 
@@ -34,6 +38,8 @@ This container-based microservices architecture offers several key advantages:
 ## Use Case Models
 
     Extending from your requirements, the team will need to develop a set of usage scenarios for each user group documented as properly dressed use cases  (including diagrams following the UML syntax and descriptions as presented in class).   You may also want to include journey lines with some use cases. 
+
+The following use case diagram illustrates the key interactions between users and the CMPS Department Management System. It outlines the various functions each user can perform within the system.
 
 ### Use Case Diagram
 ![UCD](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/Department%20management%20system%20use%20case%20diagram.png)
