@@ -8,7 +8,28 @@ Start each section with a lead-in, detailing what it is.  Also, do not just have
 
 ## System Architecture Design
 
-Recall the system architecture slides and tell us which architecture pattern you are using and why (it may also be something not in the slides or be a combination). Provide more details about the components you have written, and where these components fit in the overall architecture so we can visualize how you have decomposed your system. Basically, this should all be captured in ONE diagram with the components on them and a few sentences explaining (i) why you chose this architecture and (ii) why the components are where you put them. If you want to just focus on a certain aspect of your system and not show the entire architecture for your system in the diagram, that should be fine as well.
+        Recall the system architecture slides and tell us which architecture pattern you are using and why (it may also be something not in the slides or be a combination). Provide more details about the components you have written, and where these components fit in the overall architecture so we can visualize how you have decomposed your system. Basically, this should all be captured in ONE diagram with the components on them and a few sentences explaining (i) why you chose this architecture and (ii) why the components are where you put them. If you want to just focus on a certain aspect of your system and not show the entire architecture for your system in the diagram, that should be fine as well.
+
+### System Architecure Diagram
+
+![Architecture Diagram]()
+
+### Why This Architecture?
+
+This container-based microservices architecture offers several key advantages:
+
+*    **Scalability:** Each component (frontend, backend, authentication, database) runs in its own container, allowing for independent scaling based on demand. This ensures optimal performance as the system grows.
+*    **Modularity and Reusability:** Since components are loosely coupled, we can work on them in parallel, speeding up development. Testing is also more efficient as it can be focused on individual components rather than the entire system. Additionally, this modularity promotes code reusability, as components can be easily shared or adapted for other projects.
+*    **Maintainability:** The independent nature of components simplifies maintenance tasks. If a specific component needs updates or fixes, it can be taken down and modified without affecting the entire system. This reduces downtime and simplifies troubleshooting.
+*    **Security (Reduced Attack Surface):**  By isolating components into separate containers, we limit the potential impact of a security breach. If one component is compromised, the others remain isolated, reducing the overall risk to the system.
+  
+### Component Placements and Reasoning:
+
+1. **Frontend (React):**  Isolated to enable independent UI updates and technology flexibility. 
+2. **Backend (Express.js):**  Central hub for logic, data processing, and communication. Ensures security, data integrity, and scalability.
+3. **Middleware (Backend):** A middleware layer is a set of functions within the backend that sit between the API endpoints and the database. It serves as an abstraction layer, providing a consistent interface for interacting with the database while encapsulating all the database-specific queries and operations. This improves code organization, maintainability, and testability.
+4. **Authentication (JWT/OAuth2.0/OpenID Connect):**  Separate container for focused security implementation and potential reusability.
+5. **Database (PostgreSQL):** Isolated for data persistence, independent scaling, and focused security measures.
 
 ## Use Case Models
 
