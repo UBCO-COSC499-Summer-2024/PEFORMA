@@ -679,11 +679,27 @@ The following use case diagram illustrates the key interactions between users an
 
 ## Database Design 
 
-Provide an ER diagram of the entities and relationships you anticipate having in your system (this will most likely change, but you need a starting point).  In a few sentences, explain why the data is modelled this way and what is the purpose of each table/attribute.  For this part, you only need to have ONE diagram and an explanation.
+                Provide an ER diagram of the entities and relationships you anticipate having in your system (this will most likely change, but you need a starting point).  In a few sentences, explain why the data is modelled this way and what is the purpose of each table/attribute.  For this part, you only need to have ONE diagram and an explanation.
+
+The following Entity-Relationship Diagram (ERD) illustrates the database structure for the CMPS Department Management System. It outlines the key entities (tables) and their relationships, providing a visual representation of how data is organized and connected within the system
+
+### Entity Relationship Diagram
+
+![ERD](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/ERD.png)
+
+### Why the data is modelled this way and what is the purpose of each table/attribute?
+
+* **User, Image, UserType, Division:** These tables store information about the individuals within the department (instructors, department head, department staff, administrators), their roles, and affiliations. This ensures proper user management and access control.
+
+* **Course, CourseByTerm, InstructorTeachingAssignment:** These tables model the relationship between courses, specific course offerings (with term and year), and the instructors assigned to teach them. This allows for tracking teaching loads and course history.
+
+* **ServiceRole, ServiceRoleByYear, ServiceRoleAssignment:** This structure captures the different service roles within the department, their expected workload (by month), and which instructors are assigned to each role, along with their completed hours. This enables service workload tracking and performance evaluation.
+
+* **SEIData, StudentMark:** These tables store crucial student feedback and grade data, linking it to specific courses, terms, and instructors. This data is essential for assessing teaching effectiveness and identifying areas for improvement.
 
 ## Data Flow Diagram (Level 0/Level 1)
 
-The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance),
+                The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance),
 
 ## User Interface (UI) Design
 
