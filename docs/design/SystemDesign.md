@@ -12,7 +12,7 @@ Start each section with a lead-in, detailing what it is.  Also, do not just have
 
 ### System Architecure Diagram
 
-![Architecture Diagram]()
+![Architecture Diagram](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/Architecture%20Diagrma.png)
 
 ### Why This Architecture?
 
