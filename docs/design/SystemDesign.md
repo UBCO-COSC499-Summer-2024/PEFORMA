@@ -701,10 +701,30 @@ The following Entity-Relationship Diagram (ERD) illustrates the database structu
 
         The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance),
 
+The following diagrams illustrate the flow of information within the CMPS Department Management System. They provide a visual representation of how data is processed and exchanged between the system's components and users:
+
 ### Data Flow Diagram: Level 0
 
+![DFD0](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/Data%20flow%20diagram_%20Level%200.png
+)
 
+### Data Flow Diagram: Level 0
+
+![DFD1](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/Data%20flow%20diagram_%20Level%201.png)
 
 ## User Interface (UI) Design
 
-The team is required to put forward a series of UI mock-ups that will be used as starting points for the design of the system   They can be minimal but the team will need to  have at least made some choices about the interaction flow of the application.  You should consider the different major aspects of user interactions and develop UI mockups for those (think about the different features/use cases and what pages are needed; you will have a number most likely).  Additionally, create a diagram to explain the navigation flow for the MVP  prototype (and any alternate flows).  When considering your UI, think about usability, accessibility, desktop and mobile uses.  As a team, you will need to discuss design choices for the system.
+        The team is required to put forward a series of UI mock-ups that will be used as starting points for the design of the system   They can be minimal but the team will need to  have at least made some choices about the interaction flow of the application.  You should consider the different major aspects of user interactions and develop UI mockups for those (think about the different features/use cases and what pages are needed; you will have a number most likely).  Additionally, create a diagram to explain the navigation flow for the MVP  prototype (and any alternate flows).  When considering your UI, think about usability, accessibility, desktop and mobile uses.  As a team, you will need to discuss design choices for the system.
+
+ ### UI Mock-ups:
+
+ [Figma Link](https://www.figma.com/design/bzcJMjCOnItWRJuGaiP68J/COSC-499-UI-Design?node-id=143-1880&t=aU7bxZIL66Ulo5Hg-1)
+
+ ### Navigation Flow Chart: Deparment Head/Staff View
+
+ ![navFlowDept](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/UI%20Design%20Flow%20Diagram%20for%20MVP.png)
+
+ ### Navigation Flow Chart: Instructor View
+
+ ![navFlowIns](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/system-design/docs/design/diagrams/UI%20Design%20Flow%20Diagram%20for%20MVP%20(1).png)
+ 
