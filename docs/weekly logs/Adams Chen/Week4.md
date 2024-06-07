@@ -57,17 +57,6 @@
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> Learn TravisCI
-        </td>
-        <!-- Status -->
-        <td> Not started
-        </td>
-        <!-- Notes -->
-        <td>
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
         <td> Learn React
         </td>
         <!-- Status -->
@@ -135,12 +124,14 @@ I completed administrative tasks as planned, but system analysis and diagram are
 ## Friday (6/7/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![Clockify summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_June_7_1.jpg)
+![Clockify summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_June_7_2.jpg)
+![Clockify summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_June_7_3.jpg)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * Proofread & Edit design video slide deck
+  * Shoot my part in design video
+  * Edit ER diagram to reflect updated design
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -154,7 +145,29 @@ I completed administrative tasks as planned, but system analysis and diagram are
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>Proofread & Edit design video slide deck
+        </td>
+        <!-- Status -->
+        <td>In Progress
+        </td>
+        <!-- Notes -->
+        <td>Busy preparing test other course
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Shoot my part in design video
+        </td>
+        <!-- Status -->
+        <td>Not Started
+        </td>
+        <!-- Notes -->
+        <td>Busy preparing test other course
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Finalize diagrams
         </td>
         <!-- Status -->
         <td>Complete
@@ -165,21 +178,32 @@ I completed administrative tasks as planned, but system analysis and diagram are
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>Compose written parts for design doc & GitHub submission
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Complete
         </td>
         <!-- Notes -->
-        <td> Unable to finish due to time constraint and waiting on other teammate to finish their part
+        <td>
+        </td>
+    </tr>
+     <tr>
+        <!-- Task/Issue # -->
+        <td> Learn TravisCI
+        </td>
+        <!-- Status -->
+        <td> Not started
+        </td>
+        <!-- Notes -->
+        <td>Busy preparing test other course
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td> Learn React
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td> In progress
         </td>
         <!-- Notes -->
         <td>
@@ -188,11 +212,14 @@ I completed administrative tasks as planned, but system analysis and diagram are
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I completed composing the design doc and submission as intended. However, the ERD still need a good amount of changes to adapt to the needs of the client. Progress in most tasks were post-poned due to needing to prepare for a test for the other class.
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Finalize design video slide deck
+  * Shoot my part in the design video
+  * Docker & basic architecure setup on personal device
+  * Database setup 
+  * Write up exhaustive tests for 2 features I'm responsilbe for implementing
+  * Implement the those 2 features
 
 
