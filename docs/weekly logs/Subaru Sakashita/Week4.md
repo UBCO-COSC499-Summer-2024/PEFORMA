@@ -65,12 +65,12 @@ I completed DFD diagram and system architecture as planned, but ER diagram requi
 ## Friday (6/7/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/Clockify_Week4_2nd.png)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #1: Finalize Design Proposal Slides 
+  * #2: Search Techstack for authentication
+  * #3: Learn react and express
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -82,15 +82,7 @@ I completed DFD diagram and system architecture as planned, but ER diagram requi
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
-        </td>
-        <!-- Status -->
-        <td>Complete
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task B
+        <td>Finalize Design Proposal Slides 
         </td>
         <!-- Status -->
         <td>In Progress
@@ -98,7 +90,15 @@ I completed DFD diagram and system architecture as planned, but ER diagram requi
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>Finalize ER diagram 1
+        </td>
+        <!-- Status -->
+        <td>Completed
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Search Techstack for authentication
         </td>
         <!-- Status -->
         <td>In Progress
@@ -107,11 +107,15 @@ I completed DFD diagram and system architecture as planned, but ER diagram requi
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I completed Task B as planned, but Task B requires finalization because some diagrams are large and they are hard to put them in the slides. We are also as a team discussing which features to put our emphasis on since we only have 10min to present. Search Techstacking for authentication is also taking time because although I am doing research, it is hard to tell which is easier because I have never actually used them. On Friday, I will ask Scott if JWT is better or auth&openid because what we need is hearing from a person who has better knowledge in technology. 
+
+Our bottleneck is communication. It is hard to keep track of who is doing what, so I would like to emphasize the importance of having effective communication. For example, keeping us updated with tasks like "I am going to do Task A, and Task B, is that ok?" kind of thing.
+
+Another issue is that on clockify, I am not sure how to change the timezone. For some reason, the Japanese timezone is applied to my clockify, so I will ask Scott how to fix it. 
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Search Techstack for authentication
+  * Database connection
+  * Docker setup on my computer(Kevin has alaredy done it, so I will ask him how to do the setup on Friday after the team meeting. 
 
 
