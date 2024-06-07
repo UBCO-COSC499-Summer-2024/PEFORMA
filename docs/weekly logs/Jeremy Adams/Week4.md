@@ -42,12 +42,13 @@ Kevin and I completed the UI design for our entire site. (instructor side, depar
 ## Friday (6/7/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](Clockify/week4-2.png)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #1: Record my part for video
+  * #2: Start writing tests
+  * #3: Start developing frontend of site
+  * #4: Learn more about React and Express
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -59,7 +60,7 @@ Kevin and I completed the UI design for our entire site. (instructor side, depar
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>Add UI to Design Doc
         </td>
         <!-- Status -->
         <td>Complete
@@ -67,26 +68,37 @@ Kevin and I completed the UI design for our entire site. (instructor side, depar
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>Finish Design Doc 
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Complete
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>Record portion of video
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>In progress
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Start writing more tests
+        </td>
+        <!-- Status -->
+        <td>Haven't started
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+Kevin and I created flowchart diagrams for the UI of the site, one for the instructor view and one for the department view. 
+I haven't yet recorded my video but I will do that after the meeting on Friday.
+I've also been steadily learning about React and how to begin writing tests and actually developing the site.
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Have 10 features (2 per person) complete before next Friday
+  * Attain good profiency with React
+  * Write some tests
+  * Help everyone in my team be successful
