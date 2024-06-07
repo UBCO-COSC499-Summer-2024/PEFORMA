@@ -19,6 +19,8 @@
         </td>
         <td><strong>STATUS</strong>
         </td>
+        <td><strong>NOTES</strong>
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
@@ -26,6 +28,9 @@
         </td>
         <!-- Status -->
         <td> In progress
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
     <tr>
@@ -35,13 +40,8 @@
         <!-- Status -->
         <td> Not started
         </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td> Learn TravisCI
-        </td>
-        <!-- Status -->
-        <td> Not started
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
     <tr>
@@ -50,6 +50,20 @@
         </td>
         <!-- Status -->
         <td> Not started
+        </td>
+        <!-- Notes -->
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td> Learn TravisCI
+        </td>
+        <!-- Status -->
+        <td> Not started
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
     <tr>
@@ -59,6 +73,9 @@
         <!-- Status -->
         <td> In progress
         </td>
+        <!-- Notes -->
+        <td>
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
@@ -66,6 +83,9 @@
         </td>
         <!-- Status -->
         <td> Completed
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
      <tr>
@@ -75,6 +95,9 @@
         <!-- Status -->
         <td> Completed
         </td>
+        <!-- Notes -->
+        <td>
+        </td>
     </tr>
      <tr>
         <!-- Task/Issue # -->
@@ -83,6 +106,9 @@
         <!-- Status -->
         <td> In progress
         </td>
+        <!-- Notes -->
+        <td>
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
@@ -90,6 +116,9 @@
         </td>
         <!-- Status -->
         <td> In progress
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
 </table>
@@ -120,6 +149,8 @@ I completed administrative tasks as planned, but system analysis and diagram are
         </td>
         <td><strong>STATUS</strong>
         </td>
+        <td><strong>NOTES</strong>
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
@@ -127,6 +158,9 @@ I completed administrative tasks as planned, but system analysis and diagram are
         </td>
         <!-- Status -->
         <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
     <tr>
@@ -136,6 +170,9 @@ I completed administrative tasks as planned, but system analysis and diagram are
         <!-- Status -->
         <td>In Progress
         </td>
+        <!-- Notes -->
+        <td> Unable to finish due to time constraint and waiting on other teammate to finish their part
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
@@ -143,6 +180,9 @@ I completed administrative tasks as planned, but system analysis and diagram are
         </td>
         <!-- Status -->
         <td>In Progress
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
 </table>
