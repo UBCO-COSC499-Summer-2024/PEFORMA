@@ -57,12 +57,12 @@ I completed designing UI using Figma of three different views (Instructor, Depar
 ## Friday (6/7/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.5-6.6/4.2.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.5-6.6/4.2.2.png)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #1: Create my portion of design video
+  * #2: Edit videos into one
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -71,39 +71,37 @@ I completed designing UI using Figma of three different views (Instructor, Depar
         </td>
         <td><strong>STATUS</strong>
         </td>
+        <td><strong>NOTES</strong>
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>#45: Setting up docker
         </td>
         <!-- Status -->
         <td>Complete
         </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task B
-        </td>
-        <!-- Status -->
-        <td>In Progress
+        <!-- Notes -->
+        <td>
+         Finished setting up docker and development environments connecting to postgreSQL database, all containers all published, waiting for team members to review to merge to master branch.
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>#14: creating system design video
         </td>
         <!-- Status -->
         <td>In Progress
+        </td>
+        <!-- Notes -->
+        <td> Ready to record my portion, but still waiting for the slides to be reviewed.
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I completed setting up the docker environment and successfully published all containers to docker. As of first time setting docker environment, it was tough to trouble shoot and fix the errors but I overcame and finished it, which makes me feel proud of me. 
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
-
-
+  * Create and edit system design video
+  * Start working on implementing FE 
