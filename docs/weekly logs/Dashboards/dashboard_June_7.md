@@ -28,7 +28,7 @@
 
 | Task Name             | Owner         | Estimated Time |
 | ----------------------- | -------------- | -------------- |
-| Writing up tests for 2 features/member            | Jeremy, Kevin, Subaru, Zhiheng Adams | 50 mins |
+| Writing up tests for 2 features/member            | Jeremy, Kevin, Subaru, Zhiheng Adams | 50 hours |
 | Implementing 2 features/member        | Jeremy, Kevin, Subaru, Zhiheng Adams | 50 hours |
 | DDL composing and database setup      | Adams         |   3 hours    | 
 | Creating dashboard for June 12       | Adams  | 30 mins |
