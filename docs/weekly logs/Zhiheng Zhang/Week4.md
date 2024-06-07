@@ -44,7 +44,7 @@ Code is template only for Kevin and Jermy to work on as quick start up template,
 ## Friday (6/7/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](./cycle-6.4-6.7.png)
 
 ### Current Tasks
   * #1: Task 1 Express learning - DB connect
