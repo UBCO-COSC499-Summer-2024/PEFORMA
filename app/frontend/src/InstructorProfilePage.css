@@ -1,0 +1,33 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+.sidebar {
+    width: 200px;
+    background-color: #002145;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.profile-container {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+}
+.top{
+    
+}
+.logout-button {
+    padding: 20px 15px;
+    background-color: #dc3545;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+}
