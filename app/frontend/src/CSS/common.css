@@ -1,5 +1,12 @@
 :root{
-    --background:#FAFAFA;
+    --backgroundColor:#FAFAFA;
+    --sidebarColor: #002145;
+    --darkGrey: #F6F6F6;
+    --darkerGrey: #EBEBEB;
+    --darkestGrey:#C9C9C9;
+    --green: #D2EE98;
+    --red: #E74848;
+    --blue: #2563EB;
 }
 
 .main-content {
