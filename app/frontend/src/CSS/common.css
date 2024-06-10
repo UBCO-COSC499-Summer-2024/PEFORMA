@@ -1,4 +1,5 @@
-:root{
+/* Global variables, use var(--variableName) to access them */
+:root {
     --backgroundColor:#FAFAFA;
     --sidebarColor: #002145;
     --darkGrey: #F6F6F6;
@@ -12,3 +13,33 @@
 .main-content {
     background-color: var(--background);
 }
+
+/* sidebar stuff*/
+.sidebar {
+    width: 20%;
+    background-color: var(--sidebarColor);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-header h1 {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar-header hr {
+    border: none;
+    height: 2px;
+    background-color: white;
+  }
+  
+  .sidebar nav a {
+    color: black;
+    background-color: white;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+  }
+  

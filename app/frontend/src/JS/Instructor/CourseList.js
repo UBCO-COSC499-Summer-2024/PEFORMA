@@ -53,9 +53,10 @@ function CourseList() {
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
-        <ReactPaginate
+            <tfoot>
+            <tr>
+              <td colSpan={3}>
+            <ReactPaginate
           previousLabel={'< Previous'}
           nextLabel={'Next >'}
           breakLabel={'...'}
@@ -66,6 +67,12 @@ function CourseList() {
           containerClassName={'pagination'}
           activeClassName={'active'}
         />
+        </td>
+        </tr>
+        </tfoot>
+          </table>
+        
+        </div>
       </div>
     </div>
   );

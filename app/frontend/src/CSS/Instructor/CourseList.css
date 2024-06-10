@@ -3,37 +3,9 @@
     height: 100vh;
   }
   
-  .sidebar {
-    width: 20%;
-    background-color: #002244;
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .sidebar-header h1 {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar-header hr {
-    border: none;
-    height: 2px;
-    background-color: white;
-  }
-  
-  .sidebar nav a {
-    color: black;
-    background-color: white;
-    padding: 10px;
-    text-decoration: none;
-    display: block;
-    margin: 10px 0;
-  }
-  
   .main-content {
     flex-grow: 1;
-    padding: 20px;
+    padding: 2em;
     width: 80%;
   }
   
@@ -45,34 +17,38 @@
   }
   
   .course-table th, .course-table td {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
+    padding: 1em;
+    border-bottom: 1px solid var(--darkGrey);
     text-align: left;
   }
   
   .course-table th {
-    background-color: #f8f8f8;
+    background-color: var(--darkGrey);
   }
   
   .pagination {
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 1em;
     list-style: none;
   }
   
   .pagination li {
-    margin: 0 5px;
+    margin: 0 0.25em;
+  }
+
+  .pagination li:hover {
+    cursor:pointer;
   }
   
   .pagination li a {
     padding: 5px 5px;
     border: 1px solid #ccc;
-    color: #333;
+    color: #000000;
   }
   
   .pagination li.active a {
-    background-color: #007bff;
+    background-color: var(--blue);
     color: white;
   }
   
