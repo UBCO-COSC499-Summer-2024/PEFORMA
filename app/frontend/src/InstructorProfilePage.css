@@ -12,9 +12,14 @@
     flex-direction: column;
 }
 
+.sidebar h2 {
+    font-size: 2.5vh;
+}
+
 .divider {
-    border: 1px solid #fff;
-    margin: 10px 0;
+    border: 2px solid #fff;
+    width: 100%;
+    margin: 1vh 0;
 }
 
 .menu {
@@ -70,6 +75,12 @@ header {
     align-items: center;
 }
 
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
 
 .logout {
     padding: 10px 20px;
@@ -77,5 +88,34 @@ header {
     color: #fff;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+.information h1 {
+    font-size: 3vh;
+}
+
+.information p {
+    font-size: 1.7vh;
+}
+
+.information a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.information a:hover {
+    text-decoration: underline;
+}
+
+.service-roles label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.service-roles select {
+    width: 100%;
+    padding: 1vh;
+    border: 1px solid #000000;
     border-radius: 5px;
 }
