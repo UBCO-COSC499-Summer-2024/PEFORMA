@@ -2,7 +2,7 @@
 //import './App.css';
 
 import React from "react";
-import HomePage from "./JS/Instructor/CourseList";
+import HomePage from "./HomePage";
 //import Login from "./Login";
 //import ForgotPasswordPage from './ForgotPasswordPage';
 //import Dashboard from './Dashboard';

@@ -17,7 +17,7 @@ function CourseList() {
     // logic of controlling slect & jump below
     // ......
   };
-
+  
   return (
 
     <div className="dashboard">
