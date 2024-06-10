@@ -10,8 +10,15 @@
     --blue: #2563EB;
 }
 
+.topbar {
+    margin: 2em;
+    background-color: red;
+}
+
 .main-content {
     background-color: var(--background);
+    padding: 2em;
+    width: 80%;
 }
 
 /* sidebar stuff*/

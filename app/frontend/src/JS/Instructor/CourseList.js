@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import '../commonImports.js';
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
+
+
 
 function CourseList() {
   const [courses, setCourses] = useState([
@@ -17,18 +19,13 @@ function CourseList() {
   };
 
   return (
+
     <div className="dashboard">
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <h1>PEFORMA</h1>
-          <hr />
-        </div>
-        <nav>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#performance">Performance</a>
-        </nav>
-      </aside>
+      
+     <CreateSidebar />
+     
       <div className="main-content">
+      <CreateTopbar />
         <header className="web-head">
           <input type="search" placeholder="Search by Subject (e.g. COSC123) or Instructor name (e.g. Chipinski)" />
           <img src='temp.png' alt=''/>
