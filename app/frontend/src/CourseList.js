@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import "../JS"
 import './CourseList.css';
 
 function CourseList() {
