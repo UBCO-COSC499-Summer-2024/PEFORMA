@@ -23,13 +23,14 @@ function CourseList() {
     <div className="dashboard">
       
      <CreateSidebar />
-     
-      <div className="main-content">
+      <div className='container'>
       <CreateTopbar />
+      <div className="main-content">
+      
         <header className="web-head">
           <input type="search" placeholder="Search by Subject (e.g. COSC123) or Instructor name (e.g. Chipinski)" />
           <img src='temp.png' alt=''/>
-          <button onClick={() => console.log('Logout')}>Logout</button>
+          
         </header>
         <header className='ListTitle'>List of Courses (Computer Science)</header>
         <div className="course-table">
@@ -70,6 +71,7 @@ function CourseList() {
           </table>
         
         </div>
+      </div>
       </div>
     </div>
   );
