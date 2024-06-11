@@ -3,6 +3,9 @@ import './InstructorProfilePage.css';
 import { FaHome, FaSmile } from 'react-icons/fa';
 
 function InstructorProfilePage() {
+
+  const profile = {"name":"Billy Guy", "id":"18592831", "benchmark":"1300", "roles":["Role1", "Role2"], "email":"billyGuy@instructor.ubc.ca", "phone":"778-333-2222", "office":"SCI 300", "teachingAssignments":[{"assign":"COSC 211","link":"abc.com"},{"assign":"COSC 304","link":"def.com"}]};
+
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
@@ -20,24 +23,19 @@ function InstructorProfilePage() {
           <button className="logout">Logout</button>
         </header>
         <section className='information'>
-          <h1>Billy Guy's Profile</h1>
-          <p><strong>Name:</strong> Billy Guy</p>
-          <p><strong>UBC ID:</strong>18592830</p>
-          <p><strong>Service Roles:</strong> Undergradute Advisor</p>
-          <p><strong>Monthly Hours Benchmark:</strong> 1200</p>
-          <p><strong>Email:</strong> billyguy@instructor.ubc.ca</p>
-          <p><strong>Phone Number:</strong> 778-381-2581</p>
-          <p><strong>Office Location:</strong> SCI 200</p>
+          <h1> {profile.name}'s Profile</h1>
+          <p><strong>Name:</strong> {profile.name}</p>
+          <p><strong>UBC ID:</strong> {profile.id}</p>
+          <p><strong>Service Roles:</strong> {profile.roles.map(role => role).join(', ')}</p>
+          <p><strong>Monthly Hours Benchmark:</strong> {profile.benchmark}</p>
+          <p><strong>Phone Number:</strong> {profile.phone}</p>
+          <p><strong>Email:</strong> {profile.email}</p>
+          <p><strong>Office Location:</strong> {profile.office}</p>
           <p><strong>Teaching Assignments:</strong> 
-            <a href='#'>COSC 211</a>,
-            <a href='#'> COSC 304</a>
+            {profile.teachingAssignments.map(teachingAssign => (
+            <a href='{teachingAssign.link}'> {teachingAssign.assign}</a>
+            )).reduce((prev, curr) => [prev, ', ', curr])}
           </p>
-          <div className='service-roles'>
-            <label htmlFor='current-service-roles'>Current Service Roles</label>
-            <select id='current-service-roles'>
-              <option>Select Role</option>
-            </select>
-          </div>
         </section>
       </div>
     </div>
