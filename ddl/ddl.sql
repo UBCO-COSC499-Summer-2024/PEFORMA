@@ -41,7 +41,7 @@ CREATE TABLE "Profile" (
 CREATE TABLE "Account" (
   "accountId" SERIAL PRIMARY KEY,
   "profileId" integer,
-  "email" varchar(20),
+  "email" varchar(100),
   "password" varchar(15),
   "isActive" boolean,
   FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId")
