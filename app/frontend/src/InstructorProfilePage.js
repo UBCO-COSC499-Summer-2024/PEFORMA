@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './InstructorProfilePage.css';
-import { FaHome, FaSmile } from 'react-icons/fa';
+//import { FaHome, FaChartLine } from 'react-icons/fa';
+import CreateSidebar, { CreateTopbar} from './JS/commonImports.js';
 
 function InstructorProfilePage() {
   const [profile, setProfile] = useState({"roles":[],"teachingAssignments":[{}]});
@@ -19,20 +20,13 @@ function InstructorProfilePage() {
 
   return (
     <div className="dashboard-container">
-      <aside className="sidebar">
-        <h2>PEFORMA</h2>
-        <hr className="divider" />
-        <ul className="menu">
-          <li><a href="#"><FaHome className="icon" size={30} /> Dashboard</a></li>
-          <li><a href="#"><FaSmile className="icon" size={30} /> Performance</a></li>
-        </ul>
-      </aside>
+      
+      <CreateSidebar />
+
       <div className='content'>
-        <header>
-          <div className="profile"> 
-          </div>
-          <button className="logout">Logout</button>
-        </header>
+        <CreateTopbar />
+
+
         <section className='information'>
           <h1> {profile.name}'s Profile</h1>
           <p><strong>Name:</strong> {profile.name}</p>
