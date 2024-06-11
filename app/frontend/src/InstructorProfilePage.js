@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './InstructorProfilePage.css';
 import { FaHome, FaSmile } from 'react-icons/fa';
 
 function InstructorProfilePage() {
+  const [profile, setProfile] = useState({"roles":[],"teachingAssignments":[{}]});
 
-  const profile = {"name":"Billy Guy", "id":"18592831", "benchmark":"1300", "roles":["Role1", "Role2"], "email":"billyGuy@instructor.ubc.ca", "phone":"778-333-2222", "office":"SCI 300", "teachingAssignments":[{"assign":"COSC 211","link":"abc.com"},{"assign":"COSC 304","link":"def.com"}]};
+  useEffect(() => {
+    const fetchData = async() => {
+      const res = await axios.get('http://localhost:3000/profileSample.json'); //replace it to api
+      return res.data;
+    }
+
+    fetchData().then(res => setProfile(res));
+  });
+
+  // const profile = {"name":"Billy Guy", "id":"18592831", "benchmark":"1300", "roles":["Role1", "Role2"], "email":"billyGuy@instructor.ubc.ca", "phone":"778-333-2222", "office":"SCI 300", "teachingAssignments":[{"assign":"COSC 211","link":"abc.com"},{"assign":"COSC 304","link":"def.com"}]};
 
   return (
     <div className="dashboard-container">
