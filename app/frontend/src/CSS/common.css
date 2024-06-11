@@ -23,30 +23,52 @@
 
 /* sidebar stuff*/
 .sidebar {
-    width: 20%;
-    background-color: var(--sidebarColor);
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .sidebar-header h1 {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar-header hr {
-    border: none;
-    height: 2px;
-    background-color: white;
-  }
-  
-  .sidebar nav a {
-    color: black;
-    background-color: white;
-    padding: 10px;
-    text-decoration: none;
-    display: block;
-    margin: 10px 0;
-  }
+  width: 20vh;
+  background-color: #002145;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 2.5vh;
+}
+
+.divider {
+  border: 2px solid #fff;
+  width: 100%;
+  margin: 1vh 0;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 0;
+}
+
+.menu li {
+  margin: 10px 0;
+}
+
+.menu li a {
+  background-color: #34495e;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 25px;
+  border-radius: 7px;
+  transition: background-color 0.3s;
+  font-size: 1.2rem;
+}
+
+.menu li a:hover {
+  background-color: #3b5998;
+}
+
+.menu .icon {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
   
