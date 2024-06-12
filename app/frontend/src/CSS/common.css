@@ -8,15 +8,40 @@
     --green: #D2EE98;
     --red: #E74848;
     --blue: #2563EB;
+    --white: #FFFFFF;
+    --black: #000000;
 }
 
 .topbar {
-    margin: 2em;
-    background-color: red;
+    display: flex;
+    justify-content: end;
+    height: 4em;
+    background-color: var(--white);
+    border-bottom: var(--darkerGrey) 2px solid;
+}
+
+.logout {
+  padding: 1em 0.5em 0.5em 0.5em;
+  margin: 0.25em;
+  text-align: center;
+  width: 6em;
+  border-radius: 0.5em;
+  font-weight:500;
+  background-color: var(--red);
+}
+
+.logout:hover {
+  cursor: pointer;
+}
+
+.container {
+  flex-grow: 1;
+  background-color: var(--backgroundColor);
 }
 
 .main-content {
-    background-color: var(--background);
+    flex-grow: 1;
+    
     padding: 2em;
     width: 80%;
 }
@@ -25,7 +50,7 @@
 .sidebar {
     width: 20%;
     background-color: var(--sidebarColor);
-    color: white;
+    color: var(--white);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -38,12 +63,12 @@
   .sidebar-header hr {
     border: none;
     height: 2px;
-    background-color: white;
+    background-color: var(--white);
   }
   
   .sidebar nav a {
-    color: black;
-    background-color: white;
+    color: var(--black);
+    background-color: var(--white);
     padding: 10px;
     text-decoration: none;
     display: block;
