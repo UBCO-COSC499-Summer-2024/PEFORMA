@@ -8,7 +8,7 @@ import EditProfile from "./JS/Instructor/EditProfile";
 import UserProfile from "./JS/Instructor/UserProfile";
 //import PerformancePage from "./PerformancePage";
 //import CourseHistory from "./CourseHistory";
-import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
+// import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
 function App() {
   return (
