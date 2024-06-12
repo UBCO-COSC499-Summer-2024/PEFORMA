@@ -1,0 +1,92 @@
+.dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 20%;
+    background-color: #002244;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-header h1 {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar-header hr {
+    border: none;
+    height: 2px;
+    background-color: white;
+  }
+  
+  .sidebar nav a {
+    color: black;
+    background-color: white;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    width: 80%;
+  }
+  
+  .course-table table {
+    width: 80%;
+    border-collapse: collapse;
+    position: absolute;
+    top: 20%;
+  }
+  
+  .course-table th, .course-table td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+  }
+  
+  .course-table th {
+    background-color: #f8f8f8;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    list-style: none;
+  }
+  
+  .pagination li {
+    margin: 0 5px;
+  }
+  
+  .pagination li a {
+    padding: 5px 5px;
+    border: 1px solid #ccc;
+    color: #333;
+  }
+  
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .ListTitle{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    text-align: center;
+    color: black;
+    size: 10px;
+    padding-top: 0%;
+    padding-bottom: 0%;
+  }
+
+  .instructor-img{
+    height: 30px;
+  }

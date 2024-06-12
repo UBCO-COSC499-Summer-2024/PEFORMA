@@ -1,0 +1,79 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #002244;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-container {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  
+  .logout-button {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .profile-details {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .profile-info {
+    width: 60%;
+  }
+  
+  .graph-section {
+    width: 35%;
+    height: 40%;
+    background-color: #ccc; /* Placeholder for the graph area */
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .score {
+    display: flex;
+    align-items: center;
+  }
+  
+  .compare {
+    margin-right: 10px;
+    color: green;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  .graph{
+    max-width: 90%;
+    align-items: center;
+  }
+  
