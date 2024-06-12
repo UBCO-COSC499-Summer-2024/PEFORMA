@@ -1,7 +1,7 @@
 const express = require('express');
 const { pool, testDB } = require('./db/index.js'); 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3001;  // Default to 3001 if environment variable not set
 
 app.use(express.json());
 
@@ -23,6 +23,16 @@ app.get('/profiles', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// app.get('/profiles', async (req, res) => {
+//     try {
+//         const { rows } = await pool.query('SELECT NOW()');
+//         res.json(rows);
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).send('Server Error');
+//     }
+// });
+
 
 // Start the server on port 3000
 app.listen(port, () => {

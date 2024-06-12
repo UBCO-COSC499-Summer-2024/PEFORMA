@@ -2,9 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "A simple Express backend",
-  "main": "index.js",
+  "main":"server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

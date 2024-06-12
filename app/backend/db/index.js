@@ -13,7 +13,7 @@ const pool = new Pool({
 // Function to test the database connection
 const testDB = async () => {
     try {
-        await pool.query('SELECT NOW()'); // Simple query to test the connection
+        await pool.query('SELECT NOW()'); // query to test the connection
         console.log('Database connected successfully.');
     } catch (error) {
         console.error('Database connection failed:', error);

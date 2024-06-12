@@ -11,7 +11,7 @@ import HomePage from "./HomePage";
 //import UserProfile from "./UserProfile";
 //import PerformancePage from "./PerformancePage";
 //import CourseHistory from "./CourseHistory";
-import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
+// import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
 function App() {
   return (
