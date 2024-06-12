@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../../CSS/Instructor/CourseHistory.css';
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
+
 
 function CourseHistory() {
   // Example course history data, import required
@@ -18,21 +20,12 @@ function CourseHistory() {
 
   return (
     <div className="course-history-container">
-      <aside className="sidebar">
-      <div className="sidebar-header">
-          <h1>PEFORMA</h1>
-          <hr />
-      </div>
-        <nav>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#performance">Performance</a>
-        </nav>
-      </aside>
-      <div className="web-head">
-      <img src='temp.png' alt=''/>
-      <button onClick={() => console.log('Logging out...')}>Logout</button>
-      </div>
+      <CreateSidebar />
+
+      
       <div className="main-content">
+      <CreateTopbar />
+
         <div className="header">
           <div className="average-score-card">
             <h4>Average Performance Score</h4>
