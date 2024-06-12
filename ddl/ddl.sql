@@ -1,24 +1,20 @@
 -- Dropping existing tables to clear
-DROP TABLE IF EXISTS SurveyType;
-DROP TABLE IF EXISTS Division;
-DROP TABLE IF EXISTS Image;
-DROP TABLE IF EXISTS Profile;
-DROP TABLE IF EXISTS Account;
-DROP TABLE IF EXISTS ServiceRole;
-DROP TABLE IF EXISTS Course;
-DROP TABLE IF EXISTS SurveyQuestion;
-DROP TABLE IF EXISTS CourseByTerm;
-DROP TABLE IF EXISTS InstructorTeachingAssignment;
-DROP TABLE IF EXISTS SingleTeachingPerformance;
-DROP TABLE IF EXISTS ServiceRoleAssignment;
-DROP TABLE IF EXISTS AccountType;
-DROP TABLE IF EXISTS ServiceRoleByYear;
-DROP TABLE IF EXISTS SurveyQuestionResponse;
--- Create survey types
-CREATE TABLE "SurveyType" (
-  "surveyTypeId" SERIAL PRIMARY KEY,
-  "surveyType" varchar(30)
-);
+DROP TABLE IF EXISTS "SurveyType" CASCADE;
+DROP TABLE IF EXISTS "Division" CASCADE;
+DROP TABLE IF EXISTS "Image" CASCADE;
+DROP TABLE IF EXISTS "Profile" CASCADE;
+DROP TABLE IF EXISTS "Account" CASCADE;
+DROP TABLE IF EXISTS "ServiceRole" CASCADE;
+DROP TABLE IF EXISTS "Course" CASCADE;
+DROP TABLE IF EXISTS "SurveyQuestion" CASCADE;
+DROP TABLE IF EXISTS "CourseByTerm" CASCADE;
+DROP TABLE IF EXISTS "InstructorTeachingAssignment" CASCADE;
+DROP TABLE IF EXISTS "SingleTeachingPerformance" CASCADE;
+DROP TABLE IF EXISTS "ServiceRoleAssignment" CASCADE;
+DROP TABLE IF EXISTS "AccountType" CASCADE;
+DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
+DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
+
 
 -- Create divisions
 CREATE TABLE "Division" (
@@ -36,9 +32,9 @@ CREATE TABLE "Image" (
 -- Create profiles
 CREATE TABLE "Profile" (
   "profileId" SERIAL PRIMARY KEY,
-  "firstName" varchar(50),
-  "middleName" varchar(50),
-  "lastName" varchar(50),
+  "firstName" varchar(20),
+  "middleName" varchar(20),
+  "lastName" varchar(20),
   "email" varchar(100),
   "phoneNum" varchar(20),
   "officeBuilding" varchar(10),
@@ -50,7 +46,8 @@ CREATE TABLE "Profile" (
   "sRoleBenchmark" integer,
   "imageId" integer,
   FOREIGN KEY ("divisionId") REFERENCES "Division" ("divisionId"),
-  FOREIGN KEY ("imageId") REFERENCES "Image" ("imageId")
+  FOREIGN KEY ("imageId") REFERENCES "Image" ("imageId"),
+  UNIQUE ("profileId", "email")
 );
 
 -- Create accounts
@@ -60,7 +57,7 @@ CREATE TABLE "Account" (
   "email" varchar(100),
   "password" varchar(15),
   "isActive" boolean,
-  FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId")
+  FOREIGN KEY ("profileId", "email") REFERENCES "Profile" ("profileId", "email")
 );
 
 -- Create service roles
@@ -83,6 +80,20 @@ CREATE TABLE "Course" (
   FOREIGN KEY ("divisionId") REFERENCES "Division" ("divisionId")
 );
 
+-- Create course terms
+CREATE TABLE "CourseByTerm" (
+  "courseId" integer,
+  "term" varchar(9),
+  PRIMARY KEY ("courseId", "term"),
+  FOREIGN KEY ("courseId") REFERENCES "Course" ("courseId")
+);
+
+-- Create survey types
+CREATE TABLE "SurveyType" (
+  "surveyTypeId" SERIAL PRIMARY KEY,
+  "surveyType" varchar(30)
+);
+
 -- Create survey questions
 CREATE TABLE "SurveyQuestion" (
   "surveyTypeId" integer, 
@@ -92,13 +103,20 @@ CREATE TABLE "SurveyQuestion" (
   FOREIGN KEY ("surveyTypeId") REFERENCES "SurveyType" ("surveyTypeId")
 );
 
--- Create course terms
-CREATE TABLE "CourseByTerm" (
+CREATE TABLE "SurveyQuestionResponse" (
+  "sQResponseId" SERIAL PRIMARY KEY,
+  "surveyTypeId" integer,
+  "surveyQuestionId" integer,
   "courseId" integer,
   "term" varchar(9),
-  PRIMARY KEY ("courseId", "term"),
-  FOREIGN KEY ("courseId") REFERENCES "Course" ("courseId")
+  "profileId" integer,
+  "studentId" integer,
+  "response" varchar(500),
+  FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId"),
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term"),
+  FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId")
 );
+
 
 -- Create instructor teaching assignments
 CREATE TABLE "InstructorTeachingAssignment" (
@@ -157,18 +175,4 @@ CREATE TABLE "ServiceRoleByYear" (
   "DECHour" double precision,
   PRIMARY KEY ("serviceRoleId", "year"),
   FOREIGN KEY ("serviceRoleId") REFERENCES "ServiceRole" ("serviceRoleId")
-);
-
-CREATE TABLE "SurveyQuestionResponse" (
-  "sQResponseId" SERIAL PRIMARY KEY,
-  "surveyTypeId" integer,
-  "surveyQuestionId" integer,
-  "courseId" integer,
-  "term" varchar(9),
-  "profileId" integer,
-  "studentId" integer,
-  "response" varchar(500),
-  FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId"),
-  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term"),
-  FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId")
 );
