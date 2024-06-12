@@ -1,10 +1,16 @@
-
+import { useNavigate } from 'react-router-dom';
 function Topbar() { 
+    /*
+    let navigate = useNavigate();
+    const redirect = () => {
+        navigate("/HomePage");
+    }
+    */
         return(
-            <div className="topbar">
-                <button className="logout">
+            <div className="topbar" /*onClick={redirect}*/>
+                <div className="logout">
                     Logout
-                </button>
+                </div>
             </div>
         );
     }
