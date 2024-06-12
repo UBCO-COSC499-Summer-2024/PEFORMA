@@ -1,3 +1,19 @@
+-- Dropping existing tables to clear
+DROP TABLE IF EXISTS SurveyType;
+DROP TABLE IF EXISTS Division;
+DROP TABLE IF EXISTS Image;
+DROP TABLE IF EXISTS Profile;
+DROP TABLE IF EXISTS Account;
+DROP TABLE IF EXISTS ServiceRole;
+DROP TABLE IF EXISTS Course;
+DROP TABLE IF EXISTS SurveyQuestion;
+DROP TABLE IF EXISTS CourseByTerm;
+DROP TABLE IF EXISTS InstructorTeachingAssignment;
+DROP TABLE IF EXISTS SingleTeachingPerformance;
+DROP TABLE IF EXISTS ServiceRoleAssignment;
+DROP TABLE IF EXISTS AccountType;
+DROP TABLE IF EXISTS ServiceRoleByYear;
+DROP TABLE IF EXISTS SurveyQuestionResponse;
 -- Create survey types
 CREATE TABLE "SurveyType" (
   "surveyTypeId" SERIAL PRIMARY KEY,
