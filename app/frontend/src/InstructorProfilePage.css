@@ -1,0 +1,53 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1vh;
+    align-items: center;
+    background-color: #d9d9d9;
+    border-radius: 5px;
+}
+*/
+
+
+.information h1 {
+    font-size: 3vh;
+}
+
+.information p {
+    font-size: 1.7vh;
+}
+
+.information a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.information a:hover {
+    text-decoration: underline;
+}
+
+.service-roles label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.service-roles select {
+    width: 100%;
+    padding: 1vh;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
