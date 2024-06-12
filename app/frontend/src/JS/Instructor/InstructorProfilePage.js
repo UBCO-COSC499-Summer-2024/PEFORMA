@@ -22,7 +22,7 @@ function InstructorProfilePage() {
     <div className="dashboard-container">
       
       <CreateSidebar />
-        <div className='content'>
+        <div className='container'>
         <CreateTopbar />
 
 

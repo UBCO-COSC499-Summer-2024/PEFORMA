@@ -36,7 +36,7 @@ function DataEntryComponent() {
     return (
         <div className='DataEntry-page'>
             <CreateSidebarDept/>
-            <div className="data-entry-container">
+            <div className="container">
                 <CreateTopbar />
                 <h1>Data Entry</h1>
                 <div className="create-new">

@@ -71,7 +71,7 @@ function ServiceRoleManagement() {
     return (
         <div className="service-role-management">
             <CreateSidebarDept/>
-            <div className='Manage-container'>
+            <div className='container'>
                 <CreateTopbar />
             <RoleDetails role={role} onEdit={() => console.log('Edit')} onDeactivate={() => console.log('Deactivate')} />
             <AssigneeList assignees={assignees} />

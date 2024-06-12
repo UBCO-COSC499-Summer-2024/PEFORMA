@@ -23,7 +23,7 @@ function CourseHistory() {
       <CreateSidebar />
 
       
-      <div className="main-content">
+      <div className="container">
       <CreateTopbar />
 
         <div className="header">

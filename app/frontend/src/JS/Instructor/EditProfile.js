@@ -30,11 +30,12 @@ function EditProfile() {
     <div className="dashboard-container">
       <CreateSidebar />
 
-      <div className="edit-profile">
+      <div className="container">
+      <CreateTopbar />
+
       <div>
         <header className="web-head">
           <img src='temp.png' alt=''/>
-          <CreateTopbar />
 
         </header>
        </div>

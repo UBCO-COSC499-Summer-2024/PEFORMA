@@ -6,10 +6,11 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <CreateSidebar />
-      <div className="dashboard-main-content">
+      <div className="container">
+      <CreateTopbar />
         <header className='web-head'>
           <input type="search" placeholder="Search by Subject (e.g. CS123) or Instructor name (e.g. Chipinski)" />
-          <CreateTopbar />
+          
         </header>
         <div className="card-container">
           <div className="card">

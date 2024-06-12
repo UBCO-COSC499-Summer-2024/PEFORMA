@@ -8,7 +8,7 @@ function UserProfile() {
     <div className="dashboard-container">
       <CreateSidebar />
 
-      <div className="profile-container">
+      <div className="container">
           <CreateTopbar />
 
         <div className="profile-details">
