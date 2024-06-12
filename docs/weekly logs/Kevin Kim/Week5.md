@@ -4,9 +4,9 @@
 ## Wednesday (6/12/2024)
 
 ### Timesheet
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/kevin-week-log-6/11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.1.png)
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/kevin-week-log-6/11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.2.png)
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/kevin-week-log-6/11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.3.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.2.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.3.png)
 ### Current Tasks
   * #1: Start working on publishing course list page (Instructor view)
   * #2: Make course list page to be responsive with json file, and also make a connection with instructor profile page 
