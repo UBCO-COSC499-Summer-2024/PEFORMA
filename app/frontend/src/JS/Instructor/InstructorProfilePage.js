@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './InstructorProfilePage.css';
+import '../../CSS/Instructor/InstructorProfilePage.css';
 //import { FaHome, FaChartLine } from 'react-icons/fa';
 import CreateSidebar, { CreateTopbar} from './JS/commonImports.js';
 
