@@ -31,7 +31,7 @@
         </td>
         <!-- Notes -->
         <td>
-         All completely Done.
+         I took part of recording UI desing mockup of performance dashboards pages for each Instructor and Department view
         </td>
     </tr>
     <tr>
