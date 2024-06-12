@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../../CSS/Department/ServiceRoleManagement.css';
+import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
+
 
 // Role Details Component
 function RoleDetails({ role, onEdit, onDeactivate }) {
@@ -14,25 +16,6 @@ function RoleDetails({ role, onEdit, onDeactivate }) {
         </div>
     );
 }
-
-function Sidebar() {
-    return (
-      <aside className="sidebar">
-      <div className='sidebar-header'>
-        <h1>PERFORMA</h1>
-        <hr/>
-      </div>
-        <nav>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#people">People</a>
-          <a href="#ServiceRole">#Service Role</a>
-          <a href="#DataEntry">#Data Entry</a>
-          <a href="#Course">Course</a>
-          <a href="#Performance">Performance</a>
-        </nav>
-      </aside>
-    );
-  }
 
 // Assignee List Component
 function AssigneeList({ assignees }) {
@@ -87,8 +70,9 @@ function ServiceRoleManagement() {
 
     return (
         <div className="service-role-management">
-            <Sidebar/>
+            <CreateSidebarDept/>
             <div className='Manage-container'>
+                <CreateTopbar />
             <RoleDetails role={role} onEdit={() => console.log('Edit')} onDeactivate={() => console.log('Deactivate')} />
             <AssigneeList assignees={assignees} />
             </div>

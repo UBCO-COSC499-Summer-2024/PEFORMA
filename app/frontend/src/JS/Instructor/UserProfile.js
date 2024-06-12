@@ -1,23 +1,19 @@
 import React from 'react';
 import '../../CSS/Instructor/UserProfile.css';
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 
 
 function UserProfile() {
   return (
     <div className="dashboard-container">
-      <aside className="sidebar">
-        <nav>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#performance">Performance</a>
-        </nav>
-      </aside>
+      <CreateSidebar />
+
       <div className="profile-container">
-        <header>
-          <h1>Billy Guy's Profile</h1>
-          <button onClick={() => console.log('Logging out...')} className="logout-button">Logout</button>
-        </header>
+          <CreateTopbar />
+
         <div className="profile-details">
           <div className="profile-info">
+          <h1>Billy Guy's Profile</h1>
             <p>Name: Billy Guy</p>
             <p>UBC ID: 123413234</p>
             <p>Service Role: Professor</p>

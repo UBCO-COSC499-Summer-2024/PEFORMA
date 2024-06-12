@@ -11,30 +11,6 @@
     border-radius: 8px;
     /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
 }
-.sidebar {
-    width: 20%;
-    background-color: #002244;
-    color: black;
-    height: 100%;
-  }
-
-  .sidebar-header h1{
-    color: white;
-  }
-
-  .sidebar-header hr{
-    height: 3px;
-    background-color: white;
-  }
-  
-  .sidebar nav a {
-    display: block;
-    padding: 10px;
-    background: white;
-    color: black;
-    text-decoration: none;
-  }
-
 .create-new {
     margin-top: 20px;
 }

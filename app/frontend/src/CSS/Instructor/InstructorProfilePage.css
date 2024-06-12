@@ -11,18 +11,6 @@
     flex-direction: column;
 }
 
-/*
-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 1vh;
-    align-items: center;
-    background-color: #d9d9d9;
-    border-radius: 5px;
-}
-*/
-
-
 .information h1 {
     font-size: 3vh;
 }

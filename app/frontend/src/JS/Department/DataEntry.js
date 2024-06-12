@@ -1,25 +1,6 @@
 import React, { useState } from 'react';
 import '../../CSS/Department/DataEntry.css';
-
-function Sidebar() {
-    return (
-      <aside className="sidebar">
-      <div className='sidebar-header'>
-        <h1>PERFORMA</h1>
-        <hr/>
-      </div>
-        <nav>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#people">People</a>
-          <a href="#ServiceRole">#Service Role</a>
-          <a href="#DataEntry">#Data Entry</a>
-          <a href="#Course">Course</a>
-          <a href="#Performance">Performance</a>
-        </nav>
-      </aside>
-    );
-  }
-
+import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 
 
 function DataEntryComponent() {
@@ -53,9 +34,11 @@ function DataEntryComponent() {
     };
 
     return (
-        <div className='DataEntry-page'><Sidebar/>
+        <div className='DataEntry-page'>
+            <CreateSidebarDept/>
             <div className="data-entry-container">
-            <h1>Data Entry</h1>
+                <CreateTopbar />
+                <h1>Data Entry</h1>
                 <div className="create-new">
                     <label htmlFor="create-new-select">Create New</label>
                     <select id="create-new-select" value={selection} onChange={handleChange}>

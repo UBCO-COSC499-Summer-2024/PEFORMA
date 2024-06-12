@@ -10,7 +10,7 @@ import UserProfile from "./JS/Instructor/UserProfile";
 import CourseHistory from "./JS/Instructor/CourseHistory";
 import InstructorProfilePage from "./JS/Instructor/InstructorProfilePage";
 import DataEntry from "./JS/Department/DataEntry";
-import ServiceRoleManagement from "./JS/Department/DataEntry";
+import ServiceRoleManagement from "./JS/Department/ServiceRoleManagement";
 import CreateAccount from "./JS/Admin/CreateAccount";
 
 
