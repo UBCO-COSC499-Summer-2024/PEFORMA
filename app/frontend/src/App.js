@@ -1,22 +1,32 @@
-//import logo from './logo.svg';
-//import './App.css';
-
 import React from "react";
-import HomePage from "./HomePage";
-import Login from "./Login";
-import ForgotPasswordPage from './ForgotPasswordPage';
-import Dashboard from './Dashboard';
-import CourseList from './CourseList';
-import EditProfile from "./EditProfile";
-import UserProfile from "./UserProfile";
-import PerformancePage from "./PerformancePage";
-import CourseHistory from "./CourseHistory";
+import HomePage from "./JS/All/HomePage";
+import Login from "./JS/All/Login";
+import ForgotPasswordPage from './JS/All/ForgotPasswordPage';
+import Dashboard from './JS/Instructor/Dashboard';
+import CourseList from './JS/Instructor/CourseList';
+import EditProfile from "./JS/Instructor/EditProfile";
+import UserProfile from "./JS/Instructor/UserProfile";
+//import PerformancePage from "./PerformancePage";
+//import CourseHistory from "./CourseHistory";
 import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
 function App() {
   return (
-    <div><HomePage/></div>
+    <BrowserRouter>
+      <Routes>
+
+        <Route path="/" element={<HomePage />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/CourseList" element={<CourseList />} />
+        <Route path="/EditProfile" element={<EditProfile />} />
+        <Route path="/UserProfile" element={<UserProfile />} />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
