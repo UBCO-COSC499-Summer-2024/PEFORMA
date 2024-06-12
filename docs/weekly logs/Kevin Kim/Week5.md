@@ -4,10 +4,9 @@
 ## Wednesday (6/12/2024)
 
 ### Timesheet
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-log-Jun11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.1.png)
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-log-Jun11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.2.png)
-![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-log-Jun11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.3.png)
-
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/kevin-week-log-6/11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/kevin-week-log-6/11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.2.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/kevin-week-log-6/11/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.7-6.11/5.1.3.png)
 ### Current Tasks
   * #1: Start working on publishing course list page (Instructor view)
   * #2: Make course list page to be responsive with json file, and also make a connection with instructor profile page 
@@ -79,13 +78,24 @@
         <td> Since sidebar is a common area where it shows all pages from instructor view and department view, we have seperated as its called sidebar.js to be imported from other files. Good to reduce code duplicates. Finished publishing for both instructor and department view for each sidebar with respective icons. URL redirection is not yet defined as we have not finished implementing all the baselines of each pages. 
         </td>
     </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Orgainze and URL connection
+        </td>
+        <!-- Status -->
+        <td>In progress
+        </td>
+        <!-- Notes -->
+        <td> Since there are so many pull requests are open to be merged, still waiting them to be fully merged and adapt into new file directory. Once all files are set, will start working on URL connection
+        </td>
+    </tr>
 </table>
 
 ### Weekly Goal Review
 Overall we made a great progress on this project. I have started on publishing each pages and worked as frontend developer to connect and fetch the data to backend server. At first, it took me a learning curve of how to implement axios properly, but I managed and now its working.
 
 ### Next Cycle Goals
-  * Since this week friday will be covering a mini presentation for each team to work on, so my top priority work for this cycle would be preparing on mini presentation, if time permits, I will work on publishiong course list page.
+  * Since this week friday will be covering a mini presentation for each team to work on, so my top priority work for this cycle would be preparing on mini presentation, if time permits, I will work on url connection and publishing cousre list view.
 
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
