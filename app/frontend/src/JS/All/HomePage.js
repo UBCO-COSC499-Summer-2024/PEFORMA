@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../CSS/All/HomePage.css';
 
+
 class HomePage extends Component {
   // process login button event
   handleLogin() {
