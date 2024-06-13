@@ -48,11 +48,10 @@ Connection between pages is done, not all pages is connected because they are ei
 ## Friday (6/14/2024)
 
 ### Timesheet
-![alt text]()
+![alt text](cycle-6.8-6.13.png)
 
 ### Current Tasks
-  * #1: Task 1 
-  * #2: Task 2 
+  * #1: Task 1 Log in with setted multiple account and password
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -64,27 +63,22 @@ Connection between pages is done, not all pages is connected because they are ei
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>----------------------------</td>
+        <td>Back end login</td>
         <!-- Status -->
-        <td>-----------------------------</td>
+        <td>part finished</td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td--------------------------------</td>
+        <td>Authentication</td>
         <!-- Status -->
-        <td>--------------------------------</td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>-----------------------------------</td>
-        <!-- Status -->
-        <td>------------------------------------</td>
+        <td>In Progress</td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
+Log in function is partially finished, but need add up to allow multiple accounts log in. Currently it only allows the first account in stored json the log in.
 
 ### Next Cycle Goals
-  * Goal 1 
-  * Goal 2 
+  * Goal 1 Allow multiple accounts log in the system
+  * Goal 2 Have account type check after all accounts can log in so can navigate to different board.
