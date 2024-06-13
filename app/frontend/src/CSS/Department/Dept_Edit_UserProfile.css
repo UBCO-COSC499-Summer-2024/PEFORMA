@@ -1,0 +1,190 @@
+.user-profile-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 20%;
+    height: 100%;
+    background-color: #002244;
+    color: black;
+    padding: 20px;
+  }
+
+  .sidebar-header h1{
+    color: white;
+  }
+
+  .sidebar-header hr{
+    height: 3px;
+    background-color: white;
+  }
+  
+  .sidebar nav a {
+    display: block;
+    padding: 10px;
+    background: white;
+    color: black;
+    text-decoration: none;
+  }
+  .user-profile {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-top: 3%;
+  }
+
+  .service-details select{
+    margin: 10px 0;
+    padding: 8px;
+  }
+  
+  .user-details h1, .user-details p {
+    margin: 0;
+  }
+  
+  .edit-button {
+    padding: 8px 16px;
+    margin-left: auto;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .profile-details {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-direction: column;
+  }
+  
+  .member-info, .service-details {
+    flex: 1;
+    padding: 10px;
+  }
+  
+  .performance-buttons button {
+    margin-right: 10px;
+  }
+
+  .header img{
+    width: 20%;
+    height: auto;
+  }
+  .web-head {
+    width: 80%;
+    margin: 0;
+    height: 10%;
+    position: absolute;
+    top: 0%;
+    bottom: 20%;
+  }
+
+  .web-head button{
+    background-color: red;
+    position: absolute;
+    width: 10%;
+    right: 10%;
+  }
+
+  .web-head img{
+    max-height: 90%;
+    position: absolute;
+    width:auto;
+    right: 20%;
+    margin: 0;
+  }  
+
+  .section-info-container ,.editinfo-container{
+    display: flex;
+    justify-content: space-between; /* This will place the sections side by side */
+    width: 100%;
+}
+
+.member-info, .service-details,.member-info-edit,.service-details-edit {
+    flex: 1; /* Each takes half of the container */
+    padding: 10px; /* Optional padding for spacing */
+    box-sizing: border-box; /* Include padding and border in the element's width */
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+.course-list .course-item .role-list .role-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    align-items: center;
+}
+
+.add-button {
+    padding: 5px 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-button {
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-button, .save-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
