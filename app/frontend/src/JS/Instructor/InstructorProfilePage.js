@@ -32,7 +32,7 @@ function InstructorProfilePage() {
           <section className='information'>
             <h1> {profile.name}'s Profile</h1>
             <p><strong>Name:</strong> {profile.name}</p>
-            <p><strong>UBC ID:</strong> {profile.id}</p>
+            <p><strong>UBC ID:</strong> {profile.ubcid}</p>
             <p><strong>Service Roles:</strong> {profile.roles.map(role => role).join(', ')}</p>
             <p><strong>Monthly Hours Benchmark:</strong> {profile.benchmark}</p>
             <p><strong>Phone Number:</strong> {profile.phone}</p>

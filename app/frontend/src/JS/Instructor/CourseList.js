@@ -23,7 +23,7 @@ function CourseList() {
   
 
 
-  const [divisionData, setDivisionData] = useState({"courses":[{}]});
+  const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10});
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -68,6 +68,8 @@ function CourseList() {
     // setDevisionData(responseJson)
 
   };
+
+  const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
 
   return (
 
@@ -118,7 +120,7 @@ function CourseList() {
           previousLabel={'< Previous'}
           nextLabel={'Next >'}
           breakLabel={'...'}
-          pageCount={10}
+          pageCount={pageCount}
           marginPagesDisplayed={2}
           pageRangeDisplayed={5}
           onPageChange={handlePageClick}
