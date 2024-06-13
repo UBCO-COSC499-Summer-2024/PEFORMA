@@ -13,7 +13,7 @@
     background-color: #002244;
   }
   
-  .main-content {
+  .home-container .main-content {
     flex-grow: 1;
     text-align: center;
     display: flex;

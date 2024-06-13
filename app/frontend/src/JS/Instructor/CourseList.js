@@ -1,38 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import CreateSidebar, { CreateTopbar } from '../commonImports.js';
+import CreateSidebar, { CreateTopBarFilter } from '../commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
-
-
+import { Link, useNavigate } from 'react-router-dom';
+import '../common/divisions.js';
+import divisions from '../common/divisions.js';
+import axios from 'axios';
 
 function CourseList() {
-  const [courses, setCourses] = useState([
-    { id: "COSC 101", title: "Digital Citizenship", instructor: "Chris Rye", email: "chris@example.com" },
-    { id: "COSC 111", title: "Computer Programming I", instructor: "Phoenix Baker", email: "phoenix@example.com" },
-    // sample course showing only, change by data import
-  ]);
+
+
+  const params = new URLSearchParams(window.location.search);
+  const divisionCode = params.get('division');
+  console.log("divi: "+params);
+  console.log("divi: "+params.get('division'));
+
+  const navigate = useNavigate();
+  const divisionHandler = (e) => {
+    console.log("e.target.value:" + e.target.value);
+    navigate("?division=" + e.target.value);
+  };
+  
+
+
+  const [divisionData, setDivisionData] = useState({"courses":[{}]});
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const divisionCode = params.get('division');
+    console.log("divisionCode :" + divisionCode);
+    const fetchData = async() => {
+      const url = divisionCode != 'MATH' ? 'http://localhost:3000/divisionCosc.json' : 'http://localhost:3000/divisionMath.json';
+      const res = await axios.get(url); //replace it to api
+      return res.data;
+    }
+
+    fetchData().then(res => setDivisionData(res));
+  }, [divisionCode]);
 
   const handlePageClick = (data) => {
     console.log(`User requested page number ${data.selected + 1}`);
     // logic of controlling slect & jump below
     // ......
+
+    // const division = (reactDom.)division
+
+    // request divisionData api with division, currPage, perPage
+    // response => divsion, currPage, perPage, divisionCoursesCount, courses, ..
+    // setDevisionData(responseJson)
+
   };
-  
+
   return (
 
     <div className="dashboard">
       
      <CreateSidebar />
       <div className='container'>
-      <CreateTopbar />
+      {/* <CreateTopBarFilter /> */}
       <div className="main-content">
       
-        <header className="web-head">
-          <input type="search" placeholder="Search by Subject (e.g. COSC123) or Instructor name (e.g. Chipinski)" />
-          <img src='temp.png' alt=''/>
-          
-        </header>
-        <header className='ListTitle'>List of Courses (Computer Science)</header>
+        
+        
+        <header className='ListTitle'>List of Courses ({divisionData.divisionLabel})</header>
+        {divisionCode}
+        <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
+        {/* <select name="divisionCode" value={divisionCode} onChange={divisionHandler}> */}
+          {divisions.map(division => { 
+            return <option value={division.code}>{division.label}</option>
+            })}
+        </select>
+
+
+        {/* {divisionData.division} */}
         <div className="course-table">
           <table>
             <thead>
@@ -43,13 +83,15 @@ function CourseList() {
               </tr>
             </thead>
             <tbody>
-              {courses.map(course => (
-                <tr key={course.id}>
-                  <td>{course.id}</td>
-                  <td>{course.title}</td>
-                  <td><img src='temp.png' className='instructor-img'/>{course.instructor} ({course.email})</td>
-                </tr>
-              ))}
+            {divisionData.courses.map(course => {
+              return <tr key={course.id}>
+                <td>{course.id}\</td>
+                <td>{course.title}</td>
+                <td><img src='temp.png' className='instructor-img'/>
+                  <Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
+                  <br/>({course.email})</td>
+              </tr>;
+            })}
             </tbody>
             <tfoot>
             <tr>
