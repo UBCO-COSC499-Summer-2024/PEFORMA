@@ -30,8 +30,26 @@ function CourseList() {
     const divisionCode = params.get('division');
     console.log("divisionCode :" + divisionCode);
     const fetchData = async() => {
-      const url = divisionCode != 'MATH' ? 'http://localhost:3000/divisionCosc.json' : 'http://localhost:3000/divisionMath.json';
-      const res = await axios.get(url); //replace it to api
+      console.log("divisionCode: "+divisionCode);
+      let url;
+      switch (divisionCode) { //must be replace to API sent by be, its mock up data 
+        // data format is under pulbic path
+        case "COSC" :
+          url = 'http://localhost:3000/divisionCosc.json';
+          break;
+        case "MATH" :
+          url = 'http://localhost:3000/divisionMath.json';
+          break;
+        case "PHYS" :
+          url = 'http://localhost:3000/divisionPhys.json';
+          break;
+        case "STAT" :
+          url = 'http://localhost:3000/divisionStat.json';
+          break;
+        default:
+          url = 'http://localhost:3000/divisionCosc.json';
+      }
+      const res = await axios.get(url);
       return res.data;
     }
 
@@ -85,7 +103,7 @@ function CourseList() {
             <tbody>
             {divisionData.courses.map(course => {
               return <tr key={course.id}>
-                <td>{course.id}\</td>
+                <td>{course.id}</td>
                 <td>{course.title}</td>
                 <td><img src='temp.png' className='instructor-img'/>
                   <Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
