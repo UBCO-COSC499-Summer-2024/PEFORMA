@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../../CSS/Instructor/EditProfile.css';
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
+
 
 function EditProfile() {
   const [profile, setProfile] = useState({
@@ -26,21 +28,15 @@ function EditProfile() {
 
   return (
     <div className="dashboard-container">
-      <aside className="sidebar">
-      <div className='sidebar-header'>
-        <h1>PERFORMA</h1>
-        <hr/>
-      </div>
-        <nav>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#performance">Performance</a>
-        </nav>
-      </aside>
-      <div className="edit-profile">
+      <CreateSidebar />
+
+      <div className="container">
+      <CreateTopbar />
+
       <div>
         <header className="web-head">
           <img src='temp.png' alt=''/>
-          <button onClick={() => console.log('Logout')}>Logout</button>
+
         </header>
        </div>
         <div className="profile-header">

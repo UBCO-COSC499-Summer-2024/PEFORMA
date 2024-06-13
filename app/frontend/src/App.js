@@ -7,8 +7,15 @@ import CourseList from './JS/Instructor/CourseList';
 import EditProfile from "./JS/Instructor/EditProfile";
 import UserProfile from "./JS/Instructor/UserProfile";
 //import PerformancePage from "./PerformancePage";
-//import CourseHistory from "./CourseHistory";
-// import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
+import CourseHistory from "./JS/Instructor/CourseHistory";
+import InstructorProfilePage from "./JS/Instructor/InstructorProfilePage";
+import DataEntry from "./JS/Department/DataEntry";
+import ServiceRoleManagement from "./JS/Department/ServiceRoleManagement";
+import CreateAccount from "./JS/Admin/CreateAccount";
+
+
+
+import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
 function App() {
   return (
@@ -22,6 +29,13 @@ function App() {
         <Route path="/CourseList" element={<CourseList />} />
         <Route path="/EditProfile" element={<EditProfile />} />
         <Route path="/UserProfile" element={<UserProfile />} />
+        <Route path="/InstructorProfilePage" element={<InstructorProfilePage />} />
+        <Route path="/CourseHistory" element={<CourseHistory />} />
+        <Route path="/DataEntry" element={<DataEntry />} />
+        <Route path="/ServiceRoleManagement" element={<ServiceRoleManagement />} />
+        <Route path="/CreateAccount" element={<CreateAccount />} />
+
+
 
       </Routes>
     </BrowserRouter>

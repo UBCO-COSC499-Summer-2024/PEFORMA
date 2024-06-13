@@ -1,0 +1,48 @@
+.course-history-container {
+    display: flex;
+    height: 100vh;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    padding: 2em;
+    background-color: white;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: white;
+  }
+  
+  .average-score-card {
+    padding: 10px;
+    height: fit-content;
+    background-color: #4CAF50; 
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .course-select {
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f8f8f8;
+  }

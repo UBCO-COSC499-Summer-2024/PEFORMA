@@ -3,15 +3,6 @@
     height: 100vh;
   }
   
-  .sidebar {
-    width: 200px;
-    background-color: #002244;
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-  
   .profile-container {
     flex-grow: 1;
     padding: 20px;
@@ -24,14 +15,7 @@
     align-items: center;
     padding-bottom: 20px;
   }
-  
-  .logout-button {
-    padding: 5px 10px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
+
   
   .profile-details {
     display: flex;

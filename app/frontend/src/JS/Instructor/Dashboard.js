@@ -1,25 +1,16 @@
 import React from 'react';
 import '../../CSS/Instructor/Dashboard.css';
-
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 
 function Dashboard() {
   return (
     <div className="dashboard">
-      <aside className="sidebar">
-      <div className='sidebar-header'>
-        <h1>PERFORMA</h1>
-        <hr/>
-      </div>
-        <nav>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#performance">Performance</a>
-        </nav>
-      </aside>
-      <div className="dashboard-main-content">
+      <CreateSidebar />
+      <div className="container">
+      <CreateTopbar />
         <header className='web-head'>
           <input type="search" placeholder="Search by Subject (e.g. CS123) or Instructor name (e.g. Chipinski)" />
-          <img src='temp.png' alt=''/>
-          <button onClick={() => console.log('Logout')}>Logout</button>
+          
         </header>
         <div className="card-container">
           <div className="card">

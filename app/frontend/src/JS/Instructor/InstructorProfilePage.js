@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './InstructorProfilePage.css';
+import '../../CSS/Instructor/InstructorProfilePage.css';
 //import { FaHome, FaChartLine } from 'react-icons/fa';
-import CreateSidebar, { CreateTopbar} from './JS/commonImports.js';
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 
 function InstructorProfilePage() {
   const [profile, setProfile] = useState({"roles":[],"teachingAssignments":[{}]});
@@ -22,8 +22,7 @@ function InstructorProfilePage() {
     <div className="dashboard-container">
       
       <CreateSidebar />
-
-      <div className='content'>
+        <div className='container'>
         <CreateTopbar />
 
 
