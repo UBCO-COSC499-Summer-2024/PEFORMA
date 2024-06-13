@@ -1,0 +1,7 @@
+{"division":"STAT", "divisionLabel":"Statistics", "currPage":1, "perPage": 10, "divisionCoursesCount":30,
+    "courses":[
+      { "id": "STAT 121", "title": "Elementary Statistics", "instructor": "Jesus Stevenson", "ubcid":48291738, "email": "jesus@instructor.ubc.ca" },
+      { "id": "PHYS 205", "title": "Introduction to Mathematical Statistics", "instructor": "Phyllis Meyer", "ubcid":29103833, "email": "phyllis@instructor.ubc.ca" },
+      { "id": "PHYS 400", "title": "Statistical Communication and Consulting", "instructor": "Lynda Lambert", "ubcid":54723182, "email": "lynda@instructor.ubc.ca" }
+    ]
+}

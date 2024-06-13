@@ -1,6 +1,12 @@
-{"division":"COSC", "divisionLabel":"Computer Sciences~", "currPage":1, "perPage": 10, "divisionCoursesCount":30,
+{"division":"COSC", "divisionLabel":"Computer Sciences", "currPage":1, "perPage": 10, "divisionCoursesCount":30,
     "courses":[
-      { "id": "COSC 101", "title": "Digital Citizenship", "instructor": "Chris Rye", "ubcid":18592832, "email": "chris@example.com" },
-      { "id": "COSC 111", "title": "Computer Programming I", "instructor": "Phoenix Baker", "ubcid":18592833, "email": "phoenix@example.com" }
+      { "id": "COSC 101", "title": "Digital Citizenship", "instructor": "Chris Rye", "ubcid":18592831, "email": "chris@instructor.ubc.ca" },
+      { "id": "COSC 111", "title": "Computer Programming I", "instructor": "Phoenix Baker", "ubcid":57281932, "email": "phoenix@instructor.ubc.ca" },
+      { "id": "COSC 121", "title": "Computer Programming II", "instructor": "Phoenix Baker", "ubcid":47291232, "email": "phoenix@instructor.ubc.ca" },
+      { "id": "COSC 211", "title": "Machine Architecture", "instructor": "Drew Cano", "ubcid":48291058, "email": "drew@instructor.ubc.ca" },
+      { "id": "COSC 222", "title": "Data Structures", "instructor": "Andi Lane", "ubcid":89217349, "email": "andi@instructor.ubc.ca" },
+      { "id": "COSC 304", "title": "Introduction to Database", "instructor": "Kate Morrison", "ubcid":48392017, "email": "kate@instructor.ubc.ca" }
+
+
     ]
 }
