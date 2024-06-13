@@ -1,0 +1,6 @@
+{"division":"COSC", "divisionLabel":"Computer Sciences~", "currPage":1, "perPage": 10, "divisionCoursesCount":30,
+    "courses":[
+      { "id": "COSC 101", "title": "Digital Citizenship", "instructor": "Chris Rye", "ubcid":18592832, "email": "chris@example.com" },
+      { "id": "COSC 111", "title": "Computer Programming I", "instructor": "Phoenix Baker", "ubcid":18592833, "email": "phoenix@example.com" }
+    ]
+}
