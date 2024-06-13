@@ -28,7 +28,9 @@ services:
       - postgres
 
   postgres:
-    image: postgres:latest
+    build:
+     context: .
+     dockerfile: app/postgres/Dockerfile
     environment:
       POSTGRES_USER: capstone
       POSTGRES_PASSWORD: teamsix
