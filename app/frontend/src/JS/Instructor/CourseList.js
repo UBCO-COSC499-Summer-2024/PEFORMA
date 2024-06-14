@@ -22,8 +22,8 @@ function CourseList() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const divisionCode = params.get('division');
-    
-    fetch(`/api/courses?divison=${divisionCode}`)
+
+    fetch(`http://localhost:3001/api/courses?division=${divisionCode}`)
       .then(res => res.json())
       .then(data => setDivisionData(data))
       .catch(error => console.error('Error fetching courses:', error))

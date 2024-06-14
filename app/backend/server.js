@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 // Example route to fetch all profiles from a 'Profile' table
-app.get('/profiles', async (req, res) => {
+app.get('/profile', async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM public."Profile"');
         res.json(rows);
@@ -36,7 +36,8 @@ app.get('/profiles', async (req, res) => {
 // Retrieving Course data
 app.get('/api/courses', async (req, res) => {
     try {
-        const divisionCode = req.query.divisionCode;
+
+        const divisionCode = req.query.division;
 
         const divisionMap = {
             'COSC': 1,
@@ -48,11 +49,11 @@ app.get('/api/courses', async (req, res) => {
         const divisionId = divisionMap[divisionCode];
 
         const result = await pool.query(`
-            SELECT c.courseNum AS courseNumber, c.ctitle AS courseTitle, p.firstName AS firstName, p.lastName AS lastName, p.UBCId AS UBCId, p.email AS email
-            FROM Course c
-            JOIN InstructorTeachingAssignment a ON c.courseId = a.courseId
-            JOIN Profile p ON p.profileId = a.profileId
-            WHERE c.divisionId = $1 
+            SELECT c."courseNum" AS courseNumber, c."ctitle" AS courseTitle, p."firstName" AS firstName, p."lastName" AS lastName, p."UBCId" AS UBCId, p."email" AS email
+            FROM public."Course" c
+            JOIN public."InstructorTeachingAssignment" a ON c."courseId" = a."courseId"
+            JOIN public."Profile" p ON p."profileId" = a."profileId"
+            WHERE c."divisionId" = $1 
         `, [divisionId]);
 
         const divisionLabelMap = {
