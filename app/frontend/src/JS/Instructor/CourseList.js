@@ -22,32 +22,13 @@ function CourseList() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const divisionCode = params.get('division');
-    const fetchData = async() => {
-      let url;
-      switch (divisionCode) { //must be replace to API sent by be, its mock up data 
-        // data format is under pulbic path
-        case "COSC" :
-          url = 'http://localhost:3000/divisionCosc.json';
-          break;
-        case "MATH" :
-          url = 'http://localhost:3000/divisionMath.json';
-          break;
-        case "PHYS" :
-          url = 'http://localhost:3000/divisionPhys.json';
-          break;
-        case "STAT" :
-          url = 'http://localhost:3000/divisionStat.json';
-          break;
-        default:
-          url = 'http://localhost:3000/divisionCosc.json';
-      }
-      const res = await axios.get(url);
-      setDivisionData(res.data);
-      return res.data;
+    
+    fetch(`/api/courses?divison=${divisionCode}`)
+      .then(res => res.json())
+      .then(data => setDivisionData(data))
+      .catch(error => console.error('Error fetching courses:', error))
     }
-
-    fetchData().then(res => setDivisionData(res));
-  }, [divisionCode]);
+  , [divisionCode]);
 
   const handlePageClick = (data) => {
     setDivisionData(prevState => ({
