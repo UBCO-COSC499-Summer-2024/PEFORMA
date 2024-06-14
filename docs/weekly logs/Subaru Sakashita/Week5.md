@@ -65,12 +65,10 @@ I saw many branches not being merged or reviewed so I will review them ASAP befo
 ## Friday (6/14/2024)
 
 ### Timesheet
-![alt text]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W5C2.png)
 
 ### Current Tasks
-  * #1: 
-  * #2:
-  * #3: 
+  * #1: Instructor Profile BE
 
 ### Progress Update (since 6/12/2024)
 <table>
@@ -82,34 +80,37 @@ I saw many branches not being merged or reviewed so I will review them ASAP befo
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>
+        <td> Instructor Profile BE
         </td>
         <!-- Status -->
-        <td>
+        <td> In Progress
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>
+        <td> Login
         </td>
         <!-- Status -->
-        <td>
+        <td> Zhiheng took over
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>
+        <td> DB automation
         </td>
         <!-- Status -->
-        <td>
+        <td> Complete
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-
+I handed over login BE to Zhiheng because he was doing authentication, so it would be simple if one person does one task. \
+I focused on profile BE because the priority is pulling data from database rather than manipulating. However, I got sick on Wednesday, so I could not spend much time on the actual coding. \n
+It was good that I at least got the DB automatic creation and insertion done because it would be time consuming to load tables and data every time we launch docker.
 
 ### Next Cycle Goals
-  * 
+  * Complete Instructor Profile BE
+  * Complete UserProfile BE
 
 
