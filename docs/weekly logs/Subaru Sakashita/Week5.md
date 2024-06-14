@@ -6,8 +6,8 @@
 ## Wednesday (6/12/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/personal-log-W5-C1-subaru/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_W5C1_Clockify_1.png)
-![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/personal-log-W5-C1-subaru/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_W5C1_Clockify_2.png)
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_W5C1_Clockify_1.png)
+![Details of hours worked from Clockify]([https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/personal-log-W5-C1-subaru/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_W5C1_Clockify_2.png](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_W5C1_Clockify_2.png))
 
 ### Current Tasks
   * #1: Login/Logout backend
