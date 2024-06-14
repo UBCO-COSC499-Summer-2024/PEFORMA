@@ -5,8 +5,7 @@ import ForgotPasswordPage from './JS/All/ForgotPasswordPage';
 import Dashboard from './JS/Instructor/Dashboard';
 import CourseList from './JS/Instructor/CourseList';
 import EditProfile from "./JS/Instructor/EditProfile";
-import UserProfile from "./JS/Instructor/UserProfile";
-//import PerformancePage from "./PerformancePage";
+import PerformanceInstructorPage from "./JS/Instructor/PerformanceInstructorPage";
 import CourseHistory from "./JS/Instructor/CourseHistory";
 import InstructorProfilePage from "./JS/Instructor/InstructorProfilePage";
 import DataEntry from "./JS/Department/DataEntry";
@@ -28,7 +27,7 @@ function App() {
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/CourseList" element={<CourseList />} />
         <Route path="/EditProfile" element={<EditProfile />} />
-        <Route path="/UserProfile" element={<UserProfile />} />
+        <Route path="/PerformanceInstructorPage" element={<PerformanceInstructorPage />} />
         <Route path="/InstructorProfilePage" element={<InstructorProfilePage />} />
         <Route path="/CourseHistory" element={<CourseHistory />} />
         <Route path="/DataEntry" element={<DataEntry />} />

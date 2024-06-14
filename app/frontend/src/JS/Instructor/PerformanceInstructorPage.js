@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../CSS/Instructor/UserProfile.css';
+import '../../CSS/Instructor/PerformanceInstructorPage.css';
 import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 
 
