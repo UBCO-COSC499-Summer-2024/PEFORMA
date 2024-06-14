@@ -37,6 +37,7 @@
 .container {
   flex-grow: 1;
   background-color: var(--backgroundColor);
+  
 }
 
 .main-content {
@@ -44,6 +45,7 @@
     
     padding: 2em;
     width: 80%;
+    margin-left: 20px;
 }
 
 /* sidebar stuff*/
