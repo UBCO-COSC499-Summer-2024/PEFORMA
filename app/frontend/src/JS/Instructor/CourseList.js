@@ -12,12 +12,9 @@ function CourseList() {
 
   const params = new URLSearchParams(window.location.search);
   const divisionCode = params.get('division');
-  console.log("divi: "+params);
-  console.log("divi: "+params.get('division'));
 
   const navigate = useNavigate();
   const divisionHandler = (e) => {
-    console.log("e.target.value:" + e.target.value);
     navigate("?division=" + e.target.value);
   };
   
@@ -28,15 +25,12 @@ function CourseList() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const divisionCode = params.get('division');
-    console.log("divisionCode :" + divisionCode);
-    const fetchData = async() => {
-      const url = divisionCode != 'MATH' ? 'http://localhost:3000/divisionCosc.json' : 'http://localhost:3000/divisionMath.json';
-      const res = await axios.get(url); //replace it to api
-      return res.data;
+    fetch(`/api/courses?divison=${divisionCode}`)
+      .then(res => res.json())
+      .then(data => setDivisionData(data))
+      .catch(error => console.error('Error fetching courses:', error))
     }
-
-    fetchData().then(res => setDivisionData(res));
-  }, [divisionCode]);
+  , [divisionCode]);
 
   const handlePageClick = (data) => {
     console.log(`User requested page number ${data.selected + 1}`);
