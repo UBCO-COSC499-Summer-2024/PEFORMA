@@ -81,12 +81,10 @@ I'm currently catching up with learning React and Express, as well as familiariz
 ## Friday (6/14/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/adamsLogs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_June_14.jpg)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #127: Data retrieval for course list page (BE) 
 
 ### Progress Update (since 6/12/2024)
 <table>
@@ -98,7 +96,15 @@ I'm currently catching up with learning React and Express, as well as familiariz
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>#100: Protecting master branch
+        </td>
+        <!-- Status -->
+        <td>Not Started
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#101: Merging & aggregating codes "completed" to date
         </td>
         <!-- Status -->
         <td>Complete
@@ -106,28 +112,27 @@ I'm currently catching up with learning React and Express, as well as familiariz
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>#102: Breaking down BE tasks, task assignments & task organization
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Complete
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>Creating slide deck for mini-presentation
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Complete
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I started some backend work for course list page, but am running into issues of CORS permission. Currently, trying to resolve it by organizing code for backend properly, and not putting everything in server.js
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Finish BE for course list page
+  * Finish BE for 2 to 3 other pages
 
 
