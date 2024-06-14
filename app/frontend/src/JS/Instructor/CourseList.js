@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import CreateSidebar, { CreateTopBarFilter } from '../commonImports.js';
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -77,22 +77,20 @@ function CourseList() {
       
      <CreateSidebar />
       <div className='container'>
-      {/* <CreateTopBarFilter /> */}
-      <div className="main-content">
+      <CreateTopbar />
+      <div className="main">
       
         
         
-        <header className='ListTitle'>List of Courses ({divisionData.divisionLabel})</header>
-        {divisionCode}
-        <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
-        {/* <select name="divisionCode" value={divisionCode} onChange={divisionHandler}> */}
-          {divisions.map(division => { 
-            return <option value={division.code}>{division.label}</option>
-            })}
-        </select>
-
-
-        {/* {divisionData.division} */}
+        <header className='ListTitle'>
+          <div className='ListTitle-text'>List of Courses</div>
+          <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
+            {divisions.map(division => { 
+              return <option value={division.code}>{division.label}</option>
+              })}
+          </select>
+        </header>
+        
         <div className="course-table">
           <table>
             <thead>
@@ -107,8 +105,7 @@ function CourseList() {
               return <tr key={course.id}>
                 <td>{course.id}</td>
                 <td>{course.title}</td>
-                <td><img src='temp.png' className='instructor-img'/>
-                  <Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
+                <td><Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
                   <br/>({course.email})</td>
               </tr>;
             })}
