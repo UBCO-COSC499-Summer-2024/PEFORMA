@@ -55,9 +55,12 @@ function CourseList() {
       currentPage: data.selected + 1
     }))
   };
+  
+  console.log("division data slicing",divisionData.courses.slice(0,2));
 
   const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
-  const currentCourses = divisionData.courses.slice(offset, offset + divisionData.perPage); //0~9, 10~19, 20~29
+  //const currentCourses = divisionData.courses.slice(offset, offset + divisionData.perPage); //0~9, 10~19, 20~29
+  //const offfff = divisionData.courses.slice(0,1);
   const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
 
   return (
@@ -90,7 +93,9 @@ function CourseList() {
               </tr>
             </thead>
             <tbody>
-            {currentCourses.map(course => {
+
+
+            {divisionData.courses.map(course => {
               return <tr key={course.id}>
                 <td>{course.id}</td>
                 <td>{course.title}</td>
