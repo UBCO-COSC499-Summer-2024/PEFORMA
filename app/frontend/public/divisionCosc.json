@@ -1,4 +1,4 @@
-{"division":"COSC", "divisionLabel":"Computer Sciences", "currPage":1, "perPage": 10, "divisionCoursesCount":12,
+{"division":"COSC", "divisionLabel":"Computer Sciences", "currentPage":1, "perPage": 10, "divisionCoursesCount":12,
     "courses":[
       { "id": "COSC 101", "title": "Digital Citizenship", "instructor": "Chris Rye", "ubcid":18592831, "email": "chris@instructor.ubc.ca" },
       { "id": "COSC 111", "title": "Computer Programming I", "instructor": "Phoenix Baker", "ubcid":57281932, "email": "phoenix@instructor.ubc.ca" },

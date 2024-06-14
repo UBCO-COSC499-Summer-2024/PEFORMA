@@ -9,28 +9,20 @@ import axios from 'axios';
 
 function CourseList() {
 
-
   const params = new URLSearchParams(window.location.search);
   const divisionCode = params.get('division');
-  console.log("divi: "+params);
-  console.log("divi: "+params.get('division'));
 
   const navigate = useNavigate();
   const divisionHandler = (e) => {
-    console.log("e.target.value:" + e.target.value);
     navigate("?division=" + e.target.value);
   };
   
-
-
-  const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10});
+  const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10, currentPage: 1});
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const divisionCode = params.get('division');
-    console.log("divisionCode :" + divisionCode);
     const fetchData = async() => {
-      console.log("divisionCode: "+divisionCode);
       let url;
       switch (divisionCode) { //must be replace to API sent by be, its mock up data 
         // data format is under pulbic path
@@ -50,6 +42,7 @@ function CourseList() {
           url = 'http://localhost:3000/divisionCosc.json';
       }
       const res = await axios.get(url);
+      setDivisionData(res.data);
       return res.data;
     }
 
@@ -57,18 +50,14 @@ function CourseList() {
   }, [divisionCode]);
 
   const handlePageClick = (data) => {
-    console.log(`User requested page number ${data.selected + 1}`);
-    // logic of controlling slect & jump below
-    // ......
-
-    // const division = (reactDom.)division
-
-    // request divisionData api with division, currPage, perPage
-    // response => divsion, currPage, perPage, divisionCoursesCount, courses, ..
-    // setDevisionData(responseJson)
-
+    setDivisionData(prevState => ({
+      ...prevState, 
+      currentPage: data.selected + 1
+    }))
   };
 
+  const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
+  const currentCourses = divisionData.courses.slice(offset, offset + divisionData.perPage); //0~9, 10~19, 20~29
   const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
 
   return (
@@ -101,7 +90,7 @@ function CourseList() {
               </tr>
             </thead>
             <tbody>
-            {divisionData.courses.map(course => {
+            {currentCourses.map(course => {
               return <tr key={course.id}>
                 <td>{course.id}</td>
                 <td>{course.title}</td>
@@ -114,12 +103,12 @@ function CourseList() {
             <tr>
               <td colSpan={3}>
             <ReactPaginate
-          previousLabel={'< Previous'}
-          nextLabel={'Next >'}
+          previousLabel={'<'}
+          nextLabel={'>'}
           breakLabel={'...'}
           pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={0}
           onPageChange={handlePageClick}
           containerClassName={'pagination'}
           activeClassName={'active'}
