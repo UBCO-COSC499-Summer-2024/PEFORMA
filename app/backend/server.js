@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const { pool, testDB } = require('./config/db.js'); 
 const app = express();
 const port = process.env.PORT || 3001;  // Default to 3001 if environment variable not set
 
 app.use(express.json());
+app.use(cors());
 
 // Test database connection
 testDB();
@@ -36,7 +38,7 @@ app.get('/profile', async (req, res) => {
 // Retrieving Course data
 app.get('/api/courses', async (req, res) => {
     try {
-
+        
         const divisionCode = req.query.division;
 
         const divisionMap = {
@@ -49,7 +51,7 @@ app.get('/api/courses', async (req, res) => {
         const divisionId = divisionMap[divisionCode];
 
         const result = await pool.query(`
-            SELECT c."courseNum" AS courseNumber, c."ctitle" AS courseTitle, p."firstName" AS firstName, p."lastName" AS lastName, p."UBCId" AS UBCId, p."email" AS email
+            SELECT c."courseNum" AS course_number, c."ctitle" AS course_title, p."firstName" AS first_name, p."lastName" AS last_name, p."UBCId" AS ubc_id, p."email" AS email
             FROM public."Course" c
             JOIN public."InstructorTeachingAssignment" a ON c."courseId" = a."courseId"
             JOIN public."Profile" p ON p."profileId" = a."profileId"
@@ -70,13 +72,15 @@ app.get('/api/courses', async (req, res) => {
             division: divisionCode,
             divisionLabel: divisionLabel,
             courses: result.rows.map(row => ({
-                id: `${divisionCode} ${row.courseNumber}`,
-                title: row.courseTitle,
-                instructor: `${row.firstName} ${row.lastName}`,
-                ubcid: row.UBCId,
+                id: `${divisionCode} ${row.course_number}`,
+                title: row.course_title,
+                instructor: `${row.first_name} ${row.last_name}`,
+                ubcid: row.ubc_id,
                 email: row.email
             }))
         };
+
+        console.log(formattedData);
 
         res.json(formattedData);
     } catch (err) {
