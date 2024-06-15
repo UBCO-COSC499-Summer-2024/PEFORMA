@@ -14,16 +14,28 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Home Page!');
 });
 
-// Mount profile routes under '/api/instructorProfile'
-app.use('/api/instructorProfile', profileRoutes);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err); // Log error information for debugging
-    res.status(err.status || 500).send(err.message || 'Internal Server Error');
+// Example route to fetch all profiles from a 'Profile' table
+app.get('/profiles', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM public."Profile"');
+        res.json(rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+app.get('/instructor/profile/:profileId', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT NOW()');
+        res.json(rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
 });
 
-// Start the server
+
+// Start the server on port 3000
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
