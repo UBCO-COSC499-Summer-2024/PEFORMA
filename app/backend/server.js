@@ -23,15 +23,15 @@ app.get('/profiles', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-// app.get('/profiles', async (req, res) => {
-//     try {
-//         const { rows } = await pool.query('SELECT NOW()');
-//         res.json(rows);
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send('Server Error');
-//     }
-// });
+app.get('/instructor/profile/:profileId', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT NOW()');
+        res.json(rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 
 // Start the server on port 3000
