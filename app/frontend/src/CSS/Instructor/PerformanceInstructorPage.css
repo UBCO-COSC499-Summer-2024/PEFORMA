@@ -20,18 +20,11 @@
   .profile-details {
     display: flex;
     justify-content: space-between;
+    padding: 2em;
   }
   
   .profile-info {
     width: 60%;
-  }
-  
-  .graph-section {
-    width: 35%;
-    height: 40%;
-    background-color: #ccc; /* Placeholder for the graph area */
-    text-align: center;
-    padding: 20px;
   }
   
   .score {
@@ -61,3 +54,12 @@
     align-items: center;
   }
   
+
+.info-table {
+  width: 50%;
+  margin-left: 2em;
+}
+
+.information h1 {
+  font-size: 10em;
+}
