@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../CSS/Instructor/PerformanceInstructorPage.css';
-import CreateSidebar, { CreateTopbar, CreateWorkingBarChart } from '../commonImports.js';
+import CreateSidebar, { CreateScorePolarChart, CreateTopbar, CreateWorkingBarChart } from '../commonImports.js';
 
 
 function UserProfile() {
@@ -20,6 +20,7 @@ function UserProfile() {
   }, []);
 
   return (
+    
     <div className="dashboard-container">
       <CreateSidebar />
 
@@ -66,7 +67,7 @@ function UserProfile() {
         
         <div className='dept-info'>
           <h1>Department Performance</h1>
-
+          <CreateScorePolarChart />
         </div>
           
       </div>

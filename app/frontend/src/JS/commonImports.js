@@ -4,7 +4,9 @@ import Sidebar from "./sidebar.js";
 import Topbar from "./topbar.js";
 import SidebarDept from "./sidebarDept.js";
 import TopbarFilter from "./topbarFilter.js";
-import BarChart from "./barChart.js"
+import WorkHoursBarChart from "./workHoursBarChart.js"
+import DeptPerformancePieChart from "./deptPerformancePolarChart.js"
+
 
 // Every page should import this file (Except maybe the home page)
 
@@ -34,9 +36,20 @@ function CreateSidebarDept(){
 
 function CreateWorkingBarChart(){
     return (
-        <BarChart />
+        <WorkHoursBarChart />
+    )
+}
+
+function CreateScorePolarChart(){
+    return (
+        <DeptPerformancePieChart />
     )
 }
 
 export default CreateSidebar;
-export {CreateTopbar, CreateSidebarDept, CreateTopBarFilter, CreateWorkingBarChart};
+export {CreateTopbar, 
+    CreateSidebarDept, 
+    CreateTopBarFilter, 
+    CreateWorkingBarChart, 
+    CreateScorePolarChart
+};
