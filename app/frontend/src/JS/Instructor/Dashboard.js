@@ -15,7 +15,7 @@ function Dashboard() {
         
         <div className="card-container">
           {divisions.map(division => {
-            return (<Link to={"/CourseList?division="+division.code} key={division.code}><div className="card">
+            return (<Link to={"/CourseList?division="+division.code} key={division.code}><div className="card" role="gridcell">
                       <img src={cardImages[division.code]} alt={division.label} />
                       <div className='cardTitle'>{division.label}</div>
                     </div></Link>
