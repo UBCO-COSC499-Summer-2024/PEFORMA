@@ -18,6 +18,9 @@ jobs:
             - name: install dependencies
               run: npm install
 
+            - name: install other dependencies
+              run: npm install react-icons/fa
+
             - name: run tests
               run: npm test
               
