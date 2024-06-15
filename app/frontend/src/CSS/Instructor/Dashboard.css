@@ -3,53 +3,29 @@
     height: 100vh;
   }
   
-
-  
-  
-  .web-head {
-    width: 80%;
-    margin: 0;
-    height: 10%;
-    position: absolute;
-    top: 0%;
-    bottom: 20%;
-  }
-
-  .web-head input{
-    width: 40%;
-    position: relative;
-    left: 5%;
-    margin: 0;
-  }
-
-  .web-head button{
-    background-color: red;
-    position: absolute;
-    right: 0%;
-  }
-
-  .web-head img{
-    max-height: 90%;
-    position: absolute;
-    width:auto;
-    right: 5%;
-    margin: 0;
-  }  
-  
   .card-container {
-    padding: 15%;
+    padding: 7%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
+    gap: 3%;
   }
   
   .card {
-    background-color: rgb(230, 230, 230);
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: var(--darkerGrey);
+    padding: 5%;
+    box-shadow: 0.75em 0.75em 1em var(--darkestGrey);
+    border-radius: 1em;
   }
   
   .card img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
+  }
+
+  .cardTitle {
+    color: var(--black);
+    font-weight:500;
+    font-size: 1.5vw;
+    text-align: center;
+    padding: 0.5em 0 0.5em 0;
   }
