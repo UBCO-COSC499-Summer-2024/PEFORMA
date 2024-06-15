@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import axios from 'axios';
-import CreateSidebar, { CreateTopBarFilter } from '../commonImports.js';
+import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
 import divisions from '../common/divisions.js';
+import axios from 'axios';
 
 function CourseList() {
-
 
   const params = new URLSearchParams(window.location.search);
   const divisionCode = params.get('division');
@@ -18,17 +17,37 @@ function CourseList() {
     navigate("?division=" + e.target.value);
   };
   
-  const [divisionData, setDivisionData] = useState({"courses":[{}]});
+  const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10, currentPage: 1});
 
   // useEffect(() => {
   //   const params = new URLSearchParams(window.location.search);
   //   const divisionCode = params.get('division');
-  //   fetch(`/api/courses?division=${divisionCode}`)
-  //     .then(res => res.json())
-  //     .then(data => setDivisionData(data))
-  //     .catch(error => console.error('Error fetching courses:', error))
+  //   const fetchData = async() => {
+  //     let url;
+  //     switch (divisionCode) { //must be replace to API sent by be, its mock up data 
+  //       // data format is under pulbic path
+  //       case "COSC" :
+  //         url = 'http://localhost:3000/divisionCosc.json';
+  //         break;
+  //       case "MATH" :
+  //         url = 'http://localhost:3000/divisionMath.json';
+  //         break;
+  //       case "PHYS" :
+  //         url = 'http://localhost:3000/divisionPhys.json';
+  //         break;
+  //       case "STAT" :
+  //         url = 'http://localhost:3000/divisionStat.json';
+  //         break;
+  //       default:
+  //         url = 'http://localhost:3000/divisionCosc.json';
+  //     }
+  //     const res = await axios.get(url);
+  //     setDivisionData(res.data);
+  //     return res.data;
   //   }
-  // , [divisionCode]);
+
+  //   fetchData().then(res => setDivisionData(res));
+  // }, [divisionCode]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -42,18 +61,20 @@ function CourseList() {
     fetchCourses();
   }, [divisionCode]);
 
+
   const handlePageClick = (data) => {
-    console.log(`User requested page number ${data.selected + 1}`);
-    // logic of controlling slect & jump below
-    // ......
-
-    // const division = (reactDom.)division
-
-    // request divisionData api with division, currPage, perPage
-    // response => divsion, currPage, perPage, divisionCoursesCount, courses, ..
-    // setDevisionData(responseJson)
-
+    setDivisionData(prevState => ({
+      ...prevState, 
+      currentPage: data.selected + 1
+    }))
   };
+  
+  console.log("division data slicing",divisionData.courses.slice(0,2));
+
+  const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
+  //const currentCourses = divisionData.courses.slice(offset, offset + divisionData.perPage); //0~9, 10~19, 20~29
+  //const offfff = divisionData.courses.slice(0,1);
+  const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
 
   return (
 
@@ -61,22 +82,20 @@ function CourseList() {
       
      <CreateSidebar />
       <div className='container'>
-      {/* <CreateTopBarFilter /> */}
-      <div className="main-content">
+      <CreateTopbar />
+      <div className="main">
       
         
         
-        <header className='ListTitle'>List of Courses ({divisionData.divisionLabel})</header>
-        {divisionCode}
-        <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
-        {/* <select name="divisionCode" value={divisionCode} onChange={divisionHandler}> */}
-          {divisions.map(division => { 
-            return <option value={division.code}>{division.label}</option>
-            })}
-        </select>
-
-
-        {/* {divisionData.division} */}
+        <header className='ListTitle'>
+          <div className='ListTitle-text'>List of Courses</div>
+          <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
+            {divisions.map(division => { 
+              return <option value={division.code}>{division.label}</option>
+              })}
+          </select>
+        </header>
+        
         <div className="course-table">
           <table>
             <thead>
@@ -87,12 +106,13 @@ function CourseList() {
               </tr>
             </thead>
             <tbody>
+
+
             {divisionData.courses.map(course => {
               return <tr key={course.id}>
                 <td>{course.id}</td>
                 <td>{course.title}</td>
-                <td><img src='temp.png' className='instructor-img'/>
-                  <Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
+                <td><Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
                   <br/>({course.email})</td>
               </tr>;
             })}
@@ -101,12 +121,12 @@ function CourseList() {
             <tr>
               <td colSpan={3}>
             <ReactPaginate
-          previousLabel={'< Previous'}
-          nextLabel={'Next >'}
+          previousLabel={'<'}
+          nextLabel={'>'}
           breakLabel={'...'}
-          pageCount={10}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={0}
           onPageChange={handlePageClick}
           containerClassName={'pagination'}
           activeClassName={'active'}

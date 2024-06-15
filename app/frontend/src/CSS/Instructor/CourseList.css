@@ -1,68 +1,103 @@
 .dashboard {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .main-content {
-    flex-grow: 1;
-    padding: 2em;
-    width: 80%;
-  }
-  
-  .course-table table {
-    width: 60%;
-    border-collapse: collapse;
-    position: absolute;
-    top: 20%;
-  }
-  
-  .course-table th, .course-table td {
-    padding: 1em;
-    border-bottom: 1px solid var(--darkGrey);
-    text-align: left;
-  }
-  
-  .course-table th {
-    background-color: var(--darkGrey);
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    padding: 1em;
-    list-style: none;
-  }
-  
-  .pagination li {
-    margin: 0 0.25em;
-  }
+  display: flex;
+  height: 100vh;
+}
 
-  .pagination li:hover {
-    cursor:pointer;
-  }
-  
-  .pagination li a {
-    padding: 5px 5px;
-    border: 1px solid #ccc;
-    color: #000000;
-  }
-  
-  .pagination li.active a {
-    background-color: var(--blue);
-    color: white;
-  }
-  
-  .ListTitle{
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    text-align: center;
-    color: black;
-    size: 10px;
-    padding-top: 0%;
-    padding-bottom: 0%;
-  }
+.main {
+  flex-grow: 1;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .instructor-img{
-    height: 30px;
-  }
+.course-table {
+  position: relative;
+  width: 100%; 
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.course-table th, .course-table td {
+  padding: 1em;
+  text-align: left;
+  border-bottom: 1px solid #cfcfcfee;
+}
+
+.course-table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: bold;
+}
+
+.course-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.course-table th:nth-child(2), .course-table td:nth-child(2) {
+  width:48%; 
+}
+
+.course-table th:nth-child(3), .course-table td:nth-child(3) {
+  width: 35%; 
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  list-style: none;
+}
+
+.pagination li {
+  margin: 0 0.25em;
+}
+
+.pagination li:hover {
+  cursor: pointer;
+}
+
+.pagination li a {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  color: #000;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.pagination li.active a {
+  background-color: var(--blue);
+  color: white;
+}
+
+.ListTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 1.5em;
+}
+
+.ListTitle-text {
+  margin: 0 auto;
+}
+
+.ListTitle select {
+  margin-left: 10px;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+  position: relative;
+  right: 0;
+}
