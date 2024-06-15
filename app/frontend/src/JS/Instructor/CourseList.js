@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
+import axios from 'axios';
 import CreateSidebar, { CreateTopBarFilter } from '../commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
 import divisions from '../common/divisions.js';
-import axios from 'axios';
 
 function CourseList() {
 
@@ -18,19 +18,29 @@ function CourseList() {
     navigate("?division=" + e.target.value);
   };
   
-
-
   const [divisionData, setDivisionData] = useState({"courses":[{}]});
 
+  // useEffect(() => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   const divisionCode = params.get('division');
+  //   fetch(`/api/courses?division=${divisionCode}`)
+  //     .then(res => res.json())
+  //     .then(data => setDivisionData(data))
+  //     .catch(error => console.error('Error fetching courses:', error))
+  //   }
+  // , [divisionCode]);
+
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const divisionCode = params.get('division');
-    fetch(`http://localhost:3001/api/courses?division=${divisionCode}`)
-      .then(res => res.json())
-      .then(data => setDivisionData(data))
-      .catch(error => console.error('Error fetching courses:', error))
-    }
-  , [divisionCode]);
+    const fetchCourses = async () => {
+        try {
+            const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`);
+            setDivisionData(res.data);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
+    };
+    fetchCourses();
+  }, [divisionCode]);
 
   const handlePageClick = (data) => {
     console.log(`User requested page number ${data.selected + 1}`);
@@ -79,7 +89,7 @@ function CourseList() {
             <tbody>
             {divisionData.courses.map(course => {
               return <tr key={course.id}>
-                <td>{course.id}\</td>
+                <td>{course.id}</td>
                 <td>{course.title}</td>
                 <td><img src='temp.png' className='instructor-img'/>
                   <Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
