@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../CSS/Instructor/PerformanceInstructorPage.css';
-import CreateSidebar, { CreateTopbar } from '../commonImports.js';
+import CreateSidebar, { CreateTopbar, CreateWorkingBarChart } from '../commonImports.js';
 
 
 function UserProfile() {
@@ -25,23 +25,32 @@ function UserProfile() {
 
       <div className="container">
           <CreateTopbar />
+          <div className='greeting'>
+            <h1>Welcome {profile.name}!</h1>
+            <h2>Your Performance</h2>
+          </div>
+          
+
           <div className='info-table'>
             <section className='information'>
-              <h1>Welcome {profile.name}!</h1>
               <p><strong>Name:</strong> {profile.name}</p>
               <p><strong>UBC ID:</strong> {profile.ubcid}</p>
               <p><strong>Service Roles:</strong> {profile.roles.map(role => role).join(', ')}</p>
               <p><strong>Monthly Hours Benchmark:</strong> {profile.benchmark}</p>
               <p><strong>Email:</strong> {profile.email}</p>
-              <p><strong>Teaching Assignments:</strong> 
+              <p className='teaching-margin'><strong>Teaching Assignments:</strong></p>
+              <ul className='teaching-assignments'>
                 {profile.teachingAssignments.map(teachingAssign => (
-                <a href='{teachingAssign.link}'> {teachingAssign.assign}</a>
-                )).reduce((prev, curr) => [prev, ', ', curr])}
-              </p>
+                  <li key={teachingAssign.id}>
+                    <a href='{teachingAssign.link}'> {teachingAssign.assign}</a>
+                  </li>
+                ))}
+              </ul>
             </section>
 
             <div className="graph-section">
-            
+              <h2>Working Hours</h2>
+              <CreateWorkingBarChart />
             </div>
           </div>
 

@@ -4,6 +4,7 @@ import Sidebar from "./sidebar.js";
 import Topbar from "./topbar.js";
 import SidebarDept from "./sidebarDept.js";
 import TopbarFilter from "./topbarFilter.js";
+import BarChart from "./barChart.js"
 
 // Every page should import this file (Except maybe the home page)
 
@@ -31,7 +32,11 @@ function CreateSidebarDept(){
     )
 }
 
+function CreateWorkingBarChart(){
+    return (
+        <BarChart />
+    )
+}
+
 export default CreateSidebar;
-export {CreateTopbar};
-export {CreateSidebarDept};
-export {CreateTopBarFilter};
+export {CreateTopbar, CreateSidebarDept, CreateTopBarFilter, CreateWorkingBarChart};

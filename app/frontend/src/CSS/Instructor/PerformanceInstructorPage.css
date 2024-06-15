@@ -1,65 +1,116 @@
 .dashboard-container {
-    display: flex;
-    height: 100vh;
-  }
+  display: flex;
+  height: 100vh;
+}
   
-  .profile-container {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #f4f4f4;
-  }
+.greeting {
+  margin-left: 1em;
+  font-size: 1.5em;
+  width: 90%;
+}
+
+.greeting h2 {
+  font-size: 1.5em;
+}
+
+.profile-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
   
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-  }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+}
 
   
-  .profile-details {
-    display: flex;
-    justify-content: space-between;
-    padding: 2em;
-  }
-  
-  .profile-info {
-    width: 60%;
-  }
-  
-  .score {
-    display: flex;
-    align-items: center;
-  }
-  
-  .compare {
-    margin-right: 10px;
-    color: green;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
+.profile-details {
+  display: flex;
+  justify-content: space-between;
+  padding: 2em;
+}
 
-  .graph{
-    max-width: 90%;
-    align-items: center;
-  }
+.profile-info {
+  width: 60%;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+}
+
+.compare {
+  margin-right: 10px;
+  color: green;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.graph{
+  max-width: 90%;
+  align-items: center;
+}
   
 
 .info-table {
-  width: 50%;
-  margin-left: 2em;
+  display: flex; 
+  align-items: flex-start; 
+  width: auto;
+  padding: 2em;
+}
+
+.information {
+  width: 20em;
 }
 
 .information h1 {
   font-size: 10em;
+}
+
+.info-table .graph-section {
+  flex-grow: 1;
+}
+
+.teaching-margin {
+  margin-bottom: 0.4em;
+}
+
+.teaching-assignments {
+  margin-top: 0px;
+  padding-left: 1em;
+}
+
+.information .teaching-assignments {
+  list-style: none;
+  padding: 0;
+}
+
+.information .teaching-assignments li {
+  background-color: #f4f4f4;
+  margin-bottom: 0.8em;
+  padding: 0.8em 1em;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.information .teaching-assignments a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.information .teaching-assignments a:hover {
+  color: #006ee4;
 }
