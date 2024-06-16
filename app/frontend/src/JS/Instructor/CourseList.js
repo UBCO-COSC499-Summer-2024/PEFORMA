@@ -19,35 +19,6 @@ function CourseList() {
   
   const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10, currentPage: 1});
 
-  // useEffect(() => {
-  //   const params = new URLSearchParams(window.location.search);
-  //   const divisionCode = params.get('division');
-  //   const fetchData = async() => {
-  //     let url;
-  //     switch (divisionCode) { //must be replace to API sent by be, its mock up data 
-  //       // data format is under pulbic path
-  //       case "COSC" :
-  //         url = 'http://localhost:3000/divisionCosc.json';
-  //         break;
-  //       case "MATH" :
-  //         url = 'http://localhost:3000/divisionMath.json';
-  //         break;
-  //       case "PHYS" :
-  //         url = 'http://localhost:3000/divisionPhys.json';
-  //         break;
-  //       case "STAT" :
-  //         url = 'http://localhost:3000/divisionStat.json';
-  //         break;
-  //       default:
-  //         url = 'http://localhost:3000/divisionCosc.json';
-  //     }
-  //     const res = await axios.get(url);
-  //     setDivisionData(res.data);
-  //     return res.data;
-  //   }
-
-  //   fetchData().then(res => setDivisionData(res));
-  // }, [divisionCode]);
 
   useEffect(() => {
     const fetchCourses = async () => {

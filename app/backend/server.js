@@ -25,15 +25,6 @@ app.get('/profile', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-// app.get('/profiles', async (req, res) => {
-//     try {
-//         const { rows } = await pool.query('SELECT NOW()');
-//         res.json(rows);
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send('Server Error');
-//     }
-// });
 
 // Retrieving Course data
 app.get('/api/courses', async (req, res) => {
@@ -51,11 +42,17 @@ app.get('/api/courses', async (req, res) => {
         const divisionId = divisionMap[divisionCode];
 
         const result = await pool.query(`
-            SELECT c."courseNum" AS course_number, c."ctitle" AS course_title, p."firstName" AS first_name, p."lastName" AS last_name, p."UBCId" AS ubc_id, p."email" AS email
+            SELECT 
+                (SELECT COUNT(*) 
+                 FROM public."Course" c2
+                 JOIN public."InstructorTeachingAssignment" a2 ON c2."courseId" = a2."courseId"
+                 JOIN public."Profile" p2 ON p2."profileId" = a2."profileId"
+                 WHERE c2."divisionId" = $1) AS division_courses_count,
+                c."courseNum" AS course_number, c."ctitle" AS course_title, p."firstName" AS first_name, p."lastName" AS last_name, p."UBCId" AS ubc_id, p."email" AS email
             FROM public."Course" c
             JOIN public."InstructorTeachingAssignment" a ON c."courseId" = a."courseId"
             JOIN public."Profile" p ON p."profileId" = a."profileId"
-            WHERE c."divisionId" = $1 
+            WHERE c."divisionId" = $1
         `, [divisionId]);
 
         const divisionLabelMap = {
@@ -71,12 +68,15 @@ app.get('/api/courses', async (req, res) => {
         const formattedData = {
             division: divisionCode,
             divisionLabel: divisionLabel,
+            currPage:1, 
+            perPage: 10,
+            divisionCoursesCount: result.rows[0].division_courses_count,
             courses: result.rows.map(row => ({
                 id: `${divisionCode} ${row.course_number}`,
                 title: row.course_title,
                 instructor: `${row.first_name} ${row.last_name}`,
                 ubcid: row.ubc_id,
-                email: row.email
+                email: row.email,
             }))
         };
 
