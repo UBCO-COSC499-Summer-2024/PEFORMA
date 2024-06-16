@@ -1,40 +1,29 @@
 const express = require('express');
-const { pool, testDB } = require('./db/index.js'); 
+const cors = require('cors');
+const profileRoutes = require('./routes/profileRoutes'); // Ensure the path is correct based on your directory structure
+//const { pool, testDB } = require('./db/index.js');
 const app = express();
-const port = process.env.PORT || 3001;  // Default to 3001 if environment variable not set
+const port = process.env.PORT || 3001; // Default to 3001 if environment variable not set
 
-app.use(express.json());
+app.use(cors()); // Enable CORS for all requests
+app.use(express.json()); // Middleware for parsing JSON bodies
 
-// Test database connection
-testDB();
-
-// Route to handle the root URL
+//testDB();
+// Base route for simple health check
 app.get('/', (req, res) => {
     res.send('Welcome to the Home Page!');
 });
 
-// Example route to fetch all profiles from a 'Profile' table
-app.get('/profiles', async (req, res) => {
-    try {
-        const { rows } = await pool.query('SELECT * FROM public."Profile"');
-        res.json(rows);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send('Server Error');
-    }
-});
-app.get('/instructor/profile/:profileId', async (req, res) => {
-    try {
-        const { rows } = await pool.query('SELECT NOW()');
-        res.json(rows);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send('Server Error');
-    }
+// Mount profile routes under '/api/instructorProfile'
+app.use('/api/instructorProfile', profileRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err); // Log error information for debugging
+    res.status(err.status || 500).send(err.message || 'Internal Server Error');
 });
 
-
-// Start the server on port 3000
+// Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

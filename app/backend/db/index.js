@@ -9,6 +9,7 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT || 5432,  // Use default port if not specified
 });
+console.log(pool);
 
 // Function to test the database connection
 const testDB = async () => {
@@ -20,4 +21,4 @@ const testDB = async () => {
     }
 }
 
-module.exports = { pool, testDB };
+module.exports = { pool,testDB };
