@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function LeaderBoard() {
+  const navigate = useNavigate();
   const [leader, setLeader] = useState(
     {  
       series: [{
@@ -16,9 +18,6 @@ function LeaderBoard() {
             borderRadiusApplication: 'end',
             horizontal: true,}
         },
-        xaxis: {
-          categories: [],
-        }
       },
     });
 
@@ -37,18 +36,17 @@ function LeaderBoard() {
       if (data) {
         setLeader(prevState => ({
           ...prevState,
-          series: [{data: data.series}],
-          options: {
-            ...prevState.options,
-            xaxis: {
-              ...prevState.options.xaxis,
-              categories: data.names,
-            }
-          }
+          series: [{
+            data: data.data.map(wdata => {
+              return {
+                x: wdata.x,
+                y: wdata.y
+              }
+            })}],
         }))
       }
     })
-  })
+  }, []);
     
   return (
     <div>

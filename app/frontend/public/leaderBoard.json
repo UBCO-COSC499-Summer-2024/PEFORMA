@@ -1,4 +1,10 @@
 {
-    "series": [98, 94.5, 93, 92, 90, 78],
-    "names": ["Tiger Woods", "Rory Mcllroy", "Scottie Scheffler", "Victor Hovland", "Min Woo Lee", "You"]
+    "data": [
+        {"x": "Tiger", "y": 98},
+        {"x": "Rory", "y": 94},
+        {"x": "Kevin", "y": 93.3},
+        {"x": "Scottie", "y": 92},
+        {"x": "Min Woo", "y": 90},
+        {"x": "You", "y": 77}
+    ]
 }
