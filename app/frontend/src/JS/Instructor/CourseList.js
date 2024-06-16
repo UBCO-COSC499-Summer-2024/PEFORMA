@@ -19,7 +19,6 @@ function CourseList() {
   
   const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10, currentPage: 1});
 
-
   useEffect(() => {
     const fetchCourses = async () => {
         try {
@@ -31,7 +30,6 @@ function CourseList() {
     };
     fetchCourses();
   }, [divisionCode]);
-
 
   const handlePageClick = (data) => {
     setDivisionData(prevState => ({
