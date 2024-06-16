@@ -4,7 +4,10 @@ import axios from 'axios';
 
 function WorkHoursBarChart() {
     const [workingHours, setWorkingHours] = useState({ 
-        series: [],
+        series: [{
+            name: 'Actual',
+            data: []
+        }],
         options: {
             chart: {height: 350, type: 'bar'},
             plotOptions: {bar: {columnWidth: '50%'}},
@@ -12,7 +15,7 @@ function WorkHoursBarChart() {
             dataLabels: {enabled: false},
             legend: {show: true,
                     showForSingleSeries: true,
-                    customLegendItems: ['Worked Hours', 'Average Worked Hours'],
+                    customLegendItems: ['Worked Hours', 'Average Working Hours'],
                     markers: {fillColors: ['#00E396', '#775DD0']}
                     }
             },
@@ -20,23 +23,33 @@ function WorkHoursBarChart() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('/http://localhost:3000/workingHours.json');
+                const res = await axios.get('http://localhost:3000/workingHours.json');
                 return res.data;
             } catch (error) {
                 console.error('Error fetching data: ', error);
                 return null;
             }
         };
-        fetchData().then(data => {
-            if (data) {
+        fetchData().then(dataJson => {
+            if (dataJson) {
                 setWorkingHours(prevState => ({
                     ...prevState,
                     series: [{
                         name: 'Worked Hours',
-                        data: data.map(item => item.workedHours)
-                    }, {
-                        name: 'Average Worked Hours',
-                        data: data.map(item => item.averageWorkedHours)
+                        data: dataJson.data.map(wdata => {
+                            return {
+                                x: wdata.x,
+                                y: wdata.y,
+                                goals: [
+                                  {
+                                    name: 'Average Working Hours',
+                                    value: wdata.avgWorkHour,
+                                    strokeHeight: 5,
+                                    strokeColor: '#775DD0'
+                                  }
+                                ]
+                              };
+                        })
                     }]
                 }));
             }
