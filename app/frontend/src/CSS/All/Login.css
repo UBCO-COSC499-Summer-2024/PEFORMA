@@ -1,29 +1,31 @@
 .login-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    
     font-family: Arial, sans-serif;
+    padding: 2em 3em 0 3em;
   }
   
   .login-header {
-    width: 100%;
-    background-color: #002244; /* Top header line color */
-    color: rgb(255, 255, 255);
+    
+    background-color: var(--sidebarColor); /* Top header line color */
+    color: var(--white);
     display: flex;
     justify-content: space-between;
+    padding: 0.5em 1em 0.5em 1em;
+    
   }
   
   .logo, nav a {
-    padding: 0 20px;
-    color: white; /* white color for support and login text */
+    
+    color: var(--white); /* white color for support and login text */
     text-decoration: none; /* remove underline */
   }
   
   .login-form-container {
-    background-color: white;
-    padding: 40px;
-    box-shadow: 0 4px 8px rgba(157, 230, 20, 0.1);
-    border-radius: 10px;
+    border-radius: 1em;
+    display: flex;
+    justify-content: center;
   }
   
   form {
@@ -31,29 +33,44 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 15%;
+    margin-top: 10em;
+    border-radius: 1em;
+    width: 25em;
+    
+    padding: 3em 2em 3em 2em;
+    background-color: var(--white);
+    box-shadow: 0.5em 0.5em 1em var(--darkestGrey);
   }
   
-  input[type="email"], input[type="password"] {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+#forgot {
+  font-weight: 600;
+  align-self:flex-start;
+  font-size: small;
+  position: relative;
+  right: 1em;
+}
+
+  form input[type="email"], form input[type="password"] {
+    padding: 1em;
+    width: 100%;
+    margin: 1em;
+    border: 1px solid var(--darkerGrey);
+    border-radius: 0.5em;
   }
   
-  button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin-top: 20px;
+  form button {
+    background-color: var(--blue);
+    color: var(--white);
+    padding: 1em;
+    border-radius: 0.5em;
+    width: 75%;
+    font-weight: 600;
     cursor: pointer;
   }
   
   a {
-    color: #007BFF;
+    color: var(--blue);
     text-decoration: none;
-    margin-top: 10px;
+    
   }
   
