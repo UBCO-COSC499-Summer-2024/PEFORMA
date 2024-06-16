@@ -10,14 +10,12 @@ const pool = new Pool({
     port: process.env.DB_PORT || 5432,  // Use default port if not specified
 });
 
-// Function to test the database connection
-const testDB = async () => {
-    try {
-        await pool.query('SELECT NOW()'); // query to test the connection
-        console.log('Database connected successfully.');
-    } catch (error) {
-        console.error('Database connection failed:', error);
+pool.connect((err) => {
+    if (err) {
+      console.error('Database connection error', err.stack);
+    } else {
+      console.log('Database connected successfully.');
     }
-}
-
-module.exports = { pool, testDB };
+  });
+  
+  module.exports = pool;
