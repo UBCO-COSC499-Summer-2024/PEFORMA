@@ -5,7 +5,7 @@ import axios from 'axios';
 function WorkHoursBarChart() {
     const [workingHours, setWorkingHours] = useState({ 
         series: [{
-            name: 'Actual',
+            name: 'Worked Hours',
             data: []
         }],
         options: {

@@ -72,12 +72,8 @@ button:hover {
   padding: 2em;
 }
 
-.information {
+.info-section {
   width: 20em;
-}
-
-.information h1 {
-  font-size: 10em;
 }
 
 .info-table .graph-section {
@@ -93,24 +89,44 @@ button:hover {
   padding-left: 1em;
 }
 
-.information .teaching-assignments {
+
+.info-section .teaching-assignments {
   list-style: none;
   padding: 0;
 }
 
-.information .teaching-assignments li {
+.info-section .teaching-assignments li {
   background-color: #f4f4f4;
   margin-bottom: 0.8em;
   padding: 0.8em 1em;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 70%
 }
 
-.information .teaching-assignments a {
+.info-section .teaching-assignments a {
   text-decoration: none;
   color: #007bff;
 }
 
-.information .teaching-assignments a:hover {
+.info-section .teaching-assignments a:hover {
   color: #006ee4;
+}
+
+.subTitle {
+  font-size: 2em;
+}
+
+.bottom-section {
+  display: flex;
+  padding-left: 2em;
+}
+
+.polarchart-section {
+  padding-right: 1em;
+  width: 50%
+}
+
+.leaderboard-section {
+  flex-grow: 1;
 }

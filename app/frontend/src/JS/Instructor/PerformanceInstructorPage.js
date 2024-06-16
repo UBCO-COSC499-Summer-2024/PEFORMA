@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../CSS/Instructor/PerformanceInstructorPage.css';
-import CreateSidebar, { CreateScorePolarChart, CreateTopbar, CreateWorkingBarChart } from '../commonImports.js';
+import CreateSidebar, { CreateLeaderboardChart, CreateScorePolarChart, CreateTopbar, CreateWorkingBarChart } from '../commonImports.js';
 
 
 function UserProfile() {
@@ -28,12 +28,13 @@ function UserProfile() {
           <CreateTopbar />
           <div className='greeting'>
             <h1>Welcome {profile.name}!</h1>
-            <h2>Your Performance</h2>
+            <h2>Check out your performance!</h2>
           </div>
           
 
           <div className='info-table'>
-            <section className='information'>
+            <section className='info-section'>
+              <h2 className='subTitle'>Your Information</h2>
               <p><strong>Name:</strong> {profile.name}</p>
               <p><strong>UBC ID:</strong> {profile.ubcid}</p>
               <p><strong>Service Roles:</strong> {profile.roles.map(role => role).join(', ')}</p>
@@ -50,24 +51,22 @@ function UserProfile() {
             </section>
 
             <div className="graph-section">
-              <h2>Working Hours</h2>
+              <h2 className='subTitle'>Working Hours</h2>
               <CreateWorkingBarChart />
             </div>
           </div>
 
-        <div className="profile-details">
-          <div className="profile-info">
-            <div className="score">
-              <h2>Billy Guy's Score:</h2>
-              <h2 className='compare'>85.7 </h2>
-              <h2 className='compare'> ↑ </h2>
-            </div>
+        <div className='bottom-section'>
+
+          <div className='polarchart-section'>
+            <h2 className='subTitle'>Department Performance</h2>
+            <CreateScorePolarChart />
           </div>
-        </div>
-        
-        <div className='dept-info'>
-          <h1>Department Performance</h1>
-          <CreateScorePolarChart />
+
+          <div className='leaderboard-section'>
+            <h2 className='subTitle'>Leader Board (Updated per month)</h2>
+            <CreateLeaderboardChart />
+          </div>
         </div>
           
       </div>

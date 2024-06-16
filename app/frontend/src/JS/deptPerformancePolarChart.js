@@ -42,11 +42,11 @@ function DeptPerformancePieChart() {
         };
         fetchData().then(data => {
             if (data) {
-                setScore(prevScore => ({
-                    ...prevScore,
+                setScore(prevState => ({
+                    ...prevState,
                     series: data.series,
                     options: {
-                        ...prevScore.options,
+                        ...prevState.options,
                         labels: data.labels
                     }
                 }));

@@ -6,6 +6,7 @@ import SidebarDept from "./sidebarDept.js";
 import TopbarFilter from "./topbarFilter.js";
 import WorkHoursBarChart from "./workHoursBarChart.js"
 import DeptPerformancePieChart from "./deptPerformancePolarChart.js"
+import LeaderBoard from "./leaderBoard.js"
 
 
 // Every page should import this file (Except maybe the home page)
@@ -46,10 +47,17 @@ function CreateScorePolarChart(){
     )
 }
 
+function CreateLeaderboardChart(){
+    return (
+        <LeaderBoard />
+    )
+}
+
 export default CreateSidebar;
 export {CreateTopbar, 
     CreateSidebarDept, 
     CreateTopBarFilter, 
     CreateWorkingBarChart, 
-    CreateScorePolarChart
+    CreateScorePolarChart,
+    CreateLeaderboardChart
 };
