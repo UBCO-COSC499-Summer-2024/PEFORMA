@@ -15,16 +15,16 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Home Page!');
 });
 
-// Example route to fetch all profiles from a 'Profile' table
-app.get('/profile', async (req, res) => {
-    try {
-        const { rows } = await pool.query('SELECT * FROM public."Profile"');
-        res.json(rows);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send('Server Error');
-    }
-});
+// // Example route to fetch all profiles from a 'Profile' table
+// app.get('/profile', async (req, res) => {
+//     try {
+//         const { rows } = await pool.query('SELECT * FROM public."Profile"');
+//         res.json(rows);
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).send('Server Error');
+//     }
+// });
 
 // Retrieving Course data
 app.get('/api/courses', async (req, res) => {
@@ -70,14 +70,14 @@ app.get('/api/courses', async (req, res) => {
             divisionLabel: divisionLabel,
             currPage:1, 
             perPage: 10,
-            divisionCoursesCount: result.rows[0].division_courses_count,
-            courses: result.rows.map(row => ({
+            divisionCoursesCount: result.rows.length > 0 ? result.rows[0].division_courses_count : 0, // Default to 0 if no rows
+            courses: result.rows.map(row => ({  
                 id: `${divisionCode} ${row.course_number}`,
-                title: row.course_title,
-                instructor: `${row.first_name} ${row.last_name}`,
-                ubcid: row.ubc_id,
-                email: row.email,
-            }))
+                title: row.course_title || null, // Set to null if falsy
+                instructor: row.first_name || row.last_name ? `${row.first_name} ${row.last_name}` : null, 
+                ubcid: row.ubc_id || null,
+                email: row.email || null,
+            })) 
         };
 
         console.log(formattedData);
