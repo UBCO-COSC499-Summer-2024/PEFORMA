@@ -12,7 +12,20 @@ function LeaderBoard() {
         data: []
       }],
       options: {
-        chart: {type: 'bar',height: 350},
+        chart: {
+          type: 'bar',
+          height: 350,
+          events: {
+            dataPointSelection: (event, chartContext, config) => {
+              const dataIndex = config.dataPointIndex;
+              console.log("dataIndex: "+ dataIndex); 
+
+              const data = leader.series[0].data[dataIndex];
+              console.log("data ubc id: "+data);
+              navigate(`/InstructorProfilePage?ubcid=${data.ubcid}`);
+            }
+          }
+        },
         plotOptions: {bar: {
             borderRadius: 5,
             borderRadiusApplication: 'end',
@@ -40,7 +53,8 @@ function LeaderBoard() {
             data: data.data.map(wdata => {
               return {
                 x: wdata.x,
-                y: wdata.y
+                y: wdata.y,
+                ubcid: wdata.ubcid
               }
             })}],
         }))
