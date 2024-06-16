@@ -5,6 +5,7 @@ const loginRouter = require('./routes/logincheck'); // 确保路径正确
 //const serverRouter = require('./routes/server')
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
+const AccountTypeRouter = require('./routes/AccountType');
 
 const app = express();
 
@@ -20,6 +21,7 @@ console.log('before:');
 app.use('/',queryAccountRouter);
 app.use('/', loginRouter);
 app.use('/api',authenticateRouter);
+app.use('/',AccountTypeRouter);
 
 console.log('after');
 
