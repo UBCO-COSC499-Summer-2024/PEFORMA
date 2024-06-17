@@ -22,7 +22,7 @@ console.log('before:');
 app.use('/',queryAccountRouter);//serach account in db
 app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
-app.use('/',AccountTypeRouter);//check account type
+//app.use('/',AccountTypeRouter);//check account type
 
 
 //login pprocess
