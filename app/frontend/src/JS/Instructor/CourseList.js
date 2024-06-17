@@ -93,6 +93,7 @@ function CourseList() {
                 <th>Course</th>
                 <th>Title</th>
                 <th>Instructor</th>
+                <th>Email</th>
               </tr>
             </thead>
 
@@ -109,7 +110,6 @@ function CourseList() {
                           <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
                             {instructor} 
                           </Link>
-                          ({course.email[index]})
                           {index < course.instructor.length - 1 ? <><br/><br/></> : null}
                         </React.Fragment>
                       )):
@@ -117,6 +117,15 @@ function CourseList() {
                         {course.instructor}<br/>({course.email})
                       </Link>
                       }
+                    </td>
+
+                    <td>
+                      {Array.isArray(course.email) ? course.email.map((email, index) =>
+                        <React.Fragment key={index}>
+                          {email}
+                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
+                        </React.Fragment>  
+                    ) : course.email }
                     </td>
                   </tr>
                 );
