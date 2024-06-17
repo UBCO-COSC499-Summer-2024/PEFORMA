@@ -43,7 +43,7 @@ app.use('/api/instructorProfile', authenticateRouter,profileRoutes);
 
 
 //Profile BE
-app.use('/api/instructorProfile', profileRoutes);
+app.use('/api/instructorProfile', authenticateRouter,profileRoutes);
 
 console.log('after');
 
