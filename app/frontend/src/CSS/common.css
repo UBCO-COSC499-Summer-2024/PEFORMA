@@ -36,7 +36,7 @@
 
 .container {
   flex-grow: 1;
-  background-color: var(--backgroundColor);
+  background-color: #f2f2f2;
   overflow: auto;
 }
 
@@ -50,12 +50,13 @@
 
 /* sidebar stuff*/
 .sidebar {
-  width: 20vh;
+  width: 15vw;
   background-color: #002145;
   color: white;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .sidebar h2 {
