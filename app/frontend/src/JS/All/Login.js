@@ -37,7 +37,7 @@ function Login() {
             required
           />
           <a id="forgot" href="#forgot">Forgot password?</a>
-          <button type="submit">Log In</button>
+          <button type="submit" role="button">Log In</button>
         </form>
       </div>
     </div>
