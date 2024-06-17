@@ -18,7 +18,11 @@ async function getFormattedCourseData(divisionCode) {
     
     const divisionId = divisionMap[divisionCode];
     const divisionLabel = divisionLabelMap[divisionId];
-    const result = await pool.query(`
+    let result = await pool.query('SELECT MAX("term") AS current_term FROM public."CourseByTerm";');
+    const currTerm = result.rows[0].current_term;
+
+    console.log(currTerm);
+    result = await pool.query(`
         SELECT 
             (SELECT COUNT(*) 
              FROM public."Course" c2
@@ -29,8 +33,9 @@ async function getFormattedCourseData(divisionCode) {
         FROM public."Course" c
         JOIN public."InstructorTeachingAssignment" a ON c."courseId" = a."courseId"
         JOIN public."Profile" p ON p."profileId" = a."profileId"
-        WHERE c."divisionId" = $1
-    `, [divisionId]);
+        WHERE c."divisionId" = $1 AND a."term" = $2
+        ORDER BY course_number ASC;
+    `, [divisionId, currTerm]);
 
     // Reformat the data
     const formattedData = {
