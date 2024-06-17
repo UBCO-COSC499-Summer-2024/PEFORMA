@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
 function LeaderBoard() {
-  const navigate = useNavigate();
   const [leader, setLeader] = useState(
     {  
       series: [{
@@ -15,16 +12,6 @@ function LeaderBoard() {
         chart: {
           type: 'bar',
           height: 350,
-          events: {
-            dataPointSelection: (event, chartContext, config) => {
-              const dataIndex = config.dataPointIndex;
-              console.log("dataIndex: "+ dataIndex); 
-
-              const data = leader.series[0].data[dataIndex];
-              console.log("data ubc id: "+data);
-              navigate(`/InstructorProfilePage?ubcid=${data.ubcid}`);
-            }
-          }
         },
         plotOptions: {bar: {
             borderRadius: 5,
@@ -54,7 +41,6 @@ function LeaderBoard() {
               return {
                 x: wdata.x,
                 y: wdata.y,
-                ubcid: wdata.ubcid
               }
             })}],
         }))
