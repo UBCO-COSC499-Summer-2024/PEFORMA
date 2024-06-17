@@ -21,7 +21,12 @@ function Login() {
       if(response.data.success)
         {
           //alert(JSON.stringify(response.data, null, 2));
-          alert(`Welcom!  ${response.data.email}!\n Account Id is ${response.data.accountId}!`);
+          alert(`Welcom!  ${response.data.email}!\n Account Id is ${response.data.accountId}! \n
+                retrived token is: ${JSON.stringify(response.data.token.token,null,2)}\n
+                expire time is: ${JSON.stringify(response.data.token.expiresIn,null,2)}`);
+                
+                // here is the token and expire time ↑↑↑
+                
           const accountTypeResponse = await axios.get(`http://localhost:3001/accountType/${response.data.accountId}`);
           login(response.data.token, response.data.expiresIn);
           if (accountTypeResponse.data.success) {
