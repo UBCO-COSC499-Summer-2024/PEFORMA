@@ -5,7 +5,7 @@ const SECRET_KEY = 'your_secret_key';  // Replace with a strong, environment-spe
 const TOKEN_EXPIRY_SECONDS = 2*60;  // 2 minutes in seconds
 
 function generateToken(user) {
-    const payload = { id: user.id, username: user.username, acctype: user.acctype };
+    const payload = { id: user.id, username: user.username, acctype: user.acctype, profileId: user.profileId };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: TOKEN_EXPIRY_SECONDS });
     return {
         token,
