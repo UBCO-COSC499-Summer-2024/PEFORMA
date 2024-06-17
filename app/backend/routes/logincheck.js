@@ -76,7 +76,7 @@ router.post('/logincheck', (req, res, next) => {
             expiresIn: TOKEN_EXPIRY_SECONDS, 
             email: user.email, 
             accountId: user.accountId,
-            profilId: user.profilId
+            profileId: user.profileId
             //acctype: user.acctype 
         });
     })(req, res, next);
