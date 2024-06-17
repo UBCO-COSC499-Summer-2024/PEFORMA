@@ -34,7 +34,7 @@ app.use('/',AccountTypeRouter);//check account type
 
 
 //Profile BE
-app.use('/api/instructorProfile', profileRoutes);
+app.use('/api/instructorProfile', authenticateRouter,profileRoutes);
 
 console.log('after');
 
