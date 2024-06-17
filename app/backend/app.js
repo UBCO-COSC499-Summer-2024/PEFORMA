@@ -6,7 +6,7 @@ const profileRoutes = require('./routes/profileRoutes');
 //const serverRouter = require('./routes/server')
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
-const AccountTypeRouter = require('./routes/AccountType');
+//const AccountTypeRouter = require('./routes/AccountType');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
@@ -24,7 +24,7 @@ console.log('before:');
 app.use('/',queryAccountRouter);//serach account in db
 app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
-app.use('/',AccountTypeRouter);//check account type
+//app.use('/',AccountTypeRouter);//check account type
 
 //reset password
 //app.use('/api',ResetPassword);
@@ -34,11 +34,10 @@ app.use('/',AccountTypeRouter);//check account type
 
 
 //Profile BE
-app.use('/api/instructorProfile', authenticateRouter,profileRoutes);
+app.use('/api/instructorProfile',profileRoutes);
 
 
 //Profile BE
-app.use('/api/instructorProfile', authenticateRouter,profileRoutes);
 
 console.log('after');
 
