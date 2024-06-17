@@ -1,8 +1,8 @@
 .login-container {
     display: flex;
     flex-direction: column;
-    
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    src: url('https://fonts.googleapis.com/css?family=Poppins');
     padding: 2em 3em 0 3em;
   }
   
