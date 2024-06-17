@@ -66,13 +66,13 @@
 .divider {
   border: 2px solid #fff;
   width: 100%;
-  margin: 1vh 0;
+  margin: 1em 0;
 }
 
 .menu {
   list-style: none;
   padding: 0;
-  margin: 20px 0 0 0;
+  margin: 5px 0 0 0;
 }
 
 .menu li {
@@ -87,8 +87,9 @@
   align-items: center;
   padding: 25px;
   border-radius: 7px;
-  transition: background-color 0.3s;
-  font-size: 1.2rem;
+  transition: background-color 0.6s;
+  font-size: 1.5em;
+  margin-top: 1em;
 }
 
 .menu li a:hover {
@@ -97,5 +98,5 @@
 
 .menu .icon {
   margin-right: 10px;
-  font-size: 1.2rem;
+  font-size: 1.2em;
 }

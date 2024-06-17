@@ -1,42 +1,27 @@
 import React, { Component } from 'react';
 import '../../CSS/All/HomePage.css';
+import { useNavigate } from 'react-router-dom';
 
-class HomePage extends Component {
+function HomePage () {
+  const navigate = useNavigate();
   // process login button event
-  handleLogin() {
+  const handleLogin = () => {
     // add login jump-to-page logic here
     console.log('Login button clicked');
+    navigate('/Login');
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {message:''};
-  }
-  
-  callAPI() {
-    fetch("http://localhost:3001/testAPI")
-        .then(res => res.json())
-        .then(res => this.setState({ message: res.message }))
-       .catch(err=> err);
-  }
-  
-  componentWillMount() {
-    this.callAPI();
-  }
-
-  render(){
   return (
       <div className="home-container">
         <header className="homepage-header">
           <div className="logo">PEFORMA</div>
           <nav>
             <a href="#support">Support</a>
-            <button onClick={''}>Login</button>
+            <button onClick={handleLogin}>Login</button>
           </nav>
         </header>
         <main className="main-content">
           <h1>Get professional performance feedback</h1>
-          <h1>message 201 from backend: {this.state.message}</h1>
           <p>Join to see the teaching assignment with individual performance of each months</p>
         </main>
         <footer className="footer">
@@ -46,7 +31,6 @@ class HomePage extends Component {
         </footer>
       </div>
     );
-  }
 }
 
 export default HomePage;

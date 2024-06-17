@@ -7,6 +7,13 @@ import '../common/divisions.js';
 import divisions from '../common/divisions.js';
 import axios from 'axios';
 
+function showCourses (divisionData, offset){
+  if (divisionData.divisionCoursesCount > 10) {
+    return divisionData.courses.slice(offset, offset + divisionData.perPage);
+  }
+  return divisionData.courses;
+}
+
 function CourseList() {
 
   const params = new URLSearchParams(window.location.search);
@@ -56,24 +63,19 @@ function CourseList() {
     }))
   };
   
-  console.log("division data slicing",divisionData.courses.slice(0,2));
-
   const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
-  //const currentCourses = divisionData.courses.slice(offset, offset + divisionData.perPage); //0~9, 10~19, 20~29
-  //const offfff = divisionData.courses.slice(0,1);
+  const currentCourses = showCourses(divisionData, offset);
   const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
 
   return (
 
-    <div className="dashboard">
-      
-     <CreateSidebar />
-      <div className='container'>
+    <div className="dashboard">  
+    <CreateSidebar />
+    <div className='container'>
       <CreateTopbar />
+
       <div className="main">
-      
-        
-        
+
         <header className='ListTitle'>
           <div className='ListTitle-text'>List of Courses</div>
           <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
@@ -85,6 +87,7 @@ function CourseList() {
         
         <div className="course-table">
           <table>
+
             <thead>
               <tr>
                 <th>Course</th>
@@ -92,37 +95,35 @@ function CourseList() {
                 <th>Instructor</th>
               </tr>
             </thead>
+
             <tbody>
-
-
-            {divisionData.courses.map(course => {
+              
+              {currentCourses.map(course => {
               return <tr key={course.id}>
                 <td>{course.id}</td>
                 <td>{course.title}</td>
                 <td><Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
                   <br/>({course.email})</td>
               </tr>;
-            })}
+              })}
+              
             </tbody>
+
             <tfoot>
-            <tr>
-              <td colSpan={3}>
-            <ReactPaginate
-          previousLabel={'<'}
-          nextLabel={'>'}
-          breakLabel={'...'}
-          pageCount={pageCount}
-          marginPagesDisplayed={3}
-          pageRangeDisplayed={0}
-          onPageChange={handlePageClick}
-          containerClassName={'pagination'}
-          activeClassName={'active'}
-        />
-        </td>
-        </tr>
-        </tfoot>
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={3}
+                pageRangeDisplayed={0}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+              />
+            </tfoot>
+
           </table>
-        
         </div>
       </div>
       </div>
