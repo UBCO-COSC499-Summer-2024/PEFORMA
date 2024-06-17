@@ -5,7 +5,9 @@ const loginRouter = require('./routes/logincheck'); // 确保路径正确
 //const serverRouter = require('./routes/server')
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
-const courseRoutes = require('./routes/courses.js');  
+const AccountTypeRouter = require('./routes/AccountType');
+//const ResetPassword = require('./routes/ResetPassword');
+//const update = require('./routes/update');
 
 const app = express();
 
@@ -16,17 +18,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // console.log('before:');
 
-// 使用 loginCheckRouter
+//login pprocess
+app.use('/',queryAccountRouter);//serach account in db
+app.use('/', loginRouter);//check for login
+app.use('/api',authenticateRouter);//login account authenticate
+app.use('/',AccountTypeRouter);//check account type
 
-//app.use('/',serverRouter);
-app.use('/',queryAccountRouter);
-app.use('/', loginRouter);
-app.use('/api',authenticateRouter);
 
-// Mount course routes
-app.use('/api/courses', courseRoutes); 
+//login pprocess
+app.use('/',queryAccountRouter);//serach account in db
+app.use('/', loginRouter);//check for login
+app.use('/api',authenticateRouter);//login account authenticate
+app.use('/',AccountTypeRouter);//check account type
 
-// console.log('after');
+//reset password
+//app.use('/api',ResetPassword);
+
+//update date into db
+//app.use('/api',update);
+
+console.log('after');
 
 const port = 3001;
 app.listen(port, () => {
