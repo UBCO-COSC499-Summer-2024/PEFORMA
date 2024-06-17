@@ -6,8 +6,8 @@ function Sidebar() {
       <h2>PEFORMA</h2>
       <hr className="divider" />
       <ul className="menu">
-        <li><a href="#"><FaHome className="icon" size={30} /> Dashboard</a></li>
-        <li><a href="#"><FaChartLine className="icon" size={30} /> Performance</a></li>
+        <li><a href="http://localhost:3000/Dashboard"><FaHome className="icon" size={30} /> Dashboard</a></li>
+        <li><a href="http://localhost:3000/PerformanceInstructorPage"><FaChartLine className="icon" size={30} /> Performance</a></li>
       </ul>
     </aside>
     );
