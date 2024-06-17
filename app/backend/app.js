@@ -5,14 +5,16 @@ const loginRouter = require('./routes/logincheck'); // 确保路径正确
 //const serverRouter = require('./routes/server')
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
+const courseRoutes = require('./routes/courses.js');  
 
 const app = express();
 
+app.use(express.json());
 app.use(cors()); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-console.log('before:');
+// console.log('before:');
 
 // 使用 loginCheckRouter
 
@@ -21,7 +23,10 @@ app.use('/',queryAccountRouter);
 app.use('/', loginRouter);
 app.use('/api',authenticateRouter);
 
-console.log('after');
+// Mount course routes
+app.use('/api/courses', courseRoutes); 
+
+// console.log('after');
 
 const port = 3001;
 app.listen(port, () => {

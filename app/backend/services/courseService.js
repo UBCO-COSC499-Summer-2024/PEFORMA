@@ -15,6 +15,8 @@ const divisionLabelMap = {
 };
 
 async function getFormattedCourseData(divisionCode) {
+
+    console.log(divisionCode);
     
     const divisionId = divisionMap[divisionCode];
     const divisionLabel = divisionLabelMap[divisionId];

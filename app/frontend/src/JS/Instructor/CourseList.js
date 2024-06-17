@@ -29,6 +29,7 @@ function CourseList() {
   useEffect(() => {
     const fetchCourses = async () => {
         try {
+            console.log(divisionCode);
             const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`);
             setDivisionData(res.data);
         } catch (error) {
