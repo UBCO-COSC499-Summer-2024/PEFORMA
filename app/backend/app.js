@@ -36,6 +36,10 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile', authenticateRouter,profileRoutes);
 
+
+//Profile BE
+app.use('/api/instructorProfile', authenticateRouter,profileRoutes);
+
 console.log('after');
 
 const port = 3001;
