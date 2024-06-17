@@ -17,7 +17,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 console.log('before:');
 
-// 使用 loginCheckRouter
+//login pprocess
+app.use('/',queryAccountRouter);//serach account in db
+app.use('/', loginRouter);//check for login
+app.use('/api',authenticateRouter);//login account authenticate
+app.use('/',AccountTypeRouter);//check account type
+
 
 //login pprocess
 app.use('/',queryAccountRouter);//serach account in db
