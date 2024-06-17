@@ -99,14 +99,29 @@ function CourseList() {
             <tbody>
               
               {currentCourses.map(course => {
-              return <tr key={course.id}>
-                <td>{course.id}</td>
-                <td>{course.title}</td>
-                <td><Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
-                  <br/>({course.email})</td>
-              </tr>;
+                return (
+                  <tr key={course.id}>
+                    <td>{course.id}</td>
+                    <td>{course.title}</td>
+                    <td>
+                      {Array.isArray(course.instructor) ? course.instructor.map((instructor, index) => (
+                        <React.Fragment key={course.ubcid[index]}>
+                          <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
+                            {instructor} 
+                          </Link>
+                          ({course.email[index]})
+                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
+                        </React.Fragment>
+                      )):
+                      <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid}`}>
+                        {course.instructor}<br/>({course.email})
+                      </Link>
+                      }
+                    </td>
+                  </tr>
+                );
               })}
-              
+                            
             </tbody>
 
             <tfoot>

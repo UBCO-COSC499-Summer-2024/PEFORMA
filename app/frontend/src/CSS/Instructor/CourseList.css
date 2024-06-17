@@ -43,12 +43,16 @@
   background-color: #f9f9f9;
 }
 
+.course-table th:nth-child(1), .course-table td:nth-child(2) {
+  width: 15%; 
+}
+
 .course-table th:nth-child(2), .course-table td:nth-child(2) {
-  width:48%; 
+  width: 40%; 
 }
 
 .course-table th:nth-child(3), .course-table td:nth-child(3) {
-  width: 35%; 
+  width: 55%; 
 }
 
 .course-table table tfoot .pagination {
