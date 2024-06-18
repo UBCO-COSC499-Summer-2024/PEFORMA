@@ -1,6 +1,6 @@
 {"division":"COSC", "divisionLabel":"Computer Sciences", "currentPage":1, "perPage": 10, "divisionCoursesCount":12,
     "courses":[
-      { "id": "COSC 101", "title": "Digital Citizenship", "instructor": "Chris Rye", "ubcid":18592831, "email": "chris@instructor.ubc.ca" },
+      { "id": "COSC 101", "title": "Digital Citizenship", "instructor": "Chris Rye", "ubcid":12345678, "email": "chris@instructor.ubc.ca" },
       { "id": "COSC 111", "title": "Computer Programming I", "instructor": "Phoenix Baker", "ubcid":57281932, "email": "phoenix@instructor.ubc.ca" },
       { "id": "COSC 121", "title": "Computer Programming II", "instructor": "Phoenix Baker", "ubcid":47291232, "email": "phoenix@instructor.ubc.ca" },
       { "id": "COSC 122", "title": "Computer Fluency", "instructor": "Drew Cano", "ubcid":48291058, "email": "drew@instructor.ubc.ca" },

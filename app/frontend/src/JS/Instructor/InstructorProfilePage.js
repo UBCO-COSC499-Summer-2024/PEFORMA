@@ -13,7 +13,7 @@ function InstructorProfilePage() {
 
   useEffect(() => {
     const fetchData = async() => {
-      const res = await axios.get('http://localhost:3000/profileSample.json?ubcid=' + ubcid); //replace it to api
+      const res = await axios.get('http://localhost:3001/instructorProfile?ubcid=' + ubcid); //replace it to api
       return res.data;
     }
 
