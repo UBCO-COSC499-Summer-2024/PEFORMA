@@ -14,16 +14,22 @@ function InstructorProfilePage() {
   const [profile, setProfile] = useState(initProfile);
   const { authToken } = useAuth();
 
+
+  const parseJwt = (authToken) => {
+    try {
+      return JSON.parse(atob(authToken.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
+  };
+  console.log(parseJwt);
+
   console.log(authToken);
 
   useEffect(() => {
     const fetchData = async() => {
       try {
-        const res = await axios.get('http://localhost:3000/profileSample.json?ubcid=' + ubcid, {
-          headers: {
-            Authorization: `Bearer ${authToken.token}`
-          }
-        }); //replace it to api
+        const res = await axios.get('http://localhost:3000/profileSample.json?ubcid=' + ubcid + '&token=' + authToken.token); //replace it to api
         return res.data;
       } catch (error) {
         console.log('Error fetching data: ', error);
