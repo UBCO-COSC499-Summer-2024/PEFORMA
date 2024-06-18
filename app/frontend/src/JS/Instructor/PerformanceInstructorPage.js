@@ -8,7 +8,7 @@ import CreateSidebar, {
 	CreateWorkingBarChart,
 } from '../commonImports.js';
 
-function UserProfile() {
+function PerformanceInstructorPage() {
 	const params = new URLSearchParams(window.location.search);
 	const ubcid = params.get('ubcid');
 
@@ -93,4 +93,4 @@ function UserProfile() {
 	);
 }
 
-export default UserProfile;
+export default PerformanceInstructorPage;
