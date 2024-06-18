@@ -30,7 +30,7 @@ function InstructorProfilePage() {
       }
     };
     if (authToken) {
-      fetchData();
+      fetchData().then(res => setProfile(res));
     } else {
       console.log("No token found");
     }
