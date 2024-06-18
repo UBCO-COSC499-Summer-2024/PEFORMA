@@ -2,10 +2,12 @@ const { pool } = require('../db/index.js'); // Adjust the path as necessary for 
 console.log(pool); // See what pool actually is
 
 exports.getUserProfile = async (req, res) => {
-    const { id } = req.params;
+    //const { id } = req.params;
+    const profileId = req.params.profileId; // Use profileId from the authenticated token
     try {
         let query = `SELECT * FROM "Profile" WHERE "profileId" = $1;`;
-        let result = await pool.query(query, [id]);
+        //let result = await pool.query(query, [id]);
+        let result = await pool.query(query, [profileId]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -27,7 +29,9 @@ exports.getUserProfile = async (req, res) => {
             JOIN "ServiceRole" "sr" ON "sra"."serviceRoleId" = "sr"."serviceRoleId"
             WHERE "sra"."profileId" = $1;
         `; 
-        result = await pool.query(query, [id]);
+        //result = await pool.query(query, [id]);
+        result = await pool.query(query, [profileId]);
+
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -40,7 +44,9 @@ exports.getUserProfile = async (req, res) => {
             JOIN "Course" "c" ON "ita"."courseId" = "c"."courseId"
             WHERE "ita"."profileId" = $1;
         `; 
-        result = await pool.query(query, [id]);
+        //result = await pool.query(query, [id]);
+        result = await pool.query(query, [profileId]);
+
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'Course assignments not found' });
         }

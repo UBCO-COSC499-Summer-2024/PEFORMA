@@ -16,6 +16,6 @@ pool.connect((err) => {
     } else {
       console.log('Database connected successfully.');
     }
-}
-
-module.exports = { pool, testDB }; // Assume testDB is defined elsewhere in your code
+  });
+  
+  module.exports = pool;
