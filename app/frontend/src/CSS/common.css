@@ -1,6 +1,6 @@
 /* Global variables, use var(--variableName) to access them */
 :root {
-    --backgroundColor:#FAFAFA;
+    --backgroundColor:#F4F4F4;
     --sidebarColor: #002145;
     --darkGrey: #F6F6F6;
     --darkerGrey: #EBEBEB;
@@ -10,6 +10,7 @@
     --blue: #2563EB;
     --white: #FFFFFF;
     --black: #000000;
+    --mainFont: 'Plus Jakarta Sans', sans-serif;
 }
 
 .topbar {
@@ -41,6 +42,12 @@
   overflow: auto;
 }
 
+body {
+  background-color: var(--backgroundColor);
+  font-family: var(--mainFont);
+  src: url('https://fonts.googleapis.com/css?family=Plus Jakarta Sans');
+}
+
 .main-content {
     flex-grow: 1;
     
@@ -60,8 +67,12 @@
   height: 100%;
 }
 
-.sidebar h2 {
-  font-size: 2em;
+h2 {
+  font-size: 2.5vh;
+  font-family:'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.075em;
+  font-style: normal;
+  src: url('https://fonts.googleapis.com/css?family=Plus Jakarta Sans');
 }
 
 .divider {
