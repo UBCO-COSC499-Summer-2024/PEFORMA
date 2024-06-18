@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
 import divisions from '../common/divisions.js';
 import axios from 'axios';
+import '../AuthContext.js';
+import { useAuth } from '../AuthContext.js';
 
 function showCourses (divisionData, offset){
   if (divisionData.divisionCoursesCount > 10) {
@@ -16,6 +18,7 @@ function showCourses (divisionData, offset){
 
 function CourseList() {
 
+  const { authToken } = useAuth();
   const params = new URLSearchParams(window.location.search);
   const divisionCode = params.get('division');
 
@@ -28,16 +31,31 @@ function CourseList() {
 
   useEffect(() => {
     const fetchCourses = async () => {
-        try {
-            console.log(divisionCode);
-            const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`);
-            setDivisionData(res.data);
-        } catch (error) {
-            console.error('Error fetching courses:', error);
+      try {
+        if (!authToken) {
+          // Redirect to login if no token
+          navigate('/Login'); // Use your navigation mechanism
+          return;
         }
+
+        // Fetch course data with Axios, adding token to header
+        const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`, {
+          headers: { Authorization: `Bearer ${authToken.token}` } 
+        });
+        setDivisionData(res.data);
+      } catch (error) {
+        // Handle 401 (Unauthorized) error and other errors
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('authToken'); // Clear invalid token
+          navigate('/Login'); 
+        } else {
+          console.error('Error fetching courses:', error);
+        }
+      }
     };
+
     fetchCourses();
-  }, [divisionCode]);
+  }, [authToken, divisionCode]); 
 
   const handlePageClick = (data) => {
     setDivisionData(prevState => ({

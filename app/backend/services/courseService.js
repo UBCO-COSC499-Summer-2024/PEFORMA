@@ -1,4 +1,4 @@
-const { pool } = require('../config/db.js');
+const pool = require('../config/db.js');
 
 const divisionMap = {
     'COSC': 1, 
@@ -16,7 +16,7 @@ const divisionLabelMap = {
 
 async function getFormattedCourseData(divisionCode) {
 
-    console.log(divisionCode);
+    // console.log(divisionCode);
     
     const divisionId = divisionMap[divisionCode];
     const divisionLabel = divisionLabelMap[divisionId];
