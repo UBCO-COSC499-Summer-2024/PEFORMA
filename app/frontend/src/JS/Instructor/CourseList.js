@@ -45,6 +45,9 @@ function CourseList() {
         case "STAT" :
           url = 'http://localhost:3000/divisionStat.json';
           break;
+        case "ALL" :
+          url = 'http://localhost:3000/divisionAll.json';
+          break;
         default:
           url = 'http://localhost:3000/divisionCosc.json';
       }
