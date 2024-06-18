@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
+import ReactApexChart from 'react-apexcharts';
+
 
 function WorkHoursBarChart() {
     const [workingHours, setWorkingHours] = useState({ 
