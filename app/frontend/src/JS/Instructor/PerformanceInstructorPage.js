@@ -87,6 +87,7 @@ function PerformanceInstructorPage() {
 						<h2 className="subTitle">Leader Board (Updated per month)</h2>
 						<CreateLeaderboardChart />
 					</div>
+					
 				</div>
 			</div>
 		</div>
