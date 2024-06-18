@@ -14,16 +14,6 @@ function InstructorProfilePage() {
   const [profile, setProfile] = useState(initProfile);
   const { authToken } = useAuth();
 
-
-  const parseJwt = (authToken) => {
-    try {
-      return JSON.parse(atob(authToken.split('.')[1]));
-    } catch (e) {
-      return null;
-    }
-  };
-  console.log(parseJwt);
-
   console.log(authToken);
 
   useEffect(() => {
