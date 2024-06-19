@@ -43,9 +43,10 @@ exports.getUserProfile = async (req, res) => {
         const roles = result.rows.map(row => row.stitle);
 
         query = `
-            SELECT c.ctitle
+            SELECT d."divisionCode"  || ' ' || c."courseNum" AS "DivisionAndCourse"
             FROM "InstructorTeachingAssignment" "ita"
             JOIN "Course" "c" ON "ita"."courseId" = "c"."courseId"
+            JOIN "Division" "d" ON "c"."divisionId" = "d"."divisionId"
             WHERE "ita"."profileId" = $1;
         `; 
         //result = await pool.query(query, [id]);
@@ -54,7 +55,7 @@ exports.getUserProfile = async (req, res) => {
             return res.status(404).json({ message: 'Course assignments not found' });
         }
         //const courses = result.rows;
-        const teachingRoles = result.rows.map(row => ({ assign: row.ctitle }));  // Mapping ctitle to roles
+        const teachingRoles = result.rows.map(row => ({ assign: row.DivisionAndCourse }));  // Mapping ctitle to roles
         // Build the profile data object
         const profileData = {
             name: name,
