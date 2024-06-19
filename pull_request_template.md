@@ -1,4 +1,4 @@
-# Key Changes
+## Key Features/Changes
 
 1. 
 2. 
@@ -15,8 +15,10 @@ Closes #
 - [ ] UI/UX Improvment
 - [ ] Database schema changes
 
-# Has This Been Tested?
+## Has This Been Tested?
 
 - [ ] Yes
 - [ ] No
 - [ ] N/A
+
+## Persisting Bugs
