@@ -7,16 +7,22 @@ import CreateSidebar, {
 	CreateTopbar,
 	CreateWorkingBarChart,
 } from '../commonImports.js';
+import { useAuth } from '../AuthContext';
 
 function PerformanceInstructorPage() {
 	const params = new URLSearchParams(window.location.search);
 	const ubcid = params.get('ubcid');
+	const {profileId} = useAuth();
 
 	const initProfile = {
 		roles: [],
 		teachingAssignments: [{}],
 	};
 	const [profile, setProfile] = useState(initProfile);
+
+	
+	console.log("asdhaighsdf");
+	console.log(profileId);
 
 	useEffect(() => {
 		const fetchData = async () => {
