@@ -3,6 +3,15 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import Login from '../../../app/frontend/src/JS/All/Login';
 import {MemoryRouter} from "react-router-dom";
+import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import axios from 'axios';
+
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('axios');
+
+useAuth.mockResolvedValue('MOCK');
+axios.get.mockResolvedValue(':)');
+axios.post.mockResolvedValue(":(");
 
 test('Check user input', async () => {
     const user = userEvent.setup();
@@ -17,6 +26,4 @@ test('Check login button exists', async () => {
     render(<MemoryRouter><Login/></MemoryRouter>);
     const button = screen.getByRole("button");
     expect(button).toBeInTheDocument()
-    
-
 });
