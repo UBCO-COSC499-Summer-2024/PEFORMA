@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const [profileId, setProfileId] = useState(() => localStorage.getItem('profileId'));
     const navigate = useNavigate();
 
-    const login = (token, expiresIn) => {
+    const login = (token, expiresIn, profileId) => {
         const tokenString = JSON.stringify(token);
         //alert(`expire time: ${expiresIn}`);
         setAuthToken(token);
