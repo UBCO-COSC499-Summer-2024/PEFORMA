@@ -45,6 +45,9 @@ function CourseList() {
         case "STAT" :
           url = 'http://localhost:3000/divisionStat.json';
           break;
+        case "ALL" :
+          url = 'http://localhost:3000/divisionAll.json';
+          break;
         default:
           url = 'http://localhost:3000/divisionCosc.json';
       }
@@ -93,20 +96,44 @@ function CourseList() {
                 <th>Course</th>
                 <th>Title</th>
                 <th>Instructor</th>
+                <th>Email</th>
               </tr>
             </thead>
 
             <tbody>
               
               {currentCourses.map(course => {
-              return <tr key={course.id}>
-                <td>{course.id}</td>
-                <td>{course.title}</td>
-                <td><Link to={'http://localhost:3000/InstructorProfilePage?ubcid='+course.ubcid}>{course.instructor}</Link>
-                  <br/>({course.email})</td>
-              </tr>;
+                return (
+                  <tr key={course.id}>
+                    <td>{course.id}</td>
+                    <td>{course.title}</td>
+                    <td>
+                      {Array.isArray(course.instructor) ? course.instructor.map((instructor, index) => (
+                        <React.Fragment key={course.ubcid[index]}>
+                          <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
+                            {instructor} 
+                          </Link>
+                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
+                        </React.Fragment>
+                      )):
+                      <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid}`}>
+                        {course.instructor}<br/>({course.email})
+                      </Link>
+                      }
+                    </td>
+
+                    <td>
+                      {Array.isArray(course.email) ? course.email.map((email, index) =>
+                        <React.Fragment key={index}>
+                          {email}
+                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
+                        </React.Fragment>  
+                    ) : course.email }
+                    </td>
+                  </tr>
+                );
               })}
-              
+                            
             </tbody>
 
             <tfoot>

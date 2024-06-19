@@ -1,16 +1,15 @@
-{"division":"COSC", "divisionLabel":"Computer Sciences", "currentPage":1, "perPage": 10, "divisionCoursesCount":12,
+{"division":"ALL", "divisionLabel":"All", "currentPage":1, "perPage": 10, "divisionCoursesCount":11,
     "courses":[
       { "id": "COSC 101", "title": "Digital Citizenship", "instructor": ["Chris Rye", "testing", "tesitng"], "ubcid":[18592831, 12341234, 88888888], "email": ["chris@instructor.ubc.ca", "testing1@ubc.ca", "testing2@ubc.ca"] },
       { "id": "COSC 111", "title": "Computer Programming I", "instructor": ["Phoenix Baker"], "ubcid":[57281932], "email": ["phoenix@instructor.ubc.ca"] },
-      { "id": "COSC 121", "title": "Computer Programming II", "instructor": ["Phoenix Baker"], "ubcid":[47291232], "email": ["phoenix@instructor.ubc.ca"] },
-      { "id": "COSC 122", "title": "Computer Fluency", "instructor": ["Drew Cano"], "ubcid":[48291058], "email": ["drew@instructor.ubc.ca"] },
       { "id": "COSC 123", "title": "Computer Creativity", "instructor": ["Andi Lane"], "ubcid":[89217349], "email": ["andi@instructor.ubc.ca"] },
       { "id": "COSC 210", "title": "Software Construction", "instructor": ["Lana Steiner"], "ubcid":[48392017], "email": ["lana@instructor.ubc.ca"] },
       { "id": "COSC 211", "title": "Machine Architecture", "instructor": ["Demi Wilkinson"], "ubcid":[82513574], "email": ["demi@instructor.ubc.ca"] },
       { "id": "COSC 221", "title": "Introduction to Discrete Structures", "instructor": ["Candice Wu"], "ubcid":[21693499], "email": ["candice@instructor.ubc.ca"] },
-      { "id": "COSC 222", "title": "Data Structures", "instructor": ["Natali Craig"], "ubcid":[49688826], "email": ["natali@instructor.ubc.ca"] },
-      { "id": "COSC 304", "title": "Introduction to Database", "instructor": ["Dino Nate", "testing", "tesitng"], "ubcid":[21380575, 29382822,12345678], "email": ["kate@instructor.ubc.ca", "testing1@ubc.ca", "testing2@ubc.ca"] },
+      { "id": "STAT 121", "title": "Elementary Statistics", "instructor": ["Jesus Stevenson","Case Tone"], "ubcid":[48291738,82731057], "email": ["jesus@instructor.ubc.ca","case@instructor.ubc.ca"] },
+      { "id": "PHYS 205", "title": "Introduction to Mathematical Statistics", "instructor": ["Phyllis Meyer"], "ubcid":[29103833], "email": ["phyllis@instructor.ubc.ca"] },
+      { "id": "PHYS 400", "title": "Statistical Communication and Consulting", "instructor": ["Lynda Lambert"], "ubcid":[54723182], "email": ["lynda@instructor.ubc.ca"] },      { "id": "COSC 304", "title": "Introduction to Database", "instructor": ["Dino Nate", "testing", "tesitng"], "ubcid":[21380575, 29382822,12345678], "email": ["kate@instructor.ubc.ca", "testing1@ubc.ca", "testing2@ubc.ca"] },
       { "id": "COSC 341", "title": "Human computer Interaction", "instructor": ["Rory Mcilory"], "ubcid":[50344894], "email": ["rory@instructor.ubc.ca"] },
-      { "id": "COSC 499", "title": "Capstone", "instructor": ["Tiger Woods"], "ubcid":[94373298], "email": ["tiger@instructor.ubc.ca"] }
+      { "id": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering", "instructor": ["Brandi Floyd"], "ubcid":[32819340], "email": ["brandi@instructor.ubc.ca"] }
     ]
 }
