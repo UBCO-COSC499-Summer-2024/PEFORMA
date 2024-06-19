@@ -32,7 +32,7 @@ app.use('/',AccountTypeRouter);//check account type
 
 
 //Profile BE
-app.use('/instructorProfile',profileRoutes);
+app.use('/api/instructorProfile',profileRoutes);
 
 
 //Profile BE
