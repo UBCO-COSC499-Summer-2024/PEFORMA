@@ -2,7 +2,8 @@
 ## Wednesday (6/19/2024)
 
 ### Timesheet
-![alt text]()
+![alt text](6-18report1.png)
+![alt text](6-18report2.png)
 
 ### Current Tasks
   * #1: Log out + deacive authentication 
