@@ -37,9 +37,9 @@ CREATE TABLE "Profile" (
   "UBCId"                 integer,
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  "imageId"               integer,
+  --"imageId"               integer,
   FOREIGN KEY ("divisionId") REFERENCES "Division" ("divisionId"),
-  FOREIGN KEY ("imageId") REFERENCES "Image" ("imageId"),
+  --FOREIGN KEY ("imageId") REFERENCES "Image" ("imageId"),
   UNIQUE ("profileId", "email")
 );
 
