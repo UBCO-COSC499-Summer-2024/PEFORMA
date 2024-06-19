@@ -7,7 +7,7 @@
 
 ### Timesheet
 ![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-6-Cycle-1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W6C1.png)
-![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/weekly-logs/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_W5C1_Clockify_2.png)
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-6-Cycle-1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W6C1_2.png)
 
 ### Current Tasks
   * #1: Instructor-Performance BE
