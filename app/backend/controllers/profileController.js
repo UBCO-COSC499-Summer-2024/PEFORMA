@@ -1,4 +1,4 @@
-const  pool = require('../db/index.js'); // Adjust the path as necessary for your db connection
+const  pool = require('../config/db.js'); // Adjust the path as necessary for your db connection
 console.log(pool); // See what pool actually is
 
 exports.getUserProfile = async (req, res) => {
