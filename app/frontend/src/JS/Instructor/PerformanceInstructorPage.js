@@ -25,10 +25,6 @@ function PerformanceInstructorPage() {
 	};
 	const [profile, setProfile] = useState(initProfile);
 
-	
-	console.log("asdhaighsdf");
-	console.log(profileId);
-
 	useEffect(() => {
 
 		const fetchData = async () => {
