@@ -6,12 +6,15 @@ const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const [authToken, setAuthToken] = useState(null);
+    //const [authToken, setAuthToken] = useState(null);
+    const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken'));
     const navigate = useNavigate();
 
     const login = (token, expiresIn) => {
+        const tokenString = JSON.stringify(token);
         //alert(`expire time: ${expiresIn}`);
         setAuthToken(token);
+        localStorage.setItem('authToken', tokenString);
         setTimeout( () => {
             alert('Session about to expire.');
             logout();
@@ -22,6 +25,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setAuthToken(null);
+        localStorage.removeItem('authToken');
         navigate('/HomePage');
     };
 
