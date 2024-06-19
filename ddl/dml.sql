@@ -7,7 +7,7 @@ INSERT INTO public."Division" ("divisionId", "dname") VALUES
 
 -- Profile (add department staff and admin users)
 INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark", "imageId") VALUES
-(1, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 12345678, 15, 50, NULL),
+(12, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 12345678, 15, 50, NULL),
 (2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 23456789, 8, 120, NULL),
 (3, 'Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Instructor', 2, 34567890, 0, 100, NULL),
 (4, 'Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 3, 45678901, 0, 0, NULL),
@@ -22,7 +22,7 @@ INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName"
 
 -- Account (remember to hash passwords in a real system!)
 INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "isActive") VALUES
-(1, 1, 'john.doe@ubc.ca', 'p@55word', true),
+(1, 12, 'john.doe@ubc.ca', 'p@55word', true),
 (2, 2, 'jane.smith@ubc.ca', 'p@55word', true),
 (3, 3, 'robert.brown@ubc.ca', 'p@55word', true),
 (4, 4, 'emily.davis@ubc.ca', 'p@55word', false),
@@ -64,8 +64,8 @@ INSERT INTO public."ServiceRoleByYear" ("serviceRoleId", "year", "JANHour", "FEB
 
 -- ServiceRoleAssignment
 INSERT INTO public."ServiceRoleAssignment" ("profileId", "serviceRoleId", "year") VALUES
-(1, 2, 2023),
-(1, 2, 2024),
+(12, 2, 2023),
+(12, 2, 2024),
 (2, 5, 2023),
 (2, 3, 2024),
 (2, 7, 2024),
@@ -102,8 +102,8 @@ INSERT INTO public."CourseByTerm" ("courseId", "term") VALUES
 
 -- InstructorTeachingAssignment
 INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES
-(1, 1, '2024-W1'),
-(1, 2, '2024-W2'),
+(12, 1, '2024-W1'),
+(12, 2, '2024-W2'),
 (2, 4, '2023-W1'),
 (2, 5, '2024-W2'),
 (3, 9, '2023-S12');
@@ -111,7 +111,7 @@ INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "ter
 -- SingleTeachingPerformance
 -- (Assuming you have some way to calculate the score)
 INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score") VALUES
-(1, 1, '2024-W1', 4.2),
+(12, 1, '2024-W1', 4.2),
 (2, 4, '2023-W1', 4.5),
 (3, 9, '2023-S12', 3.8);
 
@@ -130,12 +130,12 @@ INSERT INTO public."SurveyQuestion" ("surveyTypeId", "surveyQuestionId", "descri
 
 -- SurveyQuestionResponse (Sample responses for John Doe's Calculus I)
 INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId", "courseId", "term", "profileId", "studentId", "response") VALUES
-(1, 1, 1, '2024-W1', 1, 55555555, '4'),  -- Rating scale 1-5
-(1, 2, 1, '2024-W1', 1, 55555555, '5'),
-(1, 3, 1, '2024-W1', 1, 55555555, '3'),
-(1, 4, 1, '2024-W1', 1, 55555555, '4'),
-(1, 5, 1, '2024-W1', 1, 55555555, '4'),
-(1, 6, 1, '2024-W1', 1, 55555555, 'Agree');
+(1, 1, 1, '2024-W1', 12, 55555555, '4'),  -- Rating scale 1-5
+(1, 2, 1, '2024-W1', 12, 55555555, '5'),
+(1, 3, 1, '2024-W1', 12, 55555555, '3'),
+(1, 4, 1, '2024-W1', 12, 55555555, '4'),
+(1, 5, 1, '2024-W1', 12, 55555555, '4'),
+(1, 6, 1, '2024-W1', 12, 55555555, 'Agree');
 
 
 
