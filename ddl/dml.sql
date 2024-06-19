@@ -6,40 +6,14 @@ INSERT INTO public."Division" ("divisionId", "dcode", "dname") VALUES
 (4, 'STAT', 'Statistics');
 
 -- Profile (add department staff and admin users)
-INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark") VALUES
--- Instructors 
-    -- COSC
-    (1, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 00000001, 15, 50),
-    (2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 00000002, 8, 120),
-    (3, 'Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Lecturer', 1, 00000003, 0, 10),
-    (4, 'Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 1, 00000004, 0, 0),
-    -- MATH
-    (5, 'David', NULL, 'Kim', 'david.kim@ubc.ca', '250-555-6789', 'SCI', '123', 'Professor', 2, 00000005, 20, 80),
-    (6, 'Sarah', 'Lee', 'Chen', 'sarah.chen@ubc.ca', '250-555-9012', 'SCI', '234', 'Assistant Professor', 2, 00000006, 5, 110),
-    (7, 'Michael', NULL, 'Nguyen', 'michael.nguyen@ubc.ca', '250-555-3456', 'EME', '345', 'Associate Professor', 2, 00000007, 12, 90),
-    (8, 'Olivia', 'Marie', 'Rodriguez', 'olivia.rodriguez@ubc.ca', '250-555-7890', 'ASC', '456', 'Assistant Professor', 2, 00000008, 8, 100),
-    -- PHYS
-    (9, 'Daniel', NULL, 'Taylor', 'daniel.taylor@ubc.ca', '250-555-1122', 'SCI', '124', 'Lecturer', 1, 00000009, 3, 50),
-    (10, 'Sophia', 'Anne', 'Wilson', 'sophia.wilson@ubc.ca', '250-555-3344', 'ART', '235', 'Sessional Lecturer', 3, 00000010, 3, 10),
-    (11, 'William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 00000011, 3, 45),
-    (12, 'Aiden', NULL, 'Moore', 'adien.moore@ubc.ca', '236-555-8765', 'ASC', '213', 'Professor', 3, 00000012, 34, 80),
-    -- STAT
-    (13, 'Ava', NULL, 'Martinez', 'ava.martinez1@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 00000013, 0, 0),       -- <-- People w/ the same name
-    (14, 'Ava', NULL, 'Martinez', 'ava.martinez2@ubc.ca', '236-478-1590', 'SCI', '111', 'Asssitant Professor', 4, 00000014, 60, 120),   -- <--
-    (15, 'Ethan', NULL, 'Anderson', 'ethan.anderson@ubc.ca', '236-555-9876', 'EME', '414', 'Asssitant Professor', 4, 00000015, 12, 95), 
--- Department Staff
-(16, 'Alice', NULL, 'Johnson', 'alice.johnson@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 00000016, 0, 0),  
-(17, 'Bob', NULL, 'Lee', 'bob.lee@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 00000017, 0, 0),
--- Admin
-    -- UBC admins
-    (18, 'Kevin', NULL, 'Kim', 'kkim9901@student.ubc.ca', '250-666-6661', NULL, NULL, NULL, NULL, 66666661, 0, 0),                              
-    (19, 'Jeremy', NULL, 'Adams', 'jeremyadams166@gmail.com', '250-666-6662', NULL, NULL, NULL, NULL, 66666662, 0, 0),
-    (20, 'Zhiheng', NULL, 'Zhang', 'm15601654187@163.com', '250-666-6663', NULL, NULL, NULL, NULL, 66666663, 0, 0),
-    (21, 'Subaru', NULL, 'Sakashita', 'baruchan@student.ubc.ca', '250-666-6664', NULL, NULL, NULL, NULL, 66666664, 0, 0),
-    (22, 'Adams', NULL, 'Chen', 'ayhchen@student.ubc.ca', '250-666-6665', NULL, NULL, NULL, NULL, 66666665, 0, 0),
-    -- Non-UBC admin
-    (23, 'Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, NULL, NULL, NULL, 0, 0),  
-    (24, 'Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0);    
+INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark", "imageId") VALUES
+(12, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 12345678, 15, 50, NULL),
+(2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 23456789, 8, 120, NULL),
+(3, 'Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Instructor', 2, 34567890, 0, 100, NULL),
+(4, 'Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 3, 45678901, 0, 0, NULL),
+(5, 'Alice', NULL, 'Johnson', 'alice.johnson@ubc.ca', '250-555-9876', 'SCI', '200', 'Department Staff', 1, 56789012, 0, 0, NULL),
+(6, 'Bob', NULL, 'Lee', 'bob.lee@ubc.ca', '250-555-5678', 'SCI', '200', 'Department Staff', 2, 67890123, 0, 0, NULL),
+(7, 'Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, 'Admin', NULL, NULL, 0, 0, NULL); 
 
 -- Image 
 -- INSERT INTO Image (imageId, fileType, image_data) VALUES
@@ -48,29 +22,9 @@ INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName"
 
 -- Account (remember to hash passwords in a real system!)
 INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "isActive") VALUES
--- Active
-(1, 1, 'john.doe@ubc.ca', 'p@55word', true),
-(2, 2, 'jane.smith@ubc.ca', 'someth!n9', true), -- different password for testing
-(5, 5, 'david.kim@ubc.ca', 'p@55word', true),
-(6, 6, 'sarah.chen@ubc.ca', 'p@55word', true),
-(7, 7, 'michael.nguyen@ubc.ca', 'p@55word', true),
-(8, 8, 'olivia.rodriguez@ubc.ca', 'p@55word', true),
-(9, 9, 'daniel.taylor@ubc.ca', 'p@55word', true),
-(10, 10, 'sophia.wilson@ubc.ca', 'p@55word', true),
-(11, 11, 'william.anderson@ubc.ca', 'p@55word', true),
-(12, 12, 'adien.moore@ubc.ca', 'p@55word', true),
-(13, 13, 'ava.martinez1@ubc.ca', 'p@55word', true),       
-(14, 14, 'ava.martinez2@ubc.ca', 'p@55word', true),  
-(15, 15, 'ethan.anderson@ubc.ca', 'p@55word', true), 
-(16, 16, 'alice.johnson@staff.ubc.ca', 'p@55word', true),  
-(17, 17, 'bob.lee@staff.ubc.ca', 'p@55word', true),
-(18, 18, 'kkim9901@student.ubc.ca', 'team6!x', true),                              
-(19, 19, 'jeremyadams166@gmail.com', 'team6!x', true),
-(20, 20, 'm15601654187@163.com', 'team6!x', true),
-(21, 21, 'baruchan@student.ubc.ca', 'team6!x', true),
-(22, 22, 'ayhchen@student.ubc.ca', 'team6!x', true),
-(23, 23, 'carol.wilson@maintenance.ca', 'p@55word', true),
--- Inactive
+(1, 12, 'john.doe@ubc.ca', 'p@55word', true),
+(2, 2, 'jane.smith@ubc.ca', 'p@55word', true),
+(3, 3, 'robert.brown@ubc.ca', 'p@55word', true),
 (4, 4, 'emily.davis@ubc.ca', 'p@55word', false),
 (24, 24, 'amelia.young@maintenance.ca', 'p@55word', false);
 -- Person w/o account
@@ -185,52 +139,15 @@ INSERT INTO public."ServiceRoleByYear" ("serviceRoleId", "year", "JANHour", "FEB
 
 -- ServiceRoleAssignment
 INSERT INTO public."ServiceRoleAssignment" ("profileId", "serviceRoleId", "year") VALUES
--- 2023
-(1, 3, 2023),       -- John Doe: Curriculum Committee (2023)
-(2, 2, 2023),       -- Jane Smith: Graduate Admissions (2023)
-(3, 1, 2023),       -- Robert Brown: Undergraduate Advisor (2023)
-(5, 8, 2023),       -- David Kim: Graduate Program Director (2023)
-(6, 6, 2023),       -- Sarah Chen: Curriculum Committee (2023)
-(7, 5, 2023),       -- Michael Nguyen: Undergraduate Advisor (2023)
-(8, 7, 2023),       -- Olivia Rodriguez: Graduate Admissions (2023)
-(9, 12, 2023),      -- Daniel Taylor: Graduate Program Director (2023)
-(10, 11, 2023),     -- Sophia Wilson: Graduate Admissions (2023)
-(11, 10, 2023),     -- William Anderson: Curriculum Committee (2023)
--- 2024
-    -- John Doe
-    (1, 1, 2024),       -- John Doe: Undergraduate Advisor (2024)
-    (1, 17, 2024),      -- John Doe: Safety Committee Member (2024)
-    -- Jane Smith
-    (2, 3, 2024),       -- Jane Smith: Curriculum Committee (2024)
-    (2, 19, 2024),      -- Jane Smith: Seminar Series Organizer (2024)
-    -- Robert Brown 
-    (3, 2, 2024),       -- Robert Brown: Graduate Admissions (2024)
-    -- David Kim
-    (5, 5, 2024),       -- David Kim: Undergraduate Advisor (2024)
-    -- Sarah Chen
-    (6, 7, 2024),       -- Sarah Chen: Graduate Admissions (2024)
-    (6, 20, 2024),      -- Sarah Chen: Awards Committee Member (2024)
-    -- Michael Nguyen
-    (7, 6, 2024),       -- Michael Nguyen: Curriculum Committee (2024)
-    -- Olivia Rodriguez
-    (8, 8, 2024),       -- Olivia Rodriguez: Graduate Program Director (2024)
-    -- Daniel Taylor
-    (9, 10, 2024),      -- Daniel Taylor: Curriculum Committee (2024)
-    -- Sofia Wilson
-    (10, 9, 2024),      -- Sophia Wilson: Undergraduate Advisor (2024)
-    -- William Anderson
-    (11, 11, 2024),     -- William Anderson: Graduate Admissions (2024)
-    -- Aiden Moore
-    (12, 12, 2024),     -- Aiden Moore: Graduate Program Director (2024)
-    (12, 20, 2024),     -- Aiden Moore: Awards Committee Member (2024)
-    -- Ava Martinez
-    (14, 13, 2024),     -- Ava Martinez: Undergraduate Advisor (2024)
-    -- Ethan Anderson
-    (15, 15, 2024),     -- Ethan Anderson: Graduate Admissions (2024)
-    (15, 18, 2024),     -- Ethan Anderson: Equity, Diversity, and Inclusion Committee (2024)
-    -- Olivia Rodriguez:
-    (8, 21, 2024);      -- Olivia Rodriguez: Undergraduate Research Coordinator (2024)
--- Note: Awards Committee Member (2024) is assigned to 2 people
+(12, 2, 2023),
+(12, 2, 2024),
+(2, 5, 2023),
+(2, 3, 2024),
+(2, 7, 2024),
+(3, 1, 2024),
+(3, 5, 2024),
+(3, 4, 2023),
+(3, 8, 2023);;
 
 -- Course
 INSERT INTO public."Course" ("courseId", "ctitle", "description", "divisionId", "courseNum") VALUES
@@ -409,70 +326,18 @@ INSERT INTO public."CourseByTerm" ("courseId", "term") VALUES
 
 -- InstructorTeachingAssignment
 INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES
--- 2023W1
-(1, 1, 20231),  -- John Doe: Computer Programming I (2023W1)
-(2, 2, 20231),  -- Jane Allison Smith: Computer Programming II (2023W1)
-(3, 3, 20231),  -- Robert Brown: Machine Architecture (2023W1)
-(5, 29, 20231), -- David Kim: Integral Calculus with Applications to Physical Sciences and Engineering (2023W1)
-(9, 56, 20231), -- Daniel Taylor: Introductory Physics for the Physical Sciences I (2023W1)
-(10, 57, 20231),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences I (2023W1)
-(13, 79, 20231), -- Ava Martinez: Elementary Statistics (2023W1)
--- 2023W2
-(6, 32, 20232), -- Sarah Lee Chen: Matrix Algebra (2023W2)
-(7, 40, 20232), -- Michael Nguyen: Introduction to Partial Differential Equations (2023W2)
-(11, 63, 20232),-- William Anderson: Intermediate Electricity and Magnetism (2023W2)
-(14, 83, 20232), -- Ava Martinez: Intermediate Probability (2023W2)
--- 2023S1
-(8, 48, 20233), -- Olivia Marie Rodriguez: Differential Geometry (2023S1)
-(12, 72, 20233),-- Aiden Moore: Waves (2023S1)
--- 2023S2
-(5, 51, 20234), -- David Kim: Real Analysis (2023S2)
-(9, 78, 20234), -- Daniel Taylor: Introduction to General Relativity (2023S2)
--- 2024W1
-(6, 8, 20241),  -- Sarah Lee Chen: Introduction to Databases (2024W1)
-(7, 35, 20241), -- Michael Nguyen: Applied Linear Algebra (2024W1)
-(10, 66, 20241),-- Sophia Anne Wilson: Electricity and Magnetism (2024W1)
-(15, 87, 20241), -- Ethan Anderson: Environmetrics (2024W1)
--- 2024W2
-(8, 45, 20242), -- Olivia Marie Rodriguez: Introduction to Dynamical Systems (2024W2)
-(11, 69, 20242),-- William Anderson: Introduction to Medical Physics (2024W2)
--- 2024S1
-(5, 52, 20243), -- David Kim: Functional Analysis (2024S1)
-(12, 75, 20243),-- Aiden Moore: Introduction to Elementary Particles (2024S1)
--- 2024S2
-    -- COSC 
-    (1, 6, 20244),  -- John Doe: Introduction to Data Analytics (2024S2)  
-    (2, 10, 20244), -- Jane Allison Smith: Software Engineering (2024S2)
-    (3, 11, 20244), -- Robert Brown: Introduction to Operating Systems (2024S2)
-    (1, 17, 20244), -- John Doe: Human Computer Interaction (2024S2)
-    (2, 18, 20244), -- Jane Allison Smith: Image Processing and Applications (2024S2)
-    (3, 19, 20244), -- Robert Brown: Web Programming (2024S2)
-    (1, 20, 20244), -- John Doe: Database System Implementation (2024S2)
-    (2, 22, 20244), -- Jane Allison Smith: Numerical Optimization (2024S2)
-    (3, 23, 20244), -- Robert Brown: Introduction to Parallel Computing (2024S2)
-    (1, 24, 20244), -- John Doe: Computer Graphics (2024S2)
-    (2, 25, 20244), -- Jane Allison Smith: Network Science (2024S2)
-    (1, 27, 20244), -- John Doe: Computer Vision (2024S2)
-    (2, 47, 20244), -- Jane Allison Smith: Complex Variables and Applications (2024S2)
-    -- MATH 
-    (6, 30, 20244), -- Sarah Lee Chen: Calculus III (2024S2)
-    (7, 31, 20244), -- Michael Nguyen: Mathematical Proof (2024S2)
-    (8, 33, 20244), -- Olivia Marie Rodriguez: Linear Algebra (2024S2)
-    (5, 34, 20244), -- David Kim: Introduction to Differential Equations (2024S2)
-    (6, 41, 20244), -- Sarah Lee Chen: Applied Abstract Algebra (2024S2)
-    -- PHYS 
-    (9, 58, 20244), -- Daniel Taylor: Introductory Physics for the Physical Sciences II (2024S2)
-    (10, 59, 20244),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences II (2024S2)
-    (11, 60, 20244),-- William Anderson: Relativity and Quanta (2024S2)
-    (7, 61, 20244), -- Michael Nguyen: Thermodynamics (2024S2) - also taught by Ava Martinez
-    (14, 61, 20244),-- Ava Martinez: Thermodynamics (2024S2) - also taught by Michael Nguyen
-    (12, 62, 20244),-- Aiden Moore: Mechanics I (2024S2)
-    (9, 67, 20244), -- Daniel Taylor: Introduction to Quantum Mechanics (2024S2) 
-    (10, 71, 20244),-- Sophia Anne Wilson: Environmental Physics (2024S2)
-    -- STAT 
-    (13, 80, 20244), -- Ava Martinez: Introduction to Probability (2024S2)
-    (14, 81, 20244); -- Ava Martinez: Introduction to Mathematical Statistics (2024S2)
--- Note: Thermodynamics (2024S2) is taught by 2 people
+(12, 1, '2024-W1'),
+(12, 2, '2024-W2'),
+(2, 4, '2023-W1'),
+(2, 5, '2024-W2'),
+(3, 9, '2023-S12');
+
+-- SingleTeachingPerformance
+-- (Assuming you have some way to calculate the score)
+INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score") VALUES
+(12, 1, '2024-W1', 4.2),
+(2, 4, '2023-W1', 4.5),
+(3, 9, '2023-S12', 3.8);
 
 -- SurveyType (Assuming 1=SEI)
 INSERT INTO public."SurveyType" ("surveyTypeId", "surveyType") VALUES
@@ -489,19 +354,12 @@ INSERT INTO public."SurveyQuestion" ("surveyTypeId", "surveyQuestionId", "descri
 
 -- SurveyQuestionResponse (Sample responses for John Doe's Calculus I)
 INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId", "courseId", "term", "profileId", "studentId", "response") VALUES
-(1, 1, 75, 20243, 12, 55555555, '4'),  -- Rating scale 1-5
-(1, 2, 75, 20243, 12, 55555555, '5'),
-(1, 3, 75, 20243, 12, 55555555, '3'),
-(1, 4, 75, 20243, 12, 55555555, '4'),
-(1, 5, 75, 20243, 12, 55555555, '4'),
-(1, 6, 75, 20243, 12, 55555555, 'Agree');
-
--- SingleTeachingPerformance
--- (Assuming you have some way to calculate the score)
-INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score")
-SELECT "profileId", "courseId", "term", (random() * 99 + 1) -- Random score between 1.0 and 100.0
-FROM public."InstructorTeachingAssignment";
-
+(1, 1, 1, '2024-W1', 12, 55555555, '4'),  -- Rating scale 1-5
+(1, 2, 1, '2024-W1', 12, 55555555, '5'),
+(1, 3, 1, '2024-W1', 12, 55555555, '3'),
+(1, 4, 1, '2024-W1', 12, 55555555, '4'),
+(1, 5, 1, '2024-W1', 12, 55555555, '4'),
+(1, 6, 1, '2024-W1', 12, 55555555, 'Agree');
 
 
 
