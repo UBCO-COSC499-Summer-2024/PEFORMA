@@ -60,11 +60,7 @@ function Login() {
   return (
     <div className="login-container">
       <header className="login-header">
-        <div className="logo">PEFORMA</div>
-        <nav>
-          <a href="#support">Support</a>
-          <button href="#login">Login</button>
-        </nav>
+        <h2 className="logo">PEFORMA</h2>
       </header>
       <div className="login-form-container">
         <form onSubmit={handleSubmit}>
@@ -83,8 +79,8 @@ function Login() {
             placeholder="Password"
             required
           />
-          <a href="#forgot">Forgot password?</a>
-          <button type="submit">Log In</button>
+          <a id="forgot" href="#forgot">Forgot password?</a>
+          <button type="submit" role="button">Log In</button>
         </form>
       </div>
     </div>
