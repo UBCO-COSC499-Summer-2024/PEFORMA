@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const loginRouter = require('./routes/logincheck'); // 确保路径正确
+const profileRoutes = require('./routes/profileRoutes');
 //const serverRouter = require('./routes/server')
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
@@ -17,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// console.log('before:');
+console.log('before:');
 
 //login pprocess
 app.use('/',queryAccountRouter);//serach account in db
@@ -34,7 +35,11 @@ app.use('/',AccountTypeRouter);//check account type
 // Course list retrieval process
 app.use('/api/courses', courseRoutes); 
 
-// console.log('after');
+//Profile BE
+app.use('/api/instructorProfile',profileRoutes);
+
+console.log('after');
+
 
 const port = 3001;
 app.listen(port, () => {
