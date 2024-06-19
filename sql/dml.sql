@@ -408,8 +408,8 @@ INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "ter
 (14, 73, 20244),   -- William Anderson: Advanced Mechanics, Summer 2024 Term 2
 (15, 77, 20244),   -- Ava Martinez: Advanced Quantum Mechanics, Summer 2024 Term 2
 (1, 79, 20244),    -- John Doe: Elementary Statistics, Summer 2024 Term 2
-(2, 80, 20244);    -- Jane Allison Smith: Introduction to Probability, Summer 2024 Term 2
--- (14, 80, 20244);   -- William Anderson: Introduction to Probability, Summer 2024 Term 2
+(2, 80, 20244),    -- Jane Allison Smith: Introduction to Probability, Summer 2024 Term 2
+(14, 80, 20244);   -- William Anderson: Introduction to Probability, Summer 2024 Term 2
 
 -- SurveyType (Assuming 1=SEI)
 INSERT INTO public."SurveyType" ("surveyTypeId", "surveyType") VALUES
