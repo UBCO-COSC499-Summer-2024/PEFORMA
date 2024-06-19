@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
     const login = (token, expiresIn) => {
         const tokenString = JSON.stringify(token);
         //alert(`expire time: ${expiresIn}`);
-        const tokenString = JSON.stringify(token);
         setAuthToken(token);
         localStorage.setItem('authToken', tokenString);
 
