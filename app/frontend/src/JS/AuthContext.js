@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = async () => await useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken'));
