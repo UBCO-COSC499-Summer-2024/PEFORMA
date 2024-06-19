@@ -33,13 +33,13 @@ async function getFormattedCourseData(divisionCode) {
             ARRAY_AGG(p."firstName" || ' ' || p."lastName") AS instructor,
             ARRAY_AGG(p."UBCId") AS ubcid, 
             ARRAY_AGG(p."email") AS email,
-            c."divisonId" AS division_id
+            c."divisionId" AS division_id
         FROM public."Course" c
         JOIN public."InstructorTeachingAssignment" a ON c."courseId" = a."courseId"
         JOIN public."Profile" p ON p."profileId" = a."profileId"
         WHERE ($1 = 0 OR c."divisionId" = $1) AND a."term" = $2  
-        GROUP BY c."courseNum", c."ctitle"
-        ORDER BY c."courseNum" ASC;
+        GROUP BY c."courseNum", c."ctitle", c."divisionId"
+        ORDER BY c."divisionId" ASC, c."courseNum" ASC;
     `, [divisionId, currTerm]);
 
     // Reformat the data
