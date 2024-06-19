@@ -1,7 +1,10 @@
 ## Wednesday (6/19/2024)
 
 ### Timesheet
-![alt text]()
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.14-6.18/6.1.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.14-6.18/6.1.2.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.14-6.18/6.1.3.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.14-6.18/6.1.4.png)
 
 ### Current Tasks
   * #1: Publish one of the department page (Not defined yet) Probably showing service roles list.
