@@ -10,7 +10,7 @@
   * #1: Publish one of the department page (Not defined yet) Probably showing service roles list.
   * #2: Let BE know what kind of data retrival is needed.
 
-### Progress Update (since 6/5/2024)
+### Progress Update (since 6/14/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
