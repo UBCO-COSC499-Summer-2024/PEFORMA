@@ -20,17 +20,13 @@ function PerformanceInstructorPage() {
 	};
 	const [profile, setProfile] = useState(initProfile);
 
-	
-	console.log("asdhaighsdf");
-	console.log(profileId);
-
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await axios.get('http://localhost:3000/profileSample.json?ubcid=' + ubcid); //replace it to api
+			const res = await axios.get(`http://localhost:3000/profileSample.json?ubcid=${ubcid}&profileId=${profileId}`); //replace it to api
 			return res.data;
 		};
 		fetchData().then((res) => setProfile(res));
-	}, []);
+	}, [ubcid, profileId]);
 
 	return (
 		<div className="dashboard-container">
