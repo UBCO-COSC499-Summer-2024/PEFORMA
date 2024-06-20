@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
+import {CreateSidebarDept, CreateTopSearchBarDept } from '../commonImports.js';
 import '../../CSS/Department/DeptCourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -17,6 +17,7 @@ function showCourses(deptCourseList, offset){
 function DeptCourseList() {
 
   const [deptCourseList, setDeptCourseList] = useState({"courses":[{}], coursesCount:0, perPage: 10, currentPage: 1});
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchData = async() => {
@@ -58,7 +59,7 @@ function DeptCourseList() {
     <div className="dashboard">  
     <CreateSidebarDept />
     <div className='container'>
-      <CreateTopbar />
+      <CreateTopSearchBarDept onSearch={setSearch}/>
 
       <div className='main'>
 
