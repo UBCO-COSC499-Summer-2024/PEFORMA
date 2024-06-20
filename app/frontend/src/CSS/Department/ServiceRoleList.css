@@ -1,0 +1,99 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.main {
+  flex-grow: 1;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.role-table {
+  position: relative;
+  width: 100%; 
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.role-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.role-table th, .role-table td {
+  padding: 1em;
+  text-align: left;
+  border-bottom: 1px solid #cfcfcfee;
+}
+
+.role-table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: bold;
+}
+
+.role-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.role-table th:nth-child(1), .role-table td:nth-child(1) {
+  padding-left: 2em;
+  width: 20%; 
+}
+
+.role-table th:nth-child(2), .role-table td:nth-child(2) {
+  width: 15%; 
+}
+
+.role-table th:nth-child(3), .role-table td:nth-child(3) {
+  width: 30%; 
+}
+
+.role-table table tbody {
+  height: 48em;
+}
+
+.role-table table tbody tr{
+  height: 4em;
+}
+
+.role-table tfoot .pagination {
+  display: flex;
+  padding: 0.5em;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-table tfoot .pagination li {
+  margin: 0 0.25em;
+}
+
+.role-table tfoot .pagination li:hover {
+  cursor: pointer;
+}
+
+.pagination li a {
+  padding: 5px 10px;
+  border: 1px solid #ffffff;
+  color: #000;
+  text-decoration: none;
+
+}
+
+.pagination li.active a {
+  background-color: var(--blue);
+  color: white;
+}
+
+.subtitle-role {
+  font-size: 1.5em;
+  padding-bottom: 40px;
+}
