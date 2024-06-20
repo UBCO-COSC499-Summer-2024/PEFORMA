@@ -16,19 +16,30 @@ function showRoles(roleData, offset){
 function ServiceRoleList() {
 
   const [roleData, setRoleData] = useState({"roles":[{}], rolesCount:0, perPage: 10, currentPage: 1});
+  
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    //const divisionCode = params.get('division');
     const fetchData = async() => {
       const url = "http://localhost:3000/serviceRoles.json";
       const res = await axios.get(url);
-      setRoleData(res.data);
-      return res.data;
+      const data = res.data;
+      const filledRoles = fillEmptyRoles(data.roles, data.perPage);
+      setRoleData({ ...data, roles: filledRoles });
     }
-
-    fetchData().then(res => setRoleData(res));
+    fetchData();
   }, []);
+
+  const fillEmptyRoles = (roles, perPage) => {
+    const filledRoles = [...roles];
+    const currentCount = roles.length;
+    const fillCount = perPage - (currentCount % perPage);
+    if (fillCount < perPage) {
+      for (let i  = 0; i < fillCount; i++) {
+        filledRoles.push({});
+      }
+    }
+    return filledRoles;
+  }
 
   const handlePageClick = (data) => {
     setRoleData(prevState => ({
@@ -76,9 +87,6 @@ function ServiceRoleList() {
               })}
 
             </tbody>
-
-           
-
           </table>
 
           <tfoot>

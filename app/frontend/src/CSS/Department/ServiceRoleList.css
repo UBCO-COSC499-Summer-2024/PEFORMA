@@ -45,11 +45,11 @@
 
 .role-table th:nth-child(1), .role-table td:nth-child(1) {
   padding-left: 2em;
-  width: 10%; 
+  width: 20%; 
 }
 
 .role-table th:nth-child(2), .role-table td:nth-child(2) {
-  width: 10%; 
+  width: 15%; 
 }
 
 .role-table th:nth-child(3), .role-table td:nth-child(3) {
@@ -91,4 +91,8 @@
 .pagination li.active a {
   background-color: var(--blue);
   color: white;
+}
+
+.subtitle-role {
+  font-size: 1.5em;
 }
