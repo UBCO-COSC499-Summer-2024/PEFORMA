@@ -79,7 +79,7 @@ function DeptCourseList() {
             {currentCourses.map(course => {
                 return (
                   <tr key={course.id}>
-                    <td>{course.id}</td>
+                    <td><Link to={`http://localhost:3000/CourseInformation?courseid=${(course.id)}`}>{course.courseCode}</Link></td>
                     <td>{course.title}</td>
                     <td>{course.description}</td>
                   </tr>
