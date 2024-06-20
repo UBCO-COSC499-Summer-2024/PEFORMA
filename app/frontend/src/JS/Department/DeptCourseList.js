@@ -62,10 +62,11 @@ function DeptCourseList() {
 
       <div className='main'>
 
-        <div className='subtitle-dept-course-list'>List of Course Lists ({deptCourseList.coursesCount} Active)</div>
+        <div className='subtitle-course'>List of Course Lists ({deptCourseList.coursesCount} Active) </div>
 
-        <div className='dcourse-table'> </div>
+        <div className="dcourse-table">
           <table>
+
             <thead>
               <tr>
                 <th>Course</th>
@@ -75,18 +76,20 @@ function DeptCourseList() {
             </thead>
 
             <tbody>
-              {currentCourses.map(course => {
+            {currentCourses.map(course => {
                 return (
                   <tr key={course.id}>
                     <td>{course.id}</td>
                     <td>{course.title}</td>
                     <td>{course.description}</td>
                   </tr>
-                )
+                );
               })}
+
             </tbody>
+
             <tfoot>
-            <ReactPaginate
+              <ReactPaginate
                 previousLabel={'<'}
                 nextLabel={'>'}
                 breakLabel={'...'}
@@ -98,7 +101,10 @@ function DeptCourseList() {
                 activeClassName={'active'}
               />
             </tfoot>
+
           </table>
+        </div>
+
       </div>
     </div>
   </div>
