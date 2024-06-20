@@ -5,8 +5,6 @@
 2. 
 3. 
 
-Closes #
-
 ## Type of change
 
 - [ ] Logs
@@ -25,4 +23,6 @@ Closes #
 ## Persisting Bugs
 
 1.
-2. 
+2.
+
+Closes #
