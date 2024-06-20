@@ -61,7 +61,7 @@ function ServiceRoleList() {
       
       <div className='main'>
 
-        <div className='subtitle-role'>List of Serivce Roles</div>
+        <div className='subtitle-role'>List of Serivce Roles ({roleData.rolesCount} Active) </div>
         
         <div className="role-table">
           <table>
