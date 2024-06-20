@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const loginRouter = require('./routes/logincheck'); // 确保路径正确
 const profileRoutes = require('./routes/profileRoutes');
+const performanceRoutes = require('./routes/performanceRoutes');
 //const serverRouter = require('./routes/server')
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
@@ -34,6 +35,8 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
+//Performance BE
+app.use('/api/instructorPerformance',performanceRoutes);
 
 //Profile BE
 

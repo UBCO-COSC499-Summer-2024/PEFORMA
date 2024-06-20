@@ -1,52 +1,37 @@
 const  pool = require('../db/index.js'); // Adjust the path as necessary for your db connection
 console.log(pool); // See what pool actually is
 
-exports.getUserProfile = async (req, res) => {
+exports.getWorkingHours = async (req, res) => {
+    const profileId = req.query.profileId;
+    //console.log("UBC ID is: ",ubcId); 
+    console.log("ProfileID is: ", profileId);l
 
-    let ubcId = req.query.ubcid;
-    let profileId = req.query.profileId;
-    console.log(profileId);  
-    console.log("Received ubcId:", ubcId); // Log the received ubcId for debugging 
+
+    //Working hours
+    //January to December working hours and AVG working hour
     try {
-        let query;
-        let result;
-        if(profileId == null){
-            query = `SELECT * FROM "Profile" WHERE "UBCId" = $1;`;
-            //let result = await pool.query(query, [id]);
-            result = await pool.query(query,[ubcId]);
-            console.log("Executing query:", query);
-            console.log("With parameters:", [ubcId]);
-            if (result.rows.length === 0) {
-                return res.status(404).json({ message: 'User not found' });
-            }
-
-        }
-        else if(ubcId == null){
-            query = `SELECT * FROM "Profile" WHERE "profileId" = $1;`;
-            //let result = await pool.query(query, [id]);
-            result = await pool.query(query,[profileId]);
-            console.log("Executing query:", query);
-            console.log("With parameters:", [profileId]);
-            if (result.rows.length === 0) {
-                return res.status(404).json({ message: 'User not found' });
-            }
+        let query = `SELECT * FROM "Profile" WHERE "profileId" = $1;`;
+        //let result = await pool.query(query, [id]);
+        let result = await pool.query(query,[profileId]);
+        console.log("Executing query:", query);
+        console.log("With parameters:", [profileId]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
     
         // Extract profile information
         const row = result.rows[0];
-        if(profileId==null)
-            profileId = row.profileId;
+        //const profileId = row.profileId;
         const firstName = row.firstName;
         const middleName = row.middleName || '';  // Use an empty string if middleName is null
         const lastName = row.lastName;
         const name = `${firstName} ${middleName} ${lastName}`.trim();  // Construct full name and trim any extra spaces
         const benchmark = row.sRoleBenchmark;
-        if(ubcId==null)
-            ubcId = row.UBCId;
+        const ubcId = row.UBCId;
         const email = row.email;
-        const phoneNum = row.phoneNum;
-        const office = `${row.officeBuilding} ${row.officeNum}`;  // Construct office info
+        //const phoneNum = row.phoneNum;
+        //const office = `${row.officeBuilding} ${row.officeNum}`;  // Construct office info
         query = `
             SELECT sr.stitle
             FROM "ServiceRoleAssignment" "sra"
@@ -82,8 +67,8 @@ exports.getUserProfile = async (req, res) => {
             benchmark:benchmark,
             roles:roles,
             email: email,
-            phoneNum: phoneNum,
-            office: office,
+            // phoneNum: phoneNum,
+            // office: office,
             teachingAssignments:teachingRoles
         };    
         // Send response
