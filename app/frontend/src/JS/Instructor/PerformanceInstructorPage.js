@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../../CSS/Instructor/PerformanceInstructorPage.css';
 import CreateSidebar, {
 	CreateLeaderboardChart,
@@ -10,8 +11,11 @@ import CreateSidebar, {
 import { useAuth } from '../AuthContext';
 
 function PerformanceInstructorPage() {
-	const params = new URLSearchParams(window.location.search);
-	const ubcid = params.get('ubcid');
+	const navigate = useNavigate();
+	//const params = new URLSearchParams(window.location.search);
+	//const ubcid = params.get('ubcid');
+	//console.log("UBC ID initialized: ",ubcid);
+	const { authToken } = useAuth();
 	const {profileId} = useAuth();
 
 	const initProfile = {
@@ -22,12 +26,32 @@ function PerformanceInstructorPage() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await axios.get(`http://localhost:3000/profileSample.json?ubcid=${ubcid}&profileId=${profileId}`); //replace it to api
-			return res.data;
+		  try {
+			if (!authToken) {
+			  navigate('/Login');
+			  return;
+			}
+			const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
+			  params: {profileId:profileId }, // Add ubcid and profileId as query parameter
+			  headers: { Authorization: `Bearer ${authToken.token}` }
+			});
+			console.log(response);
+	
+			if (response.data) {
+			  setProfile(response.data);
+			}
+		  } catch (error) {
+			if (error.response && error.response.status === 401) {
+			  localStorage.removeItem('authToken');
+			  navigate('/Login');
+			} else {
+			  console.error('Error fetching instructor profile:', error);
+			}
+		  }
 		};
-		fetchData().then((res) => setProfile(res));
-	}, [ubcid, profileId]);
-
+	
+		fetchData();
+	  }, [authToken, profileId, navigate]);
 	return (
 		<div className="dashboard-container">
 			<CreateSidebar />
