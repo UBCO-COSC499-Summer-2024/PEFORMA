@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import CreateSidebar, { CreateTopbar } from '../commonImports.js';
+import CreateSidebar, { CreateTopSearchbarIns } from '../commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -25,6 +25,7 @@ function CourseList() {
   };
   
   const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10, currentPage: 1});
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -65,7 +66,13 @@ function CourseList() {
       currentPage: data.selected + 1
     }))
   };
-  
+
+  const handleSearchChange = (newSearch) => {
+    console.log("Searched:", newSearch);
+    setSearch(newSearch);
+    setDivisionData(prevState => ({ ...prevState, currentPage: 1 }));
+  };
+
   const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
   const currentCourses = showCourses(divisionData, offset);
   const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
@@ -75,7 +82,7 @@ function CourseList() {
     <div className="dashboard">  
     <CreateSidebar />
     <div className='container'>
-      <CreateTopbar />
+      <CreateTopSearchbarIns onSearch={handleSearchChange} />
 
       <div className="main">
 
