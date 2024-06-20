@@ -13,7 +13,8 @@ import ServiceRoleManagement from "./JS/Department/ServiceRoleManagement";
 import CreateAccount from "./JS/Admin/CreateAccount";
 import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
-
+import ServiceRoleList from './JS/Department/ServiceRoleList';
+import RoleInformation from './JS/Department/RoleInformation';
 
 import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
@@ -34,7 +35,8 @@ function App() {
         <Route path="/DataEntry" element={<DataEntry />} />
         <Route path="/ServiceRoleManagement" element={<ServiceRoleManagement />} />
         <Route path="/CreateAccount" element={<CreateAccount />} />
-        
+        <Route path="/ServiceRoleList" element={<ServiceRoleList />} />
+        <Route path="/RoleInformation" element={<RoleInformation />} />
       </Routes></AuthProvider>
     </BrowserRouter>
   
