@@ -53,9 +53,9 @@ function CreateLeaderboardChart(){
     )
 }
 
-function CreateTopSearchBarDept(){
+function CreateTopSearchBarDept({ onSearch }){
     return (
-        <TopSearchBarDept />
+        <TopSearchBarDept onSearch={ onSearch }/>
     )
 }
 

@@ -2,17 +2,9 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import {CreateSidebarDept, CreateTopSearchBarDept } from '../commonImports.js';
 import '../../CSS/Department/DeptCourseList.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../common/divisions.js';
 import axios from 'axios';
-
-
-function showCourses(deptCourseList, offset){
-  if (deptCourseList.coursesCount > 10) {
-    return deptCourseList.courses.slice(offset, offset + deptCourseList.perPage);
-  }
-  return deptCourseList.courses;
-}
 
 function DeptCourseList() {
 
@@ -30,6 +22,16 @@ function DeptCourseList() {
     fetchData();
   }, []);
 
+  const filteredCourses = deptCourseList.courses.filter(course =>
+    (course.courseCode?.toLowerCase() ?? "").includes(search.toLowerCase()) ||
+    (course.title?.toLowerCase() ?? "").includes(search.toLowerCase())
+  );
+
+  const currentCourses = filteredCourses.slice(
+    (deptCourseList.currentPage - 1) * deptCourseList.perPage,
+    deptCourseList.currentPage * deptCourseList.perPage
+  );
+
   const fillEmptyCourses = (courses, perPage) => {
     const filledCourses = [...courses];
     const currentCount = courses.length;
@@ -41,25 +43,28 @@ function DeptCourseList() {
     }
     return filledCourses;
   }
-
+  const handleSearchChange = (newSearch) => {
+    console.log("Searched:", newSearch);
+    setSearch(newSearch);
+    setDeptCourseList(prevState => ({ ...prevState, currentPage: 1 }));
+  };
 
   const handlePageClick = (data) => {
     setDeptCourseList(prevState => ({
       ...prevState,
       currentPage: data.selected + 1
-    }))
+    }));
   };
+  
 
   const pageCount = Math.ceil(deptCourseList.coursesCount / deptCourseList.perPage);
-  const offset = (deptCourseList.currentPage - 1) * deptCourseList.perPage;
-  const currentCourses = showCourses(deptCourseList, offset);
 
   return (
 
     <div className="dashboard">  
     <CreateSidebarDept />
     <div className='container'>
-      <CreateTopSearchBarDept onSearch={setSearch}/>
+      <CreateTopSearchBarDept onSearch={handleSearchChange}/>
 
       <div className='main'>
 
@@ -90,7 +95,7 @@ function DeptCourseList() {
             </tbody>
 
             <tfoot>
-              <ReactPaginate
+              <ReactPaginate        
                 previousLabel={'<'}
                 nextLabel={'>'}
                 breakLabel={'...'}
@@ -100,6 +105,7 @@ function DeptCourseList() {
                 onPageChange={handlePageClick}
                 containerClassName={'pagination'}
                 activeClassName={'active'}
+                forcePage={deptCourseList.currentPage - 1} 
               />
             </tfoot>
 
