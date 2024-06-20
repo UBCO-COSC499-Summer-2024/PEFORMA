@@ -1,0 +1,19 @@
+{"currentPage":1, "perPage": 10, "coursesCount":15,
+    "courses":[
+      { "id": "COSC 101", "title": "Digital Citizenship", "description":"description testing"},
+      { "id": "COSC 111", "title": "Computer Programming I", "description":"description testing"},
+      { "id": "COSC 123", "title": "Computer Creativity", "description":"description testing"},
+      { "id": "COSC 304", "title": "Introduction to Database", "description":"Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies. " },
+      { "id": "COSC 211", "title": "Machine Architecture", "description":"description testing" },
+      { "id": "COSC 221", "title": "Introduction to Discrete Structures", "description":"description testing"},
+      { "id": "STAT 121", "title": "Elementary Statistics", "description":"description testing"},
+      { "id": "PHYS 205", "title": "Introduction to Mathematical Statistics","description":"description testing"},
+      { "id": "PHYS 400", "title": "Statistical Communication and Consulting", "description":"description testing"},
+      { "id": "COSC 341", "title": "Human computer Interaction","description":"description testing"},
+      { "id": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering","description":"description testing"},
+      { "id": "TEST 111", "title": "Testing 123","description":"description testing"},
+      { "id": "TEST 222", "title": "Testing 456","description":"description testing"},
+      { "id": "TEST 333", "title": "Testing 789","description":"description testing"},
+      { "id": "TEST 444", "title": "Testing 2nd page","description":"description testing"}
+    ]
+}
