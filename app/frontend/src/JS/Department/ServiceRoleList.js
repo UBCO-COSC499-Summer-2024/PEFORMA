@@ -79,7 +79,7 @@ function ServiceRoleList() {
             {currentRoles.map(role => {
                 return (
                   <tr key={role.name}>
-                    <td>{role.name}</td>
+                    <td><Link to={`http://localhost:3000/RoleInformation?roleid=${(role.id)}`}>{role.name}</Link></td>
                     <td>{role.department}</td>
                     <td>{role.description}</td>
                   </tr>
