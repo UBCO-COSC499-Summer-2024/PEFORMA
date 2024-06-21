@@ -110,7 +110,7 @@ let i = 0;
                 return (
                   <tr key={assignee.instructorID}>
                     <td>
-                      <Link to={`/DepartmentProfilePage?roleid=${(assignee.instructorID)}`}>{assignee.name} ID:{assignee.instructorID}</Link>
+                      <Link to={`/DepartmentProfilePage?ubcid=${(assignee.instructorID)}`}>{assignee.name} ID:{assignee.instructorID}</Link>
                     </td>
                   </tr>
                 );

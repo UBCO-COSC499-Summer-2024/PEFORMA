@@ -136,7 +136,12 @@ p {
  tr {
     height: 2.5em;
   }
-  
+
+  table tfoot tr td {
+    border: 0px;
+    padding-top: 0em;
+  }
+
   .pagination li.active a {
     background-color: var(--blue);
     color: white;
