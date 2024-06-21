@@ -51,7 +51,7 @@ async function getFormattedCourseData(divisionCode) {
     const formattedData = {
         division: divisionCode, 
         divisionLabel: divisionLabel, 
-        currPage: 1,
+        currentPage: 1,
         perPage: 10,
         divisionCoursesCount: result.rows.length > 0 ? result.rows[0].division_courses_count : 0,
         courses: result.rows.map(row => {
