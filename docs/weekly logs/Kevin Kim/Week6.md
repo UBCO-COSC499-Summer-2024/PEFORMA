@@ -1,3 +1,67 @@
+# Week 6
+## Friday (6/13/2024)
+
+### Timesheet
+![alt text]()
+![alt text]()
+
+### Current Tasks
+  * #1: Discuss what data would be used for department performance page
+  * #2: Implement department performance page
+
+### Progress Update (since 6/5/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+        <td><strong>NOTES</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#183, #185: Service role list (Department view)
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Finished implementing service role list and added new feature of adding empty rows to match units of 10 (formatting table).
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#188, #185, #189: Course list (Department view)
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Finished implementing course list for department view and added 2 more features of search function and formatting table by adding empty rows
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#195, #196: Update course list (Instructor view) 
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Updated implementing search function and formating function on the course list that was previosuly implemented
+        </td>
+    </tr>
+
+</table>
+
+### Weekly Goal Review
+  * Within 2 days of short cycle, my goal was to finish at least one page of MVP for FE however, I was able to manage two pages with new features which are search function and formating function. I think Im satisfied with what I have worked on this cycle.
+
+### Next Cycle Goals
+  * I am going to visit my family tomorrow until next monday so I hope I could work when I get back on tuesday. I will implement a performance page for department view on next tuesday. I have noticed my team a month advance, no problems at all for now!
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Wednesday (6/19/2024)
 
 ### Timesheet
