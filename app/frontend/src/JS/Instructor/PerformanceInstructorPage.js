@@ -26,8 +26,6 @@ function PerformanceInstructorPage() {
 	const [profile, setProfile] = useState(initProfile);
 
 	useEffect(() => {
-		const date = new Date();
-		const currentMonth = date.getMonth() + 1;
 
 		const fetchData = async () => {
 		  try {
@@ -37,7 +35,7 @@ function PerformanceInstructorPage() {
 			}
 			const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
 			  params: { 
-					profileId:profileId, currentMonth:currentMonth 
+					profileId:profileId 
 				}, 
 			  headers: { Authorization: `Bearer ${authToken.token}` }
 			});
