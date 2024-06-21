@@ -11,7 +11,7 @@
   * #2: Start working on the login page frontend
   * #3: Start creating the data entry page frontend
 
-### Progress Update (since 06/07/2024)
+### Progress Update (since 06/14/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
@@ -66,3 +66,63 @@ for both those pages.
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Friday (06/21/2024)
+
+### Timesheet
+![alt text](Clockify/week6-2.png)
+
+### Current Tasks
+  * #1: Continue working on the Role Information page
+  * #2: Start working on the Course Information page
+  * #3: Start working on the Data Entry page
+
+### Progress Update (since 06/19/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Fix error involving the login test
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Finish the role info page
+        </td>
+        <!-- Status -->
+        <td>In Progress
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Finish the course info page
+        </td>
+        <!-- Status -->
+        <td>Incomplete
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Finish the data entry page
+        </td>
+        <!-- Status -->
+        <td>Incomplete
+        </td>
+    </tr>
+
+    
+</table>
+
+### Cycle Goal Review
+This cycle went very successfuly for me. On wednesday I fixed a pesky error that was causing the tests to fail, and today (thursday) I made a lot of progress on the Service Role Information page.
+
+### Next Cycle Goals
+  * Complete the service role info page
+  * Complete all other pages assigned to me (Course Info, data entry)
+  * Ensure all pages are properly tested
