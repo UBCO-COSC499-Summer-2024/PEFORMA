@@ -11,6 +11,7 @@ import InstructorProfilePage from "./JS/Instructor/InstructorProfilePage";
 import DataEntry from "./JS/Department/DataEntry";
 import ServiceRoleManagement from "./JS/Department/ServiceRoleManagement";
 import CreateAccount from "./JS/Admin/CreateAccount";
+import DeptCourseList from "./JS/Department/DeptCourseList";
 import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 import ServiceRoleList from './JS/Department/ServiceRoleList';
@@ -35,8 +36,13 @@ function App() {
         <Route path="/DataEntry" element={<DataEntry />} />
         <Route path="/ServiceRoleManagement" element={<ServiceRoleManagement />} />
         <Route path="/CreateAccount" element={<CreateAccount />} />
+
         <Route path="/ServiceRoleList" element={<ServiceRoleList />} />
         <Route path="/RoleInformation" element={<RoleInformation />} />
+
+        <Route path="/DeptCourseList" element={<DeptCourseList />} />
+
+        
       </Routes></AuthProvider>
     </BrowserRouter>
   

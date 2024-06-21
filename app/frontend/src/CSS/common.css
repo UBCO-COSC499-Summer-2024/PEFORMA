@@ -114,5 +114,24 @@ h2 {
 
 .menu .icon {
   margin-right: 10px;
-  font-size: 1.5em;
+  font-size: 1.2em;
+}
+
+/* Top Search Bar for dept course list */
+.topbar-search {
+  display: flex;
+  align-items: center;
+  height: 4em;
+  justify-content: space-between; 
+  padding: 0.5rem 1rem; 
+  background-color: #f8f9fa; 
+  border-bottom: 1px solid #ccc; 
+}
+
+.topbar-search input[type="text"] {
+  font-size: 1em;
+  width: 70%;
+  padding: 1em 0.5em 0.5em 0.5em;
+  border: 1px solid #ddd; 
+  border-radius: 0.5em;
 }
