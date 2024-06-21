@@ -54,6 +54,17 @@
     </tr>
     <tr>
         <!-- Task/Issue # -->
+        <td>Add progress chart in performance page
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Added progress chart for benchmark as requested
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
         <td>Testing service role list
         </td>
         <!-- Status -->
