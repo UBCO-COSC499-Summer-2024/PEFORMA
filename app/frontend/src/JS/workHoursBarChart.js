@@ -20,8 +20,8 @@ function WorkHoursBarChart() {
             dataLabels: {enabled: false},
             legend: {show: true,
                     showForSingleSeries: true,
-                    customLegendItems: ['Worked Hours', 'Average Working Hours'],
-                    markers: {fillColors: ['#00E396', '#775DD0']}
+                    customLegendItems: ['Service Hours'],
+                    markers: {fillColors: ['#00E396']}
                     }
             },
     });
