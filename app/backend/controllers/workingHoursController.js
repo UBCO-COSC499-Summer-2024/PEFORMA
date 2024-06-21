@@ -54,7 +54,7 @@ exports.getWorkingHours = async (req, res) => {
         }, { JANHour: 0, FEBHour: 0, MARHour: 0, APRHour: 0, MAYHour: 0, JUNHour: 0, JULHour: 0, AUGHour: 0, SEPHour: 0, OCTHour: 0, NOVHour: 0, DECHour: 0 });
         
         // Now you can use `totals` to access the summed values
-        console.log("Total Hour for each month is: ",totals);  // Log the summed hours for each month
+        //console.log("Total Hour for each month is: ",totals);  // Log the summed hours for each month
        
         //Retrieve Average Working Hour for all the service roles in specific division
         const avgWorkHour = {
@@ -73,20 +73,116 @@ exports.getWorkingHours = async (req, res) => {
         };
 
         //Formatting the data to designated format
-        const formattedData = [
-            { x: "January", y: totals.JANHour, avgWorkHour: avgWorkHour.JANHour },
-            { x: "February", y: totals.FEBHour, avgWorkHour: avgWorkHour.FEBHour },
-            { x: "March", y: totals.MARHour, avgWorkHour: avgWorkHour.MARHour },
-            { x: "April", y: totals.APRHour, avgWorkHour: avgWorkHour.APRHour },
-            { x: "May", y: totals.MAYHour, avgWorkHour: avgWorkHour.MAYHour },
-            { x: "June", y: totals.JUNHour, avgWorkHour: avgWorkHour.JUNHour },
-            { x: "July", y: totals.JULHour, avgWorkHour: avgWorkHour.JULHour },
-            { x: "August", y: totals.AUGHour, avgWorkHour: avgWorkHour.AUGHour },
-            { x: "September", y: totals.SEPHour, avgWorkHour: avgWorkHour.SEPHour },
-            { x: "October", y: totals.OCTHour, avgWorkHour: avgWorkHour.OCTHour },
-            { x: "November", y: totals.NOVHour, avgWorkHour: avgWorkHour.NOVHour },
-            { x: "December", y: totals.DECHour, avgWorkHour: avgWorkHour.DECHour }
-        ];
+        const currentMonth = parseInt(req.query.currentMonth);
+        console.log("CurrentMonth: ", currentMonth);
+        let formattedData = [];
+        switch(currentMonth){
+      case 9:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        break;
+      case 10:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        break;
+      case 11:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        break;
+      case 12:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        break;
+      case 1:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        formattedData.push({ x: "January", y: totals.JANHour });
+        break;
+      case 2:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        formattedData.push({ x: "January", y: totals.JANHour });
+        formattedData.push({ x: "February", y: totals.FEBHour });
+        break;
+      case 3:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        formattedData.push({ x: "January", y: totals.JANHour });
+        formattedData.push({ x: "February", y: totals.FEBHour });
+        formattedData.push({ x: "March", y: totals.MARHour });
+        break;
+      case 4:
+       
+      formattedData.push({ x: "September", y: totals.SEPHour });
+      formattedData.push({ x: "October", y: totals.OCTHour });
+      formattedData.push({ x: "November", y: totals.NOVHour });
+      formattedData.push({ x: "December", y: totals.DECHour });
+      formattedData.push({ x: "January", y: totals.JANHour });
+      formattedData.push({ x: "February", y: totals.FEBHour });
+      formattedData.push({ x: "March", y: totals.MARHour });
+      formattedData.push({ x: "April", y:totals.APRHour});
+            
+        break;
+      case 5:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        formattedData.push({ x: "January", y: totals.JANHour });
+        formattedData.push({ x: "February", y: totals.FEBHour });
+        formattedData.push({ x: "March", y: totals.MARHour });
+        formattedData.push({ x: "April", y:totals.APRHour});
+        formattedData.push({ x: "May", y:totals.MAYHour});
+        break;
+      case 6:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        formattedData.push({ x: "January", y: totals.JANHour });
+        formattedData.push({ x: "February", y: totals.FEBHour });
+        formattedData.push({ x: "March", y: totals.MARHour });
+        formattedData.push({ x: "April", y:totals.APRHour});
+        formattedData.push({ x: "May", y:totals.MAYHour});
+        formattedData.push({ x: "June", y:totals.JUNHour});
+        break;
+      case 7:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        formattedData.push({ x: "January", y: totals.JANHour });
+        formattedData.push({ x: "February", y: totals.FEBHour });
+        formattedData.push({ x: "March", y: totals.MARHour });
+        formattedData.push({ x: "April", y:totals.APRHour});
+        formattedData.push({ x: "May", y:totals.MAYHour});
+        formattedData.push({ x: "June", y:totals.JUNHour});
+        formattedData.push({ x: "July", y:totals.JULHour});
+        break;
+      case 8:
+        formattedData.push({ x: "September", y: totals.SEPHour });
+        formattedData.push({ x: "October", y: totals.OCTHour });
+        formattedData.push({ x: "November", y: totals.NOVHour });
+        formattedData.push({ x: "December", y: totals.DECHour });
+        formattedData.push({ x: "January", y: totals.JANHour });
+        formattedData.push({ x: "February", y: totals.FEBHour });
+        formattedData.push({ x: "March", y: totals.MARHour });
+        formattedData.push({ x: "April", y:totals.APRHour});
+        formattedData.push({ x: "May", y:totals.MAYHour});
+        formattedData.push({ x: "June", y:totals.JUNHour});
+        formattedData.push({ x: "July", y:totals.JULHour});
+        formattedData.push({ x: "August", y:totals.AUGHour});
+        break;
+        }
+        console.log("Output :", formattedData);
         const output = { data: formattedData };
         res.json(output);
     } catch (error) {
