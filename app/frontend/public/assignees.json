@@ -1,10 +1,14 @@
-{"currentPage":1, "perPage": 5, "roleID": 1, "assigneeCount":5,
+{"currentPage":1, "perPage": 5, "roleID": 1, "assigneeCount":7, "roleName":"Assistant Senior Over-Undergraduate Advisor (COSC)",
+ "roleDescription":"Tells students what computer to learn about next.", "department":"Computer Science", "benchmark":67,
     "assignees": [
         {"instructorID":1, "name":"john doe"},
         {"instructorID":2, "name":"john doe"},
         {"instructorID":3, "name":"john doe"},
         {"instructorID":4, "name":"john doe"},
-        {"instructorID":5, "name":"john doe"}
+        {"instructorID":5, "name":"jerry doe"},
+        {"instructorID":6, "name":"john doe"},
+        {"instructorID":7, "name":"john doe"}
+        
 ]}
     
   

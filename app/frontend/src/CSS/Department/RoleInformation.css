@@ -61,3 +61,90 @@ p {
 #deactivate:hover {
     background-color: var(--darkRed);
 }
+
+.assigneeTable {
+    border: solid 1px var(--darkestestGrey);
+    border-radius: 1em;
+    width: 80%;
+}
+
+.assigneeTable table {
+    width: 100%;
+}
+
+.assigneeTable tfoot .pagination {
+    display: flex;
+    padding: 0em 0.5em 0 0.5em;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#assign {
+    background-color: var(--darkerGrey);
+    border: 1px solid var(--black);
+    color: var(--black);
+    height: 3em;
+    width: 12em;
+    text-align: left;
+    padding-top: 0.25em;
+    font-size: larger;
+    transition: background-color 0.1s;
+    margin: 0 0 1em 0;
+}
+
+.plus {
+    border: 1px solid var(--black);
+    padding: 0.5em 0.75em 0.5em 0.75em;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    background-color: var(--darkestGrey);
+    transition: background-color 0.1s;
+}
+
+#assign:hover {
+    background-color: var(--darkestGrey);
+}
+
+#assign:hover > .plus {
+    background-color: var(--darkestestGrey);
+}
+
+.assigneeTable tfoot {
+    display: flex;
+    padding: 0.5em;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.assigneeTable tfoot .pagination li {
+    margin: 0 0.25em;
+  }
+  
+  .assigneeTable tfoot .pagination li:hover {
+    cursor: pointer;
+  }
+
+  .pagination li a {
+    padding: 5px 10px;
+    border: 1px solid #ffffff;
+    color: #000;
+    text-decoration: none;
+  }
+  
+ tr {
+    height: 2.5em;
+  }
+  
+  .pagination li.active a {
+    background-color: var(--blue);
+    color: white;
+  }
+
+  input[type="text"] {
+    width: 40%;
+    height: 1.5em;
+    margin-bottom: 1em;
+    border-radius: 0.25em;
+  }
