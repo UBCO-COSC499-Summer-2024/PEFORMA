@@ -71,7 +71,7 @@ const currentAssignees = filteredAssignees.slice(
   (roleData.currentPage - 1) * roleData.perPage,
   roleData.currentPage * roleData.perPage
 );
-
+let i = 0;
   return (
 
     <div className="dashboard">  
@@ -90,16 +90,18 @@ const currentAssignees = filteredAssignees.slice(
         </div>
 
         <h1 className='roleName'>Assignee's</h1>
-        <button role='button' id="assign"><span class="plus">+</span>Assign People</button>
+        <button role='button' id="assign"><span className="plus">+</span>Assign People</button>
         <p>Current Assignee's</p>
         <input type="text" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
         <div className='assigneeTable'>
         <table>
             <tbody>
+              
             {currentAssignees.map(assignee => {
+              i++;
               if (assignee.instructorID == null) {
                 return (
-                  <tr>
+                  <tr key={i}>
                     <td>
                     </td>
                   </tr>
@@ -115,8 +117,9 @@ const currentAssignees = filteredAssignees.slice(
               }
               })}
             </tbody>
-        </table>
-        <tfoot>
+            <tfoot>
+              <tr>
+                <td>
               <ReactPaginate
                 previousLabel={'<'}
                 nextLabel={'>'}
@@ -128,7 +131,11 @@ const currentAssignees = filteredAssignees.slice(
                 containerClassName={'pagination'}
                 activeClassName={'active'}
               />
+              </td>
+              </tr>
             </tfoot>
+        </table>
+        
           </div>
       </div>
     </div>
