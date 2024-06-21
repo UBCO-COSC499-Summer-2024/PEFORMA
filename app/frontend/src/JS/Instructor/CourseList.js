@@ -7,13 +7,6 @@ import '../common/divisions.js';
 import divisions from '../common/divisions.js';
 import axios from 'axios';
 
-function showCourses (divisionData, offset){
-  if (divisionData.divisionCoursesCount > 10) {
-    return divisionData.courses.slice(offset, offset + divisionData.perPage);
-  }
-  return divisionData.courses;
-}
-
 function CourseList() {
 
   const params = new URLSearchParams(window.location.search);
@@ -58,7 +51,7 @@ function CourseList() {
       setDivisionData({ ...data, courses: filledCourses});
     }
     fetchData();
-  }, [divisionCode]);
+  }, []);
 
   const handlePageClick = (data) => {
     setDivisionData(prevState => ({
@@ -85,9 +78,18 @@ function CourseList() {
     return filledCourses;
   }
 
-  const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
-  const currentCourses = showCourses(divisionData, offset);
   const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
+
+  const filteredCourses = divisionData.courses.filter(course =>
+    (course.id?.toLowerCase() ?? "").includes(search.toLowerCase()) ||
+    (course.title?.toLowerCase() ?? "").includes(search.toLowerCase()) ||
+    (course.instructor && Array.isArray(course.instructor) && course.instructor.some(instructor => instructor.toLowerCase().includes(search.toLowerCase())))
+  );
+
+  const currentCourses = filteredCourses.slice(
+    (divisionData.currentPage - 1) * divisionData.perPage,
+    divisionData.currentPage * divisionData.perPage
+  )
 
   return (
 
