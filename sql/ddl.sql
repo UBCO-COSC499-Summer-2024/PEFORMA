@@ -123,7 +123,7 @@ CREATE TABLE "InstructorTeachingAssignment" (
   "courseId"    integer,
   "term"        integer,
   PRIMARY KEY ("profileId", "courseId", "term"),
-  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term")
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Create survey types
@@ -149,8 +149,8 @@ CREATE TABLE "SurveyQuestionResponse" (
   "profileId"         integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
   "studentId"         integer,
   "response"          varchar(500),
-  FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId"),
-  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term")
+  FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId") ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Create single teaching performances
@@ -160,7 +160,7 @@ CREATE TABLE "SingleTeachingPerformance" (
   "term"        integer,
   "score"       double precision,
   PRIMARY KEY ("profileId", "courseId", "term"),
-  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term")
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
