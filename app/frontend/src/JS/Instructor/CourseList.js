@@ -53,11 +53,11 @@ function CourseList() {
           url = 'http://localhost:3000/divisionCosc.json';
       }
       const res = await axios.get(url);
-      setDivisionData(res.data);
-      return res.data;
+      const data = res.data;
+      const filledCourses = fillEmptyCourses(data.courses, data.perPage);
+      setDivisionData({ ...data, courses: filledCourses});
     }
-
-    fetchData().then(res => setDivisionData(res));
+    fetchData();
   }, [divisionCode]);
 
   const handlePageClick = (data) => {
@@ -72,6 +72,18 @@ function CourseList() {
     setSearch(newSearch);
     setDivisionData(prevState => ({ ...prevState, currentPage: 1 }));
   };
+
+  const fillEmptyCourses = (courses, perPage) => {
+    const filledCourses = [...courses];
+    const currentCount = courses.length;
+    const fillCount = perPage - (currentCount % perPage);
+    if (fillCount < perPage) {
+      for (let i  = 0; i < fillCount; i++) {
+        filledCourses.push({});
+      }
+    }
+    return filledCourses;
+  }
 
   const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
   const currentCourses = showCourses(divisionData, offset);
@@ -108,39 +120,40 @@ function CourseList() {
             </thead>
 
             <tbody>
-              
               {currentCourses.map(course => {
                 return (
                   <tr key={course.id}>
                     <td>{course.id}</td>
                     <td>{course.title}</td>
                     <td>
-                      {Array.isArray(course.instructor) ? course.instructor.map((instructor, index) => (
-                        <React.Fragment key={course.ubcid[index]}>
-                          <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
-                            {instructor} 
+                      {course.instructor ? (
+                        Array.isArray(course.instructor) ? course.instructor.map((instructor, index) => (
+                          <React.Fragment key={course.ubcid[index]}>
+                            <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
+                              {instructor}
+                            </Link>
+                            {index < course.instructor.length - 1 ? <><br/><br/></> : null}
+                          </React.Fragment>
+                        )) : (
+                          <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid}`}>
+                            {course.instructor}
                           </Link>
-                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
-                        </React.Fragment>
-                      )):
-                      <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid}`}>
-                        {course.instructor}<br/>({course.email})
-                      </Link>
-                      }
+                        )
+                      ) : ''}
                     </td>
-
                     <td>
-                      {Array.isArray(course.email) ? course.email.map((email, index) =>
-                        <React.Fragment key={index}>
-                          {email}
-                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
-                        </React.Fragment>  
-                    ) : course.email }
+                      {course.email ? (
+                        Array.isArray(course.email) ? course.email.map((email, index) => (
+                          <React.Fragment key={index}>
+                            {email}
+                            {index < course.email.length - 1 ? <><br/><br/></> : null}
+                          </React.Fragment>
+                        )) : course.email
+                      ) : ''}
                     </td>
                   </tr>
                 );
               })}
-                            
             </tbody>
 
             <tfoot>
