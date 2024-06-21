@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const loginRouter = require('./routes/logincheck'); // 确保路径正确
 const profileRoutes = require('./routes/profileRoutes');
-const performanceRoutes = require('./routes/performanceRoutes');
+const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
@@ -34,9 +34,10 @@ app.use('/',AccountTypeRouter);//check account type
 
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
+app.use('/api/workingHoursRoutes',workingHoursRoutes);
 
 //Performance BE
-app.use('/api/instructorPerformance',performanceRoutes);
+//app.use('/api/instructorPerformance',performanceRoutes);
 
 //Profile BE
 

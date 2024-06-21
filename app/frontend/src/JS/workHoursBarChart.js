@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactApexChart from 'react-apexcharts';
+import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from './AuthContext';
 
 
 function WorkHoursBarChart() {
+    const navigate = useNavigate();
     const [workingHours, setWorkingHours] = useState({ 
         series: [{
             name: 'Worked Hours',
@@ -21,10 +25,20 @@ function WorkHoursBarChart() {
                     }
             },
     });
+    const { authToken } = useAuth();
+	const {profileId} = useAuth();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/workingHours.json');
+                if(!authToken){
+                    navigate('/Login');
+                    return;
+                }
+                const res = await axios.get('http://localhost:3001/api/workingHoursRoutes', {
+                    params: {profileId:profileId},
+                    headers: { Authorization: `Bearer ${authToken.token}` }
+                });
+                console.log(res);
                 return res.data;
             } catch (error) {
                 console.error('Error fetching data: ', error);
