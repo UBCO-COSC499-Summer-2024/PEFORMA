@@ -16,7 +16,7 @@ function PerformanceInstructorPage() {
 	//const ubcid = params.get('ubcid');
 	//console.log("UBC ID initialized: ",ubcid);
 	const { authToken } = useAuth();
-	const {profileId} = useAuth();
+	const { profileId } = useAuth();
 
 	const initProfile = {
 		roles: [],
@@ -25,6 +25,9 @@ function PerformanceInstructorPage() {
 	const [profile, setProfile] = useState(initProfile);
 
 	useEffect(() => {
+		const date = new Date();
+		const currentMonth = date.getMonth() + 1;
+
 		const fetchData = async () => {
 		  try {
 			if (!authToken) {
@@ -32,7 +35,9 @@ function PerformanceInstructorPage() {
 			  return;
 			}
 			const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
-			  params: {profileId:profileId }, // Add ubcid and profileId as query parameter
+			  params: { 
+					profileId:profileId, currentMonth:currentMonth 
+				}, 
 			  headers: { Authorization: `Bearer ${authToken.token}` }
 			});
 			console.log(response);
@@ -52,6 +57,8 @@ function PerformanceInstructorPage() {
 	
 		fetchData();
 	  }, [authToken, profileId, navigate]);
+
+
 	return (
 		<div className="dashboard-container">
 			<CreateSidebar />
