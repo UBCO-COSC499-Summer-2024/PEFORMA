@@ -7,6 +7,7 @@ import CreateSidebar, {
 	CreateScorePolarChart,
 	CreateTopbar,
 	CreateWorkingBarChart,
+	CreateProgressChart
 } from '../commonImports.js';
 import { useAuth } from '../AuthContext';
 
@@ -120,9 +121,14 @@ function PerformanceInstructorPage() {
 						<h2 className="subTitle">Leader Board (Updated per month)</h2>
 						<CreateLeaderboardChart />
 					</div>
-					
+				</div>
+
+				<div>
+					<h2 className='subTitle'>Progress Chart</h2>
+					<CreateProgressChart />
 				</div>
 			</div>
+
 		</div>
 	);
 }
