@@ -37,6 +37,7 @@ function CourseList() {
           headers: { Authorization: `Bearer ${authToken.token}` } 
         });
         const data = res.data;
+        console.log(data);
         const filledCourses = fillEmptyCourses(data.courses, data.perPage);
         setDivisionData({ ...data, courses: filledCourses});
       } catch (error) {

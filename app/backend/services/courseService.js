@@ -26,20 +26,25 @@ async function getFormattedCourseData(divisionCode) {
     result = await pool.query(`
         SELECT 
             (SELECT COUNT(*) 
-            FROM public."Course" c2
-            WHERE ($1 = 0 OR c2."divisionId" = $1)) AS division_courses_count,
-            c."courseNum" AS course_number, 
-            c."ctitle" AS course_title,
+            FROM (
+                SELECT DISTINCT c1."courseNum", c1."divisionId" 
+                FROM public."Course" c1
+                JOIN public."InstructorTeachingAssignment" a1 ON c1."courseId" = a1."courseId"
+                WHERE ($1 = 0 OR c1."divisionId" = $1) AND a1."term" = $2
+                ) AS unique_courses
+            ) AS division_courses_count,
+            c2."courseNum" AS course_number, 
+            c2."ctitle" AS course_title,
             ARRAY_AGG(p."firstName" || ' ' || p."lastName") AS instructor,
             ARRAY_AGG(p."UBCId") AS ubcid, 
             ARRAY_AGG(p."email") AS email,
-            c."divisionId" AS division_id
-        FROM public."Course" c
-        JOIN public."InstructorTeachingAssignment" a ON c."courseId" = a."courseId"
-        JOIN public."Profile" p ON p."profileId" = a."profileId"
-        WHERE ($1 = 0 OR c."divisionId" = $1) AND a."term" = $2  
-        GROUP BY c."courseNum", c."ctitle", c."divisionId"
-        ORDER BY c."divisionId" ASC, c."courseNum" ASC;
+            c2."divisionId" AS division_id
+        FROM public."Course" c2
+        JOIN public."InstructorTeachingAssignment" a2 ON c2."courseId" = a2."courseId"
+        JOIN public."Profile" p ON p."profileId" = a2."profileId"
+        WHERE ($1 = 0 OR c2."divisionId" = $1) AND a2."term" = $2  
+        GROUP BY c2."courseNum", c2."ctitle", c2."divisionId"
+        ORDER BY c2."divisionId" ASC, c2."courseNum" ASC;
     `, [divisionId, currTerm]);
 
     // Reformat the data
@@ -52,7 +57,7 @@ async function getFormattedCourseData(divisionCode) {
         courses: result.rows.map(row => {
             const courseDivisionId = row.division_id;
             const courseDivisionCode = Object.keys(divisionMap).find(key => divisionMap[key] === courseDivisionId); // Find the division code from the ID
-
+            
             return {  
                 id: `${courseDivisionCode} ${row.course_number}`, // Use courseDivisionCode
                 title: row.course_title,
