@@ -1,28 +1,45 @@
 -- Division
-INSERT INTO public."Division" ("divisionId", "dname") VALUES
-(1, 'Computer Science'),
-(2, 'Mathematics'),
-(3, 'Physics'),
-(4, 'Statistics');
+INSERT INTO public."Division" ("divisionId", "dcode", "dname") VALUES
+(1, 'COSC', 'Computer Science'),
+(2, 'MATH', 'Mathematics'),
+(3, 'PHYS', 'Physics'),
+(4, 'STAT', 'Statistics');
 
 -- Profile (add department staff and admin users)
 INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark") VALUES
-(1, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 12345678, 15, 50),
-(2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 23456789, 8, 120),
-(3, 'Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Lecturer', 2, 34567890, 0, 100),
-(4, 'Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 3, 45678901, 0, 0),
-(5, 'Alice', NULL, 'Johnson', 'alice.johnson@ubc.ca', '250-555-9876', 'SCI', '200', 'Department Staff', 1, 56789012, 0, 0),
-(6, 'Bob', NULL, 'Lee', 'bob.lee@ubc.ca', '250-555-5678', 'SCI', '200', 'Department Staff', 2, 67890123, 0, 0),
-(7, 'Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, 'Admin', NULL, NULL, 0, 0),
-(8, 'David', NULL, 'Kim', 'david.kim@ubc.ca', '250-555-6789', 'SCI', '123', 'Professor', 1, 87654321, 20, 80),
-(9, 'Sarah', 'Lee', 'Chen', 'sarah.chen@ubc.ca', '250-555-9012', 'SCI', '234', 'Assistant Professor', 2, 98765432, 5, 110),
-(10, 'Michael', NULL, 'Nguyen', 'michael.nguyen@ubc.ca', '250-555-3456', 'EME', '345', 'Associate Professor', 3, 19283746, 12, 90),
-(11, 'Olivia', 'Marie', 'Rodriguez', 'olivia.rodriguez@ubc.ca', '250-555-7890', 'ASC', '456', 'Assistant Professor', 4, 29384756, 8, 100),
-(12, 'Daniel', NULL, 'Taylor', 'daniel.taylor@ubc.ca', '250-555-1122', 'SCI', '124', 'Lecturer', 1, 39485766, 3, 120),
-(13, 'Sophia', 'Anne', 'Wilson', 'sophia.wilson@ubc.ca', '250-555-3344', 'ART', '235', 'Sessional Lecturer', 2, 49586776, 1, 80),
-(14, 'William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 59687786, 6, 95),
-(15, 'Ava', NULL, 'Martinez', 'ava.martinez@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 69788796, 0, 0),
-(16, NULL, NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, 'Admin', NULL, NULL, 0, 0); 
+-- Instructors 
+    -- COSC
+    (1, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 00000001, 15, 50),
+    (2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 00000002, 8, 120),
+    (3, 'Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Lecturer', 1, 00000003, 0, 10),
+    (4, 'Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 1, 00000004, 0, 0),
+    -- MATH
+    (5, 'David', NULL, 'Kim', 'david.kim@ubc.ca', '250-555-6789', 'SCI', '123', 'Professor', 2, 00000005, 20, 80),
+    (6, 'Sarah', 'Lee', 'Chen', 'sarah.chen@ubc.ca', '250-555-9012', 'SCI', '234', 'Assistant Professor', 2, 00000006, 5, 110),
+    (7, 'Michael', NULL, 'Nguyen', 'michael.nguyen@ubc.ca', '250-555-3456', 'EME', '345', 'Associate Professor', 2, 00000007, 12, 90),
+    (8, 'Olivia', 'Marie', 'Rodriguez', 'olivia.rodriguez@ubc.ca', '250-555-7890', 'ASC', '456', 'Assistant Professor', 2, 00000008, 8, 100),
+    -- PHYS
+    (9, 'Daniel', NULL, 'Taylor', 'daniel.taylor@ubc.ca', '250-555-1122', 'SCI', '124', 'Lecturer', 1, 00000009, 3, 50),
+    (10, 'Sophia', 'Anne', 'Wilson', 'sophia.wilson@ubc.ca', '250-555-3344', 'ART', '235', 'Sessional Lecturer', 3, 00000010, 3, 10),
+    (11, 'William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 00000011, 3, 45),
+    (12, 'Aiden', NULL, 'Moore', 'adien.moore@ubc.ca', '236-555-8765', 'ASC', '213', 'Professor', 3, 00000012, 34, 80),
+    -- STAT
+    (13, 'Ava', NULL, 'Martinez', 'ava.martinez1@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 00000013, 0, 0),       -- <-- People w/ the same name
+    (14, 'Ava', NULL, 'Martinez', 'ava.martinez2@ubc.ca', '236-478-1590', 'SCI', '111', 'Asssitant Professor', 4, 00000014, 60, 120),   -- <--
+    (15, 'Ethan', NULL, 'Anderson', 'ethan.anderson@ubc.ca', '236-555-9876', 'EME', '414', 'Asssitant Professor', 4, 00000015, 12, 95), 
+-- Department Staff
+(16, 'Alice', NULL, 'Johnson', 'alice.johnson@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 00000016, 0, 0),  
+(17, 'Bob', NULL, 'Lee', 'bob.lee@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 00000017, 0, 0),
+-- Admin
+    -- UBC admins
+    (18, 'Kevin', NULL, 'Kim', 'kkim9901@student.ubc.ca', '250-666-6661', NULL, NULL, NULL, NULL, 66666661, 0, 0),                              
+    (19, 'Jeremy', NULL, 'Adams', 'jeremyadams166@gmail.com', '250-666-6662', NULL, NULL, NULL, NULL, 66666662, 0, 0),
+    (20, 'Zhiheng', NULL, 'Zhang', 'm15601654187@163.com', '250-666-6663', NULL, NULL, NULL, NULL, 66666663, 0, 0),
+    (21, 'Subaru', NULL, 'Sakashita', 'baruchan@student.ubc.ca', '250-666-6664', NULL, NULL, NULL, NULL, 66666664, 0, 0),
+    (22, 'Adams', NULL, 'Chen', 'ayhchen@student.ubc.ca', '250-666-6665', NULL, NULL, NULL, NULL, 66666665, 0, 0),
+    -- Non-UBC admin
+    (23, 'Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, NULL, NULL, NULL, 0, 0),  
+    (24, 'Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0);    
 
 -- Image 
 -- INSERT INTO Image (imageId, fileType, image_data) VALUES
@@ -31,81 +48,189 @@ INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName"
 
 -- Account (remember to hash passwords in a real system!)
 INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "isActive") VALUES
-(1, 1, 'john.doe@ubc.ca', 'p@55word_1', true),
-(2, 2, 'jane.smith@ubc.ca', 'p@55word_2', true),
-(3, 3, 'robert.brown@ubc.ca', 'p@55word_3', true),
-(4, 4, 'emily.davis@ubc.ca', 'p@55word_4', false),
-(5, 5, 'alice.johnson@ubc.ca', 'p@55word_5', true),
-(6, 6, 'bob.lee@ubc.ca', 'p@55word_6', true),
-(7, 7, 'carol.wilson@maintenance.ca', 'p@55word_7', true),
-(8, 8, 'david.kim@ubc.ca', 'p@55word_8', true),
-(9, 9, 'sarah.chen@ubc.ca', 'p@55word_9', true),
-(10, 10, 'michael.nguyen@ubc.ca', 'p@55word_10', true),
-(11, 11, 'olivia.rodriguez@ubc.ca', 'p@55word_11', true),
-(12, 12, 'daniel.taylor@ubc.ca', 'p@55word_12', true),
-(13, 13, 'sophia.wilson@ubc.ca', 'p@55word_13', true),
-(14, 14, 'william.anderson@ubc.ca', 'p@55word_14', true),
-(15, 15, 'ava.martinez@ubc.ca', 'p@55word_15', true),
-(16, 16, 'carol.wilson@maintenance.ca', 'p@55word_16', true);
+-- Active
+(1, 1, 'john.doe@ubc.ca', 'p@55word', true),
+(2, 2, 'jane.smith@ubc.ca', 'someth!n9', true), -- different password for testing
+(5, 5, 'david.kim@ubc.ca', 'p@55word', true),
+(6, 6, 'sarah.chen@ubc.ca', 'p@55word', true),
+(7, 7, 'michael.nguyen@ubc.ca', 'p@55word', true),
+(8, 8, 'olivia.rodriguez@ubc.ca', 'p@55word', true),
+(9, 9, 'daniel.taylor@ubc.ca', 'p@55word', true),
+(10, 10, 'sophia.wilson@ubc.ca', 'p@55word', true),
+(11, 11, 'william.anderson@ubc.ca', 'p@55word', true),
+(12, 12, 'adien.moore@ubc.ca', 'p@55word', true),
+(13, 13, 'ava.martinez1@ubc.ca', 'p@55word', true),       
+(14, 14, 'ava.martinez2@ubc.ca', 'p@55word', true),  
+(15, 15, 'ethan.anderson@ubc.ca', 'p@55word', true), 
+(16, 16, 'alice.johnson@staff.ubc.ca', 'p@55word', true),  
+(17, 17, 'bob.lee@staff.ubc.ca', 'p@55word', true),
+(18, 18, 'kkim9901@student.ubc.ca', 'team6!x', true),                              
+(19, 19, 'jeremyadams166@gmail.com', 'team6!x', true),
+(20, 20, 'm15601654187@163.com', 'team6!x', true),
+(21, 21, 'baruchan@student.ubc.ca', 'team6!x', true),
+(22, 22, 'ayhchen@student.ubc.ca', 'team6!x', true),
+(23, 23, 'carol.wilson@maintenance.ca', 'p@55word', true),
+-- Inactive
+(4, 4, 'emily.davis@ubc.ca', 'p@55word', false),
+(24, 24, 'amelia.young@maintenance.ca', 'p@55word', false);
+-- Person w/o account
+    -- Robert Brown (profileId=3)
 
 -- AccountType (assuming 1 = Department Head, 2 = Department Staff, 3 = Instructor, 4 = Admin)
 INSERT INTO public."AccountType" ("accountId", "accountType") VALUES
-(1, 1), (1, 2), -- John: Department Head, Instructor
-(2, 3),         -- Jane: Instructor
-(3, 3),         -- Robert: Instructor
-(4, 3),         -- Emily: Instructor
-(5, 2),         -- Alice: Department Staff
-(6, 2),         -- Bob: Department Staff
-(7, 4),         -- Carol: Admin
-(8, 3), (8, 4), -- David Kim: Instructor, Admin
-(9, 3),         -- Sarah Chen: Instructor
-(10, 3),        -- Michael Nguyen: Instructor
-(11, 2),        -- Olivia Rodriguez: Department Staff
-(12, 3),        -- Daniel Taylor: Instructor
-(13, 3),        -- Sophia Wilson: Instructor
-(14, 2),        -- William Anderson: Department Staff
-(15, 3),        -- Ava Martinez: Instructor
-(16, 4);        -- Carol Wilson: Admin
+(1, 1), (1, 3), -- John Doe: Department Head, Instructor
+(2, 3),         -- Jane Smith: Instructor
+(4, 3),         -- Emily Davis: Instructor
+(5, 3), (5, 4), -- David Kim: Instructor, Admin
+(6, 3),         -- Sarah Chen: Instructor
+(7, 3),         -- Michael Nguyen: Instructor
+(8, 3),         -- Olivia Rodriguez: Instructor
+(9, 3),         -- Daniel Taylor: Instructor
+(10, 3),        -- Sophia Wilson: Instructor
+(11, 3),        -- William Anderson: Instructor
+(12, 3),        -- Aiden Moore: Instructor
+(13, 3),        -- Ava Martinez: Instructor
+(14, 3),        -- Ava Martinez: Instructor
+(15, 3),        -- Ethan Anderson: Instructor
+(16, 2),        -- Alice Johnson: Department Staff
+(17, 2),        -- Bob Lee: Department Staff
+(18, 4),        -- Kevin: Admin
+(19, 4),        -- Jeremy: Admin
+(20, 4),        -- Zhiheng: Admin
+(21, 4),        -- Subaru: Admin
+(22, 4),        -- Adams: Admin
+(23, 4),        -- Carol Wilson: Admin
+(24, 4);        -- Amelia Young: Admin
 
 -- ServiceRole
 INSERT INTO public."ServiceRole" ("serviceRoleId", "stitle", "description", "isActive", "divisionId") VALUES
-(1, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 1),
-(2, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 1),
-(3, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 2),
-(4, 'Outreach Coordinator', 'Coordinates outreach activities to promote the department.', true, 3),
-(5, 'Safety Committee Member', 'Ensures the safety of students, faculty, and staff in labs and facilities.', true, 4),
-(6, 'Equity, Diversity, and Inclusion Committee', 'Promotes inclusivity and diversity within the department.', true, 1),
-(7, 'Seminar Series Organizer', 'Organizes and manages the department''s seminar series.', true, 2),
-(8, 'Awards Committee Member', 'Reviews and selects recipients for departmental awards and scholarships.', true, 3),
-(9, 'Undergraduate Research Coordinator', 'Coordinates undergraduate research opportunities.', true, 1),
-(10, 'Graduate Program Director', 'Oversees the graduate program.', true, 2);
+-- Active
+    -- COSC
+    (1, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 1),
+    (3, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 1),
+    (2, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 1),
+    (4, 'Graduate Program Director', 'Oversees the graduate program.', true, 1),
+    -- MATH
+    (5, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 2),
+    (6, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 2),
+    (7, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 2),
+    (8, 'Graduate Program Director', 'Oversees the graduate program.', true, 2),
+    -- PHYS
+    (9, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 3),
+    (10, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 3),
+    (11, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 3),
+    (12, 'Graduate Program Director', 'Oversees the graduate program.', true, 3),
+    -- STAT
+    (13, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 3),
+    (14, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 3),
+    (15, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 3),
+    (16, 'Graduate Program Director', 'Oversees the graduate program.', true, 3),
+    -- All
+    (17, 'Safety Committee Member', 'Ensures the safety of students, faculty, and staff in labs and facilities.', true, 1),
+    (18, 'Equity, Diversity, and Inclusion Committee', 'Promotes inclusivity and diversity within the department.', true, 1),
+    (19, 'Seminar Series Organizer', 'Organizes and manages the department''s seminar series.', true, 1),
+    (20, 'Awards Committee Member', 'Reviews and selects recipients for departmental awards and scholarships.', true, 1),
+    (21, 'Undergraduate Research Coordinator', 'Coordinates undergraduate research opportunities.', true, 1),
+-- Inactive
+    -- All
+    (22, 'Outreach Coordinator', 'Coordinates outreach activities to promote the department.', false, 1);
 
 -- ServiceRoleByYear
 INSERT INTO public."ServiceRoleByYear" ("serviceRoleId", "year", "JANHour", "FEBHour", "MARHour", "APRHour", "MAYHour", "JUNHour", "JULHour", "AUGHour", "SEPHour", "OCTHour", "NOVHour", "DECHour") VALUES
-(1, 2023, 4, 4, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4),  -- Undergraduate Advisor 2023
-(1, 2024, 5, 5, 5, 5, 5, 0, 0, 0, 5, 5, 5, 5),  -- Undergraduate Advisor 2024
-(2, 2023, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2),  -- Graduate Admissions 2023
-(2, 2024, 3, 3, 3, 3, 3, 0, 0, 0, 3, 3, 3, 3),  -- Graduate Admissions 2024
-(3, 2023, 3, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3),  -- Curriculum Committee 2023
-(3, 2024, 4, 4, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4),  -- Curriculum Committee 2024
-(4, 2023, 10, 10, 10, 10, 10, 10, 0, 0, 10, 10, 10, 10),  -- Outreach Coordinator 2023
-(4, 2024, 12, 12, 12, 12, 12, 0, 0, 0, 12, 12, 12, 12),  -- Outreach Coordinator 2024
-(5, 2023, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2),  -- Safety Committee Member 2023
-(5, 2024, 3, 3, 3, 3, 3, 0, 0, 0, 3, 3, 3, 3),  -- Safety Committee Member 2024
-(6, 2023, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1),  -- Equity, Diversity, and Inclusion Committee 2023
-(6, 2024, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2);  -- Equity, Diversity, and Inclusion Committee 2024
+-- 2023
+(1, 2023, 5.5, 6.0, 8.5, 10.0, 12.0, 9.0, 4.0, 2.0, 6.5, 8.0, 10.0, 11.0),    
+(2, 2023, 3.0, 2.5, 4.0, 5.5, 7.0, 4.5, 2.0, 1.0, 3.5, 4.0, 5.5, 6.0),
+(3, 2023, 2.0, 1.5, 2.5, 3.0, 4.5, 3.0, 1.0, 0.5, 2.0, 2.5, 3.0, 3.5),
+(4, 2023, 8.0, 8.5, 11.0, 13.5, 16.0, 12.0, 6.0, 4.0, 9.0, 11.5, 14.0, 16.5),
+(5, 2023, 6.0, 6.5, 9.0, 10.5, 12.0, 9.5, 4.5, 2.5, 6.5, 8.0, 9.5, 11.0),
+(6, 2023, 2.5, 2.0, 3.5, 4.0, 5.5, 3.0, 1.5, 0.5, 2.5, 3.0, 4.0, 4.5),
+(7, 2023, 1.5, 1.0, 2.0, 2.5, 3.0, 2.0, 0.5, 0.0, 1.5, 2.0, 2.5, 3.0),
+(8, 2023, 10.5, 11.0, 13.5, 16.0, 18.5, 14.5, 8.5, 6.5, 12.0, 14.5, 17.0, 19.5),
+(9, 2023, 4.0, 4.5, 6.0, 7.5, 9.0, 6.5, 3.0, 1.5, 4.5, 5.5, 7.0, 8.5),
+(10, 2023, 3.0, 4.0, 2.5, 1.5, 3.5, 5.0, 0.5, 0.0, 2.0, 3.5, 4.5, 5.0),
+(11, 2023, 5.0, 6.5, 4.5, 3.0, 5.5, 7.0, 1.5, 1.0, 3.5, 5.0, 6.0, 6.5),
+(12, 2023, 0.5, 1.0, 0.0, 0.5, 1.5, 2.0, 0.0, 0.0, 0.5, 1.0, 1.5, 2.0),
+(13, 2023, 7.0, 8.5, 6.0, 4.5, 7.5, 9.0, 2.5, 2.0, 5.0, 7.0, 8.0, 8.5),
+(14, 2023, 1.0, 1.5, 0.5, 0.0, 1.0, 2.5, 0.0, 0.0, 0.5, 1.5, 2.0, 2.5),
+(15, 2023, 3.5, 4.5, 2.5, 1.5, 4.0, 5.0, 1.0, 0.5, 2.0, 3.5, 4.0, 4.5),
+(16, 2023, 9.0, 10.5, 7.5, 6.0, 9.5, 11.0, 3.5, 3.0, 6.5, 9.0, 10.0, 10.5),
+(17, 2023, 1.5, 2.0, 1.0, 0.5, 1.5, 2.5, 0.5, 0.0, 1.0, 1.5, 2.0, 2.5),
+(18, 2023, 2.5, 3.0, 2.0, 1.5, 2.5, 3.5, 1.0, 0.5, 1.5, 2.5, 3.0, 3.5),
+(19, 2023, 0.5, 1.0, 0.0, 0.0, 0.5, 1.0, 0.0, 0.0, 0.0, 0.5, 1.0, 1.0),
+(20, 2023, 4.0, 5.0, 3.5, 2.5, 4.5, 6.0, 1.5, 1.0, 3.0, 4.5, 5.0, 5.5),
+(21, 2023, 6.5, 7.5, 5.0, 3.5, 6.5, 8.0, 2.0, 1.5, 4.0, 6.0, 7.0, 7.5),
+(22, 2023, 1.5, 1.0, 0.0, 0.5, 1.5, 2.0, 0.5, 0.0, 0.5, 1.0, 1.5, 1.0),
+-- 2024
+(1, 2024, 7.0, 6.5, 9.0, 11.5, 13.5, 10.5, 5.5, 3.5, 7.5, 9.5, 11.5, 12.5), 
+(2, 2024, 4.5, 4.0, 5.5, 7.0, 8.5, 6.0, 3.5, 2.5, 5.0, 6.5, 8.0, 9.5), 
+(3, 2024, 3.5, 3.0, 4.5, 6.0, 7.5, 4.5, 2.0, 1.5, 3.5, 4.5, 6.0, 7.5), 
+(4, 2024, 9.5, 10.0, 12.5, 15.0, 17.5, 13.5, 7.5, 5.5, 10.5, 13.0, 15.5, 18.0),
+(5, 2024, 7.5, 8.0, 10.5, 12.0, 13.5, 11.0, 6.0, 4.0, 8.0, 9.5, 11.0, 12.5),
+(6, 2024, 4.0, 3.5, 5.0, 6.5, 8.0, 4.5, 3.0, 1.5, 4.0, 5.5, 7.0, 8.5), 
+(7, 2024, 3.0, 2.5, 3.5, 5.0, 6.5, 3.5, 1.5, 1.0, 3.0, 4.0, 5.5, 7.0),
+(8, 2024, 12.0, 12.5, 15.0, 17.5, 20.0, 16.0, 10.0, 8.0, 13.5, 16.0, 18.5, 21.0), 
+(9, 2024, 5.5, 6.0, 7.5, 9.0, 10.5, 8.0, 4.5, 3.0, 6.0, 7.5, 9.0, 10.5),
+(10, 2024, 2.5, 3.5, 2.0, 1.0, 3.0, 4.5, 0.0, 0.5, 1.5, 3.0, 4.0, 4.5), 
+(11, 2024, 4.5, 6.0, 4.0, 2.5, 5.0, 6.5, 1.0, 1.5, 3.0, 4.5, 5.5, 6.0), 
+(12, 2024, 0.0, 0.5, 0.5, 0.0, 1.0, 1.5, 0.5, 0.0, 0.0, 0.5, 1.0, 1.5), 
+(13, 2024, 6.5, 8.0, 5.5, 4.0, 7.0, 8.5, 2.0, 2.5, 4.5, 6.5, 7.5, 8.0),
+(14, 2024, 0.5, 1.0, 0.0, 0.5, 0.5, 2.0, 0.5, 0.0, 0.0, 1.0, 1.5, 2.0),
+(15, 2024, 3.0, 4.0, 2.0, 1.0, 3.5, 4.5, 0.5, 1.0, 1.5, 3.0, 3.5, 4.0), 
+(16, 2024, 8.5, 10.0, 7.0, 5.5, 9.0, 10.5, 3.0, 3.5, 6.0, 8.5, 9.5, 10.0),
+(17, 2024, 1.0, 1.5, 0.5, 0.0, 1.0, 2.0, 0.0, 0.5, 0.5, 1.0, 1.5, 2.0), 
+(18, 2024, 2.0, 2.5, 1.5, 1.0, 2.0, 3.0, 0.5, 1.0, 1.0, 2.0, 2.5, 3.0),
+(19, 2024, 0.0, 0.5, 0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.0, 0.5, 0.5), 
+(20, 2024, 3.5, 4.5, 3.0, 2.0, 4.0, 5.5, 1.0, 1.5, 2.5, 4.0, 4.5, 5.0),
+(21, 2024, 6.0, 7.0, 4.5, 3.0, 6.0, 7.5, 1.5, 2.0, 3.5, 5.5, 6.5, 7.0);
 
 -- ServiceRoleAssignment
 INSERT INTO public."ServiceRoleAssignment" ("profileId", "serviceRoleId", "year") VALUES
-(1, 1, 2023),  -- John Doe: Undergraduate Advisor 2023
-(1, 1, 2024),  -- John Doe: Undergraduate Advisor 2024
-(2, 5, 2023),  -- Jane Smith: Safety Committee Member 2023
-(2, 3, 2024),  -- Jane Smith: Curriculum Committee 2024
-(2, 7, 2024),  -- Jane Smith: Seminar Series Organizer 2024
-(3, 1, 2024),  -- Robert Brown: Undergraduate Advisor 2024
-(3, 5, 2024),  -- Robert Brown: Safety Committee Member 2024
-(3, 4, 2023),  -- Robert Brown: Outreach Coordinator 2023
-(3, 8, 2023);  -- Robert Brown: Awards Committee Member 2023
+-- 2023
+(1, 3, 2023),       -- John Doe: Curriculum Committee (2023)
+(2, 2, 2023),       -- Jane Smith: Graduate Admissions (2023)
+(3, 1, 2023),       -- Robert Brown: Undergraduate Advisor (2023)
+(5, 8, 2023),       -- David Kim: Graduate Program Director (2023)
+(6, 6, 2023),       -- Sarah Chen: Curriculum Committee (2023)
+(7, 5, 2023),       -- Michael Nguyen: Undergraduate Advisor (2023)
+(8, 7, 2023),       -- Olivia Rodriguez: Graduate Admissions (2023)
+(9, 12, 2023),      -- Daniel Taylor: Graduate Program Director (2023)
+(10, 11, 2023),     -- Sophia Wilson: Graduate Admissions (2023)
+(11, 10, 2023),     -- William Anderson: Curriculum Committee (2023)
+-- 2024
+    -- John Doe
+    (1, 1, 2024),       -- John Doe: Undergraduate Advisor (2024)
+    (1, 17, 2024),      -- John Doe: Safety Committee Member (2024)
+    -- Jane Smith
+    (2, 3, 2024),       -- Jane Smith: Curriculum Committee (2024)
+    (2, 19, 2024),      -- Jane Smith: Seminar Series Organizer (2024)
+    -- Robert Brown 
+    (3, 2, 2024),       -- Robert Brown: Graduate Admissions (2024)
+    -- David Kim
+    (5, 5, 2024),       -- David Kim: Undergraduate Advisor (2024)
+    -- Sarah Chen
+    (6, 7, 2024),       -- Sarah Chen: Graduate Admissions (2024)
+    (6, 20, 2024),      -- Sarah Chen: Awards Committee Member (2024)
+    -- Michael Nguyen
+    (7, 6, 2024),       -- Michael Nguyen: Curriculum Committee (2024)
+    -- Olivia Rodriguez
+    (8, 8, 2024),       -- Olivia Rodriguez: Graduate Program Director (2024)
+    -- Daniel Taylor
+    (9, 10, 2024),      -- Daniel Taylor: Curriculum Committee (2024)
+    -- Sofia Wilson
+    (10, 9, 2024),      -- Sophia Wilson: Undergraduate Advisor (2024)
+    -- William Anderson
+    (11, 11, 2024),     -- William Anderson: Graduate Admissions (2024)
+    -- Aiden Moore
+    (12, 12, 2024),     -- Aiden Moore: Graduate Program Director (2024)
+    (12, 20, 2024),     -- Aiden Moore: Awards Committee Member (2024)
+    -- Ava Martinez
+    (14, 13, 2024),     -- Ava Martinez: Undergraduate Advisor (2024)
+    -- Ethan Anderson
+    (15, 15, 2024),     -- Ethan Anderson: Graduate Admissions (2024)
+    (15, 18, 2024),     -- Ethan Anderson: Equity, Diversity, and Inclusion Committee (2024)
+    -- Olivia Rodriguez:
+    (8, 21, 2024);      -- Olivia Rodriguez: Undergraduate Research Coordinator (2024)
+-- Note: Awards Committee Member (2024) is assigned to 2 people
 
 -- Course
 INSERT INTO public."Course" ("courseId", "ctitle", "description", "divisionId", "courseNum") VALUES
@@ -203,213 +328,151 @@ INSERT INTO public."Course" ("courseId", "ctitle", "description", "divisionId", 
 
 -- CourseByTerm (Ex. 2024W1 = 20241, 2024W2 = 20242, 2024S1 = 20243, 2024S2 = 20244)
 INSERT INTO public."CourseByTerm" ("courseId", "term") VALUES
-(1, 20241),     -- Computer Programming I, Winter 2024 Term 1
-(2, 20241),     -- Computer Programming II, Winter 2024 Term 1
-(3, 20243),     -- Machine Architecture, Summer 2024 Term 1
-(4, 20231),     -- Discrete Structures in Computing, Winter 2023 Term 1 
-(5, 20242),     -- Data Structures, Winter 2024 Term 2
-(6, 20241),     -- Introduction to Data Analytics, Winter 2024 Term 1
-(7, 20241),     -- Numerical Analysis, Summer 2024 Term 2
-(8, 20231),     -- Introduction to Databases, Winter 2023 Term 1
-(9, 20233),     -- Project Management, Spring 2023 Term 1
-(9, 20234),     -- Project Management, Summer 2023 Term 2
-(10, 20234),    -- Software Engineering, Summer 2023 Term 2
-(11, 20232),    -- Introduction to Operating Systems, Winter 2023 Term 2
-(12, 20233),    -- Analysis of Algorithms, Spring 2023 Term 1
-(14, 20234),    -- Introduction to Networks, Summer 2023 Term 2
-(17, 20242),    -- Human Computer Interaction, Winter 2024 Term 2
-(19, 20233),    -- Web Programming, Spring 2023 Term 1
-(22, 20241),    -- Numerical Optimization, Winter 2024 Term 1
-(25, 20234),    -- Network Science, Summer 2023 Term 2
-(28, 20243),    -- Differential Calculus with Applications to Physical Sciences and Engineering, Summer 2024 Term 1
-(33, 20242),    -- Linear Algebra, Winter 2024 Term 2
-(37, 20231),    -- Abstract Algebra I, Winter 2023 Term 1
-(40, 20233),    -- Introduction to Partial Differential Equations, Spring 2023 Term 1
-(56, 20232),    -- Introductory Physics for the Physical Sciences I, Winter 2023 Term 2
-(58, 20241),    -- Introductory Physics for the Physical Sciences II, Winter 2024 Term 1
-(63, 20243),    -- Intermediate Electricity and Magnetism, Summer 2024 Term 1
-(66, 20234),    -- Electricity and Magnetism, Summer 2023 Term 2
-(71, 20232),    -- Environmental Physics, Winter 2023 Term 2
-(79, 20242),    -- Elementary Statistics, Winter 2024 Term 2
-(82, 20243),    -- Introductory Statistics, Summer 2024 Term 1
-(85, 20231),    -- Probability and Statistical Inference, Winter 2023 Term 1
-(1, 20244),    -- Computer Programming I, Summer 2024 Term 2
-(2, 20244),    -- Computer Programming II, Summer 2024 Term 2
-(3, 20244),    -- Machine Architecture, Summer 2024 Term 2
-(4, 20244),    -- Discrete Structures in Computing, Summer 2024 Term 2
-(5, 20244),    -- Data Structures, Summer 2024 Term 2
-(6, 20244),    -- Introduction to Data Analytics, Summer 2024 Term 2
-(7, 20244),    -- Numerical Analysis, Summer 2024 Term 2
-(8, 20244),    -- Introduction to Databases, Summer 2024 Term 2
-(9, 20244),    -- Project Management, Summer 2024 Term 2
-(10, 20244),   -- Software Engineering, Summer 2024 Term 2
-(11, 20244),   -- Introduction to Operating Systems, Summer 2024 Term 2
-(12, 20244),   -- Analysis of Algorithms, Summer 2024 Term 2
-(13, 20244),   -- Introduction to Artificial Intelligence, Summer 2024 Term 2
-(14, 20244),   -- Introduction to Networks, Summer 2024 Term 2
-(15, 20244),   -- Learning Analytics, Summer 2024 Term 2
-(16, 20244),   -- Introduction to Medical Imaging and Imaging Informatics, Summer 2024 Term 2
-(17, 20244),   -- Human Computer Interaction, Summer 2024 Term 2
-(18, 20244),   -- Image Processing and Applications, Summer 2024 Term 2
-(19, 20244),   -- Web Programming, Summer 2024 Term 2
-(20, 20244),   -- Database System Implementation, Summer 2024 Term 2
-(21, 20244),   -- Modelling and Simulation, Summer 2024 Term 2
-(22, 20244),   -- Numerical Optimization, Summer 2024 Term 2
-(23, 20244),   -- Introduction to Parallel Computing, Summer 2024 Term 2
-(24, 20244),   -- Computer Graphics, Summer 2024 Term 2
-(25, 20244),   -- Network Science, Summer 2024 Term 2
-(26, 20244),   -- Advanced Human Computer Interaction, Summer 2024 Term 2
-(27, 20244),   -- Computer Vision, Summer 2024 Term 2
-(28, 20244),
-(29, 20244),
-(30, 20244),
-(31, 20244),
-(32, 20244),
-(33, 20244),
-(34, 20244),
-(35, 20244),
-(36, 20244),
-(37, 20244),
-(38, 20244),
-(39, 20244),
-(40, 20244),
-(41, 20244),
-(42, 20244),
-(43, 20244),
-(44, 20244),
-(45, 20244),
-(46, 20244),
-(47, 20244),
-(48, 20244),
-(49, 20244),
-(50, 20244),
-(51, 20244),
-(52, 20244),
-(53, 20244),
-(54, 20244),
-(55, 20244),
-(56, 20244),
-(57, 20244),
-(58, 20244),
-(59, 20244),
-(60, 20244),
-(61, 20244),
-(62, 20244),
-(63, 20244),
-(64, 20244),
-(65, 20244),
-(66, 20244),
-(67, 20244),
-(68, 20244),
-(69, 20244),
-(70, 20244),
-(71, 20244),
-(72, 20244),
-(73, 20244),
-(74, 20244),
-(75, 20244),
-(76, 20244),
-(77, 20244),
-(78, 20244),
-(79, 20244),
-(80, 20244),
-(81, 20244),
-(82, 20244),
-(83, 20244),
-(84, 20244),
-(85, 20244),
-(86, 20244),
-(2, 20242),
-(9, 20231),
-(9, 20232);
+-- 2023W1
+(1, 20231),  -- Computer Programming I (2023W1)
+(2, 20231),  -- Computer Programming II (2023W1)
+(3, 20231),  -- Machine Architecture (2023W1)
+(29, 20231), -- Integral Calculus with Applications to Physical Sciences and Engineering (2023W1)
+(56, 20231), -- Introductory Physics for the Physical Sciences I (2023W1)
+(57, 20231), -- Introductory Physics for the Life Sciences I (2023W1)
+(79, 20231), -- Elementary Statistics (2023W1)
+-- 2023W2
+(32, 20232), -- Matrix Algebra (2023W2)
+(11, 20232), -- Introduction to Operating Systems (2023W2)
+(40, 20232), -- Introduction to Partial Differential Equations (2023W2)
+(63, 20232), -- Intermediate Electricity and Magnetism (2023W2)
+(83, 20232), -- Intermediate Probability (2023W2)
+-- 2023S1
+(19, 20233), -- Web Programming (2023S1)
+(28, 20233), -- Capstone Software Engineering Project (2023S1)
+(48, 20233), -- Differential Geometry (2023S1)
+(72, 20233), -- Waves (2023S1)
+-- 2023S2
+(55, 20234), -- Continuous Optimization (2023S2)
+(24, 20234), -- Computer Graphics (2023S2)
+(51, 20234), -- Real Analysis (2023S2)
+(78, 20234), -- Introduction to General Relativity (2023S2)
+-- 2024W1
+(87, 20241), -- Environmetrics (2024W1)
+(8, 20241),  -- Introduction to Databases (2024W1)
+(35, 20241), -- Applied Linear Algebra (2024W1)
+(66, 20241), -- Electricity and Magnetism (2024W1)
+-- 2024W2
+(17, 20242), -- Human Computer Interaction (2024W2)
+(45, 20242), -- Introduction to Dynamical Systems (2024W2)
+(69, 20242), -- Introduction to Medical Physics (2024W2)
+-- 2024S1
+(26, 20243), -- Advanced Human Computer Interaction (2024S1)
+(52, 20243), -- Functional Analysis (2024S1)
+(75, 20243), -- Introduction to Elementary Particles (2024S1)
+-- 2024S2
+(4, 20244),  -- Discrete Structures in Computing (2024S2)
+(5, 20244),  -- Data Structures (2024S2)
+(6, 20244),  -- Introduction to Data Analytics (2024S2)
+(7, 20244),  -- Numerical Analysis (2024S2)
+(8, 20244),  -- Introduction to Databases (2024S2)
+(9, 20244),  -- Project Management (2024S2)
+(10, 20244), -- Software Engineering (2024S2)
+(11, 20244), -- Introduction to Operating Systems (2024S2)
+(12, 20244), -- Analysis of Algorithms (2024S2)
+(13, 20244), -- Introduction to Artificial Intelligence (2024S2)
+(14, 20244), -- Introduction to Networks (2024S2)
+(15, 20244), -- Learning Analytics (2024S2)
+(16, 20244), -- Introduction to Medical Imaging and Imaging Informatics (2024S2)
+(17, 20244), -- Human Computer Interaction (2024S2)
+(18, 20244), -- Image Processing and Applications (2024S2)
+(19, 20244), -- Web Programming (2024S2)
+(20, 20244), -- Database System Implementation (2024S2)
+(21, 20244), -- Modelling and Simulation (2024S2)
+(22, 20244), -- Numerical Optimization (2024S2)
+(23, 20244), -- Introduction to Parallel Computing (2024S2)
+(24, 20244), -- Computer Graphics (2024S2)
+(25, 20244), -- Network Science (2024S2)
+(26, 20244), -- Advanced Human Computer Interaction (2024S2)
+(27, 20244), -- Computer Vision (2024S2)
+(28, 20244), -- Capstone Software Engineering Project (2024S2)
+(30, 20244), -- Calculus III (2024S2) 
+(31, 20244), -- Mathematical Proof (2024S2)
+(33, 20244), -- Linear Algebra (2024S2)
+(34, 20244), -- Introduction to Differential Equations (2024S2)
+(41, 20244), -- Applied Abstract Algebra (2024S2)
+(47, 20244), -- Complex Variables and Applications (2024S2)
+(58, 20244), -- Introductory Physics for the Physical Sciences II (2024S2)
+(59, 20244), -- Introductory Physics for the Life Sciences II (2024S2)
+(60, 20244), -- Relativity and Quanta (2024S2)
+(61, 20244), -- Thermodynamics (2024S2)
+(62, 20244), -- Mechanics I (2024S2)
+(67, 20244), -- Introduction to Quantum Mechanics (2024S2)
+(71, 20244), -- Environmental Physics (2024S2)
+(80, 20244), -- Introduction to Probability (2024S2)
+(81, 20244); -- Introduction to Mathematical Statistics (2024S2)
 
 -- InstructorTeachingAssignment
 INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES
-(1, 1, 20241),     -- John Doe: Computer Programming I, Winter 2024 Term 1
-(1, 2, 20242),     -- John Doe: Computer Programming II, Winter 2024 Term 2
-(2, 4, 20231),     -- Jane Allison Smith: Discrete Structures in Computing, Winter 2023 Term 1 
-(2, 5, 20242),     -- Jane Allison Smith: Data Structures, Winter 2024 Term 2
-(3, 9, 20231),     -- Robert Brown: Project Management, Winter 2023 Term 1
-(3, 9, 20232),     -- Robert Brown: Project Management, Winter 2023 Term 2
-(8, 11, 20232),    -- David Kim: Introduction to Operating Systems, Winter 2023 Term 2
-(9, 12, 20233),    -- Sarah Lee Chen: Analysis of Algorithms, Summer 2023 Term 1
-(10, 14, 20234),   -- Michael Nguyen: Intro to Networks, Summer 2023 Term 2
-(11, 17, 20242),   -- Olivia Marie Rodriguez: HCI, Winter 2024 Term 2
-(12, 19, 20233),   -- Daniel Taylor: Web Programming, Summer 2023 Term 1
-(13, 22, 20241),   -- Sophia Anne Wilson: Numerical Optimization, Winter 2024 Term 1
-(14, 25, 20234),   -- William Anderson: Network Science, Summer 2023 Term 2
-(15, 28, 20243),   -- Ava Martinez: Differential Calculus, Summer 2024 Term 1
-(8, 33, 20242),    -- David Kim: Linear Algebra, Winter 2024 Term 2
-(9, 37, 20231),    -- Sarah Lee Chen: Abstract Algebra I, Winter 2023 Term 1
-(10, 40, 20233),   -- Michael Nguyen: Intro to PDEs, Summer 2023 Term 1
-(11, 49, 20244),   -- Olivia Marie Rodriguez: Math of Financial Derivatives, Summer 2024 Term 2
-(12, 56, 20232),   -- Daniel Taylor: Introductory Physics I, Winter 2023 Term 2
-(13, 58, 20241),   -- Sophia Anne Wilson: Introductory Physics II, Winter 2024 Term 1
-(14, 63, 20243),   -- William Anderson: Intermediate Electricity and Magnetism, Summer 2024 Term 1
-(15, 66, 20234),   -- Ava Martinez: Electricity and Magnetism, Summer 2023 Term 2
-(8, 71, 20232),    -- David Kim: Environmental Physics, Winter 2023 Term 2
-(9, 79, 20242),    -- Sarah Lee Chen: Elementary Statistics, Winter 2024 Term 2
-(10, 82, 20243),   -- Michael Nguyen: Introductory Statistics, Summer 2024 Term 1
-(11, 85, 20231),   -- Olivia Marie Rodriguez: Probability and Statistical Inference, Winter 2023 Term 1 
-(1, 28, 20244),    -- John Doe: Capstone Software Engineering Project, Summer 2024 Term 2
-(1, 29, 20244),    -- John Doe: Integral Calculus with Applications to Physical Sciences and Engineering, Summer 2024 Term 2
-(1, 30, 20244),    -- John Doe: Calculus III, Summer 2024 Term 2
-(2, 27, 20244),    -- Jane Allison Smith: Computer Vision, Summer 2024 Term 2
-(2, 31, 20244),    -- Jane Allison Smith: Mathematical Proof, Summer 2024 Term 2
-(2, 32, 20244),    -- Jane Allison Smith: Matrix Algebra, Summer 2024 Term 2
-(3, 25, 20244),    -- Robert Brown: Network Science, Summer 2024 Term 2
-(3, 26, 20244),    -- Robert Brown: Advanced Human Computer Interaction, Summer 2024 Term 2
-(3, 33, 20244),    -- Robert Brown: Linear Algebra, Summer 2024 Term 2
-(4, 23, 20244),    -- Emily Davis: Introduction to Parallel Computing, Summer 2024 Term 2
-(4, 24, 20244),    -- Emily Davis: Computer Graphics, Summer 2024 Term 2
-(4, 34, 20244),    -- Emily Davis: Introduction to Differential Equations, Summer 2024 Term 2
-(5, 20, 20244),    -- Alice Johnson: Database System Implementation, Summer 2024 Term 2
-(5, 21, 20244),    -- Alice Johnson: Modelling and Simulation, Summer 2024 Term 2
-(5, 35, 20244),    -- Alice Johnson: Applied Linear Algebra, Summer 2024 Term 2
-(6, 19, 20244),    -- Bob Lee: Web Programming, Summer 2024 Term 2
-(6, 22, 20244),    -- Bob Lee: Numerical Optimization, Summer 2024 Term 2
-(6, 36, 20244),    -- Bob Lee: Euclidean Geometry, Summer 2024 Term 2
-(8, 17, 20244),    -- David Kim: Human Computer Interaction, Summer 2024 Term 2
-(8, 18, 20244),    -- David Kim: Image Processing and Applications, Summer 2024 Term 2
-(8, 37, 20244),    -- David Kim: Abstract Algebra I, Summer 2024 Term 2
-(9, 15, 20244),    -- Sarah Lee Chen: Learning Analytics, Summer 2024 Term 2
-(9, 16, 20244),    -- Sarah Lee Chen: Introduction to Medical Imaging and Imaging Informatics, Summer 2024 Term 2
-(9, 38, 20244),    -- Sarah Lee Chen: Introduction to Number Theory, Summer 2024 Term 2
-(10, 13, 20244),   -- Michael Nguyen: Introduction to Artificial Intelligence, Summer 2024 Term 2
-(10, 14, 20244),   -- Michael Nguyen: Introduction to Networks, Summer 2024 Term 2
-(10, 39, 20244),   -- Michael Nguyen: Calculus IV, Summer 2024 Term 2
-(11, 11, 20244),   -- Olivia Marie Rodriguez: Introduction to Operating Systems, Summer 2024 Term 2
-(11, 12, 20244),   -- Olivia Marie Rodriguez: Analysis of Algorithms, Summer 2024 Term 2
-(11, 40, 20244),   -- Olivia Marie Rodriguez: Introduction to Partial Differential Equations, Summer 2024 Term 2
-(12, 9, 20244),    -- Daniel Taylor: Project Management, Summer 2024 Term 2
-(12, 10, 20244),   -- Daniel Taylor: Software Engineering, Summer 2024 Term 2
-(12, 41, 20244),   -- Daniel Taylor: Applied Abstract Algebra, Summer 2024 Term 2
-(13, 7, 20244),    -- Sophia Anne Wilson: Numerical Analysis, Summer 2024 Term 2
-(13, 8, 20244),    -- Sophia Anne Wilson: Introduction to Databases, Summer 2024 Term 2
-(13, 42, 20244),   -- Sophia Anne Wilson: Analysis I, Summer 2024 Term 2
-(14, 4, 20244),    -- William Anderson: Discrete Structures in Computing, Summer 2024 Term 2
-(14, 5, 20244),    -- William Anderson: Data Structures, Summer 2024 Term 2
-(14, 43, 20244),   -- William Anderson: Analysis II, Summer 2024 Term 2
-(15, 1, 20244),    -- Ava Martinez: Computer Programming I, Summer 2024 Term 2
-(15, 2, 20244),    -- Ava Martinez: Computer Programming II, Summer 2024 Term 2
-(15, 45, 20244),   -- Ava Martinez: Introduction to Dynamical Systems, Summer 2024 Term 2
-(1, 56, 20244),    -- John Doe: Introductory Physics for the Physical Sciences I, Summer 2024 Term 2
-(2, 57, 20244),    -- Jane Allison Smith: Introductory Physics for the Life Sciences I, Summer 2024 Term 2
-(3, 59, 20244),    -- Robert Brown: Introductory Physics for the Life Sciences II, Summer 2024 Term 2
-(4, 60, 20244),    -- Emily Davis: Relativity and Quanta, Summer 2024 Term 2
-(5, 61, 20244),    -- Alice Johnson: Thermodynamics, Summer 2024 Term 2
-(6, 62, 20244),    -- Bob Lee: Mechanics I, Summer 2024 Term 2
-(8, 64, 20244),    -- David Kim: Introduction to Electronics, Summer 2024 Term 2
-(9, 65, 20244),    -- Sarah Lee Chen: Modern Physics Laboratory, Summer 2024 Term 2
-(10, 68, 20244),   -- Michael Nguyen: Introduction to Biophysics, Summer 2024 Term 2
-(11, 69, 20244),   -- Olivia Marie Rodriguez: Introduction to Medical Physics, Summer 2024 Term 2
-(12, 70, 20244),   -- Daniel Taylor: Fluids, Summer 2024 Term 2
-(13, 72, 20244),   -- Sophia Anne Wilson: Waves, Summer 2024 Term 2
-(14, 73, 20244),   -- William Anderson: Advanced Mechanics, Summer 2024 Term 2
-(15, 77, 20244),   -- Ava Martinez: Advanced Quantum Mechanics, Summer 2024 Term 2
-(1, 79, 20244),    -- John Doe: Elementary Statistics, Summer 2024 Term 2
-(2, 80, 20244),    -- Jane Allison Smith: Introduction to Probability, Summer 2024 Term 2
-(14, 80, 20244);   -- William Anderson: Introduction to Probability, Summer 2024 Term 2
+-- 2023W1
+(1, 1, 20231),  -- John Doe: Computer Programming I (2023W1)
+(2, 2, 20231),  -- Jane Allison Smith: Computer Programming II (2023W1)
+(3, 3, 20231),  -- Robert Brown: Machine Architecture (2023W1)
+(5, 29, 20231), -- David Kim: Integral Calculus with Applications to Physical Sciences and Engineering (2023W1)
+(9, 56, 20231), -- Daniel Taylor: Introductory Physics for the Physical Sciences I (2023W1)
+(10, 57, 20231),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences I (2023W1)
+(13, 79, 20231), -- Ava Martinez: Elementary Statistics (2023W1)
+-- 2023W2
+(6, 32, 20232), -- Sarah Lee Chen: Matrix Algebra (2023W2)
+(7, 40, 20232), -- Michael Nguyen: Introduction to Partial Differential Equations (2023W2)
+(11, 63, 20232),-- William Anderson: Intermediate Electricity and Magnetism (2023W2)
+(14, 83, 20232), -- Ava Martinez: Intermediate Probability (2023W2)
+-- 2023S1
+(8, 48, 20233), -- Olivia Marie Rodriguez: Differential Geometry (2023S1)
+(12, 72, 20233),-- Aiden Moore: Waves (2023S1)
+-- 2023S2
+(5, 51, 20234), -- David Kim: Real Analysis (2023S2)
+(9, 78, 20234), -- Daniel Taylor: Introduction to General Relativity (2023S2)
+-- 2024W1
+(6, 8, 20241),  -- Sarah Lee Chen: Introduction to Databases (2024W1)
+(7, 35, 20241), -- Michael Nguyen: Applied Linear Algebra (2024W1)
+(10, 66, 20241),-- Sophia Anne Wilson: Electricity and Magnetism (2024W1)
+(15, 87, 20241), -- Ethan Anderson: Environmetrics (2024W1)
+-- 2024W2
+(8, 45, 20242), -- Olivia Marie Rodriguez: Introduction to Dynamical Systems (2024W2)
+(11, 69, 20242),-- William Anderson: Introduction to Medical Physics (2024W2)
+-- 2024S1
+(5, 52, 20243), -- David Kim: Functional Analysis (2024S1)
+(12, 75, 20243),-- Aiden Moore: Introduction to Elementary Particles (2024S1)
+-- 2024S2
+    -- COSC 
+    (1, 6, 20244),  -- John Doe: Introduction to Data Analytics (2024S2)  
+    (2, 10, 20244), -- Jane Allison Smith: Software Engineering (2024S2)
+    (3, 11, 20244), -- Robert Brown: Introduction to Operating Systems (2024S2)
+    (1, 17, 20244), -- John Doe: Human Computer Interaction (2024S2)
+    (2, 18, 20244), -- Jane Allison Smith: Image Processing and Applications (2024S2)
+    (3, 19, 20244), -- Robert Brown: Web Programming (2024S2)
+    (1, 20, 20244), -- John Doe: Database System Implementation (2024S2)
+    (2, 22, 20244), -- Jane Allison Smith: Numerical Optimization (2024S2)
+    (3, 23, 20244), -- Robert Brown: Introduction to Parallel Computing (2024S2)
+    (1, 24, 20244), -- John Doe: Computer Graphics (2024S2)
+    (2, 25, 20244), -- Jane Allison Smith: Network Science (2024S2)
+    (1, 27, 20244), -- John Doe: Computer Vision (2024S2)
+    (2, 47, 20244), -- Jane Allison Smith: Complex Variables and Applications (2024S2)
+    -- MATH 
+    (6, 30, 20244), -- Sarah Lee Chen: Calculus III (2024S2)
+    (7, 31, 20244), -- Michael Nguyen: Mathematical Proof (2024S2)
+    (8, 33, 20244), -- Olivia Marie Rodriguez: Linear Algebra (2024S2)
+    (5, 34, 20244), -- David Kim: Introduction to Differential Equations (2024S2)
+    (6, 41, 20244), -- Sarah Lee Chen: Applied Abstract Algebra (2024S2)
+    -- PHYS 
+    (9, 58, 20244), -- Daniel Taylor: Introductory Physics for the Physical Sciences II (2024S2)
+    (10, 59, 20244),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences II (2024S2)
+    (11, 60, 20244),-- William Anderson: Relativity and Quanta (2024S2)
+    (7, 61, 20244), -- Michael Nguyen: Thermodynamics (2024S2) - also taught by Ava Martinez
+    (14, 61, 20244),-- Ava Martinez: Thermodynamics (2024S2) - also taught by Michael Nguyen
+    (12, 62, 20244),-- Aiden Moore: Mechanics I (2024S2)
+    (9, 67, 20244), -- Daniel Taylor: Introduction to Quantum Mechanics (2024S2) 
+    (10, 71, 20244),-- Sophia Anne Wilson: Environmental Physics (2024S2)
+    -- STAT 
+    (13, 80, 20244), -- Ava Martinez: Introduction to Probability (2024S2)
+    (14, 81, 20244); -- Ava Martinez: Introduction to Mathematical Statistics (2024S2)
+-- Note: Thermodynamics (2024S2) is taught by 2 people
 
 -- SurveyType (Assuming 1=SEI)
 INSERT INTO public."SurveyType" ("surveyTypeId", "surveyType") VALUES
@@ -426,16 +489,15 @@ INSERT INTO public."SurveyQuestion" ("surveyTypeId", "surveyQuestionId", "descri
 
 -- SurveyQuestionResponse (Sample responses for John Doe's Calculus I)
 INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId", "courseId", "term", "profileId", "studentId", "response") VALUES
-(1, 1, 1, 20241, 1, 55555555, '4'),  -- Rating scale 1-5
-(1, 2, 1, 20241, 1, 55555555, '5'),
-(1, 3, 1, 20241, 1, 55555555, '3'),
-(1, 4, 1, 20241, 1, 55555555, '4'),
-(1, 5, 1, 20241, 1, 55555555, '4'),
-(1, 6, 1, 20241, 1, 55555555, 'Agree');
+(1, 1, 75, 20243, 12, 55555555, '4'),  -- Rating scale 1-5
+(1, 2, 75, 20243, 12, 55555555, '5'),
+(1, 3, 75, 20243, 12, 55555555, '3'),
+(1, 4, 75, 20243, 12, 55555555, '4'),
+(1, 5, 75, 20243, 12, 55555555, '4'),
+(1, 6, 75, 20243, 12, 55555555, 'Agree');
 
 -- SingleTeachingPerformance
 -- (Assuming you have some way to calculate the score)
-INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score") VALUES
-(1, 1, 20241, 4.2),
-(2, 4, 20231, 4.5),
-(3, 9, 20234, 3.8);
+INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score")
+SELECT "profileId", "courseId", "term", (random() * 99 + 1) -- Random score between 1.0 and 100.0
+FROM public."InstructorTeachingAssignment";
