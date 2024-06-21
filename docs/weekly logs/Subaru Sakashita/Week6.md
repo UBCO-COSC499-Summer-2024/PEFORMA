@@ -51,10 +51,10 @@ We need to have more consistent and detailed communication so that everyone is o
 ## Friday (6/14/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-6-Cycle-2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W6C2_1.png)
 
 ### Current Tasks
-  * #1: 
+  * #1: Instructor Performance BE
 ### Progress Update (since 6/21/2024)
 <table>
     <tr>
@@ -65,33 +65,20 @@ We need to have more consistent and detailed communication so that everyone is o
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> 
+        <td> Instructor Perforamnce BE
         </td>
         <!-- Status -->
-        <td> 
+        <td> In Progress
         </td>
     </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td> 
-        </td>
-        <!-- Status -->
-        <td> 
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td> 
-        </td>
-        <!-- Status -->
-        <td> 
-        </td>
-    </tr>
+
 </table>
 
 ### Weekly Goal Review
-
+I completed the profile and the working hours for the Performance Page BE. I am going to work on the department and the leaderboard next \n
+to complete the entire BE for this task. \n
+One issue I encountered was how to not display the working hours for the future months. After discussions with the teammates we were able to come up with a solution that filters the months. 
 ### Next Cycle Goals
-  * 
-  * 
+  * Complete the performance BE and start working on department view.
+  * Write up unit tests in the backend
 
