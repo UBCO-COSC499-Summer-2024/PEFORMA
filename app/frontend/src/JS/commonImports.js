@@ -3,7 +3,7 @@ import "../CSS/common.css";
 import Sidebar from "./sidebar.js";
 import Topbar from "./topbar.js";
 import SidebarDept from "./sidebarDept.js";
-import TopbarFilter from "./topbarFilter.js";
+import {TopSearchBarIns, TopSearchBarDept} from "./topbarFilter.js";
 import WorkHoursBarChart from "./workHoursBarChart.js"
 import DeptPerformancePieChart from "./deptPerformancePolarChart.js"
 import LeaderBoard from "./leaderBoard.js"
@@ -23,9 +23,9 @@ function CreateTopbar() {
     );
 }
 
-function CreateTopBarFilter(){
+function CreateTopSearchbarIns({ onSearch }){
     return(
-        <TopbarFilter />
+        <TopSearchBarIns onSearch={ onSearch } />
     );
 }
 
@@ -53,11 +53,18 @@ function CreateLeaderboardChart(){
     )
 }
 
+function CreateTopSearchBarDept({ onSearch }){
+    return (
+        <TopSearchBarDept onSearch={ onSearch }/>
+    )
+}
+
 export default CreateSidebar;
 export {CreateTopbar, 
     CreateSidebarDept, 
-    CreateTopBarFilter, 
+    CreateTopSearchbarIns, 
     CreateWorkingBarChart, 
     CreateScorePolarChart,
-    CreateLeaderboardChart
+    CreateLeaderboardChart,
+    CreateTopSearchBarDept
 };

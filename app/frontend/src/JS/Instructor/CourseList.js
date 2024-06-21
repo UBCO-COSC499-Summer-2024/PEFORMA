@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import CreateSidebar, { CreateTopbar } from '../commonImports.js';
+import CreateSidebar, { CreateTopSearchbarIns } from '../commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -8,13 +8,6 @@ import divisions from '../common/divisions.js';
 import axios from 'axios';
 import '../AuthContext.js';
 import { useAuth } from '../AuthContext.js';
-
-function showCourses (divisionData, offset){
-  if (divisionData.divisionCoursesCount > 10) {
-    return divisionData.courses.slice(offset, offset + divisionData.perPage);
-  }
-  return divisionData.courses;
-}
 
 function CourseList() {
 
@@ -28,6 +21,7 @@ function CourseList() {
   };
   
   const [divisionData, setDivisionData] = useState({"courses":[{}], divisionCoursesCount:0, perPage: 10, currentPage: 1});
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -42,7 +36,9 @@ function CourseList() {
         const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`, {
           headers: { Authorization: `Bearer ${authToken.token}` } 
         });
-        setDivisionData(res.data);
+        const data = res.data;
+        const filledCourses = fillEmptyCourses(data.courses, data.perPage);
+        setDivisionData({ ...data, courses: filledCourses});
       } catch (error) {
         // Handle 401 (Unauthorized) error and other errors
         if (error.response && error.response.status === 401) {
@@ -53,7 +49,6 @@ function CourseList() {
         }
       }
     };
-
     fetchCourses();
   }, [authToken, divisionCode]); 
 
@@ -63,17 +58,44 @@ function CourseList() {
       currentPage: data.selected + 1
     }))
   };
-  
-  const offset = (divisionData.currentPage - 1) * divisionData.perPage; //0,10,20
-  const currentCourses = showCourses(divisionData, offset);
+
+  const handleSearchChange = (newSearch) => {
+    console.log("Searched:", newSearch);
+    setSearch(newSearch);
+    setDivisionData(prevState => ({ ...prevState, currentPage: 1 }));
+  };
+
+  const fillEmptyCourses = (courses, perPage) => {
+    const filledCourses = [...courses];
+    const currentCount = courses.length;
+    const fillCount = perPage - (currentCount % perPage);
+    if (fillCount < perPage) {
+      for (let i  = 0; i < fillCount; i++) {
+        filledCourses.push({});
+      }
+    }
+    return filledCourses;
+  }
+
   const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
+
+  const filteredCourses = divisionData.courses.filter(course =>
+    (course.id?.toLowerCase() ?? "").includes(search.toLowerCase()) ||
+    (course.title?.toLowerCase() ?? "").includes(search.toLowerCase()) ||
+    (course.instructor && Array.isArray(course.instructor) && course.instructor.some(instructor => instructor.toLowerCase().includes(search.toLowerCase())))
+  );
+
+  const currentCourses = filteredCourses.slice(
+    (divisionData.currentPage - 1) * divisionData.perPage,
+    divisionData.currentPage * divisionData.perPage
+  )
 
   return (
 
     <div className="dashboard">  
     <CreateSidebar />
     <div className='container'>
-      <CreateTopbar />
+      <CreateTopSearchbarIns onSearch={handleSearchChange} />
 
       <div className="main">
 
@@ -99,39 +121,40 @@ function CourseList() {
             </thead>
 
             <tbody>
-              
               {currentCourses.map(course => {
                 return (
                   <tr key={course.id}>
                     <td>{course.id}</td>
                     <td>{course.title}</td>
                     <td>
-                      {Array.isArray(course.instructor) ? course.instructor.map((instructor, index) => (
-                        <React.Fragment key={course.ubcid[index]}>
-                          <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
-                            {instructor} 
+                      {course.instructor ? (
+                        Array.isArray(course.instructor) ? course.instructor.map((instructor, index) => (
+                          <React.Fragment key={course.ubcid[index]}>
+                            <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
+                              {instructor}
+                            </Link>
+                            {index < course.instructor.length - 1 ? <><br/><br/></> : null}
+                          </React.Fragment>
+                        )) : (
+                          <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid}`}>
+                            {course.instructor}
                           </Link>
-                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
-                        </React.Fragment>
-                      )):
-                      <Link to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid}`}>
-                        {course.instructor}<br/>({course.email})
-                      </Link>
-                      }
+                        )
+                      ) : ''}
                     </td>
-
                     <td>
-                      {Array.isArray(course.email) ? course.email.map((email, index) =>
-                        <React.Fragment key={index}>
-                          {email}
-                          {index < course.instructor.length - 1 ? <><br/><br/></> : null}
-                        </React.Fragment>  
-                    ) : course.email }
+                      {course.email ? (
+                        Array.isArray(course.email) ? course.email.map((email, index) => (
+                          <React.Fragment key={index}>
+                            {email}
+                            {index < course.email.length - 1 ? <><br/><br/></> : null}
+                          </React.Fragment>
+                        )) : course.email
+                      ) : ''}
                     </td>
                   </tr>
                 );
               })}
-                            
             </tbody>
 
             <tfoot>
