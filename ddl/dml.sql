@@ -326,18 +326,58 @@ INSERT INTO public."CourseByTerm" ("courseId", "term") VALUES
 
 -- InstructorTeachingAssignment
 INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES
-(12, 1, '2024-W1'),
-(12, 2, '2024-W2'),
-(2, 4, '2023-W1'),
-(2, 5, '2024-W2'),
-(3, 9, '2023-S12');
+(12, 1, '20241'),
+(12, 2, '20242'),
+(2, 4, '20231'),
+(2, 5, '20242'),
+(3, 9, '20231');
+(2, 6, '20243'),    -- Jane Smith teaches Introduction to Data Analytics in 2024S1
+(3, 16, '20243'),   -- Robert Brown teaches Intro to Medical Imaging and Imaging Informatics in 2024S1
+(2, 25, '20243'),   -- Jane Smith teaches Network Science in 2024S1
+(12, 27, '20243'),  -- John Doe teaches Computer Vision in 2024S1
+(3, 15, '20242'),   -- Robert Brown teaches Learning Analytics in 2024W2
+(2, 23, '20242'),   -- Jane Smith teaches Introduction to Parallel Computing in 2024W2
+(12, 28, '20242'),  -- John Doe teaches Capstone Software Engineering Project in 2024W2
+(3, 24, '20242'),   -- Robert Brown teaches Computer Graphics in 2024W2
+(2, 20, '20241'),   -- Jane Smith teaches Database System Implementation in 2024W1
+(12, 21, '20241'),  -- John Doe teaches Modelling and Simulation in 2024W1
+(3, 12, '20244'),   -- Robert Brown teaches Analysis of Algorithms in 2024S2
+(2, 2, '20244'),    -- Jane Smith teaches Computer Programming II in 2024S2
+(12, 10, '20244'),  -- John Doe teaches Software Engineering in 2024S2
+(3, 11, '20244'),   -- Robert Brown teaches Introduction to Operating Systems in 2024S2
+(2, 26, '20243'),   -- Jane Smith teaches Advanced Human Computer Interaction in 2024S1
+(12, 18, '20242'),  -- John Doe teaches Image Processing and Applications in 2024W2
+(3, 7, '20241'),    -- Robert Brown teaches Numerical Analysis in 2024W1
+(2, 9, '20241'),    -- Jane Smith teaches Project Management in 2024W1
+(12, 17, '20241'),  -- John Doe teaches Human Computer Interaction in 2024W1
+(3, 13, '20241');   -- Robert Brown teaches Introduction to Artificial Intelligence in 2024W1
 
 -- SingleTeachingPerformance
 -- (Assuming you have some way to calculate the score)
 INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score") VALUES
-(12, 1, '2024-W1', 4.2),
-(2, 4, '2023-W1', 4.5),
-(3, 9, '2023-S12', 3.8);
+(12, 1, '20241', 4.2),
+(2, 4, '20231', 4.5),
+(3, 9, '20231', 3.8);
+(2, 6, '20243', 4.3),    -- Jane Smith's performance in Introduction to Data Analytics
+(3, 16, '20243', 4.2),   -- Robert Brown's performance in Intro to Medical Imaging
+(2, 25, '20243', 3.8),   -- Jane Smith's performance in Network Science
+(12, 27, '20243', 4.1),  -- John Doe's performance in Computer Vision
+(3, 15, '20242', 4.4),   -- Robert Brown's performance in Learning Analytics
+(2, 23, '20242', 3.9),   -- Jane Smith's performance in Introduction to Parallel Computing
+(12, 28, '20242', 4.6),  -- John Doe's performance in Capstone Software Engineering Project
+(3, 24, '20242', 3.7),   -- Robert Brown's performance in Computer Graphics
+(2, 20, '20241', 4.0),   -- Jane Smith's performance in Database System Implementation
+(12, 21, '20241', 4.5),  -- John Doe's performance in Modelling and Simulation
+(3, 12, '20244', 4.2),   -- Robert Brown's performance in Analysis of Algorithms
+(2, 2, '20244', 4.1),    -- Jane Smith's performance in Computer Programming II
+(12, 10, '20244', 3.6),  -- John Doe's performance in Software Engineering
+(3, 11, '20244', 4.3),   -- Robert Brown's performance in Introduction to Operating Systems
+(2, 26, '20243', 4.0),   -- Jane Smith's performance in Advanced Human Computer Interaction
+(12, 18, '20242', 4.2),  -- John Doe's performance in Image Processing
+(3, 7, '20241', 4.0),    -- Robert Brown's performance in Numerical Analysis
+(2, 9, '20241', 4.5),    -- Jane Smith's performance in Project Management
+(12, 17, '20241', 3.9),  -- John Doe's performance in Human Computer Interaction
+(3, 13, '20241', 4.4);   -- Robert Brown's performance in Artificial Intelligence
 
 -- SurveyType (Assuming 1=SEI)
 INSERT INTO public."SurveyType" ("surveyTypeId", "surveyType") VALUES
@@ -359,10 +399,4 @@ INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId",
 (1, 3, 1, '2024-W1', 12, 55555555, '3'),
 (1, 4, 1, '2024-W1', 12, 55555555, '4'),
 (1, 5, 1, '2024-W1', 12, 55555555, '4'),
-(1, 6, 1, '2024-W1', 12, 55555555, 'Agree');
-
-
-
-
-
-
+(1, 6, 1, '2024-W1', 12, 55555555, '4');

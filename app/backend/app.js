@@ -8,6 +8,7 @@ const workingHoursRoutes = require('./routes/workingHoursRoutes');
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
+const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
@@ -35,6 +36,8 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 app.use('/api/workingHoursRoutes',workingHoursRoutes);
+app.use('/api/deptPerformance',DeptPerformanceRouter);
+
 
 //Performance BE
 //app.use('/api/instructorPerformance',performanceRoutes);
