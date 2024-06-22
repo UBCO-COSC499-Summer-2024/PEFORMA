@@ -59,6 +59,11 @@ function CreateProgressChart(){
         <ServiceHoursProgressChart />
     )
 }
+function CreateTopSearchBarDept(){
+    return (
+        <TopSearchBarDept />
+    )
+}
 
 export default CreateSidebar;
 export {CreateTopbar, 
@@ -67,5 +72,6 @@ export {CreateTopbar,
     CreateWorkingBarChart, 
     CreateScorePolarChart,
     CreateLeaderboardChart,
-    CreateProgressChart
+    CreateProgressChart,
+    CreateTopSearchBarDept
 };

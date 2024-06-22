@@ -28,6 +28,8 @@ function WorkHoursBarChart() {
     const { authToken } = useAuth();
 	const {profileId} = useAuth();
     useEffect(() => {
+        const date = new Date();
+		const currentMonth = date.getMonth() + 1;
         const fetchData = async () => {
             try {
                 if(!authToken){
@@ -35,7 +37,7 @@ function WorkHoursBarChart() {
                     return;
                 }
                 const res = await axios.get('http://localhost:3001/api/workingHoursRoutes', {
-                    params: {profileId:profileId},
+                    params: {profileId:profileId, currentMonth:currentMonth},
                     headers: { Authorization: `Bearer ${authToken.token}` }
                 });
                 console.log(res);
