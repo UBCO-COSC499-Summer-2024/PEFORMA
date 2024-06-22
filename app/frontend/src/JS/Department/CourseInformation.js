@@ -69,8 +69,8 @@ const currentEntries = historyData.history.slice(
         <p role='contentinfo'>{historyData.courseDescription}</p>
         <div className='bold score'>Average Performance Score: <span role='contentinfo'>{historyData.avgScore}</span></div>
         <div className='buttons'>
-            <button role="button" id="edit">Edit Course</button>
-            <button role='button' id="deactivate">Deactivate</button>
+            <button id="edit" role='button' name="edit">Edit Course</button>
+            <button id="deactivate" role='button' name='deactivate'>Deactivate</button>
         </div>
         <div id="history">
             <p className='bold'>Course History</p>
