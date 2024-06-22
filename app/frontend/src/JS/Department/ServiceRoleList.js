@@ -18,9 +18,10 @@ function showRoles(roleData, offset){
 function ServiceRoleList() {
 
   const { authToken } = useAuth();
-  const [roleData, setRoleData] = useState({"roles":[{}], rolesCount:0, perPage: 10, currentPage: 1});
 
   const navigate = useNavigate();
+
+  const [roleData, setRoleData] = useState({"roles":[{}], rolesCount:0, perPage: 10, currentPage: 1});
 
   useEffect(() => {
     const fetchServiceRoles = async () => {
@@ -73,6 +74,7 @@ function ServiceRoleList() {
   const pageCount = Math.ceil(roleData.rolesCount / roleData.perPage);
   const offset = (roleData.currentPage - 1) * roleData.perPage;
   const currentRoles = showRoles(roleData, offset);
+  console.log(currentRoles);
 
   return (
 
@@ -100,7 +102,7 @@ function ServiceRoleList() {
 
             {currentRoles.map(role => {
                 return (
-                  <tr key={role.name}>
+                  <tr key={role.id}>
                     <td><Link to={`http://localhost:3000/RoleInformation?roleid=${(role.id)}`}>{role.name}</Link></td>
                     <td>{role.department}</td>
                     <td>{role.description}</td>
