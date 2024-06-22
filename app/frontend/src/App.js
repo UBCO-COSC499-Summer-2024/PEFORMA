@@ -14,7 +14,7 @@ import CreateAccount from "./JS/Admin/CreateAccount";
 import DeptCourseList from "./JS/Department/DeptCourseList";
 import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
-
+import CourseInformation from "./JS/Department/CourseInformation";
 
 import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
@@ -36,7 +36,7 @@ function App() {
         <Route path="/ServiceRoleManagement" element={<ServiceRoleManagement />} />
         <Route path="/CreateAccount" element={<CreateAccount />} />
         <Route path="/DeptCourseList" element={<DeptCourseList />} />
-
+        <Route path="/CourseInformation" element={<CourseInformation />} />
         
       </Routes></AuthProvider>
     </BrowserRouter>
