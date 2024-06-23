@@ -11,7 +11,6 @@ import InstructorProfilePage from "./JS/Instructor/InstructorProfilePage";
 import DataEntry from "./JS/Department/DataEntry";
 import ServiceRoleManagement from "./JS/Department/ServiceRoleManagement";
 import CreateAccount from "./JS/Admin/CreateAccount";
-import DeptCourseList from "./JS/Department/DeptCourseList";
 import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 
@@ -22,7 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider><Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/Home" element={<HomePage />} />
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
@@ -34,9 +33,7 @@ function App() {
         <Route path="/CourseHistory" element={<CourseHistory />} />
         <Route path="/DataEntry" element={<DataEntry />} />
         <Route path="/ServiceRoleManagement" element={<ServiceRoleManagement />} />
-        <Route path="/CreateAccount" element={<CreateAccount />} />
-        <Route path="/DeptCourseList" element={<DeptCourseList />} />
-
+        <Route path="/" element={<CreateAccount />} />
         
       </Routes></AuthProvider>
     </BrowserRouter>
