@@ -20,21 +20,13 @@ exports.getDepartPerformance = async (req, res) => {
 
         // Now, fetch the average score by each divisionId for the latest term.
         query = `
-            SELECT 
-                c.divisionId, 
-                AVG(stp.score) AS average_score
-            FROM 
-                "SingleTeachingPerformance" stp
-            JOIN 
-                "CourseByTerm" cbt ON stp.courseId = cbt.courseId AND stp.term = cbt.term
-            JOIN 
-                "Course" c ON cbt.courseId = c.courseId
-            WHERE 
-                stp.term = $1
-            GROUP BY 
-                c.divisionId
-            ORDER BY 
-                c.divisionId;
+            SELECT c."divisionId", AVG(stp.score) AS average_score
+            FROM "SingleTeachingPerformance" stp
+            JOIN "CourseByTerm" cbt ON stp."courseId" = cbt."courseId" AND stp."term" = cbt."term"
+            JOIN "Course" c ON cbt."courseId" = c."courseId"
+            WHERE stp."term" = $1
+            GROUP BY c."divisionId"
+            ORDER BY c."divisionId";
         `;
 
         result = await pool.query(query, [latestTerm]);
@@ -59,12 +51,6 @@ exports.getDepartPerformance = async (req, res) => {
 
         // Send the JSON response
         return res.json(output);
-
-
-        
-       
-
-    
       
     } catch (error) {
         console.error('Database query error:', error);

@@ -7,14 +7,38 @@ INSERT INTO public."Division" ("divisionId", "dcode", "dname") VALUES
 
 -- Profile (add department staff and admin users)
 INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark") VALUES
-(12, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 12345678, 15, 50),
-(2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 23456789, 8, 120),
-(3, 'Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Instructor', 2, 34567890, 0, 100),
-(4, 'Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 3, 45678901, 0, 0),
-(5, 'Alice', NULL, 'Johnson', 'alice.johnson@ubc.ca', '250-555-9876', 'SCI', '200', 'Department Staff', 1, 56789012, 0, 0),
-(6, 'Bob', NULL, 'Lee', 'bob.lee@ubc.ca', '250-555-5678', 'SCI', '200', 'Department Staff', 2, 67890123, 0, 0),
-(7, 'Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, 'Admin', NULL, NULL, 0, 0); 
-
+    -- COSC
+    (1, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 00000001, 15, 50),
+    (2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 00000002, 8, 120),
+    (3, 'Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Lecturer', 1, 00000003, 0, 10),
+    (4, 'Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 1, 00000004, 0, 0),
+    -- MATH
+    (5, 'David', NULL, 'Kim', 'david.kim@ubc.ca', '250-555-6789', 'SCI', '123', 'Professor', 2, 00000005, 20, 80),
+    (6, 'Sarah', 'Lee', 'Chen', 'sarah.chen@ubc.ca', '250-555-9012', 'SCI', '234', 'Assistant Professor', 2, 00000006, 5, 110),
+    (7, 'Michael', NULL, 'Nguyen', 'michael.nguyen@ubc.ca', '250-555-3456', 'EME', '345', 'Associate Professor', 2, 00000007, 12, 90),
+    (8, 'Olivia', 'Marie', 'Rodriguez', 'olivia.rodriguez@ubc.ca', '250-555-7890', 'ASC', '456', 'Assistant Professor', 2, 00000008, 8, 100),
+    -- PHYS
+    (9, 'Daniel', NULL, 'Taylor', 'daniel.taylor@ubc.ca', '250-555-1122', 'SCI', '124', 'Lecturer', 1, 00000009, 3, 50),
+    (10, 'Sophia', 'Anne', 'Wilson', 'sophia.wilson@ubc.ca', '250-555-3344', 'ART', '235', 'Sessional Lecturer', 3, 00000010, 3, 10),
+    (11, 'William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 00000011, 3, 45),
+    (12, 'Aiden', NULL, 'Moore', 'adien.moore@ubc.ca', '236-555-8765', 'ASC', '213', 'Professor', 3, 00000012, 34, 80),
+    -- STAT
+    (13, 'Ava', NULL, 'Martinez', 'ava.martinez1@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 00000013, 0, 0),       -- <-- People w/ the same name
+    (14, 'Ava', NULL, 'Martinez', 'ava.martinez2@ubc.ca', '236-478-1590', 'SCI', '111', 'Asssitant Professor', 4, 00000014, 60, 120),   -- <--
+    (15, 'Ethan', NULL, 'Anderson', 'ethan.anderson@ubc.ca', '236-555-9876', 'EME', '414', 'Asssitant Professor', 4, 00000015, 12, 95), 
+-- Department Staff
+(16, 'Alice', NULL, 'Johnson', 'alice.johnson@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 00000016, 0, 0),  
+(17, 'Bob', NULL, 'Lee', 'bob.lee@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 00000017, 0, 0),
+-- Admin
+    -- UBC admins
+    (18, 'Kevin', NULL, 'Kim', 'kkim9901@student.ubc.ca', '250-666-6661', NULL, NULL, NULL, NULL, 66666661, 0, 0),                              
+    (19, 'Jeremy', NULL, 'Adams', 'jeremyadams166@gmail.com', '250-666-6662', NULL, NULL, NULL, NULL, 66666662, 0, 0),
+    (20, 'Zhiheng', NULL, 'Zhang', 'm15601654187@163.com', '250-666-6663', NULL, NULL, NULL, NULL, 66666663, 0, 0),
+    (21, 'Subaru', NULL, 'Sakashita', 'baruchan@student.ubc.ca', '250-666-6664', NULL, NULL, NULL, NULL, 66666664, 0, 0),
+    (22, 'Adams', NULL, 'Chen', 'ayhchen@student.ubc.ca', '250-666-6665', NULL, NULL, NULL, NULL, 66666665, 0, 0),
+    -- Non-UBC admin
+    (23, 'Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, NULL, NULL, NULL, 0, 0),  
+    (24, 'Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0);   
 -- Image 
 -- INSERT INTO Image (imageId, fileType, image_data) VALUES
 -- (1, 'jpg', '...'),
@@ -22,11 +46,33 @@ INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName"
 
 -- Account (remember to hash passwords in a real system!)
 INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "isActive") VALUES
-(1, 12, 'john.doe@ubc.ca', 'p@55word', true),
-(2, 2, 'jane.smith@ubc.ca', 'p@55word', true),
-(3, 3, 'robert.brown@ubc.ca', 'p@55word', true),
+-- Active
+(1, 1, 'john.doe@ubc.ca', 'p@55word', true),
+(2, 2, 'jane.smith@ubc.ca', 'someth!n9', true), -- different password for testing
+(5, 5, 'david.kim@ubc.ca', 'p@55word', true),
+(6, 6, 'sarah.chen@ubc.ca', 'p@55word', true),
+(7, 7, 'michael.nguyen@ubc.ca', 'p@55word', true),
+(8, 8, 'olivia.rodriguez@ubc.ca', 'p@55word', true),
+(9, 9, 'daniel.taylor@ubc.ca', 'p@55word', true),
+(10, 10, 'sophia.wilson@ubc.ca', 'p@55word', true),
+(11, 11, 'william.anderson@ubc.ca', 'p@55word', true),
+(12, 12, 'adien.moore@ubc.ca', 'p@55word', true),
+(13, 13, 'ava.martinez1@ubc.ca', 'p@55word', true),       
+(14, 14, 'ava.martinez2@ubc.ca', 'p@55word', true),  
+(15, 15, 'ethan.anderson@ubc.ca', 'p@55word', true), 
+(16, 16, 'alice.johnson@staff.ubc.ca', 'p@55word', true),  
+(17, 17, 'bob.lee@staff.ubc.ca', 'p@55word', true),
+(18, 18, 'kkim9901@student.ubc.ca', 'team6!x', true),                              
+(19, 19, 'jeremyadams166@gmail.com', 'team6!x', true),
+(20, 20, 'm15601654187@163.com', 'team6!x', true),
+(21, 21, 'baruchan@student.ubc.ca', 'team6!x', true),
+(22, 22, 'ayhchen@student.ubc.ca', 'team6!x', true),
+(23, 23, 'carol.wilson@maintenance.ca', 'p@55word', true),
+-- Inactive
 (4, 4, 'emily.davis@ubc.ca', 'p@55word', false),
 (24, 24, 'amelia.young@maintenance.ca', 'p@55word', false);
+-- Person w/o account
+    -- Robert Brown (profileId=3)
 -- Person w/o account
     -- Robert Brown (profileId=3)
 
@@ -139,8 +185,8 @@ INSERT INTO public."ServiceRoleByYear" ("serviceRoleId", "year", "JANHour", "FEB
 
 -- ServiceRoleAssignment
 INSERT INTO public."ServiceRoleAssignment" ("profileId", "serviceRoleId", "year") VALUES
-(12, 2, 2023),
-(12, 2, 2024),
+(1, 2, 2023),
+(1, 2, 2024),
 (2, 5, 2023),
 (2, 3, 2024),
 (2, 7, 2024),
@@ -326,59 +372,64 @@ INSERT INTO public."CourseByTerm" ("courseId", "term") VALUES
 
 -- InstructorTeachingAssignment
 INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES
-(12, 1, '20241'),
-(12, 2, '20242'),
-(2, 4, '20231'),
-(2, 5, '20242'),
-(3, 9, '20231');
-(2, 6, '20243'),    -- Jane Smith teaches Introduction to Data Analytics in 2024S1
-(3, 16, '20243'),   -- Robert Brown teaches Intro to Medical Imaging and Imaging Informatics in 2024S1
-(2, 25, '20243'),   -- Jane Smith teaches Network Science in 2024S1
-(12, 27, '20243'),  -- John Doe teaches Computer Vision in 2024S1
-(3, 15, '20242'),   -- Robert Brown teaches Learning Analytics in 2024W2
-(2, 23, '20242'),   -- Jane Smith teaches Introduction to Parallel Computing in 2024W2
-(12, 28, '20242'),  -- John Doe teaches Capstone Software Engineering Project in 2024W2
-(3, 24, '20242'),   -- Robert Brown teaches Computer Graphics in 2024W2
-(2, 20, '20241'),   -- Jane Smith teaches Database System Implementation in 2024W1
-(12, 21, '20241'),  -- John Doe teaches Modelling and Simulation in 2024W1
+(1, 1, '20231'),
+(1, 2, '20231'),
+(2, 4, '20244'),
+(2, 5, '20244'),
+(3, 9, '20244'),
+(2, 6, '20244'),    -- Jane Smith teaches Introduction to Data Analytics in 2024S1
+(3, 16, '20244'),   -- Robert Brown teaches Intro to Medical Imaging and Imaging Informatics in 2024S1
+(2, 25, '20244'),   -- Jane Smith teaches Network Science in 2024S1
+(12, 27, '20244'),  -- John Doe teaches Computer Vision in 2024S1
+(3, 15, '20244'),   -- Robert Brown teaches Learning Analytics in 2024W2
+(2, 23, '20244'),   -- Jane Smith teaches Introduction to Parallel Computing in 2024W2
+(12, 28, '20244'),  -- John Doe teaches Capstone Software Engineering Project in 2024W2
+(3, 24, '20244'),   -- Robert Brown teaches Computer Graphics in 2024W2
+(2, 20, '20244'),   -- Jane Smith teaches Database System Implementation in 2024W1
+(12, 21, '20244'),  -- John Doe teaches Modelling and Simulation in 2024W1
 (3, 12, '20244'),   -- Robert Brown teaches Analysis of Algorithms in 2024S2
-(2, 2, '20244'),    -- Jane Smith teaches Computer Programming II in 2024S2
+(2, 2, '20231'),    -- Jane Smith teaches Computer Programming II in 2024S2
 (12, 10, '20244'),  -- John Doe teaches Software Engineering in 2024S2
 (3, 11, '20244'),   -- Robert Brown teaches Introduction to Operating Systems in 2024S2
 (2, 26, '20243'),   -- Jane Smith teaches Advanced Human Computer Interaction in 2024S1
-(12, 18, '20242'),  -- John Doe teaches Image Processing and Applications in 2024W2
-(3, 7, '20241'),    -- Robert Brown teaches Numerical Analysis in 2024W1
-(2, 9, '20241'),    -- Jane Smith teaches Project Management in 2024W1
-(12, 17, '20241'),  -- John Doe teaches Human Computer Interaction in 2024W1
-(3, 13, '20241');   -- Robert Brown teaches Introduction to Artificial Intelligence in 2024W1
+(12, 18, '20244'),  -- John Doe teaches Image Processing and Applications in 2024W2
+(3, 7, '20244'),    -- Robert Brown teaches Numerical Analysis in 2024W1
+(2, 9, '20244'),    -- Jane Smith teaches Project Management in 2024W1
+(12, 17, '20244'),  -- John Doe teaches Human Computer Interaction in 2024W1
+(3, 13, '20244'),   -- Robert Brown teaches Introduction to Artificial Intelligence in 2024W1
+(5, 30,'20244'),
+(12,58,'20244'),
+(13,80,'20244');
 
 -- SingleTeachingPerformance
 -- (Assuming you have some way to calculate the score)
 INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score") VALUES
-(12, 1, '20241', 4.2),
-(2, 4, '20231', 4.5),
-(3, 9, '20231', 3.8);
-(2, 6, '20243', 4.3),    -- Jane Smith's performance in Introduction to Data Analytics
-(3, 16, '20243', 4.2),   -- Robert Brown's performance in Intro to Medical Imaging
-(2, 25, '20243', 3.8),   -- Jane Smith's performance in Network Science
-(12, 27, '20243', 4.1),  -- John Doe's performance in Computer Vision
-(3, 15, '20242', 4.4),   -- Robert Brown's performance in Learning Analytics
-(2, 23, '20242', 3.9),   -- Jane Smith's performance in Introduction to Parallel Computing
-(12, 28, '20242', 4.6),  -- John Doe's performance in Capstone Software Engineering Project
-(3, 24, '20242', 3.7),   -- Robert Brown's performance in Computer Graphics
-(2, 20, '20241', 4.0),   -- Jane Smith's performance in Database System Implementation
-(12, 21, '20241', 4.5),  -- John Doe's performance in Modelling and Simulation
+(1, 1, '20231', 4.2),
+(2, 4, '20244', 4.5),
+(3, 9, '20244', 3.8),
+(2, 6, '20244', 4.3),    -- Jane Smith's performance in Introduction to Data Analytics
+(3, 16, '20244', 4.2),   -- Robert Brown's performance in Intro to Medical Imaging
+(2, 25, '20244', 3.8),   -- Jane Smith's performance in Network Science
+(12, 27, '20244', 4.1),  -- John Doe's performance in Computer Vision
+(3, 15, '20244', 4.4),   -- Robert Brown's performance in Learning Analytics
+(2, 23, '20244', 3.9),   -- Jane Smith's performance in Introduction to Parallel Computing
+(12, 28, '20244', 4.6),  -- John Doe's performance in Capstone Software Engineering Project
+(3, 24, '20244', 3.7),   -- Robert Brown's performance in Computer Graphics
+(2, 20, '20244', 4.0),   -- Jane Smith's performance in Database System Implementation
+(12, 21, '20244', 4.5),  -- John Doe's performance in Modelling and Simulation
 (3, 12, '20244', 4.2),   -- Robert Brown's performance in Analysis of Algorithms
-(2, 2, '20244', 4.1),    -- Jane Smith's performance in Computer Programming II
+(2, 2, '20231', 4.1),    -- Jane Smith's performance in Computer Programming II
 (12, 10, '20244', 3.6),  -- John Doe's performance in Software Engineering
 (3, 11, '20244', 4.3),   -- Robert Brown's performance in Introduction to Operating Systems
 (2, 26, '20243', 4.0),   -- Jane Smith's performance in Advanced Human Computer Interaction
-(12, 18, '20242', 4.2),  -- John Doe's performance in Image Processing
-(3, 7, '20241', 4.0),    -- Robert Brown's performance in Numerical Analysis
-(2, 9, '20241', 4.5),    -- Jane Smith's performance in Project Management
-(12, 17, '20241', 3.9),  -- John Doe's performance in Human Computer Interaction
-(3, 13, '20241', 4.4);   -- Robert Brown's performance in Artificial Intelligence
-
+(12, 18, '20244', 4.2),  -- John Doe's performance in Image Processing
+(3, 7, '20244', 4.0),    -- Robert Brown's performance in Numerical Analysis
+(2, 9, '20244', 4.5),    -- Jane Smith's performance in Project Management
+(12, 17, '20244', 3.9),  -- John Doe's performance in Human Computer Interaction
+(3, 13, '20244', 4.4),   -- Robert Brown's performance in Artificial Intelligence
+(5, 30,'20244',4.5),
+(12,58,'20244',4.6),
+(13,80,'20244',4.6);
 -- SurveyType (Assuming 1=SEI)
 INSERT INTO public."SurveyType" ("surveyTypeId", "surveyType") VALUES
 (1, 'SEI');
@@ -394,9 +445,10 @@ INSERT INTO public."SurveyQuestion" ("surveyTypeId", "surveyQuestionId", "descri
 
 -- SurveyQuestionResponse (Sample responses for John Doe's Calculus I)
 INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId", "courseId", "term", "profileId", "studentId", "response") VALUES
-(1, 1, 1, '2024-W1', 12, 55555555, '4'),  -- Rating scale 1-5
-(1, 2, 1, '2024-W1', 12, 55555555, '5'),
-(1, 3, 1, '2024-W1', 12, 55555555, '3'),
-(1, 4, 1, '2024-W1', 12, 55555555, '4'),
-(1, 5, 1, '2024-W1', 12, 55555555, '4'),
-(1, 6, 1, '2024-W1', 12, 55555555, '4');
+(1, 1, 1, '20231', 1, 55555555, '4'),  -- Rating scale 1-5
+(1, 2, 1, '20231', 1, 55555555, '5'),
+(1, 2, 1, '20231', 1, 55555555, '5'),
+(1, 3, 1, '20231', 1, 55555555, '3'),
+(1, 4, 1, '20231', 1, 55555555, '4'),
+(1, 5, 1, '20231', 1, 55555555, '4'),
+(1, 6, 1, '20231', 1, 55555555, '4');
