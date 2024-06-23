@@ -5,7 +5,7 @@
 2. 
 3. 
 
-## Type of change
+## Type of features/changes
 
 - [ ] Logs
 - [ ] Bug fix 
@@ -25,4 +25,4 @@
 1.
 2.
 
-Closes #
+>Closes #
