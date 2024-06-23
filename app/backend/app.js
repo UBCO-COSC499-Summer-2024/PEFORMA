@@ -7,6 +7,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
+const allCoursesRoutes = require('./routes/allCoursesRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
@@ -34,6 +35,8 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
+// Service role retrieval process
+app.use('/api/all-courses', allCoursesRoutes);
 
 //Profile BE
 
