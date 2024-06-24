@@ -10,6 +10,8 @@ const AccountTypeRouter = require('./routes/AccountType');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
+const courseHistoryRouter = required('./routes/courseHistoryRoutes');
+
 const app = express();
 
 app.use(cors()); 
@@ -35,7 +37,8 @@ app.use('/',AccountTypeRouter);//check account type
 app.use('/api/instructorProfile',profileRoutes);
 
 
-//Profile BE
+//Dept course info
+app.use('./api/courseHistory',courseHistoryRouter);
 
 console.log('after');
 
