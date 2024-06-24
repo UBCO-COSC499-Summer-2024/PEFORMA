@@ -5,6 +5,8 @@ const csv = require('fast-csv'); // For CSV
 const Joi = require('joi');  // For data validation
 const pool = require('../db/index.js');
 
+const router = express.Router(); // Create a router instance
+
 const app = express();
 const upload = multer({ dest: 'uploads/' });  
 
@@ -72,5 +74,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     res.status(500).json({ error: 'Import failed!' });
   }
 });
+
+module.exports = router;
 
 
