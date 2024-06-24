@@ -7,9 +7,9 @@ const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
 const { saveDataToDatabase } = require('./routes/DataEntry');
-const { upsertProfile } = require('./routes/upsertProfile');
-const { createAccount } = require('./routes/createAccount');
-const { assignServiceRole } = require ('./routes/assignServiceRole');
+//const { upsertProfile } = require('./routes/upsertProfile');
+//const { createAccount } = require('./routes/createAccount');
+//const { assignServiceRole } = require ('./routes/assignServiceRole');
 
 const app = express();
 

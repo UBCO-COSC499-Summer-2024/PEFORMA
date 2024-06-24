@@ -142,8 +142,16 @@ h1 {
     align-self: center;
     padding: 0.75em 3em 0.75em 3em;
     transition: background-color 0.1s;
+    box-shadow: 0.25em 0.25em 0.5em var(--darkestGrey);
+    margin-top: 1em;
+    border-radius: 0.5em;
 }
 
 .finish-button:hover {
     background-color: var(--darkGreen);
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }

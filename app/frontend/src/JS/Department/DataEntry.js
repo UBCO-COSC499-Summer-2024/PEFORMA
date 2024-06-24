@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import '../../CSS/Department/DataEntry.css';
+import divisions from '../common/divisions.js';
+
 
 function DataEntryComponent() {
+    const navigate = useNavigate();
+    window.onbeforeunload = function() {
+        return "Data will be lost if you leave this page. Are you sure?";
+      };
+
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
     const [instructors, setInstructors] = useState([
@@ -32,6 +41,22 @@ function DataEntryComponent() {
         setShowInstructorModal(false);
     };
 
+   const handleSubmit = async(event, props) => {
+            event.preventDefault();
+            const data = new FormData(event.target);
+            const formType = data.get("selection");
+            let confirmMessage = "";
+            if (formType === "Course") {
+                confirmMessage = "Create new course?";
+            } else {
+                confirmMessage = "Create new service role?";
+            }
+            if (window.confirm(confirmMessage) === true) {
+                axios.post('http://localhost:3001/enter', data).then(navigate("/courseInformation?"));
+                
+            }
+    }
+
     return (
         <div className='DataEntry-page'>
             <CreateSidebarDept/>
@@ -49,59 +74,64 @@ function DataEntryComponent() {
                 </div>
             {selection === 'Course' && (
                 <div className='form-container'>
-                <form className="course-form" name="course-form">
+                <form className="course-form" name="course-form" onSubmit={handleSubmit}>
                     <div className="titleInput formInput">
                         <label htmlFor="course-title">Course Title:</label>
-                        <input type="text" id="course-title" placeholder="Enter course title" />
+                        <input type="text" id="course-title" placeholder="Enter course title" name="courseTitle" required/>
                     </div>
                     <div className='departmentInput formInput'>
                         <label htmlFor="course-department">Department:</label>
-                        <select id="course-department">
-                            <option value="">Select</option>
-                            <option value="CS">Computer Science</option>
-                            <option value="Math">Mathematics</option>
+                        <select id="course-department" name="courseDepartment" required>
+                            {divisions.map(division => {
+                                return (
+                                    <option key={division.code} value={division.code}>{division.label}</option>
+                                );
+                            })}
                         </select>
                         <div className='coursecodeInput'>
                             <label htmlFor="course-code">Course Code:</label>
-                            <input type="text" id="course-code" />
+                            <input type="text" id="course-code" name="courseCode" required/>
                         </div>
                     </div>
                     <label htmlFor="course-description">Course Description:</label>
-                    <textarea id="course-description" placeholder="Describe the course"></textarea>
+                    <textarea id="course-description" placeholder="Describe the course" name="courseDescription" required></textarea>
 
                     <button className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    <input type="submit" id="course-submit" className='hidden' />
+                    <input type="hidden" name="selection" value="Course" />
                 </form>
-                <button className="finish-button" type="submit" form="course-form">Finish</button>
+                <label className="finish-button" htmlFor="course-submit">Finish</label>
                 </div>
             )}
 
             {selection === 'Service Role' && (
                 <div className='form-container'>
-                <form className="service-role-form">
+                <form className="service-role-form" name="service-role-form" onSubmit={handleSubmit}>
                     <div className="titleInput formInput">
                         <label htmlFor="service-role-title">Service Role Title:</label>
-                        <input type="text" id="service-role-title" placeholder="Enter service role title" />
+                        <input type="text" id="service-role-title" placeholder="Enter service role title" name="serviceRoleTitle" required/>
                     </div>
                     <div className="departmentInput formInput">
                         <label htmlFor="service-role-department">Department:</label>
-                        <select id="service-role-department">
-                            <option value="">Select</option>
-                            <option value="CS">Computer Science</option>
-                            <option value="Math">Mathematics</option>
-                            <option value="Physics">Physics</option>
+                        <select id="service-role-department" name="serviceRoleDepartment" required>
+                        {divisions.map(division => {
+                                return (
+                                    <option key={division.code} value={division.code}>{division.label}</option>
+                                );
+                            })}
                         </select>
                     </div>
                     <label htmlFor="service-role-description">Service Role Description:</label>
-                    <textarea id="service-role-description" placeholder="Describe the service role"></textarea>
+                    <textarea id="service-role-description" placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
                     <div className='monthlyHoursInput formInput'>
                         <label htmlFor="monthly-hours">Monthly Hours Benchmark:</label>
-                        <input type="text" id="monthly-hours" placeholder="hours/month" />
+                        <input type="text" id="monthly-hours" placeholder="hours/month" name="monthlyHours" required/>
                     </div>
                     <button className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
-
-                    
+                    <input type="submit" id="service-role-submit" className='hidden' />
+                    <input type="hidden" name="formType" value="Service Role" />
                 </form>
-                <button className="finish-button">Finish</button>
+                <label className="finish-button" htmlFor='service-role-submit'>Finish</label>
                 </div>
             )}
 
