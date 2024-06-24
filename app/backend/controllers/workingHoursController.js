@@ -1,5 +1,5 @@
-const  pool = require('../db/index.js'); // Adjust the path as necessary for your db connection
-console.log(pool); // See what pool actually is
+const  pool = require('../db/index.js'); 
+console.log(pool);
 
 exports.getWorkingHours = async (req, res) => {
     const profileId = req.query.profileId;
@@ -53,8 +53,6 @@ exports.getWorkingHours = async (req, res) => {
             return acc;
         }, { JANHour: 0, FEBHour: 0, MARHour: 0, APRHour: 0, MAYHour: 0, JUNHour: 0, JULHour: 0, AUGHour: 0, SEPHour: 0, OCTHour: 0, NOVHour: 0, DECHour: 0 });
         
-        // Now you can use `totals` to access the summed values
-        //console.log("Total Hour for each month is: ",totals);  // Log the summed hours for each month
        
         //Retrieve Average Working Hour for all the service roles in specific division
         const avgWorkHour = {

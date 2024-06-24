@@ -1,11 +1,11 @@
-const  pool = require('../db/index.js'); // Adjust the path as necessary for your db connection
-console.log(pool); // See what pool actually is
+const  pool = require('../db/index.js'); 
+console.log(pool); 
 
 exports.getLeaderBoard = async (req, res) => {
     try {
         let query;
         let result;
-        // First, get the latest term using your existing approach.
+
         query = `SELECT "term" FROM "SingleTeachingPerformance" ORDER BY "term" DESC LIMIT 1;`;
         result = await pool.query(query);
 
@@ -18,7 +18,6 @@ exports.getLeaderBoard = async (req, res) => {
 
 
         console.log("Latest term: ", latestTerm);
-        // First, get the latest term using your existing approach.
         query = `
         SELECT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, AVG(stp."score") AS average_score
         FROM "Profile" p
