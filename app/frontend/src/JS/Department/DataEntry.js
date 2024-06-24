@@ -14,6 +14,14 @@ function DataEntryComponent() {
 
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
+    const [courseTitle, setCourseTitle] = useState('');
+    const [courseDepartment, setCourseDepartment] = useState('');
+    const [courseCode, setCourseCode] = useState('');
+    const [courseDescription, setCourseDescription] = useState('');
+    const [serviceRoleTitle, setServiceRoleTitle] = useState('');
+    const [serviceRoleDepartment, setServiceRoleDepartment] = useState('');
+    const [serviceRoleDescription, setServiceRoleDescription] = useState('');
+    const [monthlyHours, setMonthlyHours] = useState('');
     const [instructors, setInstructors] = useState([
         { id: '12341234', name: 'Jim Bob', added: false },
         { id: '12341234', name: 'Billy Jim', added: true },
@@ -41,19 +49,59 @@ function DataEntryComponent() {
         setShowInstructorModal(false);
     };
 
-   const handleSubmit = async(event, props) => {
-            event.preventDefault();
-            const data = new FormData(event.target);
-            const formType = data.get("selection");
-            let confirmMessage = "";
-            if (formType === "Course") {
-                confirmMessage = "Create new course?";
-            } else {
-                confirmMessage = "Create new service role?";
+    function checkCourseCode() {
+        if (courseCode.length !== 3) {
+            return false;
+        }
+        for (let i = 0; i < courseCode.length; i++) {
+            if (!Number.isInteger(parseInt(courseCode.charAt(i)))) {
+                return false;
             }
-            if (window.confirm(confirmMessage) === true) {
-                axios.post('http://localhost:3001/enter', data).then(navigate("/courseInformation?courseId=1")); // Make courseId equal to that of the newly created course
-                
+        }
+        return true;
+    }
+
+    function checkMonthlyHours() {
+ 
+    }
+
+
+   const handleSubmit = async(event) => {
+            event.preventDefault();
+            const formData = {
+                selection,
+                courseTitle,
+                courseDepartment,
+                courseCode,
+                courseDescription,
+                serviceRoleTitle,
+                serviceRoleDepartment,
+                serviceRoleDescription,
+                monthlyHours,
+            };
+            console.log('Submitting form data:', formData);
+            let valid = true;
+            if (selection === "Course") {
+                valid = checkCourseCode();
+                if (valid == false) {
+                    alert("Course code should be 3 digits.");
+                }
+            }
+            if (selection === "Service Role") {
+
+            }
+
+            if (valid) {
+                let confirmMessage = "";
+                if (formData.selection === "Course") {
+                    confirmMessage = "Create new course?";
+                } else {
+                    confirmMessage = "Create new service role?";
+                }
+                if (window.confirm(confirmMessage) === true) {
+                    //axios.post('http://localhost:3001/enter', data).then(navigate("/courseInformation?courseId=1")); // Make courseId equal to that of the newly created course
+                    
+                }
             }
     }
 
@@ -66,7 +114,7 @@ function DataEntryComponent() {
                 <h1>Data Entry</h1>
                 <div className="create-new">
                     <label htmlFor="create-new-select">Create New:</label>
-                    <select id="create-new-select" value={selection} onChange={handleChange} role ="button" name="dropdown">
+                    <select id="create-new-select" value={selection} onChange={(e)=>setSelection(e.target.value)} role ="button" name="dropdown">
                         <option value="" disabled>Select</option>
                         <option value="Service Role" name="newServiceRole" role="button">Service Role</option>
                         <option value="Course" name="newCourse" role="button">Course</option>
@@ -77,11 +125,11 @@ function DataEntryComponent() {
                 <form className="course-form" data-testid="course-form" role='form' onSubmit={handleSubmit}>
                     <div className="titleInput formInput">
                         <label htmlFor="course-title">Course Title:</label>
-                        <input type="text" id="course-title" placeholder="Enter course title" name="courseTitle" required/>
+                        <input type="text" onChange={(e) => setCourseTitle(e.target.value)} id="course-title" placeholder="Enter course title" name="courseTitle" required/>
                     </div>
                     <div className='departmentInput formInput'>
                         <label htmlFor="course-department">Department:</label>
-                        <select id="course-department" name="courseDepartment" required>
+                        <select id="course-department" name="courseDepartment" onChange={(e)=>setCourseDepartment(e.target.value)} required>
                             {divisions.map(division => {
                                 return (
                                     <option key={division.code} value={division.code}>{division.label}</option>
@@ -90,11 +138,15 @@ function DataEntryComponent() {
                         </select>
                         <div className='coursecodeInput'>
                             <label htmlFor="course-code">Course Code:</label>
-                            <input type="text" id="course-code" name="courseCode" required/>
+                            <input type="text" id="course-code" name="courseCode" onChange={(e)=> {
+                                setCourseCode(e.target.value);
+                                
+                            }} required/>
                         </div>
                     </div>
+                    
                     <label htmlFor="course-description">Course Description:</label>
-                    <textarea id="course-description" placeholder="Describe the course" name="courseDescription" required></textarea>
+                    <textarea id="course-description" onChange={(e)=>setCourseDescription(e.target.value)} placeholder="Describe the course" name="courseDescription" required></textarea>
 
                     <button className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
                     <input type="submit" id="course-submit" className='hidden' />
@@ -109,11 +161,11 @@ function DataEntryComponent() {
                 <form className="service-role-form" data-testid="service-role-form" role="form" onSubmit={handleSubmit}>
                     <div className="titleInput formInput">
                         <label htmlFor="service-role-title">Service Role Title:</label>
-                        <input type="text" id="service-role-title" placeholder="Enter service role title" name="serviceRoleTitle" required/>
+                        <input type="text" id="service-role-title" onChange={(e)=>setServiceRoleTitle(e.target.value)} placeholder="Enter service role title" name="serviceRoleTitle" required/>
                     </div>
                     <div className="departmentInput formInput">
                         <label htmlFor="service-role-department">Department:</label>
-                        <select id="service-role-department" name="serviceRoleDepartment" required>
+                        <select id="service-role-department" name="serviceRoleDepartment" onChange={(e)=>setServiceRoleDepartment(e.target.value)} required>
                         {divisions.map(division => {
                                 return (
                                     <option key={division.code} value={division.code}>{division.label}</option>
@@ -122,10 +174,10 @@ function DataEntryComponent() {
                         </select>
                     </div>
                     <label htmlFor="service-role-description">Service Role Description:</label>
-                    <textarea id="service-role-description" placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
+                    <textarea id="service-role-description" onChange={(e)=>setServiceRoleDescription(e.target.value)} placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
                     <div className='monthlyHoursInput formInput'>
                         <label htmlFor="monthly-hours">Monthly Hours Benchmark:</label>
-                        <input type="text" id="monthly-hours" placeholder="hours/month" name="monthlyHours" required/>
+                        <input type="text" onChange={(e)=>setMonthlyHours(e.target.value)} id="monthly-hours" placeholder="hours/month" name="monthlyHours" required/>
                     </div>
                     <button className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
                     <input type="submit" id="service-role-submit" className='hidden' />
