@@ -52,7 +52,7 @@ function DataEntryComponent() {
                 confirmMessage = "Create new service role?";
             }
             if (window.confirm(confirmMessage) === true) {
-                axios.post('http://localhost:3001/enter', data).then(navigate("/courseInformation?"));
+                axios.post('http://localhost:3001/enter', data).then(navigate("/courseInformation?courseId=1")); // Make courseId equal to that of the newly created course
                 
             }
     }
