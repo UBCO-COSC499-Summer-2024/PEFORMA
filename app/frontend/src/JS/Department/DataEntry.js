@@ -66,15 +66,15 @@ function DataEntryComponent() {
                 <h1>Data Entry</h1>
                 <div className="create-new">
                     <label htmlFor="create-new-select">Create New:</label>
-                    <select id="create-new-select" value={selection} onChange={handleChange}>
+                    <select id="create-new-select" value={selection} onChange={handleChange} role ="button" name="dropdown">
                         <option value="" disabled>Select</option>
-                        <option value="Service Role">Service Role</option>
-                        <option value="Course">Course</option>
+                        <option value="Service Role" name="newServiceRole" role="button">Service Role</option>
+                        <option value="Course" name="newCourse" role="button">Course</option>
                     </select>
                 </div>
             {selection === 'Course' && (
                 <div className='form-container'>
-                <form className="course-form" name="course-form" onSubmit={handleSubmit}>
+                <form className="course-form" data-testid="course-form" role='form' onSubmit={handleSubmit}>
                     <div className="titleInput formInput">
                         <label htmlFor="course-title">Course Title:</label>
                         <input type="text" id="course-title" placeholder="Enter course title" name="courseTitle" required/>
@@ -106,7 +106,7 @@ function DataEntryComponent() {
 
             {selection === 'Service Role' && (
                 <div className='form-container'>
-                <form className="service-role-form" name="service-role-form" onSubmit={handleSubmit}>
+                <form className="service-role-form" data-testid="service-role-form" role="form" onSubmit={handleSubmit}>
                     <div className="titleInput formInput">
                         <label htmlFor="service-role-title">Service Role Title:</label>
                         <input type="text" id="service-role-title" placeholder="Enter service role title" name="serviceRoleTitle" required/>

@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen,fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import DataEntry from '../../../app/frontend/src/JS/Department/DataEntry';
@@ -8,14 +8,16 @@ import axios from 'axios';
 jest.mock('axios');
 axios.post.mockResolvedValue("");
 
-test('Checks if menu works', async () => {
+test('Checks if form appears properly', async () => {
     const user = userEvent.setup();
-    render(<MemoryRouter><DataEntry/></MemoryRouter>);
-    const dropdown = screen.getByRole("button", {name: /dropdown/i});
-    await user.click(dropdown);
-    const dropdownNewServiceRole = screen.getByRole("button", {name: /newServiceRole/i})
-    await user.click(dropdownNewServiceRole);
-    const newServiceRoleForm = screen.getByRole("form", {name: /newServiceRoleForm/i});
-    expect(newServiceRoleForm).toBeInTheDocument();
+    const { getByTestId } = render(<MemoryRouter><DataEntry/></MemoryRouter>);
+    let newServiceRoleForm = screen.queryByTestId("service-role-form");
+    expect(newServiceRoleForm).not.toBeInTheDocument(); // assert that form has NOT appeared yet
+    const dropdown = screen.getByLabelText("Create New:");
+    fireEvent.change(dropdown, {target: {value:"Service Role"}}); // Select from drop down to make form appear
+    newServiceRoleForm = screen.getByTestId("service-role-form");
+    const newCourseForm = screen.queryByTestId("course-form");
+    expect(newServiceRoleForm).toBeInTheDocument(); // assert that form now exists and other form does not
+    expect(newCourseForm).not.toBeInTheDocument();
     
 });
