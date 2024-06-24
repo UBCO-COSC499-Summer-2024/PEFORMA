@@ -10,7 +10,7 @@ const AccountTypeRouter = require('./routes/AccountType');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
-const courseHistoryRouter = required('./routes/courseHistoryRoutes');
+const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 
 const app = express();
 
