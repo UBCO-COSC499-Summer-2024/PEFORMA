@@ -9,6 +9,7 @@ const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
 const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
+const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
@@ -37,6 +38,8 @@ app.use('/',AccountTypeRouter);//check account type
 app.use('/api/instructorProfile',profileRoutes);
 app.use('/api/workingHoursRoutes',workingHoursRoutes);
 app.use('/api/deptPerformance',DeptPerformanceRouter);
+app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
+
 
 
 //Performance BE

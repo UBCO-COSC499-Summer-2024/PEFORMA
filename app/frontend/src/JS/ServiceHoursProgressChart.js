@@ -83,7 +83,7 @@ function ServiceHoursProgressChart() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/progressChart.json');
+                const res = await axios.get('http://localhost:3001/api/leaderBoardRoutes');
                 return res.data;
             } catch (error) {
                 console.error('Error fetching data: ', error);
