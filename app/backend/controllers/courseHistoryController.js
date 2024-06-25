@@ -3,8 +3,8 @@ console.log(pool);
 
 exports.getCourseHistory = async (req, res) => {
 
-    const courseId = req.query.courseId;  
-    
+    //const courseId = req.query.courseId;  
+    const courseId = 4;
     console.log("Received courseId:", courseId);
     try {
 
@@ -13,14 +13,14 @@ exports.getCourseHistory = async (req, res) => {
                   ita."term",  TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
                      c."ctitle", c."description", d."dcode" || ' ' || c."courseNum" AS "courseCode", stp."score"
                     FROM
-                        "InstructorTeachingAssignment" ita
-                    JOIN
-                       "Course" c ON c."courseId" = ita."courseId"
-                    JOIN
+                        "Course" c
+                    LEFT JOIN
+                       "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
+                    LEFT JOIN
                         "SingleTeachingPerformance" stp ON stp."courseId" = ita."courseId" AND stp."term" = ita."term"
-                    JOIN
+                    LEFT JOIN
                         "Profile" p ON p."profileId" = ita."profileId"
-                    JOIN "Division" d ON d."divisionId"= c."divisionId"
+                    LEFT JOIN "Division" d ON d."divisionId"= c."divisionId"
                     WHERE c."courseId"= $1;`;
         let result = await pool.query(query,[courseId]);
         console.log("Executing query:", query);
@@ -28,24 +28,22 @@ exports.getCourseHistory = async (req, res) => {
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
+
+        //Calculate average score in single teaching performance
         query = `SELECT AVG("score") AS "avgScore" FROM "SingleTeachingPerformance"
                  WHERE "courseId" = $1 GROUP BY "courseId";`;
         let result1 = await pool.query(query, [courseId]);
         console.log("Average score: ", result1);
-        if (result1.rows.length === 0) {
-            return res.status(404).json({ message: 'Course not found' });
-        }
+        
+        //Retrieve score in single teaching performance
         query = `SELECT "score" FROM "SingleTeachingPerformance"
         WHERE "courseId" = $1;`;
         const result2 = await pool.query(query, [courseId]);
         console.log("Average score: ", result2);
-        if (result2.rows.length === 0) {
-            return res.status(404).json({ message: 'Course not found' });
-        }
-
+ 
 
         //Retrieve avgscore
-        const avgScore = Math.round(result1.rows[0].avgScore);
+        const avgScore = result1.rows.length > 0 ? Math.round(result1.rows[0].avgScore) : 0;
 
         //Retrieve score for each course
         const perPage = 10;
@@ -57,8 +55,8 @@ exports.getCourseHistory = async (req, res) => {
         // Map the result to create history entries
         const history = result.rows.map(row => {
             // Extract the year and term code from row.term
-            const year = row.term.toString().slice(0, 4); // Gets the first four characters as the year
-            const termCode = row.term.toString().slice(-1); // Gets the last character as the term code
+            const year = row.term ? row.term.toString().slice(0, 4) : ''; // Gets the first four characters as the year
+            const termCode = row.term ? row.term.toString().slice(-1) : ''; // Gets the last character as the term code
         
             // Determine the session based on the term code
             let sessionSuffix;
@@ -89,11 +87,11 @@ exports.getCourseHistory = async (req, res) => {
         
             // Return the formatted object
             return {
-                instructorID: row.profileId,
-                instructorName: row.full_name,
+                instructorID: row.profileId || '', // Default to '' if NULL
+                instructorName: row.full_name || '', // Default to '' if NULL
                 session: session,
                 term: term,
-                score: Number(row.score.toFixed(2))
+                score: row.score ? Number(row.score.toFixed(2)) : ""
             };
         });
                                                    
