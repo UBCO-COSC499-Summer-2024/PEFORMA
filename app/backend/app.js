@@ -38,7 +38,7 @@ app.use('/api/instructorProfile',profileRoutes);
 
 
 //Dept course info
-app.use('./api/courseHistory',courseHistoryRouter);
+app.use('/api/courseHistory',courseHistoryRouter);
 
 console.log('after');
 
