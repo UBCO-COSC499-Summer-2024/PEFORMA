@@ -10,7 +10,7 @@ import axios from 'axios';
 function CourseList() {
 
   const params = new URLSearchParams(window.location.search);
-  const divisionCode = params.get('division');
+  const divisionCode = params.get('division') || 'COSC'; 
 
   const navigate = useNavigate();
   const divisionHandler = (e) => {
@@ -22,7 +22,6 @@ function CourseList() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const divisionCode = params.get('division');
     const fetchData = async() => {
       let url;
       switch (divisionCode) { //must be replace to API sent by be, its mock up data 
@@ -51,7 +50,7 @@ function CourseList() {
       setDivisionData({ ...data, courses: filledCourses});
     }
     fetchData();
-  }, []);
+  }, [divisionCode]);
 
   const handlePageClick = (data) => {
     setDivisionData(prevState => ({
@@ -104,7 +103,7 @@ function CourseList() {
           <div className='ListTitle-text'>List of Courses</div>
           <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
             {divisions.map(division => { 
-              return <option value={division.code}>{division.label}</option>
+              return <option key={division.code} value={division.code}>{division.label}</option>
               })}
           </select>
         </header>
