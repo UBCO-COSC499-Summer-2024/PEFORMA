@@ -12,6 +12,9 @@ function DataEntryComponent() {
         return "Data will be lost if you leave this page. Are you sure?";
       };
 
+    const titleLimit = 100;
+    const descLimit = 1000;
+
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
     const [courseTitle, setCourseTitle] = useState('');
@@ -49,20 +52,59 @@ function DataEntryComponent() {
         setShowInstructorModal(false);
     };
 
-    function checkCourseCode() {
-        if (courseCode.length !== 3) {
+function checkValidity() {
+    
+}
+
+    function checkLength(input, limit, section, valid) {
+        if (!valid) { 
             return false;
         }
-        for (let i = 0; i < courseCode.length; i++) {
-            if (!Number.isInteger(parseInt(courseCode.charAt(i)))) {
-                return false;
-            }
+        if (input.length > limit) {
+            alert(section+" cannot exceed "+limit+" characters");
+            return false;
         }
         return true;
     }
 
+    function checkCourseCode(valid) {
+        if (!valid) { 
+            return false;
+        }
+        if (courseCode.length !== 3) {
+            alert("Course code should be 3 digits.");
+            return false;
+        }
+        for (let i = 0; i < courseCode.length; i++) {
+            if (!Number.isInteger(parseInt(courseCode.charAt(i)))) {
+                alert("Course code should be 3 digits.");
+                return false;
+            }
+        }
+        return true;
+        
+    }
+
+    function checkCourseValidity() {
+        let valid = true;
+        valid = checkLength(courseTitle, titleLimit, "Title", valid);
+        valid = checkLength(courseDescription, descLimit, "Description", valid);
+        valid = checkCourseCode(valid);
+        return valid;
+    }
+
+    function checkServiceRoleValidity() {
+        let valid = true;
+        valid = checkLength(serviceRoleTitle, titleLimit, "Title", valid);
+        valid = checkLength(serviceRoleDescription, descLimit, "Description", valid);
+        valid = checkMonthlyHours(valid);
+        return valid;
+    }
+
+
+
     function checkMonthlyHours() {
- 
+        
     }
 
 
@@ -80,26 +122,20 @@ function DataEntryComponent() {
                 monthlyHours,
             };
             console.log('Submitting form data:', formData);
-            let valid = true;
+            let valid = false;
+            let confirmMessage = "";
             if (selection === "Course") {
-                valid = checkCourseCode();
-                if (valid == false) {
-                    alert("Course code should be 3 digits.");
-                }
+                valid = checkCourseValidity();
+                confirmMessage = "Confirm course creation?";
             }
             if (selection === "Service Role") {
-
+                valid = checkServiceRoleValidity();
+                confirmMessage = "Confirm service role creation?";
             }
 
             if (valid) {
-                let confirmMessage = "";
-                if (formData.selection === "Course") {
-                    confirmMessage = "Create new course?";
-                } else {
-                    confirmMessage = "Create new service role?";
-                }
                 if (window.confirm(confirmMessage) === true) {
-                    //axios.post('http://localhost:3001/enter', data).then(navigate("/courseInformation?courseId=1")); // Make courseId equal to that of the newly created course
+                    axios.post('http://localhost:3001/enter',formData).then(navigate("/deptCourseList")); // Make courseId equal to that of the newly created course
                     
                 }
             }
@@ -129,7 +165,7 @@ function DataEntryComponent() {
                     </div>
                     <div className='departmentInput formInput'>
                         <label htmlFor="course-department">Department:</label>
-                        <select id="course-department" name="courseDepartment" onChange={(e)=>setCourseDepartment(e.target.value)} required>
+                        <select id="course-department" placeholder="Select" name="courseDepartment" onChange={(e)=>setCourseDepartment(e.target.value)} required>
                             {divisions.map(division => {
                                 return (
                                     <option key={division.code} value={division.code}>{division.label}</option>
@@ -148,7 +184,7 @@ function DataEntryComponent() {
                     <label htmlFor="course-description">Course Description:</label>
                     <textarea id="course-description" onChange={(e)=>setCourseDescription(e.target.value)} placeholder="Describe the course" name="courseDescription" required></textarea>
 
-                    <button className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    <button className="assign-button" type="button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
                     <input type="submit" id="course-submit" className='hidden' />
                     <input type="hidden" name="selection" value="Course" />
                 </form>
@@ -177,9 +213,9 @@ function DataEntryComponent() {
                     <textarea id="service-role-description" onChange={(e)=>setServiceRoleDescription(e.target.value)} placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
                     <div className='monthlyHoursInput formInput'>
                         <label htmlFor="monthly-hours">Monthly Hours Benchmark:</label>
-                        <input type="text" onChange={(e)=>setMonthlyHours(e.target.value)} id="monthly-hours" placeholder="hours/month" name="monthlyHours" required/>
+                        <input type="number" min="0" onChange={(e)=>setMonthlyHours(e.target.value)} id="monthly-hours" placeholder="hours/month" name="monthlyHours" required/>
                     </div>
-                    <button className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    <button type="button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
                     <input type="submit" id="service-role-submit" className='hidden' />
                     <input type="hidden" name="formType" value="Service Role" />
                 </form>
