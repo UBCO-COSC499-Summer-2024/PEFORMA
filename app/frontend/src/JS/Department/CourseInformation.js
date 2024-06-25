@@ -12,7 +12,8 @@ import { useNavigate } from 'react-router-dom';
 function CourseInformation() {
 const { authToken } = useAuth();
 const navigate = useNavigate();
-
+const params = new URLSearchParams(window.location.search);
+const courseId = params.get('courseid');
 const [historyData, setHistoryData] = useState({"history":[{}], entryCount:0, perPage: 10, currentPage: 1});
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const [historyData, setHistoryData] = useState({"history":[{}], entryCount:0, pe
       }
       console.log("Before fetch");
       const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
+        params: {courseId: courseId},
         headers: { Authorization: `Bearer ${authToken.token}` }
       });
       console.log("After res");
