@@ -2,8 +2,7 @@
 ## Wednesday (6/25/2024)
 
 ### Timesheet
-![alt text](6-25_00.png)
-![alt text](6-25_01.png)
+![alt text](6-25.png)
 
 ### Current Tasks
   * #1: Testing BE functions 
