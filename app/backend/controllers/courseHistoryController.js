@@ -37,7 +37,7 @@ exports.getCourseHistory = async (req, res) => {
         }
         query = `SELECT "score" FROM "SingleTeachingPerformance"
         WHERE "courseId" = $1;`;
-        result2 = await pool.query(query, [courseId]);
+        const result2 = await pool.query(query, [courseId]);
         console.log("Average score: ", result2);
         if (result2.rows.length === 0) {
             return res.status(404).json({ message: 'Course not found' });
@@ -55,13 +55,48 @@ exports.getCourseHistory = async (req, res) => {
         // Extract course details from the first result row
         const { ctitle, description, courseCode, divisionName } = result.rows[0];
         // Map the result to create history entries
-        const history = result.rows.map(row => ({
-            instructorID: row.profileId,
-            instructorName: row.full_name,
-            session: `Session based on term ${row.term}`, 
-            term: row.term,
-            score: row.score
-        }));                                             
+        const history = result.rows.map(row => {
+            // Extract the year and term code from row.term
+            const year = row.term.toString().slice(0, 4); // Gets the first four characters as the year
+            const termCode = row.term.toString().slice(-1); // Gets the last character as the term code
+        
+            // Determine the session based on the term code
+            let sessionSuffix;
+            let session;
+            switch (termCode) {
+                case '1':
+                    sessionSuffix = '1';
+                    session = year+'W';
+                    break;
+                case '2':
+                    sessionSuffix = '2';
+                    session = year+'W';
+                    break;
+                case '3':
+                    sessionSuffix = '1';
+                    session = year+'S';
+                    break;
+                case '4':
+                    sessionSuffix = '2';
+                    session = year+'S';
+                    break;
+                default:
+                    sessionSuffix = '';
+            }
+
+            // Prepare the session string combining the year with the appropriate suffix
+            const term = sessionSuffix;
+        
+            // Return the formatted object
+            return {
+                instructorID: row.profileId,
+                instructorName: row.full_name,
+                session: session,
+                term: term,
+                score: Number(row.score.toFixed(2))
+            };
+        });
+                                                   
         console.log("History data: ", history);
                                                      
         const output = {
