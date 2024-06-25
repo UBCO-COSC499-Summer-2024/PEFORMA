@@ -18,13 +18,12 @@ function DataEntryComponent() {
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
     const [courseTitle, setCourseTitle] = useState('');
-    const [courseDepartment, setCourseDepartment] = useState('');
+    const [courseDepartment, setCourseDepartment] = useState('COSC');
     const [courseCode, setCourseCode] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
     const [serviceRoleTitle, setServiceRoleTitle] = useState('');
-    const [serviceRoleDepartment, setServiceRoleDepartment] = useState('');
+    const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
     const [serviceRoleDescription, setServiceRoleDescription] = useState('');
-    const [monthlyHours, setMonthlyHours] = useState('');
     const [instructors, setInstructors] = useState([
         { id: '12341234', name: 'Jim Bob', added: false },
         { id: '12341234', name: 'Billy Jim', added: true },
@@ -97,16 +96,8 @@ function checkValidity() {
         let valid = true;
         valid = checkLength(serviceRoleTitle, titleLimit, "Title", valid);
         valid = checkLength(serviceRoleDescription, descLimit, "Description", valid);
-        valid = checkMonthlyHours(valid);
         return valid;
     }
-
-
-
-    function checkMonthlyHours() {
-        
-    }
-
 
    const handleSubmit = async(event) => {
             event.preventDefault();
@@ -118,8 +109,7 @@ function checkValidity() {
                 courseDescription,
                 serviceRoleTitle,
                 serviceRoleDepartment,
-                serviceRoleDescription,
-                monthlyHours,
+                serviceRoleDescription
             };
             console.log('Submitting form data:', formData);
             let valid = false;
@@ -132,11 +122,15 @@ function checkValidity() {
                 valid = checkServiceRoleValidity();
                 confirmMessage = "Confirm service role creation?";
             }
-
             if (valid) {
                 if (window.confirm(confirmMessage) === true) {
-                    axios.post('http://localhost:3001/enter',formData).then(navigate("/deptCourseList")); // Make courseId equal to that of the newly created course
-                    
+                    axios.post('http://localhost:3001/enter',formData).then(() => {
+                        if (selection == "Course") {
+                            navigate("/deptCourseList");
+                        } else {
+                            navigate("/ServiceRoleList");
+                        }
+                    }); 
                 }
             }
     }
@@ -166,6 +160,7 @@ function checkValidity() {
                     <div className='departmentInput formInput'>
                         <label htmlFor="course-department">Department:</label>
                         <select id="course-department" placeholder="Select" name="courseDepartment" onChange={(e)=>setCourseDepartment(e.target.value)} required>
+                            <option disabled="disabled">Select a division</option>
                             {divisions.map(division => {
                                 return (
                                     <option key={division.code} value={division.code}>{division.label}</option>
@@ -211,10 +206,6 @@ function checkValidity() {
                     </div>
                     <label htmlFor="service-role-description">Service Role Description:</label>
                     <textarea id="service-role-description" onChange={(e)=>setServiceRoleDescription(e.target.value)} placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
-                    <div className='monthlyHoursInput formInput'>
-                        <label htmlFor="monthly-hours">Monthly Hours Benchmark:</label>
-                        <input type="number" min="0" onChange={(e)=>setMonthlyHours(e.target.value)} id="monthly-hours" placeholder="hours/month" name="monthlyHours" required/>
-                    </div>
                     <button type="button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
                     <input type="submit" id="service-role-submit" className='hidden' />
                     <input type="hidden" name="formType" value="Service Role" />
