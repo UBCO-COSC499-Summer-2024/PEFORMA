@@ -2,13 +2,21 @@
   height: 30vh;
 }
 
+.topbottom-table {
+  height: 35vh;
+}
+
+.benchmark-table {
+  height: 35vh;
+}
+
 .divi-table {
   width: 100%;
 }
 
 .scrollable-body {
   display: block;
-  height: 20vh;
+  height: 25vh;
   overflow-y: auto;
 }
 

@@ -7,24 +7,9 @@ import  MathTable  from './PerformanceImports/MathTable.js';
 import  PhysTable  from './PerformanceImports/PhysTable.js';
 import  StatTable  from './PerformanceImports/StatTable.js';
 import GoodBadBoard from './PerformanceImports/GoodBadBoard.js';
+import BenchMark from './PerformanceImports/BenchMark.js';
 
 function PerformanceDepartmentPage() {
-	const params = new URLSearchParams(window.location.search);
-	const ubcid = params.get('ubcid');
-
-	const initProfile = {
-		roles: [],
-		teachingAssignments: [{}],
-	};
-	const [profile, setProfile] = useState(initProfile);
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const res = await axios.get('http://localhost:3000/profileSample.json?ubcid=' + ubcid); //replace it to api
-			return res.data;
-		};
-		fetchData().then((res) => setProfile(res));
-	}, []);
 
 	return (
 		<div className="dashboard-container">
@@ -62,6 +47,7 @@ function PerformanceDepartmentPage() {
 
 				<div className="bottom-section">
 					<div className="benchmark-section">
+						<BenchMark />
 					</div>
 
 					<div className="people-section">
