@@ -11,6 +11,11 @@ const { upsertProfile } = require('./routes/upsertProfile');
 const { createAccount } = require('./routes/createAccount');
 const { assignServiceRole } = require ('./routes/assignServiceRole');
 
+const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
+//const ResetPassword = require('./routes/ResetPassword');
+//const update = require('./routes/update');
+
+
 const app = express();
 
 app.use(cors()); 
@@ -28,6 +33,8 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
