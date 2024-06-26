@@ -40,7 +40,6 @@
 }
 
 .container {
-
   flex-grow: 1;
   background-color: #f2f2f2;
   overflow: auto;
@@ -69,7 +68,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 95.99%;
-}
+  overflow:hidden;
+  }
 
 h2 {
   font-size: 2em;
