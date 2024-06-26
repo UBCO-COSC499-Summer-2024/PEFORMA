@@ -1,0 +1,10 @@
+{
+  "courses":[
+    {"courseCode" : "COSC 101", "rank":"A", "score":92},
+    {"courseCode" : "COSC 111", "rank":"A", "score":90},
+    {"courseCode" : "COSC 122", "rank":"C", "score":75},
+    {"courseCode" : "COSC 304", "rank":"C", "score":72},
+    {"courseCode" : "COSC 499", "rank":"B", "score":88}
+  ]
+}
+
