@@ -26,7 +26,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider><Routes>
-        <Route path="/Home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
@@ -39,7 +39,7 @@ function App() {
         <Route path="/DataEntry" element={<DataEntry />} />
         <Route path="/ServiceRoleManagement" element={<ServiceRoleManagement />} />
 
-        <Route path="/" element={<CreateAccount />} />
+        <Route path="/CreateAccount" element={<CreateAccount />} />
 
         <Route path="/CreateAccount" element={<CreateAccount />} />
         <Route path="/DeptCourseList" element={<DeptCourseList />} />
