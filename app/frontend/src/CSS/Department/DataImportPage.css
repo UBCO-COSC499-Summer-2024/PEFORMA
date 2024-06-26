@@ -20,3 +20,16 @@
     margin-top: 10px; /* Add some space above the button */
   }
   
+  .file-preview {
+    border: 1px solid #ccc; /* Add a border to the file preview */
+    padding: 15px;
+    border-radius: 5px;   /* Optional: Rounded corners */
+    position: relative;    /* For positioning the "X" button */
+  }
+  
+  .remove-button {
+    position: absolute;
+    top: 5px;             /* Adjust as needed */
+    right: 5px;            /* Adjust as needed */
+    cursor: pointer;
+  }
