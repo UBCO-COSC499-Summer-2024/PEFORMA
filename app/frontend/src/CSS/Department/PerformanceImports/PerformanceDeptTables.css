@@ -8,7 +8,6 @@
 
 .subTitleD {
   font-size: 1.2em;
-  text-align: center;
 }
 
 .division-performance-table {
@@ -30,4 +29,25 @@
 
 .divi-table th {
   background-color: #dededeba; 
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.year-button {
+  background-color: #5ab5ff;
+  color: white;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.year-button:hover {
+  background-color: #0056b3;
 }

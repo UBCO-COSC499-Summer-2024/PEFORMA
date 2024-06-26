@@ -4,7 +4,12 @@
     {"courseCode" : "COSC 111", "rank":"A", "score":90},
     {"courseCode" : "COSC 122", "rank":"C", "score":75},
     {"courseCode" : "COSC 304", "rank":"C", "score":72},
-    {"courseCode" : "COSC 499", "rank":"B", "score":88}
+    {"courseCode" : "COSC 499", "rank":"B", "score":88},
+    {"courseCode" : "COSC 322", "rank":"B", "score":86},
+    {"courseCode" : "COSC 222", "rank":"A", "score":95},
+    {"courseCode" : "COSC 405", "rank":"A", "score":99},
+    {"courseCode" : "COSC 425", "rank":"A", "score":100},
+    {"courseCode" : "COSC 205", "rank":"C", "score":71}
   ]
 }
 

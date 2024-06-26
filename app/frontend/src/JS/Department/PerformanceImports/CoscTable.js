@@ -4,14 +4,18 @@ import axios from 'axios';
 
 function CoscTable() {
 
-  const [course,setCourse] = useState([]);
+  const [courses,setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
 
   useEffect(() => {
     const fetchData = async() => {
       try {
         const url = "http://localhost:3000/coscDeptP.json";
         const res = await axios.get(url);
-        setCourse(res.data.courses)
+        const sortedCourses = res.data.courses.sort((a, b) => b.score - a.score);
+        setCourses(sortedCourses);
+        setFilteredCourses(sortedCourses);
+
       } catch (error) {
         console.log("Error fetching data: ", error)
       }
@@ -19,11 +23,31 @@ function CoscTable() {
     fetchData();
   }, []);
 
+  const filterCourses = (identifier) => {
+    if (identifier == "All"){
+      setFilteredCourses(courses);
+    } else {
+      const filtered = courses.filter(course => course.courseCode.startsWith(`COSC ${identifier}`));
+      setFilteredCourses(filtered);
+    }
+  };
+
 
   return (
 
     <div className="division-performance-table">
-      <h1 className='subTitleD'>Computer Science</h1>
+      <div className='header-container'>
+        <h1 className='subTitleD'>Computer Science</h1>
+        <div>
+          {["All", 1, 2, 3, 4].map(identifier => (
+            <button className='year-button' key={identifier} onClick={() => filterCourses(identifier)}>
+              {identifier}
+            </button>
+          ))}
+        </div>
+      </div>
+      
+
       <table className='divi-table'>
         <thead>
           <tr>
@@ -34,7 +58,7 @@ function CoscTable() {
           </tr>
         </thead>
         <tbody>
-          {course.map((course, index) => (
+          {filteredCourses.map((course, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{course.courseCode}</td>
