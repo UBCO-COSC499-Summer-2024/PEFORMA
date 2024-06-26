@@ -16,7 +16,7 @@
 
 ## Task Breakdown
 
-![Task Breakdown]()
+![Task Breakdown](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/task%20breakdown/COSC499_taskbreakdown_W7C1.png)
 
 ## Next Cycle Planning
 
