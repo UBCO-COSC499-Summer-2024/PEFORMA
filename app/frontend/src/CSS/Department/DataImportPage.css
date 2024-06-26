@@ -1,35 +1,45 @@
+/* Basic Dropzone Styles */
 .dropzone-container {
-    width: 300px; /* Adjust width as needed */
-    height: 200px; /* Adjust height as needed */
-    border: 2px dashed #ccc; /* Dotted border */
-    border-radius: 5px; /* Rounded corners */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    padding: 20px;
-    cursor: pointer; /* Indicate that it's clickable/droppable */
-  }
-  
-  /* Optional styles for the text and button */
-  .dropzone-container p {
-    text-align: center;
-  }
-  
-  .dropzone-container button {
-    margin-top: 10px; /* Add some space above the button */
-  }
-  
-  .file-preview {
-    border: 1px solid #ccc; /* Add a border to the file preview */
-    padding: 15px;
-    border-radius: 5px;   /* Optional: Rounded corners */
-    position: relative;    /* For positioning the "X" button */
-  }
-  
-  .remove-button {
-    position: absolute;
-    top: 5px;             /* Adjust as needed */
-    right: 5px;            /* Adjust as needed */
-    cursor: pointer;
-  }
+  width: 300px; /* Adjust width as needed */
+  height: 200px; /* Adjust height as needed */
+  border: 2px dashed #ccc; 
+  border-radius: 5px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 20px;
+  cursor: pointer; 
+  margin-bottom: 20px;  /* Add space below the dropzone */
+}
+
+.dropzone-container p {
+  text-align: center;
+}
+
+/* File Preview Styles */
+.file-preview {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  position: relative; /* For positioning the remove button */
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-info p {
+  margin-top: 10px;
+}
+
+/* Remove Button Styles */
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
