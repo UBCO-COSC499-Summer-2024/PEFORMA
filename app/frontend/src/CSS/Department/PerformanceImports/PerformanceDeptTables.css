@@ -6,6 +6,18 @@
   width: 100%;
 }
 
+.scrollable-body {
+  display: block;
+  height: 20vh;
+  overflow-y: auto;
+}
+
+.divi-table thead, .divi-table tbody tr {
+  display: table;
+  width: 100%; 
+  table-layout: fixed; 
+}
+
 .subTitleD {
   font-size: 1.2em;
 }

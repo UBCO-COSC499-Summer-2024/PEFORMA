@@ -57,16 +57,18 @@ function CoscTable() {
             <th>Score</th>
           </tr>
         </thead>
-        <tbody>
-          {filteredCourses.map((course, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{course.courseCode}</td>
-              <td>{course.rank}</td>
-              <td>{course.score}</td>
-            </tr>
-          ))}
-        </tbody>
+        <div className='scrollable-body'>
+          <tbody>
+            {filteredCourses.map((course, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{course.courseCode}</td>
+                <td>{course.rank}</td>
+                <td>{course.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </div>
       </table>
     </div>
 
