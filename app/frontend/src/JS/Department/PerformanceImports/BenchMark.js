@@ -12,7 +12,7 @@ function BenchMark() {
     const fetchData = async() => {
       const date = new Date();
       const currMonth = date.getMonth() +1;
-      setCurrentMonth(currMonth)
+      setCurrentMonth(monthNames[currMonth-1])
 
       try {
         const res = await axios.get(`http://localhost:3000/benchmark.json`, {
