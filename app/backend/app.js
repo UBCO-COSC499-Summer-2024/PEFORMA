@@ -63,7 +63,7 @@ app.post('/enter', async (req, res) => {
 app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
-
+});
 //Profile BE
 app.use('/api/workingHoursRoutes',workingHoursRoutes);
 app.use('/api/deptPerformance',DeptPerformanceRouter);
