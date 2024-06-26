@@ -50,7 +50,7 @@ function StatTable() {
       <table className='divi-table'>
         <thead>
           <tr>
-            <th>NO.</th>
+            <th>#</th>
             <th>Course</th>
             <th>Rank</th>
             <th>Score</th>

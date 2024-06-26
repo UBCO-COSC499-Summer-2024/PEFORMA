@@ -6,6 +6,7 @@ import  CoscTable  from './PerformanceImports/CoscTable.js';
 import  MathTable  from './PerformanceImports/MathTable.js';
 import  PhysTable  from './PerformanceImports/PhysTable.js';
 import  StatTable  from './PerformanceImports/StatTable.js';
+import GoodBadBoard from './PerformanceImports/GoodBadBoard.js';
 
 function PerformanceDepartmentPage() {
 	const params = new URLSearchParams(window.location.search);
@@ -64,6 +65,7 @@ function PerformanceDepartmentPage() {
 					</div>
 
 					<div className="people-section">
+						<GoodBadBoard />
 					</div>
 					
 				</div>
