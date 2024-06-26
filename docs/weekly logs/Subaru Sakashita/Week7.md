@@ -6,8 +6,8 @@
 ## Wednesday (6/26/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-6-Cycle-1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W6C1.png)
-![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-6-Cycle-1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W6C1_2.png)
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-7-Cycle1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W7_C1_1.png)
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-7-Cycle1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W7_C1_2.png)
 
 ### Current Tasks
   * #1: Service role info BE
@@ -71,7 +71,7 @@ The team kept up with the communication quality even though we did not have the 
 strengthed from last cycle. At first I was very anxious about completing the MVP on time because other groups were way ahead than we were, but I think \n
 with this much progress as a whole, I am confident that our group will finish on time. \n
 There is no difficulty faced in terms of team communication for this cycle. \n
-The difficulty in terms of programming is that I had to join multiple tables and be extra careful with error handling. 
+The difficulty in terms of programming is that I had to join multiple tables and be extra careful with error handling. I overcame by reading the code carefully one by one. I also had a difficulty when rebasing the most latest development branch to my own branch and I overcame by doing lots of research on git.
 ### Next Cycle Goals
   * Service role info BE
   * Dept view performance BE
