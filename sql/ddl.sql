@@ -34,7 +34,7 @@ CREATE TABLE "Profile" (
   "officeNum"             varchar(10),
   "position"              varchar(100),
   "divisionId"            integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "UBCId"                 integer,
+  "UBCId"                 char(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
   -- "imageId"               integer,
