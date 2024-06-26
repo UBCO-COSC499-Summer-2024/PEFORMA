@@ -3,15 +3,15 @@ console.log(pool);
 
 exports.getCourseHistory = async (req, res) => {
 
-    const courseId = req.query.courseId;  
-    
+    //const courseId = req.query.courseId;  
+    const courseId = 1;
     console.log("Received courseId:", courseId);
     try {
 
         //Join profile, course, instructorassignment, single teaching performance tables
         let query = `SELECT
                   ita."term",  TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
-                     c."ctitle", c."description", d."dcode" || ' ' || c."courseNum" AS "courseCode", stp."score"
+                     c."ctitle", c."description", d."dcode" || ' ' || c."courseNum" AS "courseCode", stp."score", d."dname",p."profileId"
                     FROM
                         "Course" c
                     LEFT JOIN
@@ -21,7 +21,8 @@ exports.getCourseHistory = async (req, res) => {
                     LEFT JOIN
                         "Profile" p ON p."profileId" = ita."profileId"
                     LEFT JOIN "Division" d ON d."divisionId"= c."divisionId"
-                    WHERE c."courseId"= $1;`;
+                    WHERE c."courseId"= $1
+                    ORDER BY ita."term" DESC;`;
         let result = await pool.query(query,[courseId]);
         console.log("Executing query:", query);
         console.log("With parameters:", [courseId]);
@@ -37,7 +38,7 @@ exports.getCourseHistory = async (req, res) => {
         
         //Retrieve score in single teaching performance
         query = `SELECT "score" FROM "SingleTeachingPerformance"
-        WHERE "courseId" = $1;`;
+        WHERE "courseId" = $1 ORDER BY "term" DESC;`;
         const result2 = await pool.query(query, [courseId]);
         console.log("Average score: ", result2);
  
@@ -51,13 +52,12 @@ exports.getCourseHistory = async (req, res) => {
         const entryCount = result.rows.length; // Number of entries found
         
         // Extract course details from the first result row
-        const { ctitle, description, courseCode, divisionName } = result.rows[0];
+        const { ctitle, description, courseCode, dname } = result.rows[0];
         // Map the result to create history entries
         const history = result.rows.map(row => {
             // Extract the year and term code from row.term
             const year = row.term ? row.term.toString().slice(0, 4) : ''; // Gets the first four characters as the year
             const termCode = row.term ? row.term.toString().slice(-1) : ''; // Gets the last character as the term code
-        
             // Determine the session based on the term code
             let sessionSuffix;
             let session;
@@ -105,7 +105,7 @@ exports.getCourseHistory = async (req, res) => {
             courseCode,
             courseName: ctitle,
             courseDescription: description,
-            division: divisionName,
+            division: dname,
             avgScore: avgScore, 
             history
         };
