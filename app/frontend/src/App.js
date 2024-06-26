@@ -16,7 +16,7 @@ import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 import ServiceRoleList from './JS/Department/ServiceRoleList';
 import RoleInformation from './JS/Department/RoleInformation';
-
+import CourseInformation from "./JS/Department/CourseInformation";
 import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
         <Route path="/RoleInformation" element={<RoleInformation />} />
 
         <Route path="/DeptCourseList" element={<DeptCourseList />} />
-
+        <Route path="/CourseInformation" element={<CourseInformation />} />
         
       </Routes></AuthProvider>
     </BrowserRouter>
