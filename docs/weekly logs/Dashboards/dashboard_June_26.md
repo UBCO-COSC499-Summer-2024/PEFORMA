@@ -42,5 +42,8 @@
 
 ## Time Tracking
 
-![Clockify Summary]()
+![Clockify Summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/Clockify%20images/Clockify_June_26_1.png)
+![Clockify Summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/Clockify%20images/Clockify_June_26_2.png)
+![Clockify Summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/Clockify%20images/Clockify_June_26_3.png)
+![Clockify Summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/Clockify%20images/Clockify_June_26_4.png)
 
