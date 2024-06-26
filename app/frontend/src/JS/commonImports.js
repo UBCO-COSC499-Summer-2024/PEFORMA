@@ -23,9 +23,9 @@ function CreateTopbar() {
     );
 }
 
-function CreateTopBarFilter(){
+function CreateTopSearchbarIns({ onSearch }){
     return(
-        <TopSearchBarIns />
+        <TopSearchBarIns onSearch={ onSearch } />
     );
 }
 
@@ -62,7 +62,7 @@ function CreateTopSearchBarDept({ onSearch }){
 export default CreateSidebar;
 export {CreateTopbar, 
     CreateSidebarDept, 
-    CreateTopBarFilter, 
+    CreateTopSearchbarIns, 
     CreateWorkingBarChart, 
     CreateScorePolarChart,
     CreateLeaderboardChart,
