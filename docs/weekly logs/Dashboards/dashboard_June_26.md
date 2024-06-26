@@ -35,7 +35,7 @@
 
 ## Burnup Chart (Velocity)
 
-![Burnup Chart](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/burn%20up%20charts/burnup_June_21.png)
+![Burnup Chart](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/burn%20up%20charts/burnup_June_26.png)
 
 ## Time Tracking
 
