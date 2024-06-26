@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import '../../CSS/Department/DataEntry.css';
+import ReactPaginate from 'react-paginate';
+import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
 
 
@@ -11,10 +13,10 @@ function DataEntryComponent() {
     window.onbeforeunload = function() {
         return "Data will be lost if you leave this page. Are you sure?";
       };
-
+    const [instructorData, setInstructorData] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
     const titleLimit = 100;
     const descLimit = 1000;
-
+    const [search, setSearch] = useState('');
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
     const [courseTitle, setCourseTitle] = useState('');
@@ -24,23 +26,38 @@ function DataEntryComponent() {
     const [serviceRoleTitle, setServiceRoleTitle] = useState('');
     const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
     const [serviceRoleDescription, setServiceRoleDescription] = useState('');
-    const [instructors, setInstructors] = useState([
-        { id: '12341234', name: 'Jim Bob', added: false },
-        { id: '12341234', name: 'Billy Jim', added: true },
-        { id: '12341234', name: 'Jimmy Bill', added: false },
-        { id: '12341234', name: 'Jilly Bim', added: false }
-    ]);
-
+    
     const handleChange = (event) => {
         setSelection(event.target.value);
         // Potentially navigate to different components or render different forms here
         console.log(`Selected: ${event.target.value}`);
     };
 
+    useEffect(() => {
+        const fetchData = async() => {
+          const url = "http://localhost:3000/assignInstructors.json";
+          const res = await axios.get(url);
+          const data = res.data;
+          const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
+          setInstructorData({ ...data, instructors: filledInstructors });
+        }
+        fetchData();
+      }, []);
+
+      const fillEmptyInstructors = (instructors, perPage) => {
+        const filledInstructors = [...instructors];
+        const currentCount = instructors.length;
+        const fillCount = perPage - (currentCount % perPage);
+        if (fillCount < perPage) {
+          for (let i  = 0; i < fillCount; i++) {
+            filledInstructors.push({});
+          }
+        }
+        return filledInstructors;
+      }
+
     const toggleInstructorAdded = id => {
-        setInstructors(instructors.map(instructor =>
-            instructor.id === id ? { ...instructor, added: !instructor.added } : instructor
-        ));
+        
     };
 
     const handleShowInstructorModal = () => {
@@ -51,9 +68,11 @@ function DataEntryComponent() {
         setShowInstructorModal(false);
     };
 
-function checkValidity() {
-    
-}
+    const onSearch = (newSearch) => {
+        console.log("Searched:", newSearch);
+        setSearch(newSearch);
+        setInstructorData(prevState => ({ ...prevState, currentPage: 1 }));
+      };
 
     function checkLength(input, limit, section, valid) {
         if (!valid) { 
@@ -135,6 +154,28 @@ function checkValidity() {
             }
     }
 
+    const pageCount = Math.ceil(instructorData.instructorCount / instructorData.perPage);
+    const filteredInstructors = instructorData.instructors.filter(instructor =>
+        (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
+        (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
+      );
+
+      const currentInstructors = filteredInstructors.slice(
+        (instructorData.currentPage - 1) * instructorData.perPage,
+        instructorData.currentPage * instructorData.perPage
+      );
+
+    let assignedInstructors = [];
+    let unassignedInstructors = [];
+
+    for (let i = 0; i < currentInstructors.length; i++) {
+        if (currentInstructors[i].assigned == true) {
+            assignedInstructors.push(currentInstructors[i]);
+        } else {
+            unassignedInstructors.push(currentInstructors[i]);
+        }
+    }
+    console.log(instructorData.instructors.toString());
     return (
         <div className='DataEntry-page'>
             <CreateSidebarDept/>
@@ -216,16 +257,27 @@ function checkValidity() {
 
             {showInstructorModal && (
                 <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button className="close-button" onClick={handleCloseInstructorModal}>X</button>
-                        {instructors.map(instructor => (
-                            <div key={instructor.id} className="instructor-item">
-                                <span>{instructor.name} UBC ID: {instructor.id}</span>
-                                <button onClick={() => toggleInstructorAdded(instructor.id)}>
-                                    {instructor.added ? 'Remove' : 'Add'}
-                                </button>
-                            </div>
-                        ))}
+                    <div className="assignModal">
+                        <div className='assignModalTop'>
+                            <div className="modalTitle">Assign <span className='bold'>Instructor(s)</span></div>
+                            <button className="close-button" onClick={handleCloseInstructorModal}>X</button>
+                        </div>
+                        <input type="text" placeholder="Search for instructors to assign" onChange={e => onSearch(e.target.value)} />
+                        <table>
+                            <tbody>
+                                {assignedInstructors.map(instructor => (
+                                    <tr key={instructor.id} className="instructor-item">
+                                        <td>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
+                                        <td>
+                                            <button onClick={() => toggleInstructorAdded(instructor.id)}>
+                                                {instructor.added ? 'Remove' : 'Add'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        
                         <button className="save-button" onClick={handleCloseInstructorModal}>Save</button>
                     </div>
                 </div>

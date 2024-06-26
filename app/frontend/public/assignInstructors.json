@@ -1,0 +1,14 @@
+{"instructorCount":10,"perPage":8, "instructors":[
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": true },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false },
+    {"id": "12341234", "name": "Jim Bob", "assigned": false }
+]
+}
+
