@@ -9,15 +9,12 @@ import PerformanceInstructorPage from "./JS/Instructor/PerformanceInstructorPage
 import CourseHistory from "./JS/Instructor/CourseHistory";
 import InstructorProfilePage from "./JS/Instructor/InstructorProfilePage";
 import DataEntry from "./JS/Department/DataEntry";
-import ServiceRoleManagement from "./JS/Department/ServiceRoleManagement";
 import CreateAccount from "./JS/Admin/CreateAccount";
-
 import DeptCourseList from "./JS/Department/DeptCourseList";
 import ServiceRoleList from "./JS/Department/ServiceRoleList";
 
 import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
-import ServiceRoleList from './JS/Department/ServiceRoleList';
 import RoleInformation from './JS/Department/RoleInformation';
 import CourseInformation from "./JS/Department/CourseInformation";
 import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
