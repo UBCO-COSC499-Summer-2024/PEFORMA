@@ -13,9 +13,11 @@ function GoodBadBoard() {
       try {
         const url = "http://localhost:3000/topbottom.json";
         const res = await axios.get(url);
-        setTopInstructors(res.data.top);
-        setBottomInstructors(res.data.bottom);
-        setInstructors(res.data.top);
+        const sortedTop = res.data.top.sort((a, b) => b.score - a.score);
+        const sortedBottom = res.data.bottom.sort((a, b) => a.score - b.score);
+        setTopInstructors(sortedTop);
+        setBottomInstructors(sortedBottom);
+        setInstructors(sortedTop);
       } catch (error) {
         console.log("Error fetching data: ", error)
       }
