@@ -1,74 +1,102 @@
-const  pool = require('../db/index.js'); // Adjust the path as necessary for your db connection
-console.log(pool); // See what pool actually is
+const  pool = require('../db/index.js'); 
+console.log(pool); 
 
 exports.getRoleInfo = async (req, res) => {
 
-    const ubcId = req.query.ubcid;  
-    console.log("Received ubcId:", ubcId); // Log the received ubcId for debugging 
+    // const serviceRoleId = req.query.serviceRoleId;  
+    const serviceRoleId = 4;
+    console.log("Received service role ID:", serviceRoleId);
     try {
-        let query = `SELECT * FROM "Profile" WHERE "UBCId" = $1;`;
-        //let result = await pool.query(query, [id]);
-        let result = await pool.query(query,[ubcId]);
+
+        //Get the latest year
+        let query = `SELECT "year" FROM "ServiceRoleAssignment"
+                     ORDER BY "year" DESC LIMIT 1;`;
+        result = await pool.query(query);
         console.log("Executing query:", query);
-        console.log("With parameters:", [ubcId]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Service role not found' });
+        }
+        const year = result.rows[0].year;
+        //Join service role, divison, and service role assignment tables
+        //required data
+        //currentPage, default to 1
+        //perPage, default to 5
+        //service role id
+        //assignee count
+        //role name
+        //role description
+        //department name
+        //benchmark add up the yearly and divide by 12
+        //assignees: [instructorID, name]
+        query = `
+        SELECT 
+        sr."stitle", 
+        sr."description", 
+        d."dname", 
+        p."UBCId",
+        TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name
+        FROM 
+            "ServiceRole" sr
+        JOIN 
+            "Division" d ON d."divisionId" = sr."divisionId"
+        LEFT JOIN 
+            "ServiceRoleAssignment" sra ON sra."serviceRoleId" = sr."serviceRoleId" AND sra."year" = $2
+        LEFT JOIN 
+            "Profile" p ON p."profileId" = sra."profileId"
+        WHERE 
+            sr."serviceRoleId" = $1
+        ORDER BY 
+            sra."year" DESC;
+        `;
+
+        //let result = await pool.query(query, [id]);
+        result = await pool.query(query,[serviceRoleId,year]);
+        console.log("Executing query:", query);
+        console.log("With parameters:", [serviceRoleId,year]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
 
     
-        // Extract profile information
-        const row = result.rows[0];
-        const profileId = row.profileId;
-        const firstName = row.firstName;
-        const middleName = row.middleName || '';  // Use an empty string if middleName is null
-        const lastName = row.lastName;
-        const name = `${firstName} ${middleName} ${lastName}`.trim();  // Construct full name and trim any extra spaces
-        const benchmark = row.sRoleBenchmark;
-        //const ubcId = row.UBCId;
-        const email = row.email;
-        const phoneNum = row.phoneNum;
-        const office = `${row.officeBuilding} ${row.officeNum}`;  // Construct office info
-        query = `
-            SELECT sr.stitle
-            FROM "ServiceRoleAssignment" "sra"
-            JOIN "ServiceRole" "sr" ON "sra"."serviceRoleId" = "sr"."serviceRoleId"
-            WHERE "sra"."profileId" = $1;
-        `; 
-        //result = await pool.query(query, [id]);
-        result = await pool.query(query,[profileId]);
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        //const serviceRoles = result.rows;
-        const roles = result.rows.map(row => row.stitle);
+        // Extract service role information
+       const {stitle, description, dname} = result.rows[0];
+       const assigneeCount = result.rows.length;
+       const assignees = result.rows.map(row => {
+            return{
+                instructorID: row.UBCId || '',
+                name: row.full_name || ''
+            };
+       });
+
+       // Calculate the service hour
 
         query = `
-            SELECT d."divisionCode"  || ' ' || c."courseNum" AS "DivisionAndCourse"
-            FROM "InstructorTeachingAssignment" "ita"
-            JOIN "Course" "c" ON "ita"."courseId" = "c"."courseId"
-            JOIN "Division" "d" ON "c"."divisionId" = "d"."divisionId"
-            WHERE "ita"."profileId" = $1;
+            SELECT
+            ("JANHour" + "FEBHour" + "MARHour" + "APRHour" + "MAYHour" +
+            "JUNHour" + "JULHour" + "AUGHour" + "SEPHour" + "OCTHour" +
+            "NOVHour" + "DECHour") AS total_hours
+            FROM
+            "ServiceRoleByYear"
+            WHERE "serviceRoleId" = $1 AND "year" = $2;
         `; 
-        //result = await pool.query(query, [id]);
-        result = await pool.query(query,[profileId]);
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Course assignments not found' });
-        }
-        //const courses = result.rows;
-        const teachingRoles = result.rows.map(row => ({ assign: row.DivisionAndCourse }));  // Mapping ctitle to roles
-        // Build the profile data object
-        const profileData = {
-            name: name,
-            ubcid: ubcId,
-            benchmark:benchmark,
-            roles:roles,
-            email: email,
-            phoneNum: phoneNum,
-            office: office,
-            teachingAssignments:teachingRoles
-        };    
-        // Send response
-        res.json(profileData);
+        result = await pool.query(query,[serviceRoleId,year]);
+        const benchmark = Number(((result.rows[0].total_hours)/12).toFixed(2));
+
+
+        const output = {
+            currentPage: 1,
+            perPage:5,
+            roleID: serviceRoleId,
+            assigneeCount: assigneeCount || 0,
+            roleName: stitle || "",
+            roleDescription: description || "",
+            department: dname || "",
+            benchmark: benchmark,
+            assignees: assignees
+       }
+       console.log("Output:",output);
+       
+        res.json(output);
     } catch (error) {
         console.error('Database query error:', error);
         res.status(error.status || 500).json({ message: error.message || 'Server error during fetching profile' });

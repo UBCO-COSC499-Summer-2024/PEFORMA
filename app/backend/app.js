@@ -9,7 +9,7 @@ const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
-
+const roleInfoRoutes = require('./routes/roleInfoRoutes');
 const app = express();
 
 app.use(cors()); 
@@ -36,6 +36,9 @@ app.use('/api/instructorProfile',profileRoutes);
 
 
 //Profile BE
+
+
+app.use('/api/roleInfo', roleInfoRoutes);
 
 console.log('after');
 
