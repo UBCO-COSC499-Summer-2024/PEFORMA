@@ -1,15 +1,14 @@
-
-# Week 7
-
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Wednesday (6/26/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.21-6.25/7.1.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.21-6.25/7.1.2.png)
+
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #1: Showing top 5 and worst 5 instructors in performance page (department view)
+  * #2: Show who failed to meet expected serivce hours in performance page (department view)
 
 ### Progress Update (since 6/21/2024)
 <table>
@@ -18,92 +17,36 @@
         </td>
         <td><strong>STATUS</strong>
         </td>
+        <td><strong>NOTES</strong>
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>#223: Show overview tables for each division
         </td>
         <!-- Status -->
         <td>Complete
         </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task B
-        </td>
-        <!-- Status -->
-        <td>In Progress
+        <!-- Notes -->
+        <td>In performance page (department view) show each divisions overview which is showing all the courses performance scores.
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>#225: Show instructors overview of whom failed to meet expected benchmark
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>In progress
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+  * In this cycle, I was out of Canada for majority however, I kept reviewing pull requests, and I also finish half of performance department page. I think overall progress of this cycle was relax but did at least minimum.
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
-
-<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-## Friday (6/28/2024)
-
-### Timesheet
-![alt text](image_url_here)
-
-### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
-
-### Progress Update (since 6/26/2024)
-<table>
-    <tr>
-        <td><strong>TASK/ISSUE #</strong>
-        </td>
-        <td><strong>STATUS</strong>
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task A
-        </td>
-        <!-- Status -->
-        <td>Complete
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task B
-        </td>
-        <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task C
-        </td>
-        <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-</table>
-
-### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
-
-### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
-
+  * Finish performance page of department view.
 
