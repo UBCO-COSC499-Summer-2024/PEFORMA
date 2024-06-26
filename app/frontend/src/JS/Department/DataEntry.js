@@ -56,12 +56,12 @@ function DataEntryComponent() {
         return filledInstructors;
       }
 
-    const toggleInstructorAssigned = (id) => {
+    const toggleInstructorAssigned = (id, assign) => {
         for (let i = 0; i<instructorData.instructorCount;i++) {
             if (instructorData.instructors[i].id === id) {
                 instructorData.instructors[i].assigned = true;
                 setInstructorData(instructorData);
-                console.log("ASDASD");
+                document.getElementById(id).innerHTML = "Remove";
             }
         }
         
@@ -182,6 +182,7 @@ function DataEntryComponent() {
             unassignedInstructors.push(currentInstructors[i]);
         }
     }
+    
     return (
         <div className='DataEntry-page'>
             <CreateSidebarDept/>
@@ -271,26 +272,20 @@ function DataEntryComponent() {
                         <input type="text" placeholder="Search for instructors to assign" onChange={e => onSearch(e.target.value)} />
                         <table>
                             <tbody>
-                                {assignedInstructors.map(instructor => (
+                                {currentInstructors.map(instructor => {
+                                    
+                                    return (
                                     <tr key={instructor.id} className="instructor-item">
                                         <td>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
                                         <td>
-                                            <button onClick={() => toggleInstructorAssigned(instructor.id)}>
+                                            <button id={instructor.id} onClick={() => toggleInstructorAssigned(instructor.id, true)}>
                                                 {instructor.assigned ? 'Remove' : 'Add'}
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
-                                {unassignedInstructors.map(instructor => (
-                                    <tr key={instructor.id} className="instructor-item">
-                                        <td>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
-                                        <td>
-                                            <button onClick={() => toggleInstructorAssigned(instructor.id)}>
-                                                {instructor.assigned ? 'Remove' : 'Add'}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                    );
+                                })}
+                                
                             </tbody>
                         </table>
                         
