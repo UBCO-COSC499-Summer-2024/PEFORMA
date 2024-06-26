@@ -36,6 +36,7 @@ function CoscTable() {
   return (
 
     <div className="division-performance-table">
+      
       <div className='header-container'>
         <h1 className='subTitleD'>Computer Science</h1>
         <div>
@@ -47,7 +48,6 @@ function CoscTable() {
         </div>
       </div>
       
-
       <table className='divi-table'>
         <thead>
           <tr>
