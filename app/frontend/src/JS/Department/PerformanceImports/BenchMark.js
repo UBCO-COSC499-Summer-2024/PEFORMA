@@ -6,6 +6,7 @@ function BenchMark() {
 
   const[data, setData] = useState([]);
   const[currentMonth, setCurrentMonth] = useState('');
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   useEffect(() => {
     const fetchData = async() => {
