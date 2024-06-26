@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../AuthContext.js';
 
 function FileUpload() {
+
+  const { authToken } = useAuth();
+
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -13,10 +17,14 @@ function FileUpload() {
       const formData = new FormData();
       formData.append('file', selectedFile);
       try {
-        const response = await axios.post('/api/upload', formData);
+        const response = await axios.post(`http://localhost:3001/api/upload`, formData, {
+          headers: {
+            Authorization: `Bearer ${authToken.token}` // Add the token in the headers
+          }
+        });
         console.log(response.data); // Handle success response from backend
       } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error('Error uploading file:', error.response.data.error);
       }
     }
   };

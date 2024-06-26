@@ -7,7 +7,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
-const dataImportRouter = require('./services/dataImport'); 
+const dataImportRoutes = require('./routes/dataImportRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
@@ -35,7 +35,7 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
-app.use('/api/upload', dataImportRouter);
+app.use('/api/upload', dataImportRoutes);
 
 //Profile BE
 
