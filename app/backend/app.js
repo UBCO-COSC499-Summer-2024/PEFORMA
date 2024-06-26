@@ -11,6 +11,7 @@ const AccountTypeRouter = require('./routes/AccountType');
 const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
 const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
 const progressRoutes = require('./routes/progressRoutes');
+const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 
@@ -44,6 +45,8 @@ app.use('/api/progressRoutes',progressRoutes);
 
 //Performance BE
 //app.use('/api/instructorPerformance',performanceRoutes);
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
 
 //Profile BE
 
