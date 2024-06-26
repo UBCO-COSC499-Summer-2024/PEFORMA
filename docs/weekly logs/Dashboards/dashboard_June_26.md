@@ -7,14 +7,12 @@
 | Feature Name        | Description                                   |
 | -------------------- | --------------------------------------------- |
 | Service role info page  (Department View)      |    Frontend                                 | 
-| Service role list page (Department View)       |    Frontend                                 | 
-| Course list page (Department View)   |    Frontend                                 |
 | Course list page  (Instructor View)      |    Updating course list display format                                 | 
-| Performance page  (Instructor View)        |   Implemented data retrieval from database                                           |
-| Password encryption        |      |                                             |
 | Service role and teaching assignment feature       |     |                                             |
 | Editing and organizing DLL & DML        |                                               |
-                                          
+| Performance page (Department View)     |    Frontend                                 | 
+| Dashboard (Department View)      |    Frontend                                 | 
+
 
 ## Task Breakdown
 
@@ -25,12 +23,11 @@
 | Task Name             | Owner         | 
 | ----------------------- | -------------- | 
 | Service role info pages (Department View) data retrieval     | Subaru |
-| Course info pages (Department View) data retrieval     | Subaru |
+| Instructor profile data retrievel (update)     | Subaru |
 | Log out       | Zhiheng |
 | Service role and teaching assignment feature       | Zhiheng |
 | Department performance view       | Kevin |
-| Service role info page (Department View) FE     | Jeremy | 
-| Course info page (Department View) FE     | Jeremy | 
+| Testing implemented fe pages       | Kevin |
 | Service role assignment page (Department View) FE     | Jeremy | 
 | Teaching assignment page (Department View) FE     | Jeremy | 
 | Wrap up Instructor View pages and features        | Adams | 
