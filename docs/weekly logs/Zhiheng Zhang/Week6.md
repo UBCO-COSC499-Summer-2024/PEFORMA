@@ -43,10 +43,11 @@ Explaining code and logic for guiding front end setting up proper request to bac
 ## Friday (6/21/2024)
 
 ### Timesheet
-![alt text]()
+![alt text](6-21_00.png)
+![alt text](6-21_01.png)
 
 ### Current Tasks
-  * #1: 
+  * #1: Data Entry BE to add data in data base
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -58,26 +59,25 @@ Explaining code and logic for guiding front end setting up proper request to bac
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>
+        <td> password encrypt
           </td>
         <!-- Status -->
-        <td>
+        <td> Done
           </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>
+        <td> Data Entry start up
           </td>
         <!-- Status -->
-        <td>
+        <td> In progress
           </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
-Log in function is partially finished, but need add up to allow multiple accounts log in. Currently it only allows the first account in stored json the log in.
+Login function fixed for allowing all accounts login successfully, account type is checked and allow FE to guide to different pages. Password is encrypted for safety. Data Entry page connected to BE and is ready for entering data.
 
 ### Next Cycle Goals
-  * Goal 1 Allow multiple accounts log in the system
-  * Goal 2 Have account type check after all accounts can log in so can navigate to different board.
+  * Goal 1 Enter data with FE input to data base.
