@@ -1,0 +1,22 @@
+.dropzone-container {
+    width: 300px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+    border: 2px dashed #ccc; /* Dotted border */
+    border-radius: 5px; /* Rounded corners */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    padding: 20px;
+    cursor: pointer; /* Indicate that it's clickable/droppable */
+  }
+  
+  /* Optional styles for the text and button */
+  .dropzone-container p {
+    text-align: center;
+  }
+  
+  .dropzone-container button {
+    margin-top: 10px; /* Add some space above the button */
+  }
+  
