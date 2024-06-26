@@ -56,7 +56,14 @@ function DataEntryComponent() {
         return filledInstructors;
       }
 
-    const toggleInstructorAdded = id => {
+    const toggleInstructorAssigned = (id) => {
+        for (let i = 0; i<instructorData.instructorCount;i++) {
+            if (instructorData.instructors[i].id === id) {
+                instructorData.instructors[i].assigned = true;
+                setInstructorData(instructorData);
+                console.log("ASDASD");
+            }
+        }
         
     };
 
@@ -175,7 +182,6 @@ function DataEntryComponent() {
             unassignedInstructors.push(currentInstructors[i]);
         }
     }
-    console.log(instructorData.instructors.toString());
     return (
         <div className='DataEntry-page'>
             <CreateSidebarDept/>
@@ -269,8 +275,18 @@ function DataEntryComponent() {
                                     <tr key={instructor.id} className="instructor-item">
                                         <td>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
                                         <td>
-                                            <button onClick={() => toggleInstructorAdded(instructor.id)}>
-                                                {instructor.added ? 'Remove' : 'Add'}
+                                            <button onClick={() => toggleInstructorAssigned(instructor.id)}>
+                                                {instructor.assigned ? 'Remove' : 'Add'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {unassignedInstructors.map(instructor => (
+                                    <tr key={instructor.id} className="instructor-item">
+                                        <td>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
+                                        <td>
+                                            <button onClick={() => toggleInstructorAssigned(instructor.id)}>
+                                                {instructor.assigned ? 'Remove' : 'Add'}
                                             </button>
                                         </td>
                                     </tr>
