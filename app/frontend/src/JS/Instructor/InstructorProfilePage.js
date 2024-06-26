@@ -21,7 +21,7 @@ function InstructorProfilePage() {
           return;
         }
         const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
-          params: { ubcid: ubcid }, // Add ubcid as query parameter
+          params: {ubcid:ubcid }, // Add ubcid as query parameter
           headers: { Authorization: `Bearer ${authToken.token}` }
         });
         console.log(response);
