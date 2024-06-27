@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import '../../CSS/Admin/CreateAccount.css';
-import axios from 'axios';
 
 function CreateAccount() {
-    const currentYear = new Date().getFullYear();
     const [formData, setFormData] = useState({
         email: '',
         firstName: '',
         lastName: '',
         ubcId: '',
         serviceRole: '',
-        year : '',
         division: '',
         password: '',
         confirmPassword: ''
@@ -18,22 +15,15 @@ function CreateAccount() {
     
     const [showRoleModal, setShowRoleModal] = useState(false);
     const [roles, setRoles] = useState([
-        { id : 1, name: 'Undergraduate Advisor', added: false, year: currentYear },
-        { id : 2, name: 'Graduate Admissions', added: false, year: currentYear },
+        { id: 1, name: 'Undergrad Advisor (COSC)', added: false },
+        { id: 2, name: 'Overgrad Advisor (STAT)', added: true },
+        // Add other roles as needed
     ]);
+
     const toggleRoleAdded = (roleId) => {
-        // 首先确保所有职位都未被选中
-        const updatedRoles = roles.map(role => 
-            ({ ...role, added: role.id === roleId ? !role.added : false })
-        );
-        setRoles(updatedRoles);
-    
-        // 更新formData以反映当前选中的职位
-        const addedRole = updatedRoles.find(role => role.added);
-        setFormData({ 
-            ...formData, 
-            serviceRole: addedRole ? [addedRole.name] : []
-        });
+        setRoles(roles.map(role => 
+            role.id === roleId ? { ...role, added: !role.added } : role
+        ));
     };
 
     const handleChange = (event) => {
@@ -44,27 +34,20 @@ function CreateAccount() {
         }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
+        // Here you would handle form submission, such as validating input
+        // and sending data to a server
         console.log('Form data submitted:', formData);
-
-        const postData = {
-            ...formData,
-            serviceRole: formData.serviceRole,  // This is now an array of role IDs
-        };
-        try {
-            const response = await axios.post('http://localhost:3001/create-account', postData);
-            console.log('Server response:', response.data);
-        } catch (error) {
-            console.error('Error sending data to the server:', error);
-        }
     };
 
     const handleCancel = () => {
+        // Optional: handle the cancel action
         console.log('Form cancelled');
     };
 
-    const handleAssign = () => setShowRoleModal(true);
+    const handleAssign = () => {setShowRoleModal(true);}
+
 
     return (
         <div className="create-account-form">
@@ -75,11 +58,10 @@ function CreateAccount() {
                 <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
                 <input type="text" name="ubcId" placeholder="UBC ID" value={formData.ubcId} onChange={handleChange} />
                 <div style={{display:'flex'}}>
-                <input type="text" name="serviceRole" placeholder="Service Role" value={formData.serviceRole} readOnly />
-                <button type="button" onClick={handleAssign}>Assign Role(s)</button>
+                <input type="text" name="serviceRole" placeholder="Service Role" value={formData.serviceRole} onChange={handleChange} />
+                <button onClick={handleAssign}>Assign Role(s)</button>
                 </div>
-                <input type='text' name="year" placeholder="Assigned Year" value={formData.year} onChange={handleChange}/>
-                <input type="integer" name="division" placeholder="Division" value={formData.division} onChange={handleChange} />
+                <input type="text" name="division" placeholder="Division" value={formData.division} onChange={handleChange} />
                 <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
                 <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} />
                 <button type="submit" className="create-button">Create</button>
@@ -102,6 +84,7 @@ function CreateAccount() {
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
