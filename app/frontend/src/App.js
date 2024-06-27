@@ -12,7 +12,7 @@ import DataEntry from "./JS/Department/DataEntry";
 import CreateAccount from "./JS/Admin/CreateAccount";
 import DeptCourseList from "./JS/Department/DeptCourseList";
 import ServiceRoleList from "./JS/Department/ServiceRoleList";
-
+import ServiceRoleManagement from "./JS/Department/ServiceRoleManagement";
 import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 import RoleInformation from './JS/Department/RoleInformation';
