@@ -21,9 +21,6 @@ function DataEntryComponent() {
     const descLimit = 1000;
     const [search, setSearch] = useState('');
 
-    const titleLimit = 100;
-    const descLimit = 1000;
-
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
     const [courseTitle, setCourseTitle] = useState('');

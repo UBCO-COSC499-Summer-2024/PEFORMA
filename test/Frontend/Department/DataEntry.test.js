@@ -6,11 +6,14 @@ import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 
 jest.mock('axios');
-axios.post.mockResolvedValue("");
+axios.get.mockResolvedValue({"data":{"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1}});
 
 test('Checks if form appears properly', async () => {
     const user = userEvent.setup();
-    const { getByTestId } = render(<MemoryRouter><DataEntry/></MemoryRouter>);
+    let { getByTestId } = ""; 
+    await act(async () => {
+        ({getByTestId} = render(<MemoryRouter><DataEntry/></MemoryRouter>)); 
+    });
     let newServiceRoleForm = screen.queryByTestId("service-role-form");
     expect(newServiceRoleForm).not.toBeInTheDocument(); // assert that form has NOT appeared yet
     const dropdown = screen.getByLabelText("Create New:");
