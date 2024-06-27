@@ -1,38 +1,44 @@
 /* Basic Dropzone Styles */
 .dropzone-container {
-  width: 300px; /* Adjust width as needed */
-  height: 200px; /* Adjust height as needed */
-  border: 2px dashed #ccc; 
-  border-radius: 5px; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
+  width: 400px; 
+  min-height: 200px; /* Allow height to expand with more files */
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  cursor: pointer; 
-  margin-bottom: 20px;  /* Add space below the dropzone */
+  cursor: pointer;
+  margin-bottom: 20px;
+  flex-direction: column; /* Make items stack vertically */
 }
 
-.dropzone-container p {
-  text-align: center;
+/* File List Styles */
+.file-list {
+  display: flex;
+  flex-wrap: wrap; /* Wrap items to the next line if they don't fit */
+  gap: 10px;
 }
 
 /* File Preview Styles */
 .file-preview {
   border: 1px solid #ccc;
-  padding: 15px;
+  padding: 10px;
   border-radius: 5px;
-  position: relative; /* For positioning the remove button */
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 150px; /* Minimum width for each file preview */
+  margin-bottom: 10px; /* Space between previews */
 }
 
-.file-info {
+.file-icon-name {
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
-.file-info p {
-  margin-top: 10px;
+.file-icon-name span {
+  margin-left: 5px;
 }
 
 /* Remove Button Styles */
@@ -40,6 +46,8 @@
   position: absolute;
   top: 5px;
   right: 5px;
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 0; /* Remove default padding */
 }
-
