@@ -4,18 +4,23 @@ height: 100vh;
 
 }
 
+
 .DataEntry-page .container {
+
 display: flex;
 flex-direction: column;
 
 }
 
 .DataEntry-page h1 {
+
     text-decoration: underline;
     width: 100%;
 }
 
+
 .DataEntry-page .main {
+
     flex-grow: 1;
     display: flex;
     align-self: flex-start;

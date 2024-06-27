@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 import axios from 'axios';
@@ -13,11 +14,16 @@ function DataEntryComponent() {
     window.onbeforeunload = function() {
         return "Data will be lost if you leave this page. Are you sure?";
       };
+
     const [instructorData, setInstructorData] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
     const [prevInstructorState, setPrevInstructorState] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
     const titleLimit = 100;
     const descLimit = 1000;
     const [search, setSearch] = useState('');
+
+    const titleLimit = 100;
+    const descLimit = 1000;
+
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
     const [courseTitle, setCourseTitle] = useState('');
@@ -111,6 +117,7 @@ function DataEntryComponent() {
         setInstructorData(prevState => ({ ...prevState, currentPage: 1 }));
       };
 
+
     function checkLength(input, limit, section, valid) {
         if (!valid) { 
             return false;
@@ -157,12 +164,14 @@ function DataEntryComponent() {
 
    const handleSubmit = async(event) => {
             event.preventDefault();
+
             let assignedInstructors = [];
             for (let i = 0; i < instructorData.instructors.length; i++) {
                 if (instructorData.instructors[i].assigned === true) {
                     assignedInstructors.push(instructorData.instructors[i].id);
                 }
             }
+
             const formData = {
                 selection,
                 courseTitle,
@@ -172,7 +181,8 @@ function DataEntryComponent() {
                 serviceRoleTitle,
                 serviceRoleDepartment,
                 serviceRoleDescription,
-                assignedInstructors // Array of instructor ID's that will be added to the newly created course/service role
+                assignedInstructors, // Array of instructor ID's that will be added to the newly created course/service role
+                serviceRoleDescription
             };
             console.log('Submitting form data:', formData);
             let valid = false;
@@ -198,6 +208,7 @@ function DataEntryComponent() {
             }
     }
 
+
     const pageCount = Math.ceil(instructorData.instructorCount / instructorData.perPage);
     const filteredInstructors = instructorData.instructors.filter(instructor =>
         (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
@@ -212,6 +223,7 @@ function DataEntryComponent() {
 
 
     let i = 0;
+
     return (
         <div className='DataEntry-page'>
             <CreateSidebarDept/>
@@ -222,6 +234,7 @@ function DataEntryComponent() {
                 <div className="create-new">
                     <label htmlFor="create-new-select">Create New:</label>
                     <select id="create-new-select" value={selection} onChange={(e)=>handleChange(e)} role ="button" name="dropdown">
+
                         <option value="" disabled>Select</option>
                         <option value="Service Role" name="newServiceRole" role="button">Service Role</option>
                         <option value="Course" name="newCourse" role="button">Course</option>
