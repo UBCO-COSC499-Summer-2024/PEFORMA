@@ -7,7 +7,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
-const { saveDataToDatabase } = require('./routes/DataEntry');
+// const { saveDataToDatabase } = require('./routes/DataEntry');
 
 
 const { upsertProfile } = require('./routes/upsertProfile');
@@ -41,25 +41,23 @@ app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/',AccountTypeRouter);//check account type
 
-<<<<<<< HEAD
 //reset password
 //app.use('/api',ResetPassword);
 
 //update date into db
 //app.use('/api',update);
 
-// Course list retrieval process
+// List retrievals
 app.use('/api/courses', courseRoutes); 
+app.use('/api/service-roles', serviceRoleRoutes);
 
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
 console.log('after');
 
-
-=======
-//Profile BE
-app.use('/api/instructorProfile',profileRoutes);
+//Performance BE
+app.use('/api/instructorPerformance',performanceRoutes);
 
 //reset password
 //app.use('/api',ResetPassword);
@@ -92,12 +90,6 @@ app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
 app.use('/api/progressRoutes',progressRoutes);
 
 
-//Performance BE
-//app.use('/api/instructorPerformance',performanceRoutes);
-// Service role retrieval process
-app.use('/api/service-roles', serviceRoleRoutes);
-
-
     try {
         const profileId = await upsertProfile(req.body);
         const accountId = await createAccount(profileId, req.body.email, req.body.password);
@@ -114,7 +106,6 @@ app.use('/api/service-roles', serviceRoleRoutes);
 
 });
 */
->>>>>>> development
 const port = 3001;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
