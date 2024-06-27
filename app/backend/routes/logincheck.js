@@ -1,6 +1,4 @@
 //import {pool} from '../db/index';
-
-
 const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -8,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { generateToken, TOKEN_EXPIRY_SECONDS } = require('../Manager/jwtManager');
 const { queryAccount } = require('./queryAccountRouter');
-const pool = require('../db/index');
+const pool = require('../config/db');
 var token_save = '';
 
 const router = express.Router();

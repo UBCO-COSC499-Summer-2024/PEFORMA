@@ -6,6 +6,7 @@ const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+
     //const [authToken, setAuthToken] = useState(null);
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken'));
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ export const AuthProvider = ({ children }) => {
             alert('Session about to expire.');
             logout();
             navigate('/HomePage');},
-            (expiresIn - 60) * 1000)
+            (expiresIn - 60) * 10000)
             //kick off 1 min before expire.. 60 * 1000ms = 60s
     };
 
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }) => {
         setAuthToken(null);
         localStorage.removeItem('authToken');
         navigate('/HomePage');
+
     };
 
     return (

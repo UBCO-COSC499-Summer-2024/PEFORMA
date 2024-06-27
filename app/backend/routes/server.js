@@ -1,10 +1,9 @@
 const express = require('express');
-const pool = require('../db/index.js'); 
+const pool = require('../config/db.js'); 
 const router = express.Router();
 const port = process.env.PORT || 3001;  // Default to 3001 if environment variable not set
 
 router.use(express.json());
-
 // Test database connection
 //testDB();
 
