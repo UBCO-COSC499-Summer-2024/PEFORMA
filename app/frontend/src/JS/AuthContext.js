@@ -8,16 +8,13 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     //const [authToken, setAuthToken] = useState(null);
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken'));
-    const [profileId, setProfileId] = useState(() => localStorage.getItem('profileId'));
     const navigate = useNavigate();
 
-    const login = (token, expiresIn, profileId) => {
+    const login = (token, expiresIn) => {
         const tokenString = JSON.stringify(token);
         //alert(`expire time: ${expiresIn}`);
         setAuthToken(token);
-        setProfileId(profileId)
         localStorage.setItem('authToken', tokenString);
-        localStorage.setItem('profileId', profileId)
         setTimeout( () => {
             alert('Session about to expire.');
             logout();
@@ -28,16 +25,13 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setAuthToken(null);
-        setProfileId(null)
         localStorage.removeItem('authToken');
-        localStorage.removeItem('profileId');
         navigate('/HomePage');
     };
 
     return (
-        <AuthContext.Provider value={{ authToken, profileId, login, logout }}>
+        <AuthContext.Provider value={{ authToken, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
-    
 };
