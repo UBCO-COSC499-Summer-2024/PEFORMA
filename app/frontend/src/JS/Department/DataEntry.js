@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ function DataEntryComponent() {
         return "Data will be lost if you leave this page. Are you sure?";
       };
     const [instructorData, setInstructorData] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
+    const [prevInstructorState, setPrevInstructorState] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
     const titleLimit = 100;
     const descLimit = 1000;
     const [search, setSearch] = useState('');
@@ -26,6 +27,7 @@ function DataEntryComponent() {
     const [serviceRoleTitle, setServiceRoleTitle] = useState('');
     const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
     const [serviceRoleDescription, setServiceRoleDescription] = useState('');
+
     
     const handleChange = (event) => {
         setSelection(event.target.value);
@@ -35,7 +37,7 @@ function DataEntryComponent() {
 
     useEffect(() => {
         const fetchData = async() => {
-          const url = "http://localhost:3000/assignInstructors.json";
+          const url = "http://localhost:3000/assignInstructors.json"; // Gets from temporary JSON file. Should be replaced with backend.
           const res = await axios.get(url);
           const data = res.data;
           const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
@@ -56,22 +58,50 @@ function DataEntryComponent() {
         return filledInstructors;
       }
 
+
     const toggleInstructorAssigned = (id, assign) => {
+       let button = document.getElementById(id);
         for (let i = 0; i<instructorData.instructorCount;i++) {
             if (instructorData.instructors[i].id === id) {
-                instructorData.instructors[i].assigned = true;
-                setInstructorData(instructorData);
-                document.getElementById(id).innerHTML = "Remove";
+                if (!assign) {
+                    instructorData.instructors[i].assigned = true;
+                    button.innerHTML = "Remove";
+                    button.classList.toggle("remove");
+                    button.classList.toggle("add");
+                } else {
+                    instructorData.instructors[i].assigned = false;
+                    button.innerHTML = "Add";
+                    button.classList.toggle("remove");
+                    button.classList.toggle("add");
+                }
+                
             }
         }
         
     };
+    const prevInstructors = useRef({});
+    const handlePageClick = (data) => {
+        setInstructorData(prevState => ({
+          ...prevState,
+          currentPage: data.selected + 1
+        }))
+      };
 
+    
     const handleShowInstructorModal = () => {
+        prevInstructors.current = JSON.stringify(instructorData);
+        setPrevInstructorState(new Object(instructorData));
         setShowInstructorModal(true);
     };
 
-    const handleCloseInstructorModal = () => {
+    const handleCloseInstructorModal = (save) => {
+        if (!save) {
+            if (window.confirm("If you exit, your unsaved data will be lost. Are you sure?")) {
+                setInstructorData(JSON.parse(prevInstructors.current));
+            } else {
+                return;
+            }
+        }
         setShowInstructorModal(false);
     };
 
@@ -127,6 +157,12 @@ function DataEntryComponent() {
 
    const handleSubmit = async(event) => {
             event.preventDefault();
+            let assignedInstructors = [];
+            for (let i = 0; i < instructorData.instructors.length; i++) {
+                if (instructorData.instructors[i].assigned === true) {
+                    assignedInstructors.push(instructorData.instructors[i].id);
+                }
+            }
             const formData = {
                 selection,
                 courseTitle,
@@ -135,7 +171,8 @@ function DataEntryComponent() {
                 courseDescription,
                 serviceRoleTitle,
                 serviceRoleDepartment,
-                serviceRoleDescription
+                serviceRoleDescription,
+                assignedInstructors // Array of instructor ID's that will be added to the newly created course/service role
             };
             console.log('Submitting form data:', formData);
             let valid = false;
@@ -172,17 +209,9 @@ function DataEntryComponent() {
         instructorData.currentPage * instructorData.perPage
       );
 
-    let assignedInstructors = [];
-    let unassignedInstructors = [];
 
-    for (let i = 0; i < currentInstructors.length; i++) {
-        if (currentInstructors[i].assigned == true) {
-            assignedInstructors.push(currentInstructors[i]);
-        } else {
-            unassignedInstructors.push(currentInstructors[i]);
-        }
-    }
-    
+
+    let i = 0;
     return (
         <div className='DataEntry-page'>
             <CreateSidebarDept/>
@@ -192,7 +221,7 @@ function DataEntryComponent() {
                 <h1>Data Entry</h1>
                 <div className="create-new">
                     <label htmlFor="create-new-select">Create New:</label>
-                    <select id="create-new-select" value={selection} onChange={(e)=>setSelection(e.target.value)} role ="button" name="dropdown">
+                    <select id="create-new-select" value={selection} onChange={(e)=>handleChange(e)} role ="button" name="dropdown">
                         <option value="" disabled>Select</option>
                         <option value="Service Role" name="newServiceRole" role="button">Service Role</option>
                         <option value="Course" name="newCourse" role="button">Course</option>
@@ -267,18 +296,24 @@ function DataEntryComponent() {
                     <div className="assignModal">
                         <div className='assignModalTop'>
                             <div className="modalTitle">Assign <span className='bold'>Instructor(s)</span></div>
-                            <button className="close-button" onClick={handleCloseInstructorModal}>X</button>
+                            <button className="close-button" onClick={()=>handleCloseInstructorModal(false)}>X</button>
                         </div>
                         <input type="text" placeholder="Search for instructors to assign" onChange={e => onSearch(e.target.value)} />
                         <table>
                             <tbody>
                                 {currentInstructors.map(instructor => {
-                                    
+                                    i++;
+                                    if (instructor.id == null) {
+                                        return (<tr key={i} className="instructor-item">
+                                            <td></td><td></td>
+                                            <td></td>
+                                        </tr>);
+                                    }
                                     return (
-                                    <tr key={instructor.id} className="instructor-item">
-                                        <td>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
+                                    <tr key={i} className="instructor-item">
+                                        <td className='bold'>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
                                         <td>
-                                            <button id={instructor.id} onClick={() => toggleInstructorAssigned(instructor.id, true)}>
+                                            <button id={instructor.id} className={"bold "+(instructor.assigned?"remove":"add")} onClick={() => toggleInstructorAssigned(instructor.id, instructor.assigned)}>
                                                 {instructor.assigned ? 'Remove' : 'Add'}
                                             </button>
                                         </td>
@@ -287,9 +322,26 @@ function DataEntryComponent() {
                                 })}
                                 
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan="3">
+                                        <ReactPaginate
+                                            previousLabel={'<'}
+                                            nextLabel={'>'}
+                                            breakLabel={'...'}
+                                            pageCount={pageCount}
+                                            marginPagesDisplayed={3}
+                                            pageRangeDisplayed={0}
+                                            onPageChange={handlePageClick}
+                                            containerClassName={'pagination'}
+                                            activeClassName={'active'}
+                                        />
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                         
-                        <button className="save-button" onClick={handleCloseInstructorModal}>Save</button>
+                        <button className="save-button" onClick={()=>handleCloseInstructorModal(true)}>Save</button>
                     </div>
                 </div>
             )}
