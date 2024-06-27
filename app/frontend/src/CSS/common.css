@@ -4,9 +4,13 @@
     --sidebarColor: #002145;
     --darkGrey: #F6F6F6;
     --darkerGrey: #EBEBEB;
+    --darkestishGrey: #dcdcdc;
     --darkestGrey:#C9C9C9;
+    --darkestestGrey:#909090;
     --green: #D2EE98;
+    --darkGreen:#afca78;
     --red: #E74848;
+    --darkRed:#ae3030;
     --blue: #2563EB;
     --white: #FFFFFF;
     --black: #000000;
@@ -36,7 +40,6 @@
 }
 
 .container {
-
   flex-grow: 1;
   background-color: #f2f2f2;
   overflow: auto;
@@ -61,11 +64,12 @@ body {
   width: 15vw;
   background-color: #002145;
   color: white;
-  padding: 20px;
+  padding: 1%;
   display: flex;
   flex-direction: column;
-  height: 100%;
-}
+  height: 95.99%;
+  overflow:hidden;
+  }
 
 h2 {
   font-size: 2em;

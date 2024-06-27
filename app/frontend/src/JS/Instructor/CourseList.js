@@ -13,7 +13,7 @@ function CourseList() {
 
   const { authToken } = useAuth();
   const params = new URLSearchParams(window.location.search);
-  const divisionCode = params.get('division');
+  const divisionCode = params.get('division') || 'COSC'; 
 
   const navigate = useNavigate();
   const divisionHandler = (e) => {
@@ -104,7 +104,7 @@ function CourseList() {
           <div className='ListTitle-text'>List of Courses</div>
           <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
             {divisions.map(division => { 
-              return <option value={division.code}>{division.label}</option>
+              return <option key={division.code} value={division.code}>{division.label}</option>
               })}
           </select>
         </header>
