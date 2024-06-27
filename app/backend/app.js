@@ -57,7 +57,7 @@ app.use('/api/instructorProfile',profileRoutes);
 console.log('after');
 
 //Performance BE
-app.use('/api/instructorPerformance',performanceRoutes);
+// app.use('/api/instructorPerformance',performanceRoutes);
 
 //reset password
 //app.use('/api',ResetPassword);
