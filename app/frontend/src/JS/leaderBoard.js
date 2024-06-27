@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext';
 function LeaderBoard() {
-  const navigate = useNavigate();
-  const { authToken } = useAuth();
   const [leader, setLeader] = useState(
     {  
       series: [{
@@ -29,19 +25,12 @@ function LeaderBoard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(!authToken){
-          navigate('/Login');
-          return;
+        const res = await axios.get('http://localhost:3000/leaderBoard.json'); 
+        return res.data;
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+        return null; 
       }
-      const res = await axios.get('http://localhost:3001/api/leaderBoardRoutes', {
-        headers: { Authorization: `Bearer ${authToken.token}` }
-    });
-    console.log(res);
-    return res.data;
-} catch (error) {
-    console.error('Error fetching data: ', error);
-    return null;
-}
     };
     fetchData().then(data => {
       if (data) {

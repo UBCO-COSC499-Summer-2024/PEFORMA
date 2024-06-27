@@ -26,10 +26,9 @@ function Login() {
                 expire time is: ${JSON.stringify(response.data.token.expiresIn,null,2)}`);
                 
                 // here is the token and expire time ↑↑↑
-                console.log("profileId: \n")
-                console.log(response.data.profileId)
+                
           const accountTypeResponse = await axios.get(`http://localhost:3001/accountType/${response.data.accountId}`);
-          login(response.data.token, response.data.token.expiresIn, response.data.profileId);
+          login(response.data.token, response.data.expiresIn);
           if (accountTypeResponse.data.success) {
             const accountType = accountTypeResponse.data.accountType;
             alert(`Log in as account type: ${accountType}`);

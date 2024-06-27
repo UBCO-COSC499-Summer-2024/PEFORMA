@@ -1,4 +1,4 @@
-{"division":"PHYS", "divisionLabel":"Physics", "currentPage":1, "perPage": 10, "divisionCoursesCount":2,
+{"division":"PHYS", "divisionLabel":"Physics", "currPage":1, "perPage": 10, "divisionCoursesCount":2,
     "courses":[
       { "id": "PHYS 101", "title": "Introductory Physics for the Physical Sciences I", "instructor": ["David Chipin"], "ubcid":[58291752], "email": ["david@instructor.ubc.ca"] },
       { "id": "PHYS 200", "title": "Relativity and Quanta", "instructor": ["Norman Leo"], "ubcid":[47291023], "email": ["norman@instructor.ubc.ca"] }

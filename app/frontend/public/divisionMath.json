@@ -1,4 +1,4 @@
-{"division":"MATH", "divisionLabel":"Mathmatics", "currentPage":1, "perPage": 10, "divisionCoursesCount":1,
+{"division":"MATH", "divisionLabel":"Mathmatics", "currPage":1, "perPage": 10, "divisionCoursesCount":1,
     "courses":[
       { "id": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering", "instructor": ["Brandi Floyd"], "ubcid":[32819340], "email": ["brandi@instructor.ubc.ca"] }
     ]

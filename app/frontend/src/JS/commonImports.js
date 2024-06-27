@@ -7,7 +7,6 @@ import {TopSearchBarIns, TopSearchBarDept} from "./topbarFilter.js";
 import WorkHoursBarChart from "./workHoursBarChart.js"
 import DeptPerformancePieChart from "./deptPerformancePolarChart.js"
 import LeaderBoard from "./leaderBoard.js"
-import ServiceHoursProgressChart from "./ServiceHoursProgressChart.js";
 
 
 // Every page should import this file (Except maybe the home page)
@@ -24,9 +23,9 @@ function CreateTopbar() {
     );
 }
 
-function CreateTopSearchbarIns({ onSearch }){
+function CreateTopBarFilter(){
     return(
-        <TopSearchBarIns onSearch={ onSearch } />
+        <TopSearchBarIns />
     );
 }
 
@@ -54,24 +53,18 @@ function CreateLeaderboardChart(){
     )
 }
 
-function CreateProgressChart(){
+function CreateTopSearchBarDept({ onSearch }){
     return (
-        <ServiceHoursProgressChart />
-    )
-}
-function CreateTopSearchBarDept(){
-    return (
-        <TopSearchBarDept />
+        <TopSearchBarDept onSearch={ onSearch }/>
     )
 }
 
 export default CreateSidebar;
 export {CreateTopbar, 
     CreateSidebarDept, 
-    CreateTopSearchbarIns, 
+    CreateTopBarFilter, 
     CreateWorkingBarChart, 
     CreateScorePolarChart,
     CreateLeaderboardChart,
-    CreateProgressChart,
     CreateTopSearchBarDept
 };

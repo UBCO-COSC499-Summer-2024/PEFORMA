@@ -1,16 +1,16 @@
 {
     "data": [
-        {"x": "January", "y": 150},
-        {"x": "February", "y": 120},
-        {"x": "March", "y": 130},
-        {"x": "April", "y": 80},
-        {"x": "May", "y": 80},
-        {"x": "June", "y": 70},
-        {"x": "July", "y": 60},
-        {"x": "August", "y": 100},
-        {"x": "September", "y": 100},
-        {"x": "October", "y": 150},
-        {"x": "November", "y": 170},
-        {"x": "December", "y": 120}
+        {"x": "January", "y": 150,"avgWorkHour": 100},
+        {"x": "February", "y": 120,"avgWorkHour": 140},
+        {"x": "March", "y": 130,"avgWorkHour": 125},
+        {"x": "April", "y": 80,"avgWorkHour": 140},
+        {"x": "May", "y": 80,"avgWorkHour": 40},
+        {"x": "June", "y": 70,"avgWorkHour": 60},
+        {"x": "July", "y": 60,"avgWorkHour": 40},
+        {"x": "August", "y": 100,"avgWorkHour": 80},
+        {"x": "September", "y": 100,"avgWorkHour": 10},
+        {"x": "October", "y": 150,"avgWorkHour": 110},
+        {"x": "November", "y": 170,"avgWorkHour": 125},
+        {"x": "December", "y": 120,"avgWorkHour": 130}
     ]
 }
