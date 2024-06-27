@@ -10,6 +10,7 @@
     --green: #D2EE98;
     --darkGreen:#afca78;
     --red: #E74848;
+    --darkRed:#ae3030;
     --blue: #2563EB;
     --white: #FFFFFF;
     --black: #000000;
@@ -39,7 +40,6 @@
 }
 
 .container {
-
   flex-grow: 1;
   background-color: #f2f2f2;
   overflow: auto;
@@ -68,7 +68,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 95.99%;
-}
+  overflow:hidden;
+  }
 
 h2 {
   font-size: 2em;
