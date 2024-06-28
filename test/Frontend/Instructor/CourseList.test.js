@@ -6,37 +6,8 @@ import axios from 'axios';
 import { AuthProvider } from '../../../app/frontend/src/JS/AuthContext';
 
 jest.mock('axios');
+axios.get.mockResolvedValue({"data":{"courses":[], divisionCoursesCount:0, perPage: 5, currentPage: 1}});
 
-const mockCourseData = {
-  division:"COSC", divisionLabel:"Computer Science",
-  divisionCoursesCount: 1,
-  perPage: 10,
-  currentPage: 1,
-  courses: [
-    {
-      id: 'COSC 101',
-      title: 'Introduction to Computer Science',
-      instructor: ['John Doe'],
-      ubcid: ['1'],
-      email: ['johndoe@example.com']
-    }
-  ]
-};
-const mockMathCoursesData = {
-  division:"MATH", divisionLabel:"Mathmatics",
-  divisionCoursesCount: 1,
-  perPage: 10,
-  currentPage: 1,
-  courses: [
-    {
-      id: 'MATH101',
-      title: 'Calculus I',
-      instructor: ['Alice Smith'],
-      ubcid: [3],
-      email: ['test@asd.com']
-    }
-  ]
-};
 
 const renderWithProviders = (ui) => {
   return render(
@@ -46,38 +17,33 @@ const renderWithProviders = (ui) => {
   );
 }
 
-describe('CourseList', () => {
-  beforeEach(() => {
-    axios.get.mockImplementation((url) => {
-      if (url.includes('division=MATH')) {
-        return Promise.resolve({ data: mockMathCoursesData });
-      }
-      return Promise.resolve({ data: mockCourseData });
-    });
-  });
+test('Testing if dropdown exists', async () => {
+  renderWithProviders(<CourseList />)
+  expect(screen.getByRole('combobox')).toBeInTheDocument();
+}
 
-  test('Render course list components', async () => {
-  renderWithProviders(<CourseList />);
+)
 
-  await waitFor(() => {
-    expect(screen.getByText('List of Courses')).toBeInTheDocument();
-  });
-  
-  await waitFor(() => {
-    expect(screen.getByText('Course')).toBeInTheDocument();
-    expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(screen.getByText('Instructor')).toBeInTheDocument();
-    expect(screen.getByText('Email')).toBeInTheDocument();
-    });
-  });
-  
+test('Render course list components', async () => {
+renderWithProviders(<CourseList />);
 
-  test("Testing pagination exists", () => {
-    renderWithProviders(<CourseList />);
-    expect(screen.getByText('<')).toBeInTheDocument();
-    expect(screen.getByText('>')).toBeInTheDocument();
-  });
-
-  
+await waitFor(() => {
+  expect(screen.getByText('List of Courses')).toBeInTheDocument();
 });
+
+await waitFor(() => {
+  expect(screen.getByText('Course')).toBeInTheDocument();
+  expect(screen.getByText('Title')).toBeInTheDocument();
+  expect(screen.getByText('Instructor')).toBeInTheDocument();
+  expect(screen.getByText('Email')).toBeInTheDocument();
+  });
+});
+
+
+test("Testing pagination exists", async () => {
+  renderWithProviders(<CourseList />);
+  expect(screen.getByText('<')).toBeInTheDocument();
+  expect(screen.getByText('>')).toBeInTheDocument();
+});
+
 
