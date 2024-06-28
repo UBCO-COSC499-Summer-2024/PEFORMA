@@ -266,7 +266,7 @@ function DataEntryComponent() {
                     <label htmlFor="course-description">Course Description:</label>
                     <textarea id="course-description" onChange={(e)=>setCourseDescription(e.target.value)} placeholder="Describe the course" name="courseDescription" required></textarea>
 
-                    <button className="assign-button" type="button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    <button className="assign-button" data-testid="assign-button" type="button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
                     <input type="submit" id="course-submit" className='hidden' />
                     <input type="hidden" name="selection" value="Course" />
                 </form>
@@ -293,7 +293,7 @@ function DataEntryComponent() {
                     </div>
                     <label htmlFor="service-role-description">Service Role Description:</label>
                     <textarea id="service-role-description" onChange={(e)=>setServiceRoleDescription(e.target.value)} placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
-                    <button type="button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    <button type="button" data-testid="assign-button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
                     <input type="submit" id="service-role-submit" className='hidden' />
                     <input type="hidden" name="formType" value="Service Role" />
                 </form>
@@ -303,7 +303,7 @@ function DataEntryComponent() {
 
             {showInstructorModal && (
                 <div className="modal-overlay">
-                    <div className="assignModal">
+                    <div className="assignModal" data-testid="assignModal">
                         <div className='assignModalTop'>
                             <div className="modalTitle">Assign <span className='bold'>Instructor(s)</span></div>
                             <button className="close-button" onClick={()=>handleCloseInstructorModal(false)}>X</button>
