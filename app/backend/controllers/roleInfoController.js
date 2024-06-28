@@ -3,8 +3,8 @@ console.log(pool);
 
 exports.getRoleInfo = async (req, res) => {
 
-    // const serviceRoleId = req.query.serviceRoleId;  
-    const serviceRoleId = 4;
+    const serviceRoleId = req.query.serviceRoleId;  
+    
     console.log("Received service role ID:", serviceRoleId);
     try {
 

@@ -11,11 +11,13 @@ function RoleInformation() {
 const { authToken } = useAuth();
 const [roleData, setRoleData] = useState({"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1});
 const [search, setSearch] = useState('');
+const params = new URLSearchParams(window.location.search);
+const serviceRoleId = params.get('roleid');
 
   useEffect(() => {
     const fetchData = async() => {
       const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
-        //params: {serviceRoleId: serviceRoleId},
+        params: {serviceRoleId: serviceRoleId},
         headers: { Authorization: `Bearer ${authToken.token}` }
       });
       const data = res.data;
@@ -101,7 +103,7 @@ let i = 0;
               
             {currentAssignees.map(assignee => {
               i++;
-              if (assignee.instructorID == null) {
+              if (assignee.instructorID == "" || assignee.instructorID == null) {
                 return (
                   <tr key={i}>
                     <td>
