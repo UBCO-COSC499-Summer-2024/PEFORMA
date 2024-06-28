@@ -101,11 +101,15 @@ The difficulty in terms of programming is that I had to join multiple tables and
         <!-- Status -->
         <td> Complete
         </td>
+    </tr>
+    <tr>
        <td> Department performance BE
         </td>
         <!-- Status -->
         <td> In progresss
         </td>
+    </tr>
+    <tr>
        <td> fix instructor profile
         </td>
         <!-- Status -->
@@ -117,6 +121,7 @@ The difficulty in terms of programming is that I had to join multiple tables and
 
 ### Weekly Goal Review
 This cycle was lots of debugging. The development branch had so many bugs to fix after merging with the old branches. One lesson I learned from this is that we need to check the development branch every time after the merge, and solve the merge conflict on vscode rather than on github.
+I finished service role info but still waiting for the FE to pass serviceroleId to backend. 
 This cycle, I did less work compared to cycle 1 because I thought I needed to take some time off as I was overworking a lot and pushing myself hard. In terms of teamwork, I kept my communication level consistent and tried to communicate a lot on discord. I also liked how everyone got together in a meeting and merged branches one by one. 
 ### Next Cycle Goals
   * Finish department performance BE
