@@ -26,6 +26,4 @@ test('Check login button exists', async () => {
     render(<MemoryRouter><Login/></MemoryRouter>);
     const button = screen.getByRole("button");
     expect(button).toBeInTheDocument()
-    
-
 });

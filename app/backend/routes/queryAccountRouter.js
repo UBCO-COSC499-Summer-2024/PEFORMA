@@ -1,7 +1,7 @@
 // routes/data.js
 const express = require('express');
 const router = express.Router();
-const pool = require('../config/db');
+const pool = require('../db/index');
 
 // 定义查询函数
 const queryAccount = async () => {

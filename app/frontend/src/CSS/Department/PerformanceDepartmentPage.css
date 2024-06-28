@@ -1,0 +1,71 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+  
+.performanceD-title {
+  margin-left: 2em;
+  font-size: 1em;
+  width: 90%;
+}
+
+.performanceD-title h2 {
+  font-size: 1.7em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.bottom-section {
+  width: auto;
+  display: flex;
+  padding: 2em;
+  justify-content: space-between;
+  padding-top: 10px;
+  
+}
+
+.benchmark-section {
+  padding: 10px;
+  width: 50%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  margin-right: 10px;
+  background-color: #ffffff;
+
+}
+
+.people-section {
+  padding: 10px;
+  width: 50%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  background-color: #ffffff;
+
+}
+
+.division-top-table {
+  width: auto;
+  display: flex;
+  padding: 2em;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.division-mid-table {
+  width: auto;
+  display: flex;
+  padding: 2em;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.division {
+  padding: 10px;
+  width: 50%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  margin-right: 10px;
+  background-color: #ffffff;
+}

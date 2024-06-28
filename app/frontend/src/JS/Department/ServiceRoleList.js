@@ -5,6 +5,8 @@ import '../../CSS/Department/ServiceRoleList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
 import axios from 'axios';
+import '../AuthContext.js';
+import { useAuth } from '../AuthContext.js';
 
 function showRoles(roleData, offset){
   if (roleData.rolesCount > 10) {
@@ -15,19 +17,40 @@ function showRoles(roleData, offset){
 
 function ServiceRoleList() {
 
+  const { authToken } = useAuth();
+
+  const navigate = useNavigate();
+
   const [roleData, setRoleData] = useState({"roles":[{}], rolesCount:0, perPage: 10, currentPage: 1});
-  
 
   useEffect(() => {
-    const fetchData = async() => {
-      const url = "http://localhost:3000/serviceRoles.json";
-      const res = await axios.get(url);
-      const data = res.data;
-      const filledRoles = fillEmptyRoles(data.roles, data.perPage);
-      setRoleData({ ...data, roles: filledRoles });
-    }
-    fetchData();
-  }, []);
+    const fetchServiceRoles = async () => {
+      try {
+        if (!authToken) {
+          // Redirect to login if no token
+          navigate('/Login'); // Use your navigation mechanism
+          return;
+        }
+
+        // Fetch course data with Axios, adding token to header
+        const res = await axios.get(`http://localhost:3001/api/service-roles`, {
+          headers: { Authorization: `Bearer ${authToken.token}` } 
+        });
+        const data = res.data;
+        const filledRoles = fillEmptyRoles(data.roles, data.perPage);
+        setRoleData({ ...data, roles: filledRoles });
+      } catch (error) {
+        // Handle 401 (Unauthorized) error and other errors
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('authToken'); // Clear invalid token
+          navigate('/Login'); 
+        } else {
+          console.error('Error fetching service roles:', error);
+        }
+      }
+    };
+    fetchServiceRoles();
+  }, [authToken]); 
 
   const fillEmptyRoles = (roles, perPage) => {
     const filledRoles = [...roles];
@@ -51,6 +74,7 @@ function ServiceRoleList() {
   const pageCount = Math.ceil(roleData.rolesCount / roleData.perPage);
   const offset = (roleData.currentPage - 1) * roleData.perPage;
   const currentRoles = showRoles(roleData, offset);
+  console.log(currentRoles);
 
   return (
 
@@ -78,7 +102,7 @@ function ServiceRoleList() {
 
             {currentRoles.map(role => {
                 return (
-                  <tr key={role.name}>
+                  <tr key={role.id}>
                     <td><Link to={`http://localhost:3000/RoleInformation?roleid=${(role.id)}`}>{role.name}</Link></td>
                     <td>{role.department}</td>
                     <td>{role.description}</td>
