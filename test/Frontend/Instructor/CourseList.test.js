@@ -48,7 +48,7 @@ const renderWithProviders = (ui) => {
 
 describe('CourseList', () => {
   beforeEach(() => {
-    axios.get.mockResolvedValue((url) => {
+    axios.get.mockImplementation((url) => {
       if (url.includes('division=MATH')) {
         return Promise.resolve({ data: mockMathCoursesData });
       }
@@ -71,5 +71,13 @@ describe('CourseList', () => {
     });
   });
   
+
+  test("Testing pagination exists", () => {
+    renderWithProviders(<CourseList />);
+    expect(screen.getByText('<')).toBeInTheDocument();
+    expect(screen.getByText('>')).toBeInTheDocument();
+  });
+
   
 });
+
