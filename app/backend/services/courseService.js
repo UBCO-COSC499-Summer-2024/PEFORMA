@@ -1,4 +1,4 @@
-const pool = require('../config/db.js');
+const pool = require('../db/index.js');
 
 const divisionMap = {
     'ALL': 0,
