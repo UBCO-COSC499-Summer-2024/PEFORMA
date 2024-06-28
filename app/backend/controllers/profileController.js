@@ -67,7 +67,7 @@ exports.getUserProfile = async (req, res) => {
         result = await pool.query(query);
         const term = result.rows[0].term;
         query = `
-            SELECT d."dname"  || ' ' || c."courseNum" AS "DivisionAndCourse"
+            SELECT d."dcode"  || ' ' || c."courseNum" AS "DivisionAndCourse"
             FROM "InstructorTeachingAssignment" "ita"
             JOIN "Course" "c" ON "ita"."courseId" = "c"."courseId"
             JOIN "Division" "d" ON "c"."divisionId" = "d"."divisionId"
@@ -87,7 +87,7 @@ exports.getUserProfile = async (req, res) => {
             benchmark:benchmark || '',
             roles:roles,
             email: email || '',
-            phoneNum: phoneNum || '',
+            phone: phoneNum || '',
             office: office,
             teachingAssignments:teachingRoles
         };    
