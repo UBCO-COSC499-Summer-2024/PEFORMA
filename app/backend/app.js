@@ -41,26 +41,6 @@ app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/',AccountTypeRouter);//check account type
 
-<<<<<<< HEAD
-
-//reset password
-//app.use('/api',ResetPassword);
-
-//update date into db
-//app.use('/api',update);
-
-// Course list retrieval process
-app.use('/api/courses', courseRoutes); 
-
-//Profile BE
-app.use('/api/instructorProfile',profileRoutes);
-
-console.log('after');
-
-
-
-=======
->>>>>>> bdc2eb8a0c02a22714eb736a3fe9a6530a9e5322
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 

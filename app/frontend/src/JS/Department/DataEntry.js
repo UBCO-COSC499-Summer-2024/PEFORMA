@@ -4,7 +4,7 @@ import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import '../../CSS/Department/DataEntry.css';
-import ReactPaginate from 'react-paginate';
+
 import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
 import AssignInstructorsModal from '../assignInstructorsModal.js';
@@ -17,10 +17,9 @@ function DataEntryComponent() {
       };
 
     const [instructorData, setInstructorData] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
-    const [prevInstructorState, setPrevInstructorState] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
     const titleLimit = 100;
     const descLimit = 1000;
-    const [search, setSearch] = useState('');
+    
 
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
@@ -62,39 +61,10 @@ function DataEntryComponent() {
         return filledInstructors;
       }
 
-
-    const toggleInstructorAssigned = (id, assign) => {
-       let button = document.getElementById(id);
-        for (let i = 0; i<instructorData.instructorCount;i++) {
-            if (instructorData.instructors[i].id === id) {
-                if (!assign) {
-                    instructorData.instructors[i].assigned = true;
-                    button.innerHTML = "Remove";
-                    button.classList.toggle("remove");
-                    button.classList.toggle("add");
-                } else {
-                    instructorData.instructors[i].assigned = false;
-                    button.innerHTML = "Add";
-                    button.classList.toggle("remove");
-                    button.classList.toggle("add");
-                }
-                
-            }
-        }
-        
-    };
     const prevInstructors = useRef({});
-    const handlePageClick = (data) => {
-        setInstructorData(prevState => ({
-          ...prevState,
-          currentPage: data.selected + 1
-        }))
-      };
 
-    
     const handleShowInstructorModal = () => {
         prevInstructors.current = JSON.stringify(instructorData);
-        setPrevInstructorState(new Object(instructorData));
         setShowInstructorModal(true);
     };
 
@@ -108,12 +78,6 @@ function DataEntryComponent() {
         }
         setShowInstructorModal(false);
     };
-
-    const onSearch = (newSearch) => {
-        console.log("Searched:", newSearch);
-        setSearch(newSearch);
-        setInstructorData(prevState => ({ ...prevState, currentPage: 1 }));
-      };
 
 
     function checkLength(input, limit, section, valid) {
@@ -207,16 +171,10 @@ function DataEntryComponent() {
     }
 
 
-    const pageCount = Math.ceil(instructorData.instructorCount / instructorData.perPage);
-    const filteredInstructors = instructorData.instructors.filter(instructor =>
-        (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
-        (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
-      );
 
-      const currentInstructors = filteredInstructors.slice(
-        (instructorData.currentPage - 1) * instructorData.perPage,
-        instructorData.currentPage * instructorData.perPage
-      );
+
+
+
 
 
 
@@ -303,7 +261,7 @@ function DataEntryComponent() {
             )}
 
             {showInstructorModal && (
-                <AssignInstructorsModal/>
+                <AssignInstructorsModal instructorData={instructorData} setInstructorData={setInstructorData} handleCloseInstructorModal={handleCloseInstructorModal}/>
             )}
             </div>
             </div>
