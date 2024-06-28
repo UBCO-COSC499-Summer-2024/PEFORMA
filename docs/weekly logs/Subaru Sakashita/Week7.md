@@ -65,12 +65,12 @@
 </table>
 
 ### Weekly Goal Review
-I completed instructor performance BE. It took a lot of time to finish because I had to query a lot and apply on each corresponding fe files.\n
-The course info is also completed. I got a lot of things done this cycle as I put a lot of time on it. \n
-The team kept up with the communication quality even though we did not have the chance to meet in person. I am thinking our teamwork has been \n 
-strengthed from last cycle. At first I was very anxious about completing the MVP on time because other groups were way ahead than we were, but I think \n
-with this much progress as a whole, I am confident that our group will finish on time. \n
-There is no difficulty faced in terms of team communication for this cycle. \n
+I completed instructor performance BE. It took a lot of time to finish because I had to query a lot and apply on each corresponding fe files.
+The course info is also completed. I got a lot of things done this cycle as I put a lot of time on it. 
+The team kept up with the communication quality even though we did not have the chance to meet in person. I am thinking our teamwork has been 
+strengthed from last cycle. At first I was very anxious about completing the MVP on time because other groups were way ahead than we were, but I think 
+with this much progress as a whole, I am confident that our group will finish on time. 
+There is no difficulty faced in terms of team communication for this cycle. 
 The difficulty in terms of programming is that I had to join multiple tables and be extra careful with error handling. I overcame by reading the code carefully one by one. I also had a difficulty when rebasing the most latest development branch to my own branch and I overcame by doing lots of research on git.
 ### Next Cycle Goals
   * Service role info BE
