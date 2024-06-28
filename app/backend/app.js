@@ -41,23 +41,6 @@ app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/',AccountTypeRouter);//check account type
 
-<<<<<<< HEAD
-//reset password
-//app.use('/api',ResetPassword);
-
-//update date into db
-//app.use('/api',update);
-
-// Course list retrieval process
-app.use('/api/courses', courseRoutes); 
-
-//Profile BE
-app.use('/api/instructorProfile',profileRoutes);
-
-console.log('after');
-
-
-=======
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
@@ -114,7 +97,6 @@ app.use('/api/service-roles', serviceRoleRoutes);
 
 });
 */
->>>>>>> development
 const port = 3001;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

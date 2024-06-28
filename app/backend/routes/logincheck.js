@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { generateToken, TOKEN_EXPIRY_SECONDS } = require('../Manager/jwtManager');
 const { queryAccount } = require('./queryAccountRouter');
-const pool = require('../config/db');
+const pool = require('../db/index');
 var token_save = '';
 
 const router = express.Router();
