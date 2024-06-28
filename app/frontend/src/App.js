@@ -17,6 +17,10 @@ import { AuthProvider } from './JS/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 import RoleInformation from './JS/Department/RoleInformation';
 import CourseInformation from "./JS/Department/CourseInformation";
+import PerformanceDepartmentPage from "./JS/Department/PerformanceDepartmentPage";
+
+
+
 import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
 
 function App() {
@@ -48,8 +52,8 @@ function App() {
 
         <Route path="/DeptCourseList" element={<DeptCourseList />} />
         <Route path="/CourseInformation" element={<CourseInformation />} />
-
-        
+        <Route path="/PerformanceDepartmentPage" element={<PerformanceDepartmentPage />} />
+          
       </Routes></AuthProvider>
     </BrowserRouter>
   
