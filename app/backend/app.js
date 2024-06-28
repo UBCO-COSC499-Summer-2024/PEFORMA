@@ -14,7 +14,7 @@ const { upsertProfile } = require('./routes/upsertProfile');
 const { createAccount } = require('./routes/createAccount');
 const { assignServiceRole } = require ('./routes/assignServiceRole');
 
-//const workingHoursRoutes = require('./routes/workingHoursRoutes');
+const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
 const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
 const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
@@ -44,6 +44,18 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
+//instructor performance BE
+app.use('/api/workingHoursRoutes',workingHoursRoutes);
+app.use('/api/deptPerformance',DeptPerformanceRouter);
+app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
+app.use('/api/progressRoutes',progressRoutes);
+
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
+
+//Courses
+app.use/('/api/courses',courseRoutes);
+
 //reset password
 //app.use('/api',ResetPassword);
 
@@ -64,21 +76,7 @@ app.post('/create-account', async (req, res) => {
     //res.send('Data received successfully');  // 响应前端
 });
 /*
-app.post('/create-account', async (req, res) => {
-    console.log('Received data:', req.body);  // 打印接收到的数据
-    //res.send('Data received successfully');  // 响应前端
 
-//Profile BE
-app.use('/api/workingHoursRoutes',workingHoursRoutes);
-app.use('/api/deptPerformance',DeptPerformanceRouter);
-app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
-app.use('/api/progressRoutes',progressRoutes);
-
-
-//Performance BE
-//app.use('/api/instructorPerformance',performanceRoutes);
-// Service role retrieval process
-app.use('/api/service-roles', serviceRoleRoutes);
 
 
     try {
