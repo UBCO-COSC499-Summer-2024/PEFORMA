@@ -67,6 +67,7 @@
     padding: 0;
     height: 3em;
     width: 5em;
+    background-color: var(--white);
 }
 
 .assignModal table tfoot tr td .pagination {
