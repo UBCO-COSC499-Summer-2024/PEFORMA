@@ -39,11 +39,10 @@
 ## Friday (6/28/2024)
 
 ### Timesheet
-![alt text](6-28_00.png)
-![alt text](6-28_01.png)
+![alt text](6-27_00.png)
 
 ### Current Tasks
-  * #1: 
+  * #1: Re-set up password function
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -55,25 +54,29 @@
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> ?????
+        <td> trouble shhot of previous password function
           </td>
         <!-- Status -->
-        <td> ?????
+        <td> done
           </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> ?????
+        <td> start a new password checking
           </td>
         <!-- Status -->
-        <td> ?????
+        <td> In progress
           </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
-?????
+Still waiting data entry front end assign person window to be finished, passwoerd function has problems when new features are implemented and problem is targeted.
+
+Would finish a new password login in next cycle.
 
 ### Next Cycle Goals
-  * Goal 1 ?????
+  * Goal 1 New password login function BE
+  * Goal 2 Wrting tests for existing BE functions
+  * Goal 3 Hop to start Assign person ASAP
