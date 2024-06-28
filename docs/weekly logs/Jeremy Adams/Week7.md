@@ -1,5 +1,5 @@
 
-# Week 6
+# Week 7
 
 ## Wednesday (06/26/2024)
 
