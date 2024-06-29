@@ -6,23 +6,29 @@ import axios from 'axios';
 import { AuthProvider } from '../../../app/frontend/src/JS/AuthContext';
 
 jest.mock('axios');
-axios.get.mockResolvedValue({"data":{"courses":[], divisionCoursesCount:0, perPage: 5, currentPage: 1}});
 
+axios.get.mockResolvedValue({
+  data: {"division":"MATH", "divisionLabel":"Mathmatics", "currentPage":1, "perPage": 10, "divisionCoursesCount":1,
+    "courses":[
+      { "id": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering", "instructor": ["Brandi Floyd"], "ubcid":[32819340], "email": ["brandi@instructor.ubc.ca"] }
+    ]
+}
+});
 
-const renderWithProviders = (ui) => {
+const renderWithProviders = (ui, { route = '/?division=COSC' } = {}) => {
+  window.history.pushState({}, 'Test page', route);
+  
   return render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[route]}>
       <AuthProvider>{ui}</AuthProvider>
     </MemoryRouter>
   );
 }
 
 test('Testing if dropdown exists', async () => {
-  renderWithProviders(<CourseList />)
-  expect(screen.getByRole('combobox')).toBeInTheDocument();
-}
-
-)
+  renderWithProviders(<CourseList />, { route: '/?division=MATH' });
+  expect(await screen.findByRole('combobox')).toBeInTheDocument();
+});
 
 test('Render course list components', async () => {
 renderWithProviders(<CourseList />);
@@ -45,5 +51,3 @@ test("Testing pagination exists", async () => {
   expect(screen.getByText('<')).toBeInTheDocument();
   expect(screen.getByText('>')).toBeInTheDocument();
 });
-
-
