@@ -1,0 +1,49 @@
+.dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .card-container {
+    padding: 7%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3%;
+    margin-top: -4em;
+  }
+  
+  .card {
+    background-color: var(--darkerGrey);
+    padding: 5%;
+    box-shadow: 0.75em 0.75em 1em var(--darkestGrey);
+    border-radius: 1em;
+  }
+  
+  .card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .cardTitle {
+    color: var(--black);
+    font-weight:600;
+    font-size: 1.5vw;
+    text-align: center;
+    width: 100%;
+  }
+
+  .cardTitleBox {
+    display: flex;
+    height: 16em;
+    align-items: center;
+    background-color: var(--white);
+    box-shadow: 0.125em 0.125em 0.5em var(--darkestGrey);
+  }
+
+  .cardDesc {
+    color: var(--darkestestGrey);
+    margin: 1.5em 0 0.5em 0;
+    text-align: center;
+    height: 2em;
+    max-height: 2em;
+  }
+
