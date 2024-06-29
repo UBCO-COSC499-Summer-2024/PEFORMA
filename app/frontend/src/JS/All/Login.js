@@ -23,8 +23,9 @@ function Login() {
           //alert(JSON.stringify(response.data, null, 2));
           alert(`Welcom!  ${response.data.email}!\n Account Id is ${response.data.accountId}! \n
                 retrived token is: ${JSON.stringify(response.data.token.token,null,2)}\n
-                expire time is: ${JSON.stringify(response.data.token.expiresIn,null,2)}`);
-                
+                expire time is: ${JSON.stringify(response.data.token.expiresIn,null,2)}\n
+                `);
+          if(response.data.message!==""){alert(`${response.data.message}`);}      
                 // here is the token and expire time ↑↑↑
                 console.log("profileId: \n")
                 console.log(response.data.profileId)
