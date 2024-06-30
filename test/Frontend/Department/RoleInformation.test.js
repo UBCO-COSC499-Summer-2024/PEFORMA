@@ -6,7 +6,16 @@ import axios from 'axios';
 
 jest.mock('axios');
 
-axios.get.mockResolvedValue({"data":{"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1}});
+axios.get.mockImplementation((url) => {
+    switch (url) {
+      case 'http://localhost:3000/assignees.json':
+        return Promise.resolve({"data":{"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1}});
+      case 'http://localhost:3000/assignInstructors.json':
+        return Promise.resolve({"data": {"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1}});
+      default:
+        return Promise.reject(new Error('not found'));
+    }
+  })
 
 test('Checks if buttons exist', async () => {
     await act(async () => {
