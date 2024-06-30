@@ -109,7 +109,7 @@ function CourseList() {
           </select>
         </header>
         
-        <div className="course-table">
+        <div className="course-table" id="course-test-content">
           <table>
 
             <thead>
