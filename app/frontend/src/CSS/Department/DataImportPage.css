@@ -109,6 +109,7 @@
   font-size: small;
 }
 
-.remove-button:hover .FaRegTrashAlt { /* Target the icon within the button on hover */
-  transform: scale(1.2); /* Make the icon 20% larger on hover */
+.remove-button:hover {
+  background-color: white; /* Change to red on hover (or your desired color) */
+  color: white;             /* Optional: Change text color on hover */
 }
