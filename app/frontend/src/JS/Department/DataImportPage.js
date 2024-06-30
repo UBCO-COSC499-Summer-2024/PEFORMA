@@ -3,7 +3,8 @@ import { CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 import axios from 'axios';
 import { useAuth } from '../AuthContext.js';
 import { useDropzone } from 'react-dropzone';
-import { FaFile, FaTimes, FaCheckCircle, FaRegTrashAlt, FaFileUpload } from 'react-icons/fa';
+import { FaTimes, FaCheckCircle, FaRegTrashAlt, FaFileUpload } from 'react-icons/fa';
+import { CiFileOn } from "react-icons/ci";
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import '../../CSS/Department/DataImportPage.css';
@@ -86,11 +87,13 @@ function FileUpload() {
 			<div className='container'>
 				<CreateTopbar />
 				<div className="main">
+					<h1>Import Data</h1>
 					<div className="dropzone-container" {...getRootProps()}>
 						<input {...getInputProps()} ref={fileInputRef} />
 						<div className="dropzone-content">
-							<FaFileUpload size={32} className="dropzone-icon" />
-							<p>Drag & drop files here, or click to select files</p>
+							<FaFileUpload size={32} style={{ color: 'grey' }} className="dropzone-icon" />
+							<p className="drag-and-drop">Drag & drop files here, or click to select files</p>
+							<p className="accepted-type">Excel or CSV</p>
 						</div>
 					</div>
 
@@ -102,7 +105,7 @@ function FileUpload() {
 										<FaRegTrashAlt style={{ color: 'red' }} />
 									</button>
 									<div className="file-icon-name">
-										<FaFile size={24} />
+										<CiFileOn size={24} />
 										<span>{file.name}</span>
 									</div>
 								</div>
