@@ -1,7 +1,7 @@
 /* Basic Dropzone Styles */
 .dropzone-container {
-  width: 400px; 
-  min-height: 200px; /* Allow height to expand with more files */
+  width: 400px;
+  min-height: 150px; 
   border: 2px dashed #ccc;
   border-radius: 5px;
   display: flex;
@@ -10,14 +10,19 @@
   padding: 20px;
   cursor: pointer;
   margin-bottom: 20px;
-  flex-direction: column; /* Make items stack vertically */
 }
 
-/* File List Styles */
-.file-list {
+/* Style the text inside the dropzone */
+.dropzone-container p {
+  text-align: center;
+}
+
+/* File List Vertical Styles */
+.file-list-vertical {
   display: flex;
-  flex-wrap: wrap; /* Wrap items to the next line if they don't fit */
-  gap: 10px;
+  flex-direction: column; /* Arrange items vertically */
+  gap: 10px;             /* Space between file previews */
+  margin-bottom: 20px;   /* Space below the file list */
 }
 
 /* File Preview Styles */
@@ -28,8 +33,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  min-width: 150px; /* Minimum width for each file preview */
-  margin-bottom: 10px; /* Space between previews */
+  min-width: 150px;   
 }
 
 .file-icon-name {
@@ -49,5 +53,38 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0; /* Remove default padding */
+  padding: 0;
+}
+
+/* Upload Button Styles */
+.upload-button {
+  /* Customize the appearance of your upload button here */
+  background-color: #007bff; /* Example: Blue background */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-button:disabled {
+  background-color: #ccc; /* Example: Greyed out when disabled */
+  cursor: not-allowed;
+}
+
+/* Dropzone Icon Styles */
+.dropzone-icon {
+  margin-bottom: 10px; /* Add some space below the icon */
+}
+
+/* Dropzone Content Styles (modified) */
+.dropzone-content {
+  display: flex;          /* Enable Flexbox */
+  flex-direction: column; /* Stack icon and text vertically */
+  align-items: center;    /* Center items horizontally */
+}
+
+/* Dropzone Icon Styles (no changes needed) */
+.dropzone-icon {
+  margin-bottom: 10px;  
 }

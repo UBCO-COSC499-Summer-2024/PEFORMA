@@ -1,4 +1,5 @@
 const dataImportService = require('../services/dataImportService');
+const pool = require('../db/index.js');
 
 async function uploadFile(req, res) {
   if (!req.files || req.files.length === 0) { // Check for existence of files
