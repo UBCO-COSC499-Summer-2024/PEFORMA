@@ -21,25 +21,26 @@ describe('PerformanceInstructorPage', () => {
 		});
 	});
 
-	test('Check if context shows correctly', async () => {
+	test('Testing rendering personal information with mock data', async () => {
 		
-		// axios.get.mockImplementation(() =>
-		// 	Promise.resolve({
-		// 		data: {
-		// 			name: 'Billy Guy',
-		// 			ubcid: '18592831',
-		// 			benchmark: '1300',
-		// 			roles: ['Role1', 'Role2'],
-		// 			email: 'billyGuy@instructor.ubc.ca',
-		// 			phone: '778-333-2222',
-		// 			office: 'SCI 300',
-		// 			teachingAssignments: [
-		// 				{ assign: 'COSC 211', link: 'abc.com' },
-		// 				{ assign: 'COSC 304', link: 'def.com' },
-		// 			],
-		// 		},
-		// 	})
-		// );
+		axios.get.mockImplementation(() => 
+			Promise.resolve({
+				data: {
+					name: 'Billy Guy',
+					ubcid: '18592831',
+					roles: ['Role1', 'Role2'],
+          benchmark: '1300',
+					email: 'billyGuy@instructor.ubc.ca',
+          teachingAssignments: [
+						{ assign: 'COSC 211', link: 'abc.com' },
+						{ assign: 'COSC 304', link: 'def.com' },
+					],
+          data:[
+            {"x": "January", "y": 150},
+          ]
+				},
+			})
+		);
 
 		render(
 			<MemoryRouter>
@@ -50,13 +51,48 @@ describe('PerformanceInstructorPage', () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
 
     const element = document.getElementById('info-test-content');
+    
+    expect(element).toHaveTextContent("Welcome Billy Guy, check out your performance!")
 
 		expect(element).toHaveTextContent("Your Information");
-    expect(element).toHaveTextContent("Name:");
-    expect(element).toHaveTextContent("UBC ID:");
-    expect(element).toHaveTextContent("Service Roles:");
-    expect(element).toHaveTextContent("Monthly Hours Benchmark:");
-    expect(element).toHaveTextContent("Email:");
+    expect(element).toHaveTextContent("Name: Billy Guy");
+    expect(element).toHaveTextContent("UBC ID: 18592831");
+    expect(element).toHaveTextContent("Service Roles: Role1, Role2");
+    expect(element).toHaveTextContent("Monthly Hours Benchmark: 1300");
+    expect(element).toHaveTextContent("Email: billyGuy@instructor.ubc.ca");
 
 	});
+  test('Testing teaching assignments rendered corretly', async () => {
+		
+		axios.get.mockImplementation(() => 
+			Promise.resolve({
+				data: {
+					name: 'Billy Guy',
+					ubcid: '18592831',
+					roles: ['Role1', 'Role2'],
+          benchmark: '1300',
+					email: 'billyGuy@instructor.ubc.ca',
+          teachingAssignments: [
+						{ assign: 'COSC 211', link: 'abc.com' },
+						{ assign: 'COSC 304', link: 'def.com' },
+					],
+          data:[
+            {"x": "January", "y": 150},
+          ]
+				},
+			})
+		);
+
+		render(
+			<MemoryRouter>
+				<PerformanceInstructorPage />
+			</MemoryRouter>
+		);
+
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(10));
+
+    const element = document.getElementById('info-test-content');
+    
+    expect(element).toHaveTextContent("Teaching Assignments: COSC 211 COSC 304")
+	})
 });
