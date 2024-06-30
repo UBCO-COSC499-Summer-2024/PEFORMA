@@ -113,3 +113,16 @@
   background-color: white; /* Change to red on hover (or your desired color) */
   color: white;             /* Optional: Change text color on hover */
 }
+
+/* Success Icon Container */
+.success-icon {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.popup-content p {
+  text-align: center;
+  padding-top: 10px;
+}
+
