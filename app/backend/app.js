@@ -24,7 +24,7 @@ const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 //const update = require('./routes/update');
 const courseRoutes = require('./routes/courses.js');  
 
-
+const benchmark = require('./routes/benchmark.js');
 
 const app = express();
 
@@ -46,6 +46,8 @@ app.use('/api/instructorProfile',profileRoutes);
 
 // Service role retrieval process
 app.use('/api/courses', courseRoutes);
+
+app.use('/api/benchmark', benchmark);
 
 //reset password
 //app.use('/api',ResetPassword);
@@ -100,6 +102,7 @@ app.use('/api/service-roles', serviceRoleRoutes);
 
 });
 */
+
 const port = 3001;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
