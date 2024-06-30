@@ -58,7 +58,7 @@ const currentEntries = historyData.history.slice(
   let i = 0;
   return (
 
-    <div className="dashboard">  
+    <div className="dashboard coursehistory">  
     <CreateSidebarDept />
     <div className='container'>
       <CreateTopbar />
