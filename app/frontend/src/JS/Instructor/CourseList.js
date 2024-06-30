@@ -100,7 +100,7 @@ function CourseList() {
 
       <div className="main">
 
-        <header className='ListTitle'>
+        <header className='ListTitle' id="dropdown-test-content">
           <div className='ListTitle-text'>List of Courses</div>
           <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
             {divisions.map(division => { 
