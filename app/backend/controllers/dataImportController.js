@@ -15,8 +15,8 @@ async function uploadFile(req, res) {
     }
 
     await pool.query('COMMIT'); // Commit the transaction
-
     const numRecords = importedData.length;
+	console.log(importedData);
     res.json({ message: 'Import successful!', numRecords: numRecords });
   } catch (error) {
     await pool.query('ROLLBACK');
