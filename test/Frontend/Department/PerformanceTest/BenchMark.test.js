@@ -1,4 +1,4 @@
-import {render, screen, waitFor, element } from '@testing-library/react';
+import {render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BenchMark from '../../../../app/frontend/src/JS/Department/PerformanceImports/BenchMark';
 import {MemoryRouter} from "react-router-dom";
@@ -13,6 +13,8 @@ const mockCurrentDate = new Date(2024,6);
 global.Date = jest.fn(() => mockCurrentDate);
 
 describe('BenchMark', () => {
+  let element; 
+
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
@@ -34,18 +36,17 @@ describe('BenchMark', () => {
 				<BenchMark />
 			</MemoryRouter>
 		);
+    element = document.getElementById('benchmark-test-content');
 	});
 
 	test('Testing header components of current month', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    const element = document.getElementById('benchmark-test-content');
     expect(element).toHaveTextContent("Benchmark");
     expect(element).toHaveTextContent("Current Month: July");
 	});
 
   test('Testing rendering with mock data', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
-    const element = document.getElementById('benchmark-test-content');
     expect(element).toHaveTextContent("Kevin Kim");
     expect(element).toHaveTextContent("Minsuk Oh");
     expect(element).toHaveTextContent("Asen Lee");

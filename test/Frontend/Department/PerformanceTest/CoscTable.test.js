@@ -1,4 +1,4 @@
-import {render, screen, waitFor, element } from '@testing-library/react';
+import {render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import CoscTable from '../../../../app/frontend/src/JS/Department/PerformanceImports/CoscTable';
 import {MemoryRouter} from "react-router-dom";
@@ -10,6 +10,8 @@ jest.mock('axios');
 jest.mock('../../../../app/frontend/src/JS/AuthContext');
 
 describe('CoscTable', () => {
+  let element; 
+
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
@@ -29,11 +31,11 @@ describe('CoscTable', () => {
 				<CoscTable />
 			</MemoryRouter>
 		);
+    element = document.getElementById('cosc-test-content');
 	});
 
 	test('Testing rendering cosc table with mock data', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    const element = document.getElementById('cosc-test-content');
     expect(element).toHaveTextContent("COSC 101");
     expect(element).toHaveTextContent("COSC 123");
     expect(element).toHaveTextContent("COSC 290");
@@ -59,7 +61,6 @@ describe('CoscTable', () => {
       const rows = screen.getAllByRole('row');
       expect(rows).toHaveLength(3);
     })
-    const element = document.getElementById('cosc-test-content');
     expect(element).toHaveTextContent('COSC 101');
     expect(element).toHaveTextContent('A');
     expect(element).toHaveTextContent('92');
@@ -77,7 +78,6 @@ describe('CoscTable', () => {
       const rows = screen.getAllByRole('row');
       expect(rows).toHaveLength(2);
     })
-    const element = document.getElementById('cosc-test-content');
     expect(element).toHaveTextContent('COSC 391');
     expect(element).toHaveTextContent('D');
     expect(element).toHaveTextContent('62');
@@ -92,7 +92,6 @@ describe('CoscTable', () => {
       const rows = screen.getAllByRole('row');
       expect(rows).toHaveLength(5);
     })
-    const element = document.getElementById('cosc-test-content');
     expect(element).toHaveTextContent("COSC 101");
     expect(element).toHaveTextContent("COSC 123");
     expect(element).toHaveTextContent("COSC 290");
@@ -108,7 +107,7 @@ describe('CoscTable', () => {
     expect(element).toHaveTextContent("65");
     expect(element).toHaveTextContent("62");
 
+    // expect COSC 499 not to be rendered because COSC 499 is not in mock data
     expect(element).not.toHaveTextContent("COSC 499");
-
   })
 });
