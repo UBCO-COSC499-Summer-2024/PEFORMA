@@ -1,4 +1,4 @@
-import {render, screen, waitFor, element } from '@testing-library/react';
+import {render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import GoodBadBoard from '../../../../app/frontend/src/JS/Department/PerformanceImports/GoodBadBoard';
 import {MemoryRouter} from "react-router-dom";
@@ -10,6 +10,8 @@ jest.mock('axios');
 jest.mock('../../../../app/frontend/src/JS/AuthContext');
 
 describe('GoodBadBoard', () => {
+  let element;
+
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
@@ -34,11 +36,11 @@ describe('GoodBadBoard', () => {
 				<GoodBadBoard />
 			</MemoryRouter>
 		);
+    element = document.getElementById('goodbad-test-content'); // 정의를 여기로 옮김
 	});
 
 	test('Testing rendering default people list on table', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    const element = document.getElementById('goodbad-test-content');
     expect(element).toHaveTextContent("John");
     expect(element).toHaveTextContent("Doe");
     expect(element).toHaveTextContent("Martin");
@@ -60,7 +62,6 @@ describe('GoodBadBoard', () => {
     })
 
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
-    const element = document.getElementById('goodbad-test-content');
     expect(element).toHaveTextContent("Lucas");
     expect(element).toHaveTextContent("Bob");
   
@@ -81,7 +82,6 @@ describe('GoodBadBoard', () => {
     })
 
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
-    const element = document.getElementById('goodbad-test-content');
     expect(element).toHaveTextContent("John");
     expect(element).toHaveTextContent("Doe");
     expect(element).toHaveTextContent("Martin");
