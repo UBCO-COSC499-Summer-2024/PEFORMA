@@ -30,17 +30,25 @@ function BenchMark() {
   }, []);
 
   const formatTime = (minutes) => {
-    if (minutes < 60) {
-      return `${minutes} minutes`
+    const totalMinutes = Math.round(minutes);
+    const hours = Math.floor(totalMinutes / 60)
+    const remainingMinutes = totalMinutes % 60;
+
+    const hourText = hours === 1 ? "Hour" : "Hours";
+    const minuteText = remainingMinutes === 1 ? "Minute" : "Minutes";
+
+    if (hours > 0 && remainingMinutes > 0){
+      return `${hours} ${hourText} ${remainingMinutes} ${minuteText}`;
+    } else if (hours > 0) {
+      return `${hours} ${hourText}`; 
+    } else {
+      return `${remainingMinutes} ${minuteText}`; 
     }
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours} hours ${remainingMinutes} minutes`
   }
 
   return (
 
-    <div className="benchmark-table">
+    <div className="benchmark-table" id="benchmark-test-content">
       
       <div className='header-container'>
         <h1 className='subTitleD'>Benchmark</h1>
