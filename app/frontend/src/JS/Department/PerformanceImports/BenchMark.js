@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 import axios from 'axios';
+import { useAuth } from '../../AuthContext';
 
 function BenchMark() {
-
+  const { authToken } = useAuth();
   const[data, setData] = useState([]);
   const[currentMonth, setCurrentMonth] = useState('');
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -15,8 +16,9 @@ function BenchMark() {
       setCurrentMonth(monthNames[currMonth-1])
 
       try {
-        const res = await axios.get(`http://localhost:3000/benchmark.json`, {
-          params: {currMonth:currMonth}
+        const res = await axios.get(`http://localhost:3001/api/benchmark`, {
+          params: {currMonth:currMonth},
+          headers: { Authorization: `Bearer ${authToken.token}` }
         });
         const sortedData = res.data.people.sort((a, b) => b.shortage - a.shortage);
         setData(sortedData);

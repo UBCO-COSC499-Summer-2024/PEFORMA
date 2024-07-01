@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 import axios from 'axios';
+import { useAuth } from '../../AuthContext';
 
 function PhysTable() {
+  const { authToken } = useAuth();
 
   const [courses,setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
@@ -10,8 +12,10 @@ function PhysTable() {
   useEffect(() => {
     const fetchData = async() => {
       try {
-        const url = "http://localhost:3000/physDeptP.json";
-        const res = await axios.get(url);
+        const res = await axios.get(`http://localhost:3001/api/coursePerformance`, {
+          params: {divisionId: 3},
+          headers: { Authorization: `Bearer ${authToken.token}` }
+        });
         const sortedCourses = res.data.courses.sort((a, b) => b.score - a.score);
         setCourses(sortedCourses);
         setFilteredCourses(sortedCourses);
