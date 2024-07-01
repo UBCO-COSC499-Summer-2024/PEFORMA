@@ -35,7 +35,7 @@ const serviceRoleWithYearSchema = Joi.object({
 	isActive: Joi.boolean().required(),
 	divisionId: Joi.number().integer().required(),
 	year: Joi.number().integer().min(2000).max(new Date().getFullYear())
-	  .required(),  // Assuming years from 2000 to current year
+		.required(),  // Assuming years from 2000 to current year
 	JANHour: Joi.number().min(0).allow(null),
 	FEBHour: Joi.number().min(0).allow(null),
 	MARHour: Joi.number().min(0).allow(null),
@@ -48,7 +48,7 @@ const serviceRoleWithYearSchema = Joi.object({
 	OCTHour: Joi.number().min(0).allow(null),
 	NOVHour: Joi.number().min(0).allow(null),
 	DECHour: Joi.number().min(0).allow(null)
-  });
+});
 
 // --- Import Data Function ---
 async function importData(file) {
@@ -74,36 +74,40 @@ async function importData(file) {
 		throw new Error('Unsupported file format');
 	}
 
+	let successfullyImportedRows = []; // Array to store successful rows
+	let result;
+
 	// Process each data row
 	for (const row of data) {
 		const cleanedRow = {};
 
-		// Determine data type (profile, course, etc.) based on column headers
-		if ('firstName' in row && 'lastName' in row) {
-			// Profile Data
-			const profileData = { // Converting empty cells
-				firstName: row.firstName || null,
-				middleName: row.middleName || null,
-				lastName: row.lastName || null,
-				email: row.email || null,
-				phoneNum: row.phoneNum || null, 
-				officeBuilding: row.officeBuilding || null,
-				officeNum: row.officeNum || null,
-				position: row.position || null,
-				divisionId: row.divisionId || null,
-				UBCId: row.UBCId || null,
-				serviceHourCompleted: row.serviceHourCompleted || 0,
-				sRoleBenchmark: row.sRoleBenchmark || 0
-			};
+		try {
+			// Determine data type (profile, course, etc.) based on column headers
+			if ('firstName' in row && 'lastName' in row) {
+				// Profile Data
+				const profileData = { // Converting empty cells
+					firstName: row.firstName || null,
+					middleName: row.middleName || null,
+					lastName: row.lastName || null,
+					email: row.email || null,
+					phoneNum: row.phoneNum || null,
+					officeBuilding: row.officeBuilding || null,
+					officeNum: row.officeNum || null,
+					position: row.position || null,
+					divisionId: row.divisionId || null,
+					UBCId: row.UBCId || null,
+					serviceHourCompleted: row.serviceHourCompleted || 0,
+					sRoleBenchmark: row.sRoleBenchmark || 0
+				};
 
-			const { error, value } = profileSchema.validate(profileData); // Validate data  
-			if (error) {
-				console.error('Profile data validation error:', error);
-				continue; // Skip invalid rows
-			}
+				const { error, value } = profileSchema.validate(profileData); // Validate data  
+				if (error) {
+					console.error('Profile data validation error:', error);
+					continue; // Skip invalid rows
+				}
 
-			// Insert or update into database 
-			await pool.query(`
+				// Insert or update into database 
+				result = await pool.query(`
 				INSERT INTO public."Profile" (
 				  "firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark"
 				) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
@@ -120,22 +124,38 @@ async function importData(file) {
 				  "serviceHourCompleted" = EXCLUDED."serviceHourCompleted",
 				  "sRoleBenchmark" = EXCLUDED."sRoleBenchmark"
 			  `, Object.values(profileData));
-		} else if ('ctitle' in row && 'courseNum' in row) {
-			// Course Data
-			const courseData = {
-				ctitle: row.ctitle || null,
-				description: row.description || null,
-				divisionId: row.divisionId || null,
-				courseNum: row.courseNum || null
-			};
 
-			const { error, value } = courseSchema.validate(courseData);
-			if (error) {
-				console.error('Course data validation error:', error);
-				continue;
-			}
+				const isInsert = result.command === 'INSERT' && result.rowCount === 1;
 
-			await pool.query(`
+				if (isInsert) {
+					successfullyImportedRows.push(row);
+				} else if (result.rows.length > 0) {
+					const returnedRow = result.rows[0]; // Get the returned row from the query
+
+					// Compare original row with returned row (excluding system-generated fields)
+					const originalRowWithoutId = { ...row };
+					delete returnedRow.profileId;
+
+					if (!isEqual(originalRowWithoutId, returnedRow)) {
+						successfullyImportedRows.push(row);
+					}
+				}
+			} else if ('ctitle' in row && 'courseNum' in row) {
+				// Course Data
+				const courseData = {
+					ctitle: row.ctitle || null,
+					description: row.description || null,
+					divisionId: row.divisionId || null,
+					courseNum: row.courseNum || null
+				};
+
+				const { error, value } = courseSchema.validate(courseData);
+				if (error) {
+					console.error('Course data validation error:', error);
+					continue;
+				}
+
+				result = await pool.query(`
 				INSERT INTO public."Course" ("ctitle", "description", "divisionId", "courseNum")
 				VALUES ($1, $2, $3, $4)
 				ON CONFLICT ("ctitle") DO UPDATE SET
@@ -144,20 +164,24 @@ async function importData(file) {
 				  "divisionId" = EXCLUDED."divisionId",
 				  "courseNum" = EXCLUDED."courseNum"
 			  `, Object.values(courseData));
-		} else if ('stitle' in row && 'year' in row) { // ServiceRole and ServiceRoleByYear combined data
-			// Assuming combined ServiceRole and ServiceRoleByYear data
-			for (const key in serviceRoleWithYearSchema.describe().keys) {
-				cleanedRow[key] = row[key] || null;
-			}
 
-			const { error, value } = serviceRoleWithYearSchema.validate(cleanedRow);
-			if (error) {
-				console.error('Service role data validation error:', error);
-				continue;
-			}
+				if (result.rowCount > 0) {
+					successfullyImportedRows.push(row); // Add successful profile row
+				}
+			} else if ('stitle' in row && 'year' in row) { // ServiceRole and ServiceRoleByYear combined data
+				// Assuming combined ServiceRole and ServiceRoleByYear data
+				for (const key in serviceRoleWithYearSchema.describe().keys) {
+					cleanedRow[key] = row[key] || null;
+				}
 
-			// Insert or update ServiceRole
-			const serviceRoleResult = await pool.query(`
+				const { error, value } = serviceRoleWithYearSchema.validate(cleanedRow);
+				if (error) {
+					console.error('Service role data validation error:', error);
+					continue;
+				}
+
+				// Insert or update ServiceRole
+				const serviceRoleResult = await pool.query(`
 				  INSERT INTO public."ServiceRole" ("stitle", "description", "isActive", "divisionId")
 				  VALUES ($1, $2, $3, $4)
 				  ON CONFLICT ("stitle", "divisionId") DO UPDATE SET
@@ -167,16 +191,16 @@ async function importData(file) {
 				  RETURNING "serviceRoleId" 
 				`, [value.stitle, value.description, value.isActive, value.divisionId]);
 
-			const serviceRoleId = serviceRoleResult.rows[0].serviceRoleId;
+				const serviceRoleId = serviceRoleResult.rows[0].serviceRoleId;
 
-			// Insert or update ServiceRoleByYear (using the retrieved serviceRoleId)
-			const months = ['JANHour', 'FEBHour', 'MARHour', 'APRHour', 'MAYHour', 'JUNHour', 'JULHour', 'AUGHour', 'SEPHour', 'OCTHour', 'NOVHour', 'DECHour'];
-			const values = [serviceRoleId, value.year];
-			months.forEach(month => {
-				values.push(value[month] || 0); // Default to 0 if not provided
-			});
+				// Insert or update ServiceRoleByYear (using the retrieved serviceRoleId)
+				const months = ['JANHour', 'FEBHour', 'MARHour', 'APRHour', 'MAYHour', 'JUNHour', 'JULHour', 'AUGHour', 'SEPHour', 'OCTHour', 'NOVHour', 'DECHour'];
+				const values = [serviceRoleId, value.year];
+				months.forEach(month => {
+					values.push(value[month] || 0); // Default to 0 if not provided
+				});
 
-			await pool.query(`
+				result = await pool.query(`
 				  INSERT INTO public."ServiceRoleByYear" ("serviceRoleId", "year", "JANHour", "FEBHour", "MARHour", "APRHour", "MAYHour", "JUNHour", "JULHour", "AUGHour", "SEPHour", "OCTHour", "NOVHour", "DECHour")
 				  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
 				  ON CONFLICT ("serviceRoleId", "year") DO UPDATE SET
@@ -193,14 +217,19 @@ async function importData(file) {
 					"NOVHour" = EXCLUDED."NOVHour",
 					"DECHour" = EXCLUDED."DECHour"
 				`, values);
-		}
 
+				if (result.rowCount > 0) {
+					successfullyImportedRows.push(row); // Add successful profile row
+				}
+			}
+		} catch (error) {
+			console.error('Error importing row:', error);
+		}
 	}
-	return data;
+	return successfullyImportedRows;
 }
 
 module.exports = {
 	importData
 };
-
 
