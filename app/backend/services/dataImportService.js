@@ -233,8 +233,20 @@ async function importData(file) {
 					"DECHour" = EXCLUDED."DECHour"
 				`, values);
 
-				if (result.rowCount > 0) {
-					successfullyImportedRows.push(row); // Add successful profile row
+				const isInsert = result.command === 'INSERT' && result.rowCount === 1;
+
+				if (isInsert) {
+					successfullyImportedRows.push(row);
+				} else if (result.rows.length > 0) {
+					const returnedRow = result.rows[0]; // Get the returned row from the query
+
+					// Compare original row with returned row (excluding system-generated fields)
+					const originalRowWithoutId = { ...row };
+					delete returnedRow.profileId;
+
+					if (!isEqual(originalRowWithoutId, returnedRow)) {
+						successfullyImportedRows.push(row);
+					}
 				}
 			}
 		} catch (error) {
