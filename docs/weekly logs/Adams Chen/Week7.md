@@ -57,12 +57,11 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
 ## Friday (6/28/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/adamsLogs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_June_28.jpg)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #174: Start import feature
+  * #247: Enable drag & drop for import feature
 
 ### Progress Update (since 6/26/2024)
 <table>
@@ -71,39 +70,25 @@ I completed Task A as planned, but Task B and C is taking longer than expected d
         </td>
         <td><strong>STATUS</strong>
         </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task A
-        </td>
-        <!-- Status -->
-        <td>Complete
+        <td><strong>NOTE</strong>
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>#174: Start import feature
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>In progress
         </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task C
-        </td>
-        <!-- Status -->
-        <td>In Progress
+        <!-- Note -->
+        <td>Importing multiple files simultaneously is more complicated than expected
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I had a fever on Monday and Tuesday, and I slowly catched up to my original plan for this week starting on Wednesday. I hope to finish the FE and BE for data import by end of Friday or Saturday, the lastest.
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
-
-
+  * Complete data import FE & BE
+  * Complete BE testing for my codes
