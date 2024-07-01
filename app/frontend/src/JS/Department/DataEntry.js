@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import '../../CSS/Department/DataEntry.css';
 
-import '../../CSS/Department/AssignInstructorModal.css';
+import AssignInstructorModal from '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
 import AssignInstructorsModal from '../assignInstructorsModal.js';
 
@@ -349,7 +349,7 @@ function DataEntryComponent() {
             )}
 
             {showInstructorModal && (
-                <AssignInstructorsModal instructorData={instructorData} setInstructorData={setInstructorData} handleCloseInstructorModal={handleCloseInstructorModal}/>
+                <AssignInstructorModal instructorData={instructorData} setInstructorData={setInstructorData} handleCloseInstructorModal={handleCloseInstructorModal}/>
             )}
             </div>
             </div>
