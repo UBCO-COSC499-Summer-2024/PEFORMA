@@ -32,7 +32,6 @@ const courseSchema = Joi.object({
 const serviceRoleWithYearSchema = Joi.object({
 	stitle: Joi.string().required(),
 	description: Joi.string().allow(null).allow(''),
-	isActive: Joi.boolean().required(),
 	divisionId: Joi.number().integer().required(),
 	year: Joi.number().integer().min(2000).max(new Date().getFullYear())
 		.required(),  // Assuming years from 2000 to current year
@@ -76,6 +75,7 @@ async function importData(file) {
 
 	let successfullyImportedRows = []; // Array to store successful rows
 	let result;
+	let isInsert;
 
 	// Process each data row
 	for (const row of data) {
@@ -125,7 +125,7 @@ async function importData(file) {
 				  "sRoleBenchmark" = EXCLUDED."sRoleBenchmark"
 			  `, Object.values(profileData));
 
-				const isInsert = result.command === 'INSERT' && result.rowCount === 1;
+				isInsert = result.command === 'INSERT' && result.rowCount === 1;
 
 				if (isInsert) {
 					successfullyImportedRows.push(row);
@@ -180,31 +180,15 @@ async function importData(file) {
 					continue;
 				}
 
-				const isInsert = result.command === 'INSERT' && result.rowCount === 1;
-
-				if (isInsert) {
-					successfullyImportedRows.push(row);
-				} else if (result.rows.length > 0) {
-					const returnedRow = result.rows[0]; // Get the returned row from the query
-
-					// Compare original row with returned row (excluding system-generated fields)
-					const originalRowWithoutId = { ...row };
-					delete returnedRow.profileId;
-
-					if (!isEqual(originalRowWithoutId, returnedRow)) {
-						successfullyImportedRows.push(row);
-					}
-				}
 				// Insert or update ServiceRole
 				const serviceRoleResult = await pool.query(`
 				  INSERT INTO public."ServiceRole" ("stitle", "description", "isActive", "divisionId")
 				  VALUES ($1, $2, $3, $4)
 				  ON CONFLICT ("stitle", "divisionId") DO UPDATE SET
 					"description" = EXCLUDED."description",
-					"isActive" = EXCLUDED."isActive",
 					"divisionId" = EXCLUDED."divisionId"
 				  RETURNING "serviceRoleId" 
-				`, [value.stitle, value.description, value.isActive, value.divisionId]);
+				`, [value.stitle, value.description, true, value.divisionId]);
 
 				const serviceRoleId = serviceRoleResult.rows[0].serviceRoleId;
 
@@ -233,7 +217,7 @@ async function importData(file) {
 					"DECHour" = EXCLUDED."DECHour"
 				`, values);
 
-				const isInsert = result.command === 'INSERT' && result.rowCount === 1;
+				isInsert = result.command === 'INSERT' && result.rowCount === 1;
 
 				if (isInsert) {
 					successfullyImportedRows.push(row);
@@ -259,4 +243,3 @@ async function importData(file) {
 module.exports = {
 	importData
 };
-

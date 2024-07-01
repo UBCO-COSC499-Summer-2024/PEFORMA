@@ -103,37 +103,37 @@ INSERT INTO public."AccountType" ("accountId", "accountType") VALUES
 (24, 4);        -- Amelia Young: Admin
 
 -- ServiceRole
-INSERT INTO public."ServiceRole" ("serviceRoleId", "stitle", "description", "isActive", "divisionId") VALUES
+INSERT INTO public."ServiceRole" ("stitle", "description", "isActive", "divisionId") VALUES
 -- Active
     -- COSC
-    (1, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 1),
-    (3, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 1),
-    (2, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 1),
-    (4, 'Graduate Program Director', 'Oversees the graduate program.', true, 1),
+    ('Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 1),
+    ('Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 1),
+    ('Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 1),
+    ('Graduate Program Director', 'Oversees the graduate program.', true, 1),
     -- MATH
-    (5, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 2),
-    (6, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 2),
-    (7, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 2),
-    (8, 'Graduate Program Director', 'Oversees the graduate program.', true, 2),
+    ('Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 2),
+    ('Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 2),
+    ('Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 2),
+    ('Graduate Program Director', 'Oversees the graduate program.', true, 2),
     -- PHYS
-    (9, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 3),
-    (10, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 3),
-    (11, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 3),
-    (12, 'Graduate Program Director', 'Oversees the graduate program.', true, 3),
+    ('Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 3),
+    ('Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 3),
+    ('Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 3),
+    ('Graduate Program Director', 'Oversees the graduate program.', true, 3),
     -- STAT
-    (13, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 4),
-    (14, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 4),
-    (15, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 4),
-    (16, 'Graduate Program Director', 'Oversees the graduate program.', true, 4),
+    ('Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 4),
+    ('Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 4),
+    ('Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 4),
+    ('Graduate Program Director', 'Oversees the graduate program.', true, 4),
     -- All
-    (17, 'Safety Committee Member', 'Ensures the safety of students, faculty, and staff in labs and facilities.', true, 1),
-    (18, 'Equity, Diversity, and Inclusion Committee', 'Promotes inclusivity and diversity within the department.', true, 1),
-    (19, 'Seminar Series Organizer', 'Organizes and manages the department''s seminar series.', true, 1),
-    (20, 'Awards Committee Member', 'Reviews and selects recipients for departmental awards and scholarships.', true, 1),
-    (21, 'Undergraduate Research Coordinator', 'Coordinates undergraduate research opportunities.', true, 1),
+    ('Safety Committee Member', 'Ensures the safety of students, faculty, and staff in labs and facilities.', true, 1),
+    ('Equity, Diversity, and Inclusion Committee', 'Promotes inclusivity and diversity within the department.', true, 1),
+    ('Seminar Series Organizer', 'Organizes and manages the department''s seminar series.', true, 1),
+    ('Awards Committee Member', 'Reviews and selects recipients for departmental awards and scholarships.', true, 1),
+    ('Undergraduate Research Coordinator', 'Coordinates undergraduate research opportunities.', true, 1),
 -- Inactive
     -- All
-    (22, 'Outreach Coordinator', 'Coordinates outreach activities to promote the department.', false, 1);
+    ('Outreach Coordinator', 'Coordinates outreach activities to promote the department.', false, 1);
 
 -- ServiceRoleByYear
 INSERT INTO public."ServiceRoleByYear" ("serviceRoleId", "year", "JANHour", "FEBHour", "MARHour", "APRHour", "MAYHour", "JUNHour", "JULHour", "AUGHour", "SEPHour", "OCTHour", "NOVHour", "DECHour") VALUES
