@@ -21,6 +21,7 @@ CREATE TABLE "Division" (
   "dcode"       char(4),
   "dname"       varchar(100)
 );
+ALTER SEQUENCE "Division_divisionId_seq" RESTART WITH 1; 
 
 -- Create profiles
 CREATE TABLE "Profile" (
@@ -40,6 +41,7 @@ CREATE TABLE "Profile" (
   -- "imageId"               integer,
   UNIQUE ("profileId", "email")
 );
+ALTER SEQUENCE "Profile_profileId_seq" RESTART WITH 1; 
 
 -- -- Create images
 -- CREATE TABLE "Image" (
@@ -57,6 +59,7 @@ CREATE TABLE "Account" (
   "isActive"    boolean,
   FOREIGN KEY ("profileId", "email") REFERENCES "Profile" ("profileId", "email") ON UPDATE CASCADE ON DELETE CASCADE
 );
+ALTER SEQUENCE "Account_accountId_seq" RESTART WITH 1; 
 
 -- Create account types
 CREATE TABLE "AccountType" (
@@ -74,6 +77,7 @@ CREATE TABLE "ServiceRole" (
   "divisionId"      integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
   UNIQUE("stitle", "divisionId")
 );
+ALTER SEQUENCE "ServiceRole_serviceRoleId_seq" RESTART WITH 1;
 
 -- Create service role by year
 CREATE TABLE "ServiceRoleByYear" (
@@ -111,6 +115,7 @@ CREATE TABLE "Course" (
   "divisionId"    integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
   "courseNum"     integer
 );
+ALTER SEQUENCE "Course_courseId_seq" RESTART WITH 1;
 
 -- Create courses by terms
 CREATE TABLE "CourseByTerm" (
@@ -133,6 +138,7 @@ CREATE TABLE "SurveyType" (
   "surveyTypeId"  SERIAL PRIMARY KEY,
   "surveyType"    varchar(30)
 );
+ALTER SEQUENCE "SurveyType_surveyTypeId_seq" RESTART WITH 1;
 
 -- Create survey questions
 CREATE TABLE "SurveyQuestion" (
@@ -154,6 +160,7 @@ CREATE TABLE "SurveyQuestionResponse" (
   FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId") ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
+ALTER SEQUENCE "SurveyQuestionResponse_sQResponseId_seq" RESTART WITH 1;
 
 -- Create single teaching performances
 CREATE TABLE "SingleTeachingPerformance" (
