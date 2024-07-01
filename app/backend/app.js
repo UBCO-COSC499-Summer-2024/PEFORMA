@@ -25,6 +25,7 @@ const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 const courseRoutes = require('./routes/courses.js');  
 
 const benchmark = require('./routes/benchmark.js');
+const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 
 const app = express();
 
@@ -48,7 +49,7 @@ app.use('/api/instructorProfile',profileRoutes);
 app.use('/api/courses', courseRoutes);
 
 app.use('/api/benchmark', benchmark);
-
+app.use('/api/deptLeaderBoard',deptLeaderBoard);
 //reset password
 //app.use('/api',ResetPassword);
 
