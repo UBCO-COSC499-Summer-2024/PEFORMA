@@ -1,0 +1,17 @@
+{
+  "top":[
+    {"name":"Jason", "score":"89"},
+    {"name":"Norman", "score":"90"},
+    {"name":"Medo", "score":"97"},
+    {"name":"Kevin", "score":"98"},
+    {"name":"Test", "score":"93"}
+  ],
+  "bottom":
+  [
+    {"name":"Bad", "score":"72"},
+    {"name":"Po", "score":"70"},
+    {"name":"Lee", "score":"68"},
+    {"name":"Bruce", "score":"75"},
+    {"name":"Wayne", "score":"65"}
+  ]
+}
