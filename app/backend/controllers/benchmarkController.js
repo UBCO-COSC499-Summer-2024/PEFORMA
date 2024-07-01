@@ -18,7 +18,6 @@ exports.getBenchmark = async(req,res) => {
             return res.status(404).json({ message: 'No year data found.' });
         }
         const year = result.rows[0].year;
-        console.log("Year ", year);
         //Retrieve the total serice hours grouped by serviceroleId
         if(currentMonth == 10){
             query = `SELECT 
@@ -238,7 +237,6 @@ exports.getBenchmark = async(req,res) => {
             case 7: countMonth = 10; break;
             case 8: countMonth = 11; break;
         }
-        console.log("count month: ", countMonth);
         //Check if benchmark is less than totalServiceHour
         const serviceList = result.rows.filter(row => row.total_hours < row.sRoleBenchmark * countMonth).map(row => ({
             name: row.full_name,
@@ -247,7 +245,6 @@ exports.getBenchmark = async(req,res) => {
         const output = {
             people:serviceList
         }
-        console.log("output is: ", output);
         res.json(output);
         
         

@@ -13,11 +13,6 @@ exports.getDeptLeaderBoard = async (req, res) => {
             return res.status(404).json({ message: 'No performance data found.' });
         }
         const latestTerm = result.rows[0].term;
-
-        console.log("Latest term: ", latestTerm);
-
-
-        console.log("Latest term: ", latestTerm);
         query = `
         SELECT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, AVG(stp."score") AS average_score
         FROM "Profile" p
@@ -55,7 +50,6 @@ exports.getDeptLeaderBoard = async (req, res) => {
         }))
 
         };
-        console.log(output);
         return res.json(output);
       
     } catch (error) {
