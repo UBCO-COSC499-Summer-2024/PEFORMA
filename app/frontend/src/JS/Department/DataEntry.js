@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import '../../CSS/Department/DataEntry.css';
+
+import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
+import AssignInstructorsModal from '../assignInstructorsModal.js';
+
 
 
 function DataEntryComponent() {
@@ -12,8 +17,10 @@ function DataEntryComponent() {
         return "Data will be lost if you leave this page. Are you sure?";
       };
 
+    const [instructorData, setInstructorData] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
     const titleLimit = 100;
     const descLimit = 1000;
+    
 
     const [selection, setSelection] = useState(''); // State to hold the dropdown selection
     const [showInstructorModal, setShowInstructorModal] = useState(false);
@@ -21,39 +28,77 @@ function DataEntryComponent() {
     const [courseDepartment, setCourseDepartment] = useState('COSC');
     const [courseCode, setCourseCode] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
+    const [courseYear,setCourseYear] = useState("");
+    const [courseTerm,setCourseTerm] = useState("");
     const [serviceRoleTitle, setServiceRoleTitle] = useState('');
     const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
     const [serviceRoleDescription, setServiceRoleDescription] = useState('');
-    const [instructors, setInstructors] = useState([
-        { id: '12341234', name: 'Jim Bob', added: false },
-        { id: '12341234', name: 'Billy Jim', added: true },
-        { id: '12341234', name: 'Jimmy Bill', added: false },
-        { id: '12341234', name: 'Jilly Bim', added: false }
-    ]);
-
+    const [selectedInstructors,setSelectedInstructors] = useState([]);
+    const [serviceRoleYear,setServiceRoleYear]=useState("");
+    
     const handleChange = (event) => {
         setSelection(event.target.value);
         // Potentially navigate to different components or render different forms here
         console.log(`Selected: ${event.target.value}`);
     };
 
-    const toggleInstructorAdded = id => {
-        setInstructors(instructors.map(instructor =>
-            instructor.id === id ? { ...instructor, added: !instructor.added } : instructor
-        ));
-    };
+    useEffect(() => {
+        const fetchData = async() => {
+            try{
+                //const url = "http://localhost:3000/assignInstructors.json"; // Gets from temporary JSON file. Should be replaced with backend.
+                //const url = "http://localhost:3001/api/instructors";
+                //const res = await axios.get(url);
+                //const data = res.data;
+                const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN;  // 使用本地存储中的令牌或默认令牌
+                const url = "http://localhost:3001/api/instructors"; 
+                const res = await axios.get(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+                const data = res.data;
+                const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
+                setInstructorData({ ...data, instructors: filledInstructors });
+            }catch(error){
+                console.error("Error occurs when fetching people.\nDetail message:\n",error);
+            }
+        }
+        fetchData();
+      }, []);
+
+      const fillEmptyInstructors = (instructors, perPage) => {
+        const filledInstructors = [...instructors];
+        const currentCount = instructors.length;
+        const fillCount = perPage - (currentCount % perPage);
+        if (fillCount < perPage) {
+          for (let i  = 0; i < fillCount; i++) {
+            filledInstructors.push({});
+          }
+        }
+        return filledInstructors;
+      }
+
+    const prevInstructors = useRef({});
 
     const handleShowInstructorModal = () => {
+        prevInstructors.current = JSON.stringify(instructorData);
         setShowInstructorModal(true);
     };
 
-    const handleCloseInstructorModal = () => {
+    const handleCloseInstructorModal = (save) => {
+        if (!save) {
+            if (window.confirm("If you exit, your unsaved data will be lost. Are you sure?")) {
+                setInstructorData(JSON.parse(prevInstructors.current));
+            } else {
+                return;
+            }
+        }else{
+            var selected = instructorData.instructors.filter(instructors => instructors.assigned);
+            setSelectedInstructors(selected);
+        }
         setShowInstructorModal(false);
     };
 
-function checkValidity() {
-    
-}
 
     function checkLength(input, limit, section, valid) {
         if (!valid) { 
@@ -101,17 +146,44 @@ function checkValidity() {
 
    const handleSubmit = async(event) => {
             event.preventDefault();
-            const formData = {
+
+            let selectedInstructors = [];
+            for (let i = 0; i < instructorData.instructors.length; i++) {
+                if (instructorData.instructors[i].assigned === true) {
+                    selectedInstructors.push(instructorData.instructors[i].id);
+                }
+            }
+
+            var formData = {
                 selection,
                 courseTitle,
                 courseDepartment,
                 courseCode,
                 courseDescription,
+                courseYear,
+                courseTerm,
                 serviceRoleTitle,
                 serviceRoleDepartment,
-                serviceRoleDescription
+                serviceRoleDescription,
+                selectedInstructors, // Array of instructor ID's that will be added to the newly created course/service role
+                serviceRoleYear
+                //selectedInstructors
             };
-            console.log('Submitting form data:', formData);
+            //console.log('Submitting form data:', formData);
+            console.log("Submitting data:\n\t"+
+                "selection: "+`${selection}\n\t`+
+                "courseTile: "+`${courseTitle}\n\t`+
+                "courseDepartment: "+`${courseDepartment}\n\t`+
+                "CourseCode: "+`${courseCode}\n\t`+
+                "courseDescription: "+`${courseDescription}\n\t`+
+                "courseYear: " + `${courseYear}\n\t`+
+                "courseTerm: " + `${courseTerm}\n\t`+
+                "serviceRoleTitle: "+`${serviceRoleTitle}\n\t`+
+                "serviceRoleDepartment: "+`${serviceRoleDepartment}\n\t`+
+                "serviceRoleDescription: "+`${serviceRoleDescription}\n\t`+
+                "selectedInstructors: "+`${selectedInstructors}\n\t`+
+                "serviceRoleYear: "+`${serviceRoleYear}\n\t`+
+            "");
             let valid = false;
             let confirmMessage = "";
             if (selection === "Course") {
@@ -125,15 +197,27 @@ function checkValidity() {
             if (valid) {
                 if (window.confirm(confirmMessage) === true) {
                     axios.post('http://localhost:3001/enter',formData).then(() => {
-                        if (selection == "Course") {
+                        if (selection === "Course") {
+                            console.log("data enter success.Navigate to new page: course list.");
                             navigate("/deptCourseList");
                         } else {
+                            console.log("data enter success.Navigate to new page: Service Role list.");
                             navigate("/ServiceRoleList");
                         }
                     }); 
                 }
             }
     }
+
+
+
+
+
+
+
+
+
+
 
     return (
         <div className='DataEntry-page'>
@@ -144,7 +228,8 @@ function checkValidity() {
                 <h1>Data Entry</h1>
                 <div className="create-new">
                     <label htmlFor="create-new-select">Create New:</label>
-                    <select id="create-new-select" value={selection} onChange={(e)=>setSelection(e.target.value)} role ="button" name="dropdown">
+                    <select id="create-new-select" value={selection} onChange={(e)=>handleChange(e)} role ="button" name="dropdown">
+
                         <option value="" disabled>Select</option>
                         <option value="Service Role" name="newServiceRole" role="button">Service Role</option>
                         <option value="Course" name="newCourse" role="button">Course</option>
@@ -174,12 +259,40 @@ function checkValidity() {
                                 
                             }} required/>
                         </div>
+                        <div className='courseYear'>
+                            <label htmlFor="courseYear">Course Year:</label>
+                            <input type="text" id="courseYear" name="courseYear" onChange={(e)=> {
+                                setCourseYear(e.target.value);
+                                
+                            }} required/>
+                        </div>
+                        <div className='courseTerm'>
+                            <label htmlFor="courseTerm">Course Term:</label>
+                            <input type="text" id="courseTerm" name="courseTerm" onChange={(e)=> {
+                                setCourseTerm(e.target.value);
+                                
+                            }} required/>
+                        </div>
                     </div>
                     
                     <label htmlFor="course-description">Course Description:</label>
                     <textarea id="course-description" onChange={(e)=>setCourseDescription(e.target.value)} placeholder="Describe the course" name="courseDescription" required></textarea>
 
-                    <button className="assign-button" type="button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    <button className="assign-button" data-testid="assign-button" type="button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    
+                    <div>
+                        {selectedInstructors.length > 0 && (
+                            <div className="selected-instructors">
+                                <h3>Selected Instructors</h3>
+                                <ul>
+                                    {selectedInstructors.map(instructor => (
+                                        <li key={instructor.profileId}>{instructor.name} (ID: {instructor.id})</li>
+                                    ))}
+                                    </ul>
+                            </div>
+                        )}
+                    </div>
+
                     <input type="submit" id="course-submit" className='hidden' />
                     <input type="hidden" name="selection" value="Course" />
                 </form>
@@ -204,9 +317,30 @@ function checkValidity() {
                             })}
                         </select>
                     </div>
+                    <div className='serviceroleYear'>
+                            <label htmlFor="serviceroleYear">Assigned Service Role to year:</label>
+                            <input type="text" id="serviceroleYear" name="serviceroleYear" onChange={(e)=> {
+                                setServiceRoleYear(e.target.value);
+                                
+                            }} required/>
+                        </div>
                     <label htmlFor="service-role-description">Service Role Description:</label>
                     <textarea id="service-role-description" onChange={(e)=>setServiceRoleDescription(e.target.value)} placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
-                    <button type="button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    <button type="button" data-testid="assign-button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
+                    
+                    <div>
+                        {selectedInstructors.length > 0 && (
+                        <div className="selected-instructors">
+                            <h3>Selected Instructors</h3>
+                            <ul>
+                                {selectedInstructors.map(instructor => (
+                                <li key={instructor.profileId}>{instructor.name} (ID: {instructor.id})</li>
+                                ))}
+                            </ul>
+                        </div>
+                        )}
+                    </div>
+                    
                     <input type="submit" id="service-role-submit" className='hidden' />
                     <input type="hidden" name="formType" value="Service Role" />
                 </form>
@@ -215,20 +349,7 @@ function checkValidity() {
             )}
 
             {showInstructorModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button className="close-button" onClick={handleCloseInstructorModal}>X</button>
-                        {instructors.map(instructor => (
-                            <div key={instructor.id} className="instructor-item">
-                                <span>{instructor.name} UBC ID: {instructor.id}</span>
-                                <button onClick={() => toggleInstructorAdded(instructor.id)}>
-                                    {instructor.added ? 'Remove' : 'Add'}
-                                </button>
-                            </div>
-                        ))}
-                        <button className="save-button" onClick={handleCloseInstructorModal}>Save</button>
-                    </div>
-                </div>
+                <AssignInstructorsModal instructorData={instructorData} setInstructorData={setInstructorData} handleCloseInstructorModal={handleCloseInstructorModal}/>
             )}
             </div>
             </div>
