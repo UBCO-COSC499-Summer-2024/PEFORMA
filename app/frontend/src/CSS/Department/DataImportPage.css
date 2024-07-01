@@ -2,7 +2,7 @@
 .dropzone-container {
   width: 90%;
   min-height: 50%; 
-  border: 2px dashed #ccc;
+  border: 1px dashed gray;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
 /* Style the text inside the dropzone */
 .dropzone-container p {
   text-align: center;
-  color: grey;
+  color: gray;
 }
 
 /* File List Vertical Styles */
