@@ -7,7 +7,6 @@ const cors = require('cors');
 const { generateToken, TOKEN_EXPIRY_SECONDS } = require('../Manager/jwtManager');
 const { queryAccount } = require('./queryAccountRouter');
 const pool = require('../db/index');
-const { bcrypt } = require('bcryptjs');
 var token_save = '';
 
 const router = express.Router();
@@ -46,31 +45,16 @@ passport.use(new LocalStrategy({
 async (email, password, done) => {
     const users = await getUsers();
     var user = users.find(user => user.email === email);
-
+    //var user = user_data.find(user => user.username === email);
     if (!user) {
-        return done(null, false, { message: `Failed to find account with email.Input is ${email}` });
+        return done(null, false, { message: `Incorrect email.Input is ${email}` });
     }
-
-    var isMatch = false;
-    if(user.password.length!=60){
-        console.log("user password not hashed");
-        isMatch = (password === user.password);
-        if(!isMatch){
-            return done(null,false,{ message : "Password Incorrect" });
-        }
-        else {
-            return done(null,user,{message :"Please reset password for safety"});
-        }
-    }else{
-        console.log("user password hashed");
-        isMatch = bcrypt.compareSync(password,user.password);
-        if (!isMatch) {
-            return done(null,false,{message:"Password Incroorect"});
-        }
-        else {
-            return done(null, user,{message:""});
-        }
+    const isMatch = (password===user.password);
+    if (!isMatch) {
+        console.log('|',password,'|--vs--|',user.password,'|');
+        return done(null, false, { message: 'Incorrect password.' });
     }
+    return done(null, user);
 }));
 
 // 修改后的登录路由
@@ -90,9 +74,8 @@ router.post('/logincheck', (req, res, next) => {
             expiresIn: TOKEN_EXPIRY_SECONDS, 
             email: user.email, 
             accountId: user.accountId,
-            profileId: user.profileId,
+            profileId: user.profileId
             //acctype: user.acctype 
-            message : info.message
         });
     })(req, res, next);
 });
