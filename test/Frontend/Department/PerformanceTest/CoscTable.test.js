@@ -68,5 +68,47 @@ describe('CoscTable', () => {
     expect(element).toHaveTextContent('C');
     expect(element).toHaveTextContent('72');
   })
-  
+
+  test('Testing filter courses by clicking year number 3', async () => {
+    const year3Button = screen.getByRole('button', { name: '3' });
+    userEvent.click(year3Button);
+
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row');
+      expect(rows).toHaveLength(2);
+    })
+    const element = document.getElementById('cosc-test-content');
+    expect(element).toHaveTextContent('COSC 391');
+    expect(element).toHaveTextContent('D');
+    expect(element).toHaveTextContent('62');
+
+  });
+
+  test('Testing filter courses by clicking all button', async () => {
+    const allYearButton = screen.getByRole('button', { name: 'All' });
+    userEvent.click(allYearButton);
+
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row');
+      expect(rows).toHaveLength(5);
+    })
+    const element = document.getElementById('cosc-test-content');
+    expect(element).toHaveTextContent("COSC 101");
+    expect(element).toHaveTextContent("COSC 123");
+    expect(element).toHaveTextContent("COSC 290");
+    expect(element).toHaveTextContent("COSC 391");
+
+    expect(element).toHaveTextContent("A");
+    expect(element).toHaveTextContent("C");
+    expect(element).toHaveTextContent("D");
+    expect(element).toHaveTextContent("D");
+    
+    expect(element).toHaveTextContent("92");
+    expect(element).toHaveTextContent("72");
+    expect(element).toHaveTextContent("65");
+    expect(element).toHaveTextContent("62");
+
+    expect(element).not.toHaveTextContent("COSC 499");
+
+  })
 });
