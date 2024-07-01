@@ -121,10 +121,10 @@ INSERT INTO public."ServiceRole" ("serviceRoleId", "stitle", "description", "isA
     (11, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 3),
     (12, 'Graduate Program Director', 'Oversees the graduate program.', true, 3),
     -- STAT
-    (13, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 3),
-    (14, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 3),
-    (15, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 3),
-    (16, 'Graduate Program Director', 'Oversees the graduate program.', true, 3),
+    (13, 'Undergraduate Advisor', 'Advises undergraduate students on academic matters.', true, 4),
+    (14, 'Curriculum Committee', 'Develops and reviews curriculum proposals.', true, 4),
+    (15, 'Graduate Admissions', 'Reviews and evaluates graduate program applications.', true, 4),
+    (16, 'Graduate Program Director', 'Oversees the graduate program.', true, 4),
     -- All
     (17, 'Safety Committee Member', 'Ensures the safety of students, faculty, and staff in labs and facilities.', true, 1),
     (18, 'Equity, Diversity, and Inclusion Committee', 'Promotes inclusivity and diversity within the department.', true, 1),

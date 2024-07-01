@@ -28,7 +28,7 @@ CREATE TABLE "Profile" (
   "firstName"             varchar(20),
   "middleName"            varchar(20),
   "lastName"              varchar(20),
-  "email"                 varchar(100),
+  "email"                 varchar(100) UNIQUE NOT NULL,
   "phoneNum"              varchar(20),
   "officeBuilding"        varchar(10),
   "officeNum"             varchar(10),
@@ -71,7 +71,8 @@ CREATE TABLE "ServiceRole" (
   "stitle"          varchar(100),
   "description"     varchar(1000),
   "isActive"        boolean,
-  "divisionId"      integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE
+  "divisionId"      integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
+  UNIQUE("stitle", "divisionId")
 );
 
 -- Create service role by year
@@ -90,7 +91,8 @@ CREATE TABLE "ServiceRoleByYear" (
   "OCTHour"         double precision,
   "NOVHour"         double precision,
   "DECHour"         double precision,
-  PRIMARY KEY ("serviceRoleId", "year")
+  PRIMARY KEY ("serviceRoleId", "year"),
+  UNIQUE("serviceRoleId", "year")
 );
 
 -- Create service role assignments
@@ -104,7 +106,7 @@ CREATE TABLE "ServiceRoleAssignment" (
 -- Create courses
 CREATE TABLE "Course" (
   "courseId"      SERIAL PRIMARY KEY,
-  "ctitle"        varchar(100),
+  "ctitle"        varchar(100) UNIQUE NOT NULL,
   "description"   TEXT,
   "divisionId"    integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
   "courseNum"     integer
