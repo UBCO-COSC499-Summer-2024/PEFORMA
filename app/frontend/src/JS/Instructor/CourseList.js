@@ -98,7 +98,7 @@ function CourseList() {
     <div className='container'>
       <CreateTopSearchbarIns onSearch={handleSearchChange} />
 
-      <div className="main">
+      <div className="courselist-main">
 
         <header className='ListTitle'>
           <div className='ListTitle-text'>List of Courses</div>
