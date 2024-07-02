@@ -83,9 +83,9 @@ function ServiceRoleList() {
     <div className='container'>
       <CreateTopbar />
       
-      <div className='main'>
+      <div className='main' id='dept-service-role-list-test-content'>
 
-        <div className='subtitle-role'>List of Serivce Roles ({roleData.rolesCount} Active) </div>
+        <div className='subtitle-role'>List of Serivce Roles ({roleData.rolesCount} Active)</div>
         
         <div className="role-table">
           <table>
