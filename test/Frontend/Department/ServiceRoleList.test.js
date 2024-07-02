@@ -63,5 +63,13 @@ describe('ServiceRoleList', () => {
     expect(element).toHaveTextContent("Role 10");
 
   })
-  
+  test('Testing mock datas id after 11 not to show on first page', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+
+    expect(element).toHaveTextContent("Dept 10");
+
+    expect(element).not.toHaveTextContent("Role 11");
+    expect(element).not.toHaveTextContent("Dept 11");
+    expect(element).not.toHaveTextContent("Description 11");
+  })
 });
