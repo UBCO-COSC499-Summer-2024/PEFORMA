@@ -16,14 +16,14 @@ const { assignServiceRole } = require ('./routes/assignServiceRole');
 
 const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
-// const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
-// const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
-// const progressRoutes = require('./routes/progressRoutes');
-// const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
+const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
+const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
+const progressRoutes = require('./routes/progressRoutes');
+const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 const courseRoutes = require('./routes/courses.js');  
-
+const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
@@ -52,7 +52,7 @@ app.use('/api/deptPerformance',DeptPerformanceRouter);
 app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
 app.use('/api/progressRoutes',progressRoutes);
 
-// Service role retrieval process
+// Course list retrieval process
 app.use('/api/courses', courseRoutes);
 app.use('/api/all-courses', allCoursesRoutes);
 
