@@ -37,7 +37,6 @@ app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/',AccountTypeRouter);//check account type
 
-<<<<<<< HEAD
 //reset password
 //app.use('/api',ResetPassword);
 
@@ -45,15 +44,14 @@ app.use('/',AccountTypeRouter);//check account type
 //app.use('/api',update);
 
 // Course list retrieval process
-app.use('/api/courses', courseRoutes); 
+app.use('/api/courses', courseRoutes);
+app.use('/api/all-courses', allCoursesRoutes);
 
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
 console.log('after');
 
-
-=======
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
@@ -84,9 +82,6 @@ app.post('/create-account', async (req, res) => {
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
-// Service role retrieval process
-app.use('/api/all-courses', allCoursesRoutes);
-
 //Profile BE
 
 console.log('after');
@@ -107,7 +102,7 @@ console.log('after');
 
 });
 */
->>>>>>> development
+
 const port = 3001;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
