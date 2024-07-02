@@ -1,7 +1,6 @@
 -- Dropping existing tables to clear
 DROP TABLE IF EXISTS "SurveyType" CASCADE;
 DROP TABLE IF EXISTS "Division" CASCADE;
-DROP TABLE IF EXISTS "Image" CASCADE;
 DROP TABLE IF EXISTS "Profile" CASCADE;
 DROP TABLE IF EXISTS "Account" CASCADE;
 DROP TABLE IF EXISTS "ServiceRole" CASCADE;
@@ -14,19 +13,13 @@ DROP TABLE IF EXISTS "ServiceRoleAssignment" CASCADE;
 DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
-
+-- DROP TABLE IF EXISTS "Image" CASCADE;
 
 -- Create divisions
 CREATE TABLE "Division" (
-  "divisionId" SERIAL PRIMARY KEY,
-  "dname"       varchar(50)
-);
-
--- Create images
-CREATE TABLE "Image" (
-  "imageId"     SERIAL PRIMARY KEY,
-  "file_type"   varchar(3),
-  "image_data"  BYTEA
+  "divisionId"  SERIAL PRIMARY KEY,
+  "dcode"       char(4),
+  "dname"       varchar(100)
 );
 
 -- Create profiles
@@ -41,125 +34,49 @@ CREATE TABLE "Profile" (
   "officeNum"             varchar(10),
   "position"              varchar(100),
   "divisionId"            integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "UBCId"                 char(8),
+  "UBCId"                 varchar(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  "imageId"               integer,
-  FOREIGN KEY ("divisionId") REFERENCES "Division" ("divisionId"),
-  FOREIGN KEY ("imageId") REFERENCES "Image" ("imageId"),
+  -- "imageId"               integer,
   UNIQUE ("profileId", "email")
 );
+
+-- -- Create images
+-- CREATE TABLE "Image" (
+--   "imageId"     SERIAL PRIMARY KEY,
+--   "file_type"   char(3),
+--   "image_data"  BYTEA
+-- );
 
 -- Create accounts
 CREATE TABLE "Account" (
   "accountId"   SERIAL PRIMARY KEY,
   "profileId"   integer,
   "email"       varchar(100),
-  "password"    varchar(15),
+  "password"    varchar(100),
   "isActive"    boolean,
-  FOREIGN KEY ("profileId", "email") REFERENCES "Profile" ("profileId", "email")
+  FOREIGN KEY ("profileId", "email") REFERENCES "Profile" ("profileId", "email") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Create account types
+CREATE TABLE "AccountType" (
+  "accountId"     integer REFERENCES "Account" ("accountId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "accountType"   integer,
+  PRIMARY KEY ("accountId", "accountType")
 );
 
 -- Create service roles
 CREATE TABLE "ServiceRole" (
   "serviceRoleId"   SERIAL PRIMARY KEY,
-  "stitle"          varchar(50),
+  "stitle"          varchar(100),
   "description"     varchar(1000),
   "isActive"        boolean,
-  "divisionId"      integer,
-  FOREIGN KEY ("divisionId") REFERENCES "Division" ("divisionId")
-);
-
--- Create courses
-CREATE TABLE "Course" (
-  "courseId"      SERIAL PRIMARY KEY,
-  "ctitle"        varchar(50),
-  "description"   varchar(1000),
-  "divisionId"    integer,
-  "courseNum"     integer,
-  FOREIGN KEY ("divisionId") REFERENCES "Division" ("divisionId")
-);
-
--- Create course terms
-CREATE TABLE "CourseByTerm" (
-  "courseId"      integer,
-  "term"          varchar(9),
-  PRIMARY KEY ("courseId", "term"),
-  FOREIGN KEY ("courseId") REFERENCES "Course" ("courseId")
-);
-
--- Create survey types
-CREATE TABLE "SurveyType" (
-  "surveyTypeId"  SERIAL PRIMARY KEY,
-  "surveyType"    varchar(30)
-);
-
--- Create survey questions
-CREATE TABLE "SurveyQuestion" (
-  "surveyTypeId"      integer, 
-  "surveyQuestionId"  SERIAL,
-  "description"       varchar(1000),
-  PRIMARY KEY ("surveyTypeId", "surveyQuestionId"),
-  FOREIGN KEY ("surveyTypeId") REFERENCES "SurveyType" ("surveyTypeId")
-);
-
-CREATE TABLE "SurveyQuestionResponse" (
-  "sQResponseId"      SERIAL PRIMARY KEY,
-  "surveyTypeId"      integer,
-  "surveyQuestionId"  integer,
-  "courseId"          integer,
-  "term"              varchar(9),
-  "profileId"         integer,
-  "studentId"         integer,
-  "response"          varchar(500),
-  FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId"),
-  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term"),
-  FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId")
-);
-
-
--- Create instructor teaching assignments
-CREATE TABLE "InstructorTeachingAssignment" (
-  "profileId"   integer,
-  "courseId"    integer,
-  "term"        varchar(9),
-  PRIMARY KEY ("profileId", "courseId", "term"),
-  FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId"),
-  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term")
-);
-
--- Create single teaching performances
-CREATE TABLE "SingleTeachingPerformance" (
-  "profileId"   integer,
-  "courseId"    integer,
-  "term"        varchar(9),
-  "score"       double precision,
-  PRIMARY KEY ("profileId", "courseId", "term"),
-  FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId"),
-  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term")
-);
-
--- Create service role assignments
-CREATE TABLE "ServiceRoleAssignment" (
-  "profileId"       integer,
-  "serviceRoleId"   integer,
-  "year"            integer,
-  PRIMARY KEY ("profileId", "serviceRoleId", "year"),
-  FOREIGN KEY ("profileId") REFERENCES "Profile" ("profileId"),
-  FOREIGN KEY ("serviceRoleId") REFERENCES "ServiceRole" ("serviceRoleId")
-);
-
--- Create account types
-CREATE TABLE "AccountType" (
-  "accountId"     integer,
-  "accountType"   integer,
-  PRIMARY KEY ("accountId", "accountType"),
-  FOREIGN KEY ("accountId") REFERENCES "Account" ("accountId")
+  "divisionId"      integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Create service role by year
 CREATE TABLE "ServiceRoleByYear" (
-  "serviceRoleId"   integer,
+  "serviceRoleId"   integer REFERENCES "ServiceRole" ("serviceRoleId") ON UPDATE CASCADE ON DELETE CASCADE,
   "year"            integer,
   "JANHour"         double precision,
   "FEBHour"         double precision,
@@ -173,6 +90,75 @@ CREATE TABLE "ServiceRoleByYear" (
   "OCTHour"         double precision,
   "NOVHour"         double precision,
   "DECHour"         double precision,
-  PRIMARY KEY ("serviceRoleId", "year"),
-  FOREIGN KEY ("serviceRoleId") REFERENCES "ServiceRole" ("serviceRoleId")
+  PRIMARY KEY ("serviceRoleId", "year")
+);
+
+-- Create service role assignments
+CREATE TABLE "ServiceRoleAssignment" (
+  "profileId"       integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "serviceRoleId"   integer REFERENCES "ServiceRole" ("serviceRoleId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "year"            integer,
+  PRIMARY KEY ("profileId", "serviceRoleId", "year")
+);
+
+-- Create courses
+CREATE TABLE "Course" (
+  "courseId"      SERIAL PRIMARY KEY,
+  "ctitle"        varchar(100),
+  "description"   TEXT,
+  "divisionId"    integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "courseNum"     integer
+);
+
+-- Create courses by terms
+CREATE TABLE "CourseByTerm" (
+  "courseId"      integer REFERENCES "Course" ("courseId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "term"          integer,    
+  PRIMARY KEY ("courseId", "term")
+);
+
+-- Create instructor teaching assignments
+CREATE TABLE "InstructorTeachingAssignment" (
+  "profileId"   integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "courseId"    integer,
+  "term"        integer,
+  PRIMARY KEY ("profileId", "courseId", "term"),
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Create survey types
+CREATE TABLE "SurveyType" (
+  "surveyTypeId"  SERIAL PRIMARY KEY,
+  "surveyType"    varchar(30)
+);
+
+-- Create survey questions
+CREATE TABLE "SurveyQuestion" (
+  "surveyTypeId"      integer REFERENCES "SurveyType" ("surveyTypeId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "surveyQuestionId"  SERIAL,
+  "description"       varchar(1000),
+  PRIMARY KEY ("surveyTypeId", "surveyQuestionId")
+);
+-- Create survey question responses
+CREATE TABLE "SurveyQuestionResponse" (
+  "sQResponseId"      SERIAL PRIMARY KEY,
+  "surveyTypeId"      integer,
+  "surveyQuestionId"  integer,
+  "courseId"          integer,
+  "term"              integer,
+  "profileId"         integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "studentId"         integer,
+  "response"          varchar(500),
+  FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId") ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Create single teaching performances
+CREATE TABLE "SingleTeachingPerformance" (
+  "profileId"   integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "courseId"    integer,
+  "term"        integer,
+  "score"       double precision,
+  PRIMARY KEY ("profileId", "courseId", "term"),
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );

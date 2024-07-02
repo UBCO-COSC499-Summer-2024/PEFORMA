@@ -3,16 +3,18 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const loginRouter = require('./routes/logincheck'); // 确保路径正确
 const profileRoutes = require('./routes/profileRoutes');
-//const serverRouter = require('./routes/server')
+
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
-const allCoursesRoutes = require('./routes/allCoursesRoutes');
 const { saveDataToDatabase } = require('./routes/DataEntry');
-// const { upsertProfile } = require('./routes/upsertProfile');
-// const { createAccount } = require('./routes/createAccount');
-// const { assignServiceRole } = require ('./routes/assignServiceRole');
-//const workingHoursRoutes = require('./routes/workingHoursRoutes');
+
+
+const { upsertProfile } = require('./routes/upsertProfile');
+const { createAccount } = require('./routes/createAccount');
+const { assignServiceRole } = require ('./routes/assignServiceRole');
+
+const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
 // const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
 // const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
@@ -21,6 +23,10 @@ const { saveDataToDatabase } = require('./routes/DataEntry');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 const courseRoutes = require('./routes/courses.js');  
+
+const benchmark = require('./routes/benchmark.js');
+const deptLeaderBoard = require('./routes/deptLeaderboard.js');
+const coursePerformance = require('./routes/coursePerformance.js');
 
 const app = express();
 
@@ -37,24 +43,25 @@ app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/',AccountTypeRouter);//check account type
 
-//reset password
-//app.use('/api',ResetPassword);
+//Profile BE
+app.use('/api/instructorProfile',profileRoutes);
 
-//update date into db
-//app.use('/api',update);
+//Performance BE
+app.use('/api/workingHoursRoutes',workingHoursRoutes);
+app.use('/api/deptPerformance',DeptPerformanceRouter);
+app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
+app.use('/api/progressRoutes',progressRoutes);
 
-// Course list retrieval process
+// Service role retrieval process
 app.use('/api/courses', courseRoutes);
 app.use('/api/all-courses', allCoursesRoutes);
 
-//Profile BE
-app.use('/api/instructorProfile',profileRoutes);
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
 
-console.log('after');
-
-//Profile BE
-app.use('/api/instructorProfile',profileRoutes);
-
+app.use('/api/benchmark', benchmark);
+app.use('/api/deptLeaderBoard',deptLeaderBoard);
+app.use('/api/coursePerformance',coursePerformance);
 //reset password
 //app.use('/api',ResetPassword);
 
@@ -79,12 +86,6 @@ app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
 
-//Profile BE
-app.use('/api/instructorProfile',profileRoutes);
-
-//Profile BE
-
-console.log('after');
 
     try {
         const profileId = await upsertProfile(req.body);
@@ -107,4 +108,5 @@ const port = 3001;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
     console.log(`Account info page: http://localhost:${port}/Account`);
+    console.log(`Data entrt request: http://localhost:${port}/enter`)
 });
