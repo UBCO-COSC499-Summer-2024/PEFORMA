@@ -1,4 +1,4 @@
-.main {
+.courseinfo-main {
     flex-grow: 1;
     display: flex;
     align-items: flex-start;
@@ -21,7 +21,7 @@
     margin-bottom: 1em;
 }
 
-p {
+.courseinfo-main p {
     font-size: large;
     margin-bottom: 0.3em;
     margin-top: 0.3em;
@@ -98,12 +98,12 @@ p {
     justify-content: center;
 }
 
-.pagination li.active a {
+#historyTable .pagination li.active a {
     background-color: var(--blue);
     color: white;
   }
 
-  .pagination li a {
+ #historyTable .pagination li a {
     padding: 0.5em 1em;
     border: 1px solid var(--white);
     color: var(--black);
@@ -119,11 +119,11 @@ p {
     border: 0;
 }
 
-th {
+#historyTable th {
     border-radius: 1em;
 }
 
-td, th{
+#historyTable td, #historyTable th{
     text-align: center;
     height: 1.5em;
     width:0em;

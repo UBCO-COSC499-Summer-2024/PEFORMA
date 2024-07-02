@@ -63,7 +63,7 @@ const currentEntries = historyData.history.slice(
     <div className='container'>
       <CreateTopbar />
 
-      <div className='main'>
+      <div className='courseinfo-main'>
         <Link to="/DeptCourseList">&lt; Back to All Courses</Link>
         <h1 className='courseName' role='contentinfo'>{historyData.courseCode}: {historyData.courseName}</h1>
         <p role='contentinfo'>{historyData.courseDescription}</p>
