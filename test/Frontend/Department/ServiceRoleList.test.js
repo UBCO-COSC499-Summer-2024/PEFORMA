@@ -72,4 +72,40 @@ describe('ServiceRoleList', () => {
     expect(element).not.toHaveTextContent("Dept 11");
     expect(element).not.toHaveTextContent("Description 11");
   })
+  
+  test('Testing pagination', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+
+    const paginationElement = element.querySelector('.pagination'); 
+    expect(paginationElement).toBeInTheDocument();
+
+    const firstPageRows = element.querySelectorAll('tbody tr');
+    expect(firstPageRows.length).toBe(10);
+
+    const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');; 
+    fireEvent.click(nextPageButton);
+
+    await waitFor(() => { // check next page
+      expect(element).not.toHaveTextContent("Role 7");
+      expect(element).toHaveTextContent("Role 11");
+      expect(element).toHaveTextContent("Role 12");
+      expect(element).toHaveTextContent("Role 13");
+
+      expect(element).not.toHaveTextContent("Dept 4");
+      expect(element).toHaveTextContent("Dept 11");
+      expect(element).toHaveTextContent("Dept 12");
+      expect(element).toHaveTextContent("Dept 13");
+    })
+
+    const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a');;
+    fireEvent.click(prevPageButton);
+
+    await waitFor(() => { // check going back to prev page
+      expect(element).not.toHaveTextContent("Role 12");
+      expect(element).not.toHaveTextContent("Dept 12");
+      expect(element).not.toHaveTextContent("Description 12");
+
+      expect(element).toHaveTextContent("Role 5");
+    })
+  })
 });
