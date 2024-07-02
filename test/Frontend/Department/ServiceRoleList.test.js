@@ -108,4 +108,17 @@ describe('ServiceRoleList', () => {
       expect(element).toHaveTextContent("Role 5");
     })
   })
+  test('Testing filledRoles function is working', async () => {
+    const nextPageButton = element.querySelector('.pagination .next a'); 
+    fireEvent.click(nextPageButton);
+
+    await waitFor(() => {
+      /* 
+      13 total roles, so second page will have 3 courses left, however checking
+      filledRoles which will make total 10 rows
+      */
+      const isFilledSecondPage = element.querySelectorAll('tbody tr');
+      expect(isFilledSecondPage.length).toBe(10);
+    })
+  })
 });
