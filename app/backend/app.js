@@ -57,6 +57,11 @@ app.use('/api/courses', courseRoutes);
 //reset password
 //app.use('/api',ResetPassword);
 
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
+
+app.use('/api/upload', dataImportRoutes);
+
 app.post('/enter', async (req, res) => {
     const data = req.body;
     console.log(data); // 打印接收到的数据，确保格式正确
@@ -77,11 +82,6 @@ app.post('/create-account', async (req, res) => {
 app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
-
-// Service role retrieval process
-app.use('/api/service-roles', serviceRoleRoutes);
-
-app.use('/api/upload', dataImportRoutes);
 
     try {
         const profileId = await upsertProfile(req.body);
