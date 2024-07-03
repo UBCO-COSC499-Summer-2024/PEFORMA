@@ -22,6 +22,7 @@ const progressRoutes = require('./routes/progressRoutes');
 const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
+
 const courseRoutes = require('./routes/courses.js');  
 const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
 const benchmark = require('./routes/benchmark.js');
@@ -29,7 +30,7 @@ const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
-
+const roleInfoRoutes = require('./routes/roleInfoRoutes');
 const app = express();
 
 app.use(express.json());
@@ -71,6 +72,7 @@ app.use('/api/coursePerformance',coursePerformance);
 app.use('/api/service-roles',serviceRoleRoutes);
 //reset password
 //app.use('/api',ResetPassword);
+app.use('/api/roleInfo', roleInfoRoutes);
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
@@ -109,8 +111,12 @@ app.post('/create-account', async (req, res) => {
 });
 
 
+
+
+console.log('after');
 });
 */
+
 
 const port = 3001;
 app.listen(port, () => {

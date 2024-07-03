@@ -4,18 +4,22 @@ import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/RoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import { useAuth } from '../AuthContext';
 
 
 function RoleInformation() {
-
+const { authToken } = useAuth();
 const [roleData, setRoleData] = useState({"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1});
 const [search, setSearch] = useState('');
+const params = new URLSearchParams(window.location.search);
+const serviceRoleId = params.get('roleid');
 
   useEffect(() => {
     const fetchData = async() => {
-      const url = "http://localhost:3000/assignees.json";
-      const res = await axios.get(url);
+      const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
+        params: {serviceRoleId: serviceRoleId},
+        headers: { Authorization: `Bearer ${authToken.token}` }
+      });
       const data = res.data;
       const filledAssignees = fillEmptyAssignees(data.assignees, data.perPage);
       setRoleData({ ...data, assignees: filledAssignees });
@@ -99,7 +103,7 @@ let i = 0;
               
             {currentAssignees.map(assignee => {
               i++;
-              if (assignee.instructorID == null) {
+              if (assignee.instructorID == "" || assignee.instructorID == null) {
                 return (
                   <tr key={i}>
                     <td>
