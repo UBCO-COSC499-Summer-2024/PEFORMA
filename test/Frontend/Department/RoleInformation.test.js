@@ -6,7 +6,13 @@ import axios from 'axios';
 
 jest.mock('axios');
 
-axios.get.mockResolvedValue({"data":{"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1}});
+axios.get.mockImplementation((url) => {
+    if (url == 'http://localhost:3000/assignees.json' || url == 'http://localhost:3001/api/roleInfo') {
+      return Promise.resolve({"data":{"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1}});
+    } else {
+      return Promise.resolve({"data": {"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1}});
+    }
+  });
 
 test('Checks if buttons exist', async () => {
     await act(async () => {
