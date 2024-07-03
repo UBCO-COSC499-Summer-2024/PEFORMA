@@ -28,6 +28,8 @@ const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 
+const courseHistoryRouter = require('./routes/courseHistoryRoutes');
+
 const app = express();
 
 app.use(express.json());
@@ -54,10 +56,14 @@ app.use('/api/progressRoutes',progressRoutes);
 
 // Course list retrieval process
 app.use('/api/courses', courseRoutes);
+
 app.use('/api/all-courses', allCoursesRoutes);
 
 // Service role retrieval process
 app.use('/api/service-roles', serviceRoleRoutes);
+
+
+app.use('/api/courseHistory',courseHistoryRouter);
 
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
@@ -85,6 +91,7 @@ app.post('/create-account', async (req, res) => {
 app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
+
 
 
     try {
