@@ -128,4 +128,31 @@ describe('DeptCourseList', () => {
     const searchInput = screen.getByPlaceholderText('Search by Subject and Title'); 
     expect(searchInput).toBeInTheDocument();
   });
+  test('Test search functionality', async() => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
+
+    const searchInput = screen.getByPlaceholderText('Search by Subject and Title'); 
+    fireEvent.change(searchInput, { target: { value: 'Computer' }});
+
+    // search Computer so only 3 courses (COSC 111, COSC 123, COSC 341) will appear on the screen, other courses will not be present
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row');
+      expect(rows).toHaveLength(4); // 3 rows (COSC 111, COSC 123, COSC 341) + 1 row (<#><Course><Title><Description>) <- top default row
+
+      expect(element).toHaveTextContent('COSC 111');
+      expect(element).toHaveTextContent('Computer Programming I');
+
+      expect(element).toHaveTextContent('COSC 123');
+      expect(element).toHaveTextContent('Computer Creativity');
+      
+      expect(element).toHaveTextContent('COSC 341');
+      expect(element).toHaveTextContent('Human computer Interaction');
+
+      // STAT 121, Elementary Statistics should not be present on the screen course list
+      expect(element).not.toHaveTextContent('STAT 121');
+      expect(element).not.toHaveTextContent('Elementary Statistics');
+
+      expect(element).not.toHaveTextContent('RANDOM VALUE');
+    })
+  })
 });
