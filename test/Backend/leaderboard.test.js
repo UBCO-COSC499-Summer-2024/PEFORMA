@@ -1,8 +1,7 @@
-const { getLeaderBoard } = require('../../app/backend/controllers/leaderBoardController'); // Adjust the path as necessary
+const { getLeaderBoard } = require('../../app/backend/controllers/leaderBoardController'); 
 const pool = require('../../app/backend/db/index.js');
 
 // Mocking the pool module
-// Assuming the path needs to go up two directories and then into the app/backend/db directory
 jest.mock('../../app/backend/db/index.js', () => ({
   query: jest.fn()
 }));
@@ -59,5 +58,4 @@ describe('getLeaderBoard', () => {
     expect(mockResponse.json).toHaveBeenCalledWith({ message: 'No performance data found.' });
   });
 
-  // Add more tests as needed to cover other scenarios and edge cases
 });
