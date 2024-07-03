@@ -28,6 +28,8 @@ const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 
+const courseHistoryRouter = require('./routes/courseHistoryRoutes');
+
 const app = express();
 
 app.use(express.json());
@@ -54,7 +56,7 @@ app.use('/api/progressRoutes',progressRoutes);
 
 // Service role retrieval process
 app.use('/api/courses', courseRoutes);
-
+app.use('/api/courseHistory',courseHistoryRouter);
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
@@ -84,6 +86,7 @@ app.post('/create-account', async (req, res) => {
 
 // Service role retrieval process
 app.use('/api/service-roles', serviceRoleRoutes);
+
 
 
     try {
