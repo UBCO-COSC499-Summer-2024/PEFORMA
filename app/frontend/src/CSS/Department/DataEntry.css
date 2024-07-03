@@ -1,57 +1,157 @@
-.DataEntry-page{
+.DataEntry-page {
+display: flex;
+height: 100vh;
+
+}
+
+.container {
+display: flex;
+flex-direction: column;
+
+}
+
+h1 {
+    text-decoration: underline;
     width: 100%;
-    height: 100vh;
+}
+
+.main {
+    flex-grow: 1;
     display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    margin-left: 2em;
 }
 
-.data-entry-container {
-    width: 80%;
-    max-width: 10%; /* Adjust the width as necessary */
-    /*background-color: #f4f4f4; /* Light grey background */
-    border-radius: 8px;
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-}
 .create-new {
-    margin-top: 20px;
-}
-
-.create-new label, .course-form label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.create-new select, .course-form input, .course-form select, .course-form textarea
-.service-role-form input, .service-role-form select, .service-role-form textarea {
-    width: auto;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-.course-form textarea,.service-role-form textarea {
-    height: 100px; /* Adjustable based on preference */
-}
-
-.assign-professors-button, .finish-button {
-    background-color: #4CAF50; /* Green background */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block;
     width: 100%;
-    margin-top: 10px;
+    font-size: x-large;
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
 }
-.assign-button, .finish-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block;
+
+#create-new-select {
+    margin-left: 0.5em;
+    padding: 0.5em;
+    font-size: large;
+    position: relative;
+    bottom: 0.3em;
+}
+
+.course-form, .service-role-form {
+    padding: 1em;
+    font-size: large;
+    width: 50em;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    border: 1px solid var(--black);
+    border-radius: 0.5em;
+    background-color: var(--darkerGrey);
+    align-items: flex-start;
+}
+
+.formInput {
+    margin-bottom: 0.5em;
     width: 100%;
-    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.formInput input, .formInput select {
+    margin-left: 0.5em;
+    position: relative;
+    bottom:0.1em;
+    height: 1.75em;
+    border: 1px solid var(--darkestGrey);
+    border-radius: 0.3em;
+}
+
+.departmentInput {
+    margin-top: 0.5em;
+    margin-bottom: 0.9em;
+}
+
+.titleInput input {
+    width: 50%;
+}
+
+.coursecodeInput {
+    margin-left: 1em;
+    position: relative;
+    bottom:0.1em;
+}
+
+.coursecodeInput input {
+    width: 25%;
+}
+
+#course-description, #service-role-description {
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-bottom: 1em;
+    width: 96%;
+    height: 8em;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    font-family: inherit;
+    resize:vertical;
+}
+
+
+.assign-button {
+    background-color: var(--darkestishGrey);
+    border: 1px solid var(--black);
+    color: var(--black);
+    
+    width: 18em;
+    text-align: left;
+    font-weight: normal;
+    font-size: large;
+    transition: background-color 0.1s;
+    margin: 1em 0 1em 0;
+}
+
+.assign-button:hover {
+    background-color: var(--darkestGrey);
+}
+
+.assign-button:hover > .plus {
+    background-color: var(--darkestestGrey);
+}
+
+.plus {
+    border: 1px solid var(--black);
+    padding: 0.5em 0.75em 0.5em 0.75em;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    background-color: var(--darkestGrey);
+    transition: background-color 0.1s;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.finish-button {
+    color: var(--black);
+    font-size: x-large;
+    background-color: var(--green);
+    align-self: center;
+    padding: 0.75em 3em 0.75em 3em;
+    transition: background-color 0.1s;
+    box-shadow: 0.25em 0.25em 0.5em var(--darkestGrey);
+    margin-top: 1em;
+    border-radius: 0.5em;
+}
+
+.finish-button:hover {
+    background-color: var(--darkGreen);
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }
