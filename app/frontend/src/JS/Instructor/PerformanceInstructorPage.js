@@ -64,7 +64,7 @@ function PerformanceInstructorPage() {
 		<div className="dashboard-container">
 			<CreateSidebar />
 
-			<div className="container">
+			<div className="container" id="info-test-content">
 				<CreateTopbar />
 				<div className="greeting">
 					<h1>Welcome {profile.name}, check out your performance!</h1>
