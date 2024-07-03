@@ -1,4 +1,4 @@
-## Wednesday (6/28/2024)
+## Friday (6/28/2024)
 
 ### Timesheet
 ![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/6.26-6.27/7.2.1.png)
