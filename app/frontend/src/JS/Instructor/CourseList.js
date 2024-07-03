@@ -6,9 +6,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
 import divisions from '../common/divisions.js';
 import axios from 'axios';
+import '../AuthContext.js';
+import { useAuth } from '../AuthContext.js';
 
 function CourseList() {
 
+  const { authToken } = useAuth();
   const params = new URLSearchParams(window.location.search);
   const divisionCode = params.get('division') || 'COSC'; 
 
@@ -21,36 +24,34 @@ function CourseList() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const fetchData = async() => {
-      let url;
-      switch (divisionCode) { //must be replace to API sent by be, its mock up data 
-        // data format is under pulbic path
-        case "COSC" :
-          url = 'http://localhost:3000/divisionCosc.json';
-          break;
-        case "MATH" :
-          url = 'http://localhost:3000/divisionMath.json';
-          break;
-        case "PHYS" :
-          url = 'http://localhost:3000/divisionPhys.json';
-          break;
-        case "STAT" :
-          url = 'http://localhost:3000/divisionStat.json';
-          break;
-        case "ALL" :
-          url = 'http://localhost:3000/divisionAll.json';
-          break;
-        default:
-          url = 'http://localhost:3000/divisionCosc.json';
+    const fetchCourses = async () => {
+      try {
+        if (!authToken) {
+          // Redirect to login if no token
+          navigate('/Login'); // Use your navigation mechanism
+          return;
+        }
+
+        // Fetch course data with Axios, adding token to header
+        const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`, {
+          headers: { Authorization: `Bearer ${authToken.token}` } 
+        });
+        const data = res.data;
+        console.log(data);
+        const filledCourses = fillEmptyCourses(data.courses, data.perPage);
+        setDivisionData({ ...data, courses: filledCourses});
+      } catch (error) {
+        // Handle 401 (Unauthorized) error and other errors
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('authToken'); // Clear invalid token
+          navigate('/Login'); 
+        } else {
+          console.error('Error fetching courses:', error);
+        }
       }
-      const res = await axios.get(url);
-      const data = res.data;
-      const filledCourses = fillEmptyCourses(data.courses, data.perPage);
-      setDivisionData({ ...data, courses: filledCourses});
-    }
-    fetchData();
-  }, [divisionCode]);
+    };
+    fetchCourses();
+  }, [authToken, divisionCode]); 
 
   const handlePageClick = (data) => {
     setDivisionData(prevState => ({
@@ -99,7 +100,7 @@ function CourseList() {
 
       <div className="main">
 
-        <header className='ListTitle'>
+        <header className='ListTitle' id="dropdown-test-content">
           <div className='ListTitle-text'>List of Courses</div>
           <select name="divisionCode" defaultValue={divisionCode} onChange={divisionHandler}>
             {divisions.map(division => { 
@@ -108,7 +109,7 @@ function CourseList() {
           </select>
         </header>
         
-        <div className="course-table">
+        <div className="course-table" id="course-test-content">
           <table>
 
             <thead>

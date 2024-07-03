@@ -7,6 +7,7 @@ INSERT INTO public."Division" ("divisionId", "dcode", "dname") VALUES
 
 -- Profile (add department staff and admin users)
 INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark") VALUES
+-- Instructors 
     -- COSC
     (1, 'John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 00000001, 15, 50),
     (2, 'Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 00000002, 8, 120),
@@ -38,7 +39,8 @@ INSERT INTO public."Profile" ("profileId", "firstName", "middleName", "lastName"
     (22, 'Adams', NULL, 'Chen', 'ayhchen@student.ubc.ca', '250-666-6665', NULL, NULL, NULL, NULL, 66666665, 0, 0),
     -- Non-UBC admin
     (23, 'Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, NULL, NULL, NULL, 0, 0),  
-    (24, 'Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0);   
+    (24, 'Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0);    
+
 -- Image 
 -- INSERT INTO Image (imageId, fileType, image_data) VALUES
 -- (1, 'jpg', '...'),
@@ -71,8 +73,6 @@ INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "is
 -- Inactive
 (4, 4, 'emily.davis@ubc.ca', 'p@55word', false),
 (24, 24, 'amelia.young@maintenance.ca', 'p@55word', false);
--- Person w/o account
-    -- Robert Brown (profileId=3)
 -- Person w/o account
     -- Robert Brown (profileId=3)
 
@@ -185,15 +185,52 @@ INSERT INTO public."ServiceRoleByYear" ("serviceRoleId", "year", "JANHour", "FEB
 
 -- ServiceRoleAssignment
 INSERT INTO public."ServiceRoleAssignment" ("profileId", "serviceRoleId", "year") VALUES
-(1, 2, 2023),
-(1, 2, 2024),
-(2, 5, 2023),
-(2, 3, 2024),
-(2, 7, 2024),
-(3, 1, 2024),
-(3, 5, 2024),
-(3, 4, 2023),
-(3, 8, 2023);;
+-- 2023
+(1, 3, 2023),       -- John Doe: Curriculum Committee (2023)
+(2, 2, 2023),       -- Jane Smith: Graduate Admissions (2023)
+(3, 1, 2023),       -- Robert Brown: Undergraduate Advisor (2023)
+(5, 8, 2023),       -- David Kim: Graduate Program Director (2023)
+(6, 6, 2023),       -- Sarah Chen: Curriculum Committee (2023)
+(7, 5, 2023),       -- Michael Nguyen: Undergraduate Advisor (2023)
+(8, 7, 2023),       -- Olivia Rodriguez: Graduate Admissions (2023)
+(9, 12, 2023),      -- Daniel Taylor: Graduate Program Director (2023)
+(10, 11, 2023),     -- Sophia Wilson: Graduate Admissions (2023)
+(11, 10, 2023),     -- William Anderson: Curriculum Committee (2023)
+-- 2024
+    -- John Doe
+    (1, 1, 2024),       -- John Doe: Undergraduate Advisor (2024)
+    (1, 17, 2024),      -- John Doe: Safety Committee Member (2024)
+    -- Jane Smith
+    (2, 3, 2024),       -- Jane Smith: Curriculum Committee (2024)
+    (2, 19, 2024),      -- Jane Smith: Seminar Series Organizer (2024)
+    -- Robert Brown 
+    (3, 2, 2024),       -- Robert Brown: Graduate Admissions (2024)
+    -- David Kim
+    (5, 5, 2024),       -- David Kim: Undergraduate Advisor (2024)
+    -- Sarah Chen
+    (6, 7, 2024),       -- Sarah Chen: Graduate Admissions (2024)
+    (6, 20, 2024),      -- Sarah Chen: Awards Committee Member (2024)
+    -- Michael Nguyen
+    (7, 6, 2024),       -- Michael Nguyen: Curriculum Committee (2024)
+    -- Olivia Rodriguez
+    (8, 8, 2024),       -- Olivia Rodriguez: Graduate Program Director (2024)
+    -- Daniel Taylor
+    (9, 10, 2024),      -- Daniel Taylor: Curriculum Committee (2024)
+    -- Sofia Wilson
+    (10, 9, 2024),      -- Sophia Wilson: Undergraduate Advisor (2024)
+    -- William Anderson
+    (11, 11, 2024),     -- William Anderson: Graduate Admissions (2024)
+    -- Aiden Moore
+    (12, 12, 2024),     -- Aiden Moore: Graduate Program Director (2024)
+    (12, 20, 2024),     -- Aiden Moore: Awards Committee Member (2024)
+    -- Ava Martinez
+    (14, 13, 2024),     -- Ava Martinez: Undergraduate Advisor (2024)
+    -- Ethan Anderson
+    (15, 15, 2024),     -- Ethan Anderson: Graduate Admissions (2024)
+    (15, 18, 2024),     -- Ethan Anderson: Equity, Diversity, and Inclusion Committee (2024)
+    -- Olivia Rodriguez:
+    (8, 21, 2024);      -- Olivia Rodriguez: Undergraduate Research Coordinator (2024)
+-- Note: Awards Committee Member (2024) is assigned to 2 people
 
 -- Course
 INSERT INTO public."Course" ("courseId", "ctitle", "description", "divisionId", "courseNum") VALUES
@@ -372,64 +409,71 @@ INSERT INTO public."CourseByTerm" ("courseId", "term") VALUES
 
 -- InstructorTeachingAssignment
 INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES
-(1, 1, '20231'),
-(1, 2, '20231'),
-(2, 4, '20244'),
-(2, 5, '20244'),
-(3, 9, '20244'),
-(2, 6, '20244'),    -- Jane Smith teaches Introduction to Data Analytics in 2024S1
-(3, 16, '20244'),   -- Robert Brown teaches Intro to Medical Imaging and Imaging Informatics in 2024S1
-(2, 25, '20244'),   -- Jane Smith teaches Network Science in 2024S1
-(12, 27, '20244'),  -- John Doe teaches Computer Vision in 2024S1
-(3, 15, '20244'),   -- Robert Brown teaches Learning Analytics in 2024W2
-(2, 23, '20244'),   -- Jane Smith teaches Introduction to Parallel Computing in 2024W2
-(12, 28, '20244'),  -- John Doe teaches Capstone Software Engineering Project in 2024W2
-(3, 24, '20244'),   -- Robert Brown teaches Computer Graphics in 2024W2
-(2, 20, '20244'),   -- Jane Smith teaches Database System Implementation in 2024W1
-(12, 21, '20244'),  -- John Doe teaches Modelling and Simulation in 2024W1
-(3, 12, '20244'),   -- Robert Brown teaches Analysis of Algorithms in 2024S2
-(2, 2, '20231'),    -- Jane Smith teaches Computer Programming II in 2024S2
-(12, 10, '20244'),  -- John Doe teaches Software Engineering in 2024S2
-(3, 11, '20244'),   -- Robert Brown teaches Introduction to Operating Systems in 2024S2
-(2, 26, '20243'),   -- Jane Smith teaches Advanced Human Computer Interaction in 2024S1
-(12, 18, '20244'),  -- John Doe teaches Image Processing and Applications in 2024W2
-(3, 7, '20244'),    -- Robert Brown teaches Numerical Analysis in 2024W1
-(2, 9, '20244'),    -- Jane Smith teaches Project Management in 2024W1
-(12, 17, '20244'),  -- John Doe teaches Human Computer Interaction in 2024W1
-(3, 13, '20244'),   -- Robert Brown teaches Introduction to Artificial Intelligence in 2024W1
-(5, 30,'20244'),
-(12,58,'20244'),
-(13,80,'20244');
+-- 2023W1
+(1, 1, 20231),  -- John Doe: Computer Programming I (2023W1)
+(2, 2, 20231),  -- Jane Allison Smith: Computer Programming II (2023W1)
+(3, 3, 20231),  -- Robert Brown: Machine Architecture (2023W1)
+(5, 29, 20231), -- David Kim: Integral Calculus with Applications to Physical Sciences and Engineering (2023W1)
+(9, 56, 20231), -- Daniel Taylor: Introductory Physics for the Physical Sciences I (2023W1)
+(10, 57, 20231),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences I (2023W1)
+(13, 79, 20231), -- Ava Martinez: Elementary Statistics (2023W1)
+-- 2023W2
+(6, 32, 20232), -- Sarah Lee Chen: Matrix Algebra (2023W2)
+(7, 40, 20232), -- Michael Nguyen: Introduction to Partial Differential Equations (2023W2)
+(11, 63, 20232),-- William Anderson: Intermediate Electricity and Magnetism (2023W2)
+(14, 83, 20232), -- Ava Martinez: Intermediate Probability (2023W2)
+-- 2023S1
+(8, 48, 20233), -- Olivia Marie Rodriguez: Differential Geometry (2023S1)
+(12, 72, 20233),-- Aiden Moore: Waves (2023S1)
+-- 2023S2
+(5, 51, 20234), -- David Kim: Real Analysis (2023S2)
+(9, 78, 20234), -- Daniel Taylor: Introduction to General Relativity (2023S2)
+-- 2024W1
+(6, 8, 20241),  -- Sarah Lee Chen: Introduction to Databases (2024W1)
+(7, 35, 20241), -- Michael Nguyen: Applied Linear Algebra (2024W1)
+(10, 66, 20241),-- Sophia Anne Wilson: Electricity and Magnetism (2024W1)
+(15, 87, 20241), -- Ethan Anderson: Environmetrics (2024W1)
+-- 2024W2
+(8, 45, 20242), -- Olivia Marie Rodriguez: Introduction to Dynamical Systems (2024W2)
+(11, 69, 20242),-- William Anderson: Introduction to Medical Physics (2024W2)
+-- 2024S1
+(5, 52, 20243), -- David Kim: Functional Analysis (2024S1)
+(12, 75, 20243),-- Aiden Moore: Introduction to Elementary Particles (2024S1)
+-- 2024S2
+    -- COSC 
+    (1, 6, 20244),  -- John Doe: Introduction to Data Analytics (2024S2)  
+    (2, 10, 20244), -- Jane Allison Smith: Software Engineering (2024S2)
+    (3, 11, 20244), -- Robert Brown: Introduction to Operating Systems (2024S2)
+    (1, 17, 20244), -- John Doe: Human Computer Interaction (2024S2)
+    (2, 18, 20244), -- Jane Allison Smith: Image Processing and Applications (2024S2)
+    (3, 19, 20244), -- Robert Brown: Web Programming (2024S2)
+    (1, 20, 20244), -- John Doe: Database System Implementation (2024S2)
+    (2, 22, 20244), -- Jane Allison Smith: Numerical Optimization (2024S2)
+    (3, 23, 20244), -- Robert Brown: Introduction to Parallel Computing (2024S2)
+    (1, 24, 20244), -- John Doe: Computer Graphics (2024S2)
+    (2, 25, 20244), -- Jane Allison Smith: Network Science (2024S2)
+    (1, 27, 20244), -- John Doe: Computer Vision (2024S2)
+    (2, 47, 20244), -- Jane Allison Smith: Complex Variables and Applications (2024S2)
+    -- MATH 
+    (6, 30, 20244), -- Sarah Lee Chen: Calculus III (2024S2)
+    (7, 31, 20244), -- Michael Nguyen: Mathematical Proof (2024S2)
+    (8, 33, 20244), -- Olivia Marie Rodriguez: Linear Algebra (2024S2)
+    (5, 34, 20244), -- David Kim: Introduction to Differential Equations (2024S2)
+    (6, 41, 20244), -- Sarah Lee Chen: Applied Abstract Algebra (2024S2)
+    -- PHYS 
+    (9, 58, 20244), -- Daniel Taylor: Introductory Physics for the Physical Sciences II (2024S2)
+    (10, 59, 20244),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences II (2024S2)
+    (11, 60, 20244),-- William Anderson: Relativity and Quanta (2024S2)
+    (7, 61, 20244), -- Michael Nguyen: Thermodynamics (2024S2) - also taught by Ava Martinez
+    (14, 61, 20244),-- Ava Martinez: Thermodynamics (2024S2) - also taught by Michael Nguyen
+    (12, 62, 20244),-- Aiden Moore: Mechanics I (2024S2)
+    (9, 67, 20244), -- Daniel Taylor: Introduction to Quantum Mechanics (2024S2) 
+    (10, 71, 20244),-- Sophia Anne Wilson: Environmental Physics (2024S2)
+    -- STAT 
+    (13, 80, 20244), -- Ava Martinez: Introduction to Probability (2024S2)
+    (14, 81, 20244); -- Ava Martinez: Introduction to Mathematical Statistics (2024S2)
+-- Note: Thermodynamics (2024S2) is taught by 2 people
 
--- SingleTeachingPerformance
--- (Assuming you have some way to calculate the score)
-INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score") VALUES
-(1, 1, '20231', 4.2),
-(2, 4, '20244', 4.5),
-(3, 9, '20244', 3.8),
-(2, 6, '20244', 4.3),    -- Jane Smith's performance in Introduction to Data Analytics
-(3, 16, '20244', 4.2),   -- Robert Brown's performance in Intro to Medical Imaging
-(2, 25, '20244', 3.8),   -- Jane Smith's performance in Network Science
-(12, 27, '20244', 4.1),  -- John Doe's performance in Computer Vision
-(3, 15, '20244', 4.4),   -- Robert Brown's performance in Learning Analytics
-(2, 23, '20244', 3.9),   -- Jane Smith's performance in Introduction to Parallel Computing
-(12, 28, '20244', 4.6),  -- John Doe's performance in Capstone Software Engineering Project
-(3, 24, '20244', 3.7),   -- Robert Brown's performance in Computer Graphics
-(2, 20, '20244', 4.0),   -- Jane Smith's performance in Database System Implementation
-(12, 21, '20244', 4.5),  -- John Doe's performance in Modelling and Simulation
-(3, 12, '20244', 4.2),   -- Robert Brown's performance in Analysis of Algorithms
-(2, 2, '20231', 4.1),    -- Jane Smith's performance in Computer Programming II
-(12, 10, '20244', 3.6),  -- John Doe's performance in Software Engineering
-(3, 11, '20244', 4.3),   -- Robert Brown's performance in Introduction to Operating Systems
-(2, 26, '20243', 4.0),   -- Jane Smith's performance in Advanced Human Computer Interaction
-(12, 18, '20244', 4.2),  -- John Doe's performance in Image Processing
-(3, 7, '20244', 4.0),    -- Robert Brown's performance in Numerical Analysis
-(2, 9, '20244', 4.5),    -- Jane Smith's performance in Project Management
-(12, 17, '20244', 3.9),  -- John Doe's performance in Human Computer Interaction
-(3, 13, '20244', 4.4),   -- Robert Brown's performance in Artificial Intelligence
-(5, 30,'20244',4.5),
-(12,58,'20244',4.6),
-(13,80,'20244',4.6);
 -- SurveyType (Assuming 1=SEI)
 INSERT INTO public."SurveyType" ("surveyTypeId", "surveyType") VALUES
 (1, 'SEI');
@@ -445,10 +489,15 @@ INSERT INTO public."SurveyQuestion" ("surveyTypeId", "surveyQuestionId", "descri
 
 -- SurveyQuestionResponse (Sample responses for John Doe's Calculus I)
 INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId", "courseId", "term", "profileId", "studentId", "response") VALUES
-(1, 1, 1, '20231', 1, 55555555, '4'),  -- Rating scale 1-5
-(1, 2, 1, '20231', 1, 55555555, '5'),
-(1, 2, 1, '20231', 1, 55555555, '5'),
-(1, 3, 1, '20231', 1, 55555555, '3'),
-(1, 4, 1, '20231', 1, 55555555, '4'),
-(1, 5, 1, '20231', 1, 55555555, '4'),
-(1, 6, 1, '20231', 1, 55555555, '4');
+(1, 1, 75, 20243, 12, 55555555, '4'),  -- Rating scale 1-5
+(1, 2, 75, 20243, 12, 55555555, '5'),
+(1, 3, 75, 20243, 12, 55555555, '3'),
+(1, 4, 75, 20243, 12, 55555555, '4'),
+(1, 5, 75, 20243, 12, 55555555, '4'),
+(1, 6, 75, 20243, 12, 55555555, 'Agree');
+
+-- SingleTeachingPerformance
+-- (Assuming you have some way to calculate the score)
+INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score")
+SELECT "profileId", "courseId", "term", (random() * 99 + 1) -- Random score between 1.0 and 100.0
+FROM public."InstructorTeachingAssignment";
