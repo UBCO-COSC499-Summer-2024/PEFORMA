@@ -90,7 +90,7 @@ function DeptCourseList() {
     <div className='container'>
       <CreateTopSearchBarDept onSearch={handleSearchChange}/>
 
-      <div className='main'>
+      <div className='main' id='dept-course-list-test-content'>
 
         <div className='subtitle-course'>List of Course Lists ({deptCourseList.coursesCount} Active) </div>
 
