@@ -77,7 +77,7 @@ describe('DeptCourseList', () => {
     expect(element).toHaveTextContent("Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.");
     expect(element).toHaveTextContent("description testing");
 
-  })
+  });
   test('Check if pagination exists', async() => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
 
@@ -106,7 +106,7 @@ describe('DeptCourseList', () => {
   test('Test prev button in pagination', async() => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
 
-    const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a');;
+    const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a');
     fireEvent.click(prevPageButton);
 
     await waitFor(() => { // now show page 1 again
@@ -153,6 +153,6 @@ describe('DeptCourseList', () => {
       expect(element).not.toHaveTextContent('Elementary Statistics');
 
       expect(element).not.toHaveTextContent('RANDOM VALUE');
-    })
-  })
+    });
+  });
 });
