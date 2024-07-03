@@ -2,8 +2,8 @@ const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const courseHistoryRoutes = require('../routes/courseHistoryRoutes');
-const courseHistoryController = require('../controllers/courseHistoryController');
+const courseHistoryRoutes = require('../../app/backend/routes/courseHistoryRoutes');
+const courseHistoryController = require('../../app/backend/controllers/courseHistoryController');
 
 const app = express();
 app.use(cors());
@@ -50,7 +50,7 @@ describe('GET /api/courseHistory', () => {
 
         const courseId = 1;  // 
         const response = await request(app).get(`/api/courseHistory?courseId=${courseId}`);
-        console.log(response.body); // See what the actual response is
+        console.log(response.body); 
         expect(response.status).toBe(200);
         expect(response.body).toEqual(mockProfile);
     });
