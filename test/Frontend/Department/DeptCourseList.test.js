@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptCourseList from '../../../app/frontend/src/JS/Department/DeptCourseList';
 import {MemoryRouter} from "react-router-dom";
@@ -29,7 +29,7 @@ describe('DeptCourseList', () => {
             { "id": 8, "courseCode": "PHYS 205", "title": "Introduction to Mathematical Statistics","description":"description testing"},
             { "id": 9, "courseCode": "PHYS 400", "title": "Statistical Communication and Consulting", "description":"description testing"},
             { "id": 10, "courseCode": "COSC 341", "title": "Human computer Interaction","description":"description testing"},
-            { "id": 11, "courseCode": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering","description":"description testing"},
+            { "id": 11, "courseCode": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering","description":"MATH IS MATH"},
             { "id": 12, "courseCode": "TEST 17", "title": "Testing 123","description":"description testing"},
           ]
         }
@@ -67,5 +67,49 @@ describe('DeptCourseList', () => {
     expect(element).toHaveTextContent("Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.");
     expect(element).toHaveTextContent("description testing");
 
+  })
+  test('Check if pagination exists', async() => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+
+    const paginationElement = element.querySelector('.pagination'); 
+    expect(paginationElement).toBeInTheDocument();
+  });
+  test('Test next button in pagination', async() => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+
+    const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');
+    fireEvent.click(nextPageButton);
+
+    await waitFor(() => { // now show only page 2 contents
+      expect(element).toHaveTextContent("MATH 100");
+      expect(element).toHaveTextContent("TEST 17");
+
+      // cosc 111 is in first page, so not.toHaveTextContext
+      expect(element).not.toHaveTextContent("COSC 111"); 
+
+      expect(element).toHaveTextContent("MATH IS MATH");
+      expect(element).toHaveTextContent("Differential Calculus with Applications to Physical Sciences and Engineering");
+      expect(element).toHaveTextContent("Testing 123");
+      expect(element).toHaveTextContent("description testing");
+    });
+  });
+  test('Test prev button in pagination', async() => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+
+    const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a');;
+    fireEvent.click(prevPageButton);
+
+    await waitFor(() => { // now show page 1 again
+      expect(element).toHaveTextContent("COSC 304");
+      expect(element).toHaveTextContent("PHYS 205");
+
+      // MATH 100 is in page 2, so not.toHaveTextContext
+      expect(element).not.toHaveTextContent("MATH 100"); 
+
+      expect(element).toHaveTextContent("Introduction to Database");
+      expect(element).toHaveTextContent("Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.");
+      expect(element).toHaveTextContent("Introduction to Mathematical Statistics");
+      expect(element).toHaveTextContent("description testing");
+    });
   })
 });
