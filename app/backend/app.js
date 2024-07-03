@@ -23,7 +23,7 @@ const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
 const courseRoutes = require('./routes/courses.js');  
-
+const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
@@ -54,9 +54,17 @@ app.use('/api/deptPerformance',DeptPerformanceRouter);
 app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
 app.use('/api/progressRoutes',progressRoutes);
 
-// Service role retrieval process
+// Course list retrieval process
 app.use('/api/courses', courseRoutes);
+
+app.use('/api/all-courses', allCoursesRoutes);
+
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
+
+
 app.use('/api/courseHistory',courseHistoryRouter);
+
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
@@ -83,9 +91,6 @@ app.post('/create-account', async (req, res) => {
 app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
-
-// Service role retrieval process
-app.use('/api/service-roles', serviceRoleRoutes);
 
 
 
