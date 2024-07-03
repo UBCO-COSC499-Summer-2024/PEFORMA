@@ -72,7 +72,7 @@ describe('GoodBadBoard', () => {
     expect(element).not.toHaveTextContent("John"); 
 	});
 
-  test('Testing clicking bottom button to render top people list', async () => {
+  test('Testing clicking top button to render top people list', async () => {
     const topButton = screen.getByRole('button', { name: 'Top' });
     userEvent.click(topButton)
 
