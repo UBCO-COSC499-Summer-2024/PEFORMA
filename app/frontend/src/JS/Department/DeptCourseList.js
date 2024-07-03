@@ -85,12 +85,12 @@ function DeptCourseList() {
 
   return (
 
-    <div className="dashboard">  
+    <div className="dashboard" id='dept-course-list-test-content'>  
     <CreateSidebarDept />
     <div className='container'>
       <CreateTopSearchBarDept onSearch={handleSearchChange}/>
 
-      <div className='main' id='dept-course-list-test-content'>
+      <div className='main'>
 
         <div className='subtitle-course'>List of Course Lists ({deptCourseList.coursesCount} Active) </div>
 

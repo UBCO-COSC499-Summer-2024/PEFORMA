@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptCourseList from '../../../app/frontend/src/JS/Department/DeptCourseList';
 import {MemoryRouter} from "react-router-dom";
@@ -7,6 +7,16 @@ import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/commonImports', () => ({
+  __esModule: true,
+  CreateSidebarDept: () => <div>Mock Sidebar</div>,
+  CreateTopSearchBarDept: jest.fn(({ onSearch }) => (
+    <div className="topbar-search">
+      <input type="text" placeholder="Search by Subject and Title" onChange={e => onSearch(e.target.value)} />
+      <div className="logout">Logout</div>
+    </div>
+  )),
+}));
 
 describe('DeptCourseList', () => {
   let element; 
@@ -61,7 +71,7 @@ describe('DeptCourseList', () => {
     expect(element).toHaveTextContent("Computer Creativity");
     expect(element).toHaveTextContent("Elementary Statistics");
     
-    // randome words that is not in mock data, expecting not to show up
+    // random words that is not in mock data, expecting not to show up
     expect(element).not.toHaveTextContent("Some random test that should not be in")
 
     expect(element).toHaveTextContent("Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.");
@@ -111,5 +121,11 @@ describe('DeptCourseList', () => {
       expect(element).toHaveTextContent("Introduction to Mathematical Statistics");
       expect(element).toHaveTextContent("description testing");
     });
-  })
+  });
+  test('Check if search bar exists', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+
+    const searchInput = screen.getByPlaceholderText('Search by Subject and Title'); 
+    expect(searchInput).toBeInTheDocument();
+  });
 });
