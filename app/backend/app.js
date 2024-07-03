@@ -68,6 +68,7 @@ app.use('/api/courseHistory',courseHistoryRouter);
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
+app.use('/api/service-roles',serviceRoleRoutes);
 //reset password
 //app.use('/api',ResetPassword);
 
