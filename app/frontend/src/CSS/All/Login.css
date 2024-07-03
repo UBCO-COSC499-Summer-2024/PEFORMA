@@ -8,16 +8,19 @@
   
   .login-header {
     
-    background-color: var(--sidebarColor); /* Top header line color */
-    color: var(--white);
     display: flex;
     justify-content: space-between;
-    padding: 0.5em 1em 0.5em 1em;
-    
+    height: 5em;
+    background-color: var(--sidebarColor);
+    border-radius: 0.2em;
   }
   
   .logo, nav a {
-    
+    font-size: 1.75em;
+   
+    margin-left: 1em;
+    line-height: 3.5em;
+    height:100%;
     color: var(--white); /* white color for support and login text */
     text-decoration: none; /* remove underline */
   }
@@ -26,6 +29,12 @@
     border-radius: 1em;
     display: flex;
     justify-content: center;
+  }
+
+  .login-form-container h1 {
+    text-align: center;
+    position: relative;
+    bottom: 0.5em;
   }
   
   form {
@@ -66,6 +75,7 @@
     width: 75%;
     font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.1s;
   }
   
   a {
