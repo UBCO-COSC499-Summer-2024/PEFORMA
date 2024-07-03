@@ -12,7 +12,7 @@
   * #2: Make system clean and connected all
 
 
-### Progress Update (since 6/21/2024)
+### Progress Update (since 6/28/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
