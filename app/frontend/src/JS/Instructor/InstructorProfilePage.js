@@ -13,8 +13,6 @@ function InstructorProfilePage() {
   const initProfile = { roles: [], teachingAssignments: [] };
   const [profile, setProfile] = useState(initProfile);
 
-
-	console.log(accountType);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,7 +29,6 @@ function InstructorProfilePage() {
           params: {ubcid:ubcid }, // Add ubcid as query parameter
           headers: { Authorization: `Bearer ${authToken.token}` }
         });
-        console.log(response);
 
         if (response.data) {
           setProfile(response.data);
@@ -67,9 +64,9 @@ function InstructorProfilePage() {
             <p><strong>Email:</strong> {profile.email}</p>
             <p><strong>Office Location:</strong> {profile.office}</p>
             <p><strong>Teaching Assignments:</strong> 
-              {profile.teachingAssignments.map(teachingAssign => (
-              <a href='{teachingAssign.link}'> {teachingAssign.assign}</a>
-              )).reduce((prev, curr) => [prev, ', ', curr],[])}
+            {profile.teachingAssignments.map((teachingAssign, index) => (
+                <a key={index} href={teachingAssign.link}> {teachingAssign.assign}</a>
+              )).reduce((prev, curr) => [prev, ', ', curr], [])}
             </p>
           </section>
         </div>

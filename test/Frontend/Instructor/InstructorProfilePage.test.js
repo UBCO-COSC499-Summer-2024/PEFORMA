@@ -8,6 +8,15 @@ import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/AuthContext');
 
+beforeAll(() => {
+	global.alert = jest.fn();
+});
+
+afterAll(() => {
+	jest.restoreAllMocks();
+});
+
+
 describe('InstructorProfilePage', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
