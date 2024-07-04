@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../CSS/Instructor/Dashboard.css';
 import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 import divisions from '../common/divisions.js';
@@ -9,14 +9,30 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Dashboard() {
-	const { profileId } = useAuth();
-  const { authToken } = useAuth();
+	const { profileId, accountType, authToken } = useAuth();
   const navigate = useNavigate();
 
-  if (!authToken) {
-    navigate('/Login');
-    return;
-  }
+  useEffect(() => {
+		const checkAuth = async () => {
+			if (!authToken) {
+				navigate('/Login');
+				return;
+			}
+			try {
+				const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
+			} catch (error) {
+				console.error("Failed to fetch account type", error);
+				navigate('/Login');
+			}
+		};
+
+		checkAuth();
+	}, [authToken, accountType, navigate]);
+
   return (
     <div className="dashboard">
       <CreateSidebar />

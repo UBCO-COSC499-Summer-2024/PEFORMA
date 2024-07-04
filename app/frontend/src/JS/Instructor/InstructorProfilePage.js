@@ -9,10 +9,12 @@ function InstructorProfilePage() {
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
   const ubcid = params.get('ubcid');
-  const { authToken } = useAuth();
+  const { authToken, accountType } = useAuth();
   const initProfile = { roles: [], teachingAssignments: [] };
   const [profile, setProfile] = useState(initProfile);
 
+
+	console.log(accountType);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,6 +22,11 @@ function InstructorProfilePage() {
           navigate('/Login');
           return;
         }
+        const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
         const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
           params: {ubcid:ubcid }, // Add ubcid as query parameter
           headers: { Authorization: `Bearer ${authToken.token}` }

@@ -13,8 +13,7 @@ import { useAuth } from '../AuthContext';
 
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
-	const { authToken } = useAuth();
-	const { profileId } = useAuth();
+	const { authToken, accountType, profileId} = useAuth();
 
 	const initProfile = {
 		roles: [],
@@ -32,6 +31,11 @@ function PerformanceInstructorPage() {
 			  navigate('/Login');
 			  return;
 			}
+			const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
 			const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
 			  params: { 
 					profileId:profileId, currentMonth:currentMonth 

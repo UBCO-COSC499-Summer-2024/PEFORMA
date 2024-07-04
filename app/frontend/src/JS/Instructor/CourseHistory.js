@@ -14,7 +14,7 @@ function CourseHistory() {
 
   const [historyData, setHistoryData] = useState({"history":[{}], entryCount:0, perPage: 10, currentPage: 1});
   const navigate = useNavigate();
-  const { authToken } = useAuth();
+  const { authToken, accountType } = useAuth();
 
   useEffect(() => {
     const fetchData = async() => {
@@ -22,6 +22,11 @@ function CourseHistory() {
         navigate('/Login');
         return;
       }
+      const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
       const url = "http://localhost:3000/courseHistory.json";
       const res = await axios.get(url);
       const data = res.data;
