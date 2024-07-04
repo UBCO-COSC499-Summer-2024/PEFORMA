@@ -17,23 +17,23 @@ export const AuthProvider = ({ children }) => {
         const tokenString = JSON.stringify(token);
         //alert(`expire time: ${expiresIn}`);
         setAuthToken(token);
-        setProfileId(profileId)
-        setAccountType(accountType)
+        setProfileId(profileId);
+        setAccountType(accountType);
         localStorage.setItem('authToken', tokenString);
-        localStorage.setItem('profileId', profileId)
-        localStorage.setItem('accountType', accountType)
+        localStorage.setItem('profileId', profileId);
+        localStorage.setItem('accountType', accountType);
 
         setTimeout( () => {
             alert('Session about to expire.');
             logout();
             navigate('/HomePage');},
-            (expiresIn - 60) * 10000)
+            (expiresIn - 60) * 10000);
             //kick off 1 min before expire.. 60 * 1000ms = 60s
     };
 
     const logout = () => {
         setAuthToken(null);
-        setProfileId(null)
+        setProfileId(null);
         localStorage.removeItem('authToken');
         localStorage.removeItem('profileId');
         localStorage.removeItem('accountType');
