@@ -5,19 +5,36 @@ on:
     pull_request:
 
 jobs:
-    test:
+    backend-test:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
 
-            - name: install Node.js
+            - name: Install Node.js
               uses: actions/setup-node@v4
               with:
                 node-version: '20'
 
-            - name: install dependencies
-              run: npm install
+            - name: Install backend dependencies
+              run: cd app/backend && npm install
 
-            - name: run tests
-              run: npm test
+            - name: Run backend tests
+              run: cd app/backend && npm test
+
+    frontend-test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: '20'
+
+            - name: Install frontend dependencies
+              run: cd app/frontend && npm install
+
+            - name: Run frontend tests
+              run: cd app/frontend && npm test
+
               
