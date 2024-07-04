@@ -1,6 +1,6 @@
 import {render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import HomePage from '../../../app/frontend/src/JS/All/HomePage';
+import HomePage from '../../src/JS/All/HomePage';
 import {MemoryRouter} from "react-router-dom";
 
 test('Ensure that homepage renders', async () => {
