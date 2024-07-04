@@ -18,6 +18,11 @@ jobs:
             - name: install dependencies
               run: npm install
 
+            - name: install dependencies BE
+              run: cd app/backend
+                   npm install
+                   cd ../
+
             - name: run tests
               run: npm test
-              
+
