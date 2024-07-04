@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
             alert('Session about to expire.');
             logout();
             navigate('/HomePage');},
-            (expiresIn - 60) * 10000)
+            (expiresIn - 60) * 20000)
             //kick off 1 min before expire.. 60 * 1000ms = 60s
     };
 

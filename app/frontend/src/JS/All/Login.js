@@ -35,19 +35,20 @@ function Login() {
             const accountType = accountTypeResponse.data.accountType;
             alert(`Log in as account type: ${accountType}`);
             switch (accountType) {
-              /*
-              case 'admin':
-                navigate('/adminDashboard', { replace: true });
+              
+              case 1:
+                navigate('/DeptDashboard', { replace: true });
                 break;
-              case 'user':
-                navigate('/userDashboard', { replace: true });
+              case 2:
+                navigate('/DeptDashboard', { replace: true });
                 break;
-              case 'guest':
-                navigate('/guestDashboard', { replace: true });
+              case 3:
+                navigate('/PerformanceInstructorPage', { replace: true });
                 break;
-              */
+              case 4:
+                navigate('/adminDashboard', { replace: true});
               default:
-                navigate('/Dashboard', { replace: true });
+                navigate('/Login', { replace: true });
             }
           } else {
             alert('Failed to get account type');
