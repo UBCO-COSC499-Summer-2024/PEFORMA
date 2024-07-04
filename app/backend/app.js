@@ -52,7 +52,7 @@ app.use('/api/instructorProfile',profileRoutes);
 
 
 //Performance BE
-app.use('/api/workingHoursRoutes',workingHoursRoutes);
+// app.use('/api/workingHoursRoutes',workingHoursRoutes);
 app.use('/api/deptPerformance',DeptPerformanceRouter);
 app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
 app.use('/api/progressRoutes',progressRoutes);
