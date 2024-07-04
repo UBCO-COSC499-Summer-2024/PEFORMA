@@ -16,6 +16,7 @@ jest.mock('react-apexcharts', () => ({
 describe('LeaderBoard', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
+			accountType: { accountType: 'mocked-accountType' },
 			authToken: { token: 'mocked-token' },
 		});
 	});

@@ -11,6 +11,7 @@ jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/AuthContext');
 useAuth.mockReturnValue({
   authToken: { token: 'mocked-token' },
+  accountType: { accountType: 'mocked-accountType' },
 });
 
 axios.get.mockImplementation((url) => {

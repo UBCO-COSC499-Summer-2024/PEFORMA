@@ -8,10 +8,20 @@ import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/AuthContext');
 
+beforeAll(() => {
+	global.alert = jest.fn();
+});
+
+afterAll(() => {
+	jest.restoreAllMocks();
+});
+
+
 describe('InstructorProfilePage', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
+			accountType: { accountType: 'mocked-accountType' },
 		});
 	});
 
@@ -40,7 +50,7 @@ describe('InstructorProfilePage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
 
     const element = document.getElementById('text-content');
 

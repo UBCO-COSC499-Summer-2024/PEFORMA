@@ -14,6 +14,7 @@ describe('CourseList', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
+      accountType: { accountType: 'mocked-accountType' },
 		});
     axios.get.mockImplementation(() => 
 			Promise.resolve({
