@@ -4,8 +4,14 @@ import userEvent from '@testing-library/user-event';
 import DataEntry from '../../../app/frontend/src/JS/Department/DataEntry';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
+import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 
 jest.mock('axios');
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+useAuth.mockReturnValue({
+  profileId: { profileId: 'mocked-profileId'},
+});
+
 axios.get.mockResolvedValue({"data":{"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1}});
 
 test('Checks if form appears properly', async () => {

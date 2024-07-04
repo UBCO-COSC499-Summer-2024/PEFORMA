@@ -37,10 +37,10 @@ function Login() {
             switch (accountType) {
               
               case 1:
-                navigate('/DeptDashboard', { replace: true });
+                navigate(`/PerformanceDepartmentPage?profileId=${response.data.profileId}`, { replace: true });
                 break;
               case 2:
-                navigate('/DeptDashboard', { replace: true });
+                navigate(`/PerformanceDepartmentPage?profileId=${response.data.profileId}`, { replace: true });
                 break;
               case 3:
                 navigate(`/PerformanceInstructorPage?profileId=${response.data.profileId}`, { replace: true });

@@ -5,6 +5,10 @@ import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+useAuth.mockReturnValue({
+  profileId: { profileId: 'mocked-profileId'},
+});
 
 jest.mock('axios');
 axios.get.mockResolvedValue({"data":{"history":[{}], entryCount:0, perPage: 10, currentPage: 1}});
