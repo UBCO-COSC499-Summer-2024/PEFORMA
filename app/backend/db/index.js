@@ -9,7 +9,7 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT || 5432,  
 });
-
+/*
 pool.connect((err) => {
     if (err) {
       console.log('Database connection error', err.stack);
@@ -17,5 +17,5 @@ pool.connect((err) => {
       console.log('Database connected successfully.');
     }
   });
-  
+  */
   module.exports = pool;
