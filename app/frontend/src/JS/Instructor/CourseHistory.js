@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
+import CreateSidebar from '../commonImports.js';
+import { CreateTopbar } from '../commonImports.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/CourseInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 
 function CourseHistory() {
 
-const [historyData, setHistoryData] = useState({"history":[{}], entryCount:0, perPage: 10, currentPage: 1});
+  const [historyData, setHistoryData] = useState({"history":[{}], entryCount:0, perPage: 10, currentPage: 1});
+  const navigate = useNavigate();
+  const { authToken } = useAuth();
 
   useEffect(() => {
     const fetchData = async() => {
+      if (!authToken) {
+        navigate('/Login');
+        return;
+      }
       const url = "http://localhost:3000/courseHistory.json";
       const res = await axios.get(url);
       const data = res.data;
@@ -59,7 +68,7 @@ const currentEntries = historyData.history.slice(
   return (
 
     <div className="dashboard coursehistory">  
-    <CreateSidebarDept />
+    <CreateSidebar />
     <div className='container'>
       <CreateTopbar />
 
