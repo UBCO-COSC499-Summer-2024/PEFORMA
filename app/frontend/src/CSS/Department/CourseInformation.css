@@ -99,10 +99,12 @@
     justify-content: center;
 }
 
+
 .coursehistory .pagination li.active a {
     background-color: var(--blue);
     color: white;
   }
+
 
  .coursehistory .pagination li a {
     padding: 0.5em 1em;
