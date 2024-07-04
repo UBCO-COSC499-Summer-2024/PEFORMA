@@ -1,4 +1,4 @@
-import { FaHome, FaSmile, FaChartLine} from 'react-icons/fa';
+import { FaHome, FaChartLine} from 'react-icons/fa';
 
 function Sidebar() { 
     return(

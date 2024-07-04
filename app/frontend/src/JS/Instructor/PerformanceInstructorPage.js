@@ -13,9 +13,6 @@ import { useAuth } from '../AuthContext';
 
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
-	//const params = new URLSearchParams(window.location.search);
-	//const ubcid = params.get('ubcid');
-	//console.log("UBC ID initialized: ",ubcid);
 	const { authToken } = useAuth();
 	const { profileId } = useAuth();
 

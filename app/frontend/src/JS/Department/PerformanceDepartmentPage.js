@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import '../../CSS/Department/PerformanceDepartmentPage.css';
 import { CreateSidebarDept,CreateTopbar } from '../commonImports.js';
 import  CoscTable  from './PerformanceImports/CoscTable.js';
