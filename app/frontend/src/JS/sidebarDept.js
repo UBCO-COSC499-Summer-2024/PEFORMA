@@ -1,9 +1,7 @@
 import { FaHome, FaUser, FaSuitcase, FaPaperclip, FaBook, FaChartLine} from 'react-icons/fa';
-import { useAuth } from './AuthContext';
 import { Link } from 'react-router-dom';
 
 function Sidebar() { 
-  // const { profileId } = useAuth();
     return(
       <aside className="sidebar">
       <h2>PEFORMA</h2>
