@@ -42,10 +42,6 @@ function DataEntryComponent() {
     useEffect(() => {
         const fetchData = async() => {           
           try {
-                if (!authToken) {
-                  navigate('/Login');
-                  return;
-                }
                 const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN; // 使用本地存储中的令牌或默认令牌
                 const url = "http://localhost:3001/api/instructors";
                 const res = await axios.get(url, {
