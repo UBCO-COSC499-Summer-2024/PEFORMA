@@ -20,4 +20,9 @@ jobs:
 
             - name: run tests
               run: npm test
-              
+
+            - name: test backend only
+              run: cd app/backend
+                   npm install
+                   npm test
+            
