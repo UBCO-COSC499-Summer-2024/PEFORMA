@@ -22,9 +22,16 @@ const progressRoutes = require('./routes/progressRoutes');
 const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
-const courseRoutes = require('./routes/courses.js');  
 const instructorFetch = require('./routes/instructorFetch.js');
+const courseRoutes = require('./routes/courses.js');  
+const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
+const benchmark = require('./routes/benchmark.js');
+const deptLeaderBoard = require('./routes/deptLeaderboard.js');
+const coursePerformance = require('./routes/coursePerformance.js');
 
+
+const courseHistoryRouter = require('./routes/courseHistoryRoutes');
+const roleInfoRoutes = require('./routes/roleInfoRoutes');
 const app = express();
 
 app.use(express.json());
@@ -43,8 +50,32 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
+
+//Performance BE
+app.use('/api/workingHoursRoutes',workingHoursRoutes);
+app.use('/api/deptPerformance',DeptPerformanceRouter);
+app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
+app.use('/api/progressRoutes',progressRoutes);
+
+// Course list retrieval process
+app.use('/api/courses', courseRoutes);
+
+app.use('/api/all-courses', allCoursesRoutes);
+
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
+
+
+app.use('/api/courseHistory',courseHistoryRouter);
+
+app.use('/api/benchmark', benchmark);
+app.use('/api/deptLeaderBoard',deptLeaderBoard);
+app.use('/api/coursePerformance',coursePerformance);
+app.use('/api/service-roles',serviceRoleRoutes);
+
 //reset password
 //app.use('/api',ResetPassword);
+app.use('/api/roleInfo', roleInfoRoutes);
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
@@ -69,6 +100,7 @@ app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
 
+
 //Profile BE
 app.use('/api/workingHoursRoutes',workingHoursRoutes);
 app.use('/api/deptPerformance',DeptPerformanceRouter);
@@ -80,6 +112,7 @@ app.use('/api/progressRoutes',progressRoutes);
 //app.use('/api/instructorPerformance',performanceRoutes);
 // Service role retrieval process
 app.use('/api/service-roles', serviceRoleRoutes);
+
 
 
     try {
@@ -96,10 +129,14 @@ app.use('/api/service-roles', serviceRoleRoutes);
 });
 
 
+
+
+console.log('after');
 });
 */
 
 app.use('/api',instructorFetch);
+
 
 const port = 3001;
 app.listen(port, () => {

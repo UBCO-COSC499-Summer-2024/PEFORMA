@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 import axios from 'axios';
+import { useAuth } from '../../AuthContext';
 
 function GoodBadBoard() {
-
+  const { authToken } = useAuth();
   const[topInstructors, setTopInstructors] = useState([]);
   const[bottomInstructors, setBottomInstructors] = useState([]);
   const[instructors, setInstructors] = useState([]);
@@ -11,8 +12,9 @@ function GoodBadBoard() {
   useEffect(() => {
     const fetchData = async() => {
       try {
-        const url = "http://localhost:3000/topbottom.json";
-        const res = await axios.get(url);
+        const res = await axios.get(`http://localhost:3001/api/deptLeaderBoard`, {
+          headers: { Authorization: `Bearer ${authToken.token}` }
+        });
         const sortedTop = res.data.top.sort((a, b) => b.score - a.score);
         const sortedBottom = res.data.bottom.sort((a, b) => a.score - b.score);
         setTopInstructors(sortedTop);

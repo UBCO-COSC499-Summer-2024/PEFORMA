@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 import axios from 'axios';
+import { useAuth } from '../../AuthContext';
+
 
 function CoscTable() {
+  const { authToken } = useAuth();
 
   const [courses,setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
@@ -10,8 +13,10 @@ function CoscTable() {
   useEffect(() => {
     const fetchData = async() => {
       try {
-        const url = "http://localhost:3000/coscDeptP.json";
-        const res = await axios.get(url);
+        const res = await axios.get(`http://localhost:3001/api/coursePerformance`, {
+          params: {divisionId: 1},
+          headers: { Authorization: `Bearer ${authToken.token}` }
+        });
         const sortedCourses = res.data.courses.sort((a, b) => b.score - a.score);
         setCourses(sortedCourses);
         setFilteredCourses(sortedCourses);
