@@ -41,7 +41,7 @@ async function saveDataToDatabase(data) {
             }
             console.log("Assign prof to service role success.");
         } catch (error) {
-            console.error('Error inserting service role:', error.message);
+            console.log('Error inserting service role:', error.message);
             await pool.query('ROLLBACK');
         }
     }else{
