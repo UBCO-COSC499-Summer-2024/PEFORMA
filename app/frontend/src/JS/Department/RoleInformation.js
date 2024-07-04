@@ -1,24 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {CreateSidebarDept, CreateTopbar } from '../commonImports.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/RoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import AssignInstructorsModal from '../assignInstructorsModal.js';
+
+import { useAuth } from '../AuthContext';
+
 
 
 function RoleInformation() {
-
+const { authToken } = useAuth();
 const [roleData, setRoleData] = useState({"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1});
 const [search, setSearch] = useState('');
 
+const [instructorData, setInstructorData] = useState({"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1});
+const [showInstructorModal, setShowInstructorModal] = useState(false);
+
+const params = new URLSearchParams(window.location.search);
+const serviceRoleId = params.get('roleid');
+
+
   useEffect(() => {
     const fetchData = async() => {
-      const url = "http://localhost:3000/assignees.json";
-      const res = await axios.get(url);
+      const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
+        params: {serviceRoleId: serviceRoleId},
+        headers: { Authorization: `Bearer ${authToken.token}` }
+      });
       const data = res.data;
       const filledAssignees = fillEmptyAssignees(data.assignees, data.perPage);
       setRoleData({ ...data, assignees: filledAssignees });
+
+      const url2 = "http://localhost:3000/assignInstructors.json"; // Gets from temporary JSON file. Should be replaced with backend.
+          const res2 = await axios.get(url2);
+          const data2 = res2.data;
+          const filledInstructors = fillEmptyAssignees(data2.instructors, data2.perPage);
+          setInstructorData({ ...data2, instructors: filledInstructors });
     }
     fetchData();
   }, []);
@@ -49,7 +68,48 @@ const [search, setSearch] = useState('');
     }))
   };
 
+  const prevInstructors = useRef({});
 
+  const handleShowInstructorModal = () => {
+
+      prevInstructors.current = JSON.stringify(instructorData);
+      setShowInstructorModal(true);
+  };
+
+
+  const handleCloseInstructorModal = (save) => {
+      if (!save) {
+          if (window.confirm("If you exit, your unsaved data will be lost. Are you sure?")) {
+              setInstructorData(JSON.parse(prevInstructors.current));
+          } else {
+            
+              return;
+          }
+      } else {
+      roleData.assignees = [];
+            console.log(roleData);
+            for (let i = 0; i < instructorData.instructors.length; i++) {
+              if (instructorData.instructors[i].assigned) {
+                roleData.assignees.push({"instructorID":instructorData.instructors[i].id, "name":instructorData.instructors[i].name});
+              }
+            }
+
+      updateAssignees();
+      }
+      setShowInstructorModal(false);
+      
+  };
+
+const updateAssignees = async() => {
+  let assignedInstructors = [];
+  for (let i = 0; i < instructorData.instructors.length; i++) {
+      if (instructorData.instructors[i].assigned === true) {
+          assignedInstructors.push(instructorData.instructors[i].id);
+      }
+  }
+  
+  // Submitting new data goes here:
+}
 
 const onSearch = (newSearch) => {
   console.log("Searched:", newSearch);
@@ -90,7 +150,7 @@ let i = 0;
         </div>
 
         <h1 className='roleName'>Assignee's</h1>
-        <button role='button' id="assign"><span className="plus">+</span>Assign People</button>
+        <button type="button" data-testid="assign-button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
         <p>Current Assignee's</p>
         <input type="text" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
         <div className='assigneeTable'>
@@ -99,7 +159,7 @@ let i = 0;
               
             {currentAssignees.map(assignee => {
               i++;
-              if (assignee.instructorID == null) {
+              if (assignee.instructorID == "" || assignee.instructorID == null) {
                 return (
                   <tr key={i}>
                     <td>
@@ -137,6 +197,9 @@ let i = 0;
         </table>
         
           </div>
+          {showInstructorModal && (
+                <AssignInstructorsModal instructorData={instructorData} setInstructorData={setInstructorData} handleCloseInstructorModal={handleCloseInstructorModal}/>
+            )}
       </div>
     </div>
   </div>

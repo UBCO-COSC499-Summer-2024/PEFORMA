@@ -18,7 +18,7 @@ import PrivateRoute from './JS/PrivateRoute';
 import RoleInformation from './JS/Department/RoleInformation';
 import CourseInformation from "./JS/Department/CourseInformation";
 import PerformanceDepartmentPage from "./JS/Department/PerformanceDepartmentPage";
-
+import DeptDashboard from "./JS/Department/DeptDashboard";
 
 
 import { BrowserRouter ,Router, Route, Routes} from 'react-router-dom';
@@ -45,7 +45,7 @@ function App() {
         <Route path="/CreateAccount" element={<CreateAccount />} />
         <Route path="/DeptCourseList" element={<DeptCourseList />} />
         <Route path="/ServiceRoleList" element={<ServiceRoleList />} />
-
+        <Route path="/DeptDashboard" element={<DeptDashboard/>} />
 
         <Route path="/ServiceRoleList" element={<ServiceRoleList />} />
         <Route path="/RoleInformation" element={<RoleInformation />} />
