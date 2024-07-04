@@ -43,7 +43,7 @@ function Login() {
                 navigate('/DeptDashboard', { replace: true });
                 break;
               case 3:
-                navigate('/PerformanceInstructorPage', { replace: true });
+                navigate(`/PerformanceInstructorPage?profileId=${response.data.profileId}`, { replace: true });
                 break;
               case 4:
                 navigate('/adminDashboard', { replace: true});

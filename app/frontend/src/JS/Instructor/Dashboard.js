@@ -4,8 +4,10 @@ import CreateSidebar, { CreateTopbar } from '../commonImports.js';
 import divisions from '../common/divisions.js';
 import cardImages from '../common/cardImages.js';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../AuthContext.js';
 
 function Dashboard() {
+	const { profileId } = useAuth();
   
   return (
     <div className="dashboard">
@@ -15,7 +17,7 @@ function Dashboard() {
         
         <div className="card-container">
           {divisions.map(division => {
-            return (<Link to={"/CourseList?division="+division.code} key={division.code}><div className="card" role="gridcell">
+            return (<Link to={`/CourseList?division=${division.code}&profileId=${profileId}`} key={division.code}><div className="card" role="gridcell">
                       <img src={cardImages[division.code]} alt={division.label} />
                       <div className='cardTitle'>{division.label}</div>
                     </div></Link>
