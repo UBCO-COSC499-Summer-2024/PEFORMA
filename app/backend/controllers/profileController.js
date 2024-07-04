@@ -46,48 +46,43 @@ exports.getUserProfile = async (req, res) => {
             ubcId = row.UBCId;
         const email = row.email;
         const phoneNum = row.phoneNum;
-        const office = `${row.officeBuilding} ${row.officeNum}` || '';  // Construct office info
-        query = `SELECT "year" FROM "ServiceRoleAssignment" ORDER BY "year" DESC LIMIT 1`;
-        result = await pool.query(query);
-        const year = result.rows[0].year;
+        const office = `${row.officeBuilding} ${row.officeNum}`;  // Construct office info
         query = `
             SELECT sr.stitle
             FROM "ServiceRoleAssignment" "sra"
             JOIN "ServiceRole" "sr" ON "sra"."serviceRoleId" = "sr"."serviceRoleId"
-            WHERE "sra"."profileId" = $1 AND sra."year" = $2;
+            WHERE "sra"."profileId" = $1;
         `; 
         //result = await pool.query(query, [id]);
-        result = await pool.query(query,[profileId,year]);
+        result = await pool.query(query,[profileId]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
         //const serviceRoles = result.rows;
-        const roles = result.rows.map(row => row.stitle || '');
-        query = `SELECT "term" FROM "InstructorTeachingAssignment" ORDER BY "term" DESC LIMIT 1`;
-        result = await pool.query(query);
-        const term = result.rows[0].term;
+        const roles = result.rows.map(row => row.stitle);
+
         query = `
-            SELECT d."dcode"  || ' ' || c."courseNum" AS "DivisionAndCourse"
+            SELECT d."dname"  || ' ' || c."courseNum" AS "DivisionAndCourse"
             FROM "InstructorTeachingAssignment" "ita"
             JOIN "Course" "c" ON "ita"."courseId" = "c"."courseId"
             JOIN "Division" "d" ON "c"."divisionId" = "d"."divisionId"
-            WHERE "ita"."profileId" = $1 AND ita."term" = $2;
+            WHERE "ita"."profileId" = $1;
         `; 
         //result = await pool.query(query, [id]);
-        result = await pool.query(query,[profileId, term]);
+        result = await pool.query(query,[profileId]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'Course assignments not found' });
         }
         //const courses = result.rows;
-        const teachingRoles = result.rows.map(row => ({ assign: row.DivisionAndCourse || "" }));  // Mapping ctitle to roles
+        const teachingRoles = result.rows.map(row => ({ assign: row.DivisionAndCourse }));  // Mapping ctitle to roles
         // Build the profile data object
         const profileData = {
-            name: name || '',
-            ubcid: ubcId || '', 
-            benchmark:benchmark || '',
+            name: name,
+            ubcid: ubcId,
+            benchmark:benchmark,
             roles:roles,
-            email: email || '',
-            phone: phoneNum || '',
+            email: email,
+            phoneNum: phoneNum,
             office: office,
             teachingAssignments:teachingRoles
         };    

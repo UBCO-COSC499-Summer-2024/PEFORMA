@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import '../CSS/Department/AssignInstructorModal.css';
 
+
 const AssignInstructorsModal = (props, instructorData) => {
     let i = 0;
     const [search, setSearch] = useState('');
