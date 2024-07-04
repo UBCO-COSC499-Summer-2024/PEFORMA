@@ -18,10 +18,14 @@ jobs:
             - name: install dependencies
               run: npm install
 
-            - name: install dependencies BE
+            - name: Go BE folder
               run: cd app/backend
-                   npm install
-                   cd ../
+
+            - name: install BE dependencies
+              run: npm install
+
+            - name: Go back root folder
+              run: cd ../
 
             - name: run tests
               run: npm test
