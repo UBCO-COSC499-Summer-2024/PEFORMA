@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const faker = require('faker');
-const pool = require('../db/index');
+var pool = require('../db/index');
 const { saveDataToDatabase } = require('../routes/DataEntry');
 
 describe('saveDataToDatabase', function() {
@@ -13,6 +13,10 @@ describe('saveDataToDatabase', function() {
 
     afterEach(function() {
         queryStub.restore();
+    });
+
+    afterAll(async () => {
+        pool = null;
     });
 
     it('should save a Service Role with random data', async function() {
