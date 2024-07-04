@@ -1,23 +1,29 @@
 name: jest tests
 
 on:
-    push:
-    pull_request:
+  push:
+  pull_request:
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
+  test:
+    runs-on: ubuntu-latest
 
-            - name: install Node.js
-              uses: actions/setup-node@v4
-              with:
-                node-version: '20'
+    strategy:
+      matrix:
+        folder: [app/frontend, app/backend]
 
-            - name: install dependencies
-              run: npm install
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: run tests
-              run: npm test
-              
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ matrix.folder }}
+
+      - name: Run tests
+        run: npm test
+        working-directory: ${{ matrix.folder }}
