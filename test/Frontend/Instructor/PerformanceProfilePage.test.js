@@ -18,6 +18,7 @@ describe('PerformanceInstructorPage', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
+			accountType: { accountType: 'mocked-accountType' },
 		});
 	});
 
@@ -48,7 +49,7 @@ describe('PerformanceInstructorPage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
 
     const element = document.getElementById('info-test-content');
     
@@ -89,7 +90,7 @@ describe('PerformanceInstructorPage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(10));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(12));
 
     const element = document.getElementById('info-test-content');
     

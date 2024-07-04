@@ -9,6 +9,7 @@ import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 jest.mock('../../../app/frontend/src/JS/AuthContext');
 useAuth.mockReturnValue({
   profileId: { profileId: 'mocked-profileId'},
+  accountType: { accountType: 'mocked-accountType' },
 });
 
 jest.mock('axios');

@@ -39,8 +39,15 @@ import userEvent from '@testing-library/user-event';
 import DataEntryComponent from '../../../app/frontend/src/JS/Department/DataEntry';
 import { MemoryRouter } from "react-router-dom";
 import axios from 'axios';
+import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+
 
 jest.mock('axios');
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+useAuth.mockReturnValue({
+  authToken: { token: 'mocked-token' },
+  accountType: { accountType: 'mocked-accountType' },
+});
 axios.get.mockResolvedValue({
   "data": {
     "instructors": [{}], 
