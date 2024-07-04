@@ -1,6 +1,6 @@
 
-.coursehistory .main {
-
+.courseinfo-main {
+    margin-top: 2em;
     flex-grow: 1;
     display: flex;
     align-items: flex-start;
@@ -92,6 +92,7 @@
     border: 1px solid var(--darkestGrey);
     border-radius: 1em;
     width: 100%;
+    margin-bottom: 2.5em;
 }
 
 
@@ -129,15 +130,10 @@
 }
 
 
-
-
-.coursehistory th {
-    border-radius: 1em;
-}
-
 .coursehistory td, .coursehistory th {
-
+    border-bottom: 1px solid var(--darkestGrey);
     text-align: center;
     height: 1.5em;
     width: 0em;
 }
+

@@ -230,21 +230,21 @@ function DataEntryComponent() {
                                             );
                                         })}
                                     </select>
-                                    <div className='coursecodeInput'>
+                                    <div className='coursecodeInput formInput'>
                                         <label htmlFor="course-code">Course Code:</label>
                                         <input type="text" id="course-code" name="courseCode" onChange={(e) => {
                                             setCourseCode(e.target.value);
                                         }} required />
                                     </div>
-                                    <div className='courseYear'>
-                                        <label htmlFor="courseYear">Course Year:</label>
-                                        <input type="text" id="courseYear" name="courseYear" onChange={(e) => {
+                                    <div className='courseYear formInput'>
+                                        <label htmlFor="courseYear">Session Year:</label>
+                                        <input type="text" placeholder='e.g. 2024' id="courseYear" name="courseYear" onChange={(e) => {
                                             setCourseYear(e.target.value);
                                         }} required />
                                     </div>
-                                    <div className='courseTerm'>
-                                        <label htmlFor="courseTerm">Course Term:</label>
-                                        <input type="text" id="courseTerm" name="courseTerm" onChange={(e) => {
+                                    <div className='courseTerm formInput'>
+                                        <label htmlFor="courseTerm">Session Term:</label>
+                                        <input type="text" placeholder='1,2,3 or 4' id="courseTerm" name="courseTerm" onChange={(e) => {
                                             setCourseTerm(e.target.value);
                                         }} required />
                                     </div>
@@ -292,9 +292,9 @@ function DataEntryComponent() {
                                         })}
                                     </select>
                                 </div>
-                                <div className='serviceroleYear'>
-                                    <label htmlFor="serviceroleYear">Assigned Service Role to year:</label>
-                                    <input type="text" id="serviceroleYear" name="serviceroleYear" onChange={(e) => {
+                                <div className='serviceroleYear formInput'>
+                                    <label htmlFor="serviceroleYear">Year of assignment:</label>
+                                    <input type="text" placeholder='e.g. 2024' id="serviceroleYear" name="serviceroleYear" onChange={(e) => {
                                         setServiceRoleYear(e.target.value);
                                     }} required />
                                 </div>

@@ -152,7 +152,7 @@ let i = 0;
         <h1 className='roleName'>Assignee's</h1>
         <button type="button" data-testid="assign-button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
         <p>Current Assignee's</p>
-        <input type="text" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
+        <input type="text" id="search" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
         <div className='assigneeTable'>
         <table>
             <tbody>

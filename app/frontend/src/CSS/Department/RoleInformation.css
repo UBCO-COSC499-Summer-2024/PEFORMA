@@ -34,7 +34,7 @@
     margin-top: 0.3em;
 }
 
-.ri-main button {
+.ri-main .assign-button {
     border-radius: 0.25em;
 }
 
@@ -43,12 +43,14 @@
 }
 
 .buttons button {
+    border-radius: 0.25em;
     color: var(--black);
     padding: 0.75em;
     font-size: larger;
     margin-right: 1em;
     transition: background-color 0.1s;
-    margin-bottom: 2em;
+    
+    margin-top: 1.5em;
 }
 
 #edit {
@@ -71,6 +73,8 @@
     border: solid 1px var(--darkestestGrey);
     border-radius: 1em;
     width: 80%;
+    margin-bottom: 2.5em;
+    height: 18em;
 }
 
 .assigneeTable table {
@@ -138,13 +142,14 @@
     text-decoration: none;
   }
   
- .ri-main tr {
+ .ri-main table tbody tr {
     height: 2.5em;
+    border: 1px var(--black) solid;
   }
 
-  .ri-main table tfoot tr td {
-    border: 0px;
-    padding-top: 0em;
+  .ri-main table tbody tr td {
+   border-bottom: 1px solid var(--darkestGrey);
+   
   }
 
   .ri-main .pagination li.active a {
@@ -152,9 +157,10 @@
     color: white;
   }
 
-  .ri-main input[type="text"] {
+  .ri-main #search {
     width: 40%;
-    height: 1.5em;
+    height: 2em;
     margin-bottom: 1em;
-    border-radius: 0.25em;
+    border-radius: 0.5em;
+    border: 1px solid var(--darkestGrey);
   }
