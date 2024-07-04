@@ -3,8 +3,8 @@ console.log(pool);
 
 exports.getCourseHistory = async (req, res) => {
 
-    //const courseId = req.query.courseId;  
-    const courseId = 1;
+    const courseId = req.query.courseId;  
+    // const courseId = 1;
     console.log("Received courseId:", courseId);
     try {
 
