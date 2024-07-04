@@ -3,8 +3,15 @@ import '@testing-library/jest-dom';
 import RoleInformation from '../../../app/frontend/src/JS/Department/RoleInformation';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
+import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+
 
 jest.mock('axios');
+
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+useAuth.mockReturnValue({
+  authToken: { token: 'mocked-token' },
+});
 
 axios.get.mockImplementation((url) => {
     if (url == 'http://localhost:3000/assignees.json' || url == 'http://localhost:3001/api/roleInfo') {
