@@ -16,7 +16,7 @@
     "verbose": true,
     "transformIgnorePatterns": [
       "node_modules/(?!(chai|sinon|faker)/)"
-    ],
+    ]
   },
   "dependencies": {
     "@babel/preset-env": "^7.24.7",
