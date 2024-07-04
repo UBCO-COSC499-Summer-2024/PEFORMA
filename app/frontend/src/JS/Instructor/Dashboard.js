@@ -5,10 +5,18 @@ import divisions from '../common/divisions.js';
 import cardImages from '../common/cardImages.js';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext.js';
+import { useNavigate } from 'react-router-dom';
+
 
 function Dashboard() {
 	const { profileId } = useAuth();
-  
+  const { authToken } = useAuth();
+  const navigate = useNavigate();
+
+  if (!authToken) {
+    navigate('/Login');
+    return;
+  }
   return (
     <div className="dashboard">
       <CreateSidebar />

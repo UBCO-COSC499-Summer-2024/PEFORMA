@@ -2,8 +2,16 @@ import React from 'react';
 import '../../CSS/Department/DeptDashboard.css';
 import { CreateTopbar, CreateSidebarDept } from '../commonImports.js';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 function Dashboard() {
+	const navigate = useNavigate();
+  const { authToken } = useAuth();
+	if (!authToken) {
+		navigate('/Login');
+		return;
+	}
 	return (
 		<div className="dashboard">
 			<CreateSidebarDept />

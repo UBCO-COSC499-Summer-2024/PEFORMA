@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import '../../CSS/Department/DataEntry.css';
 import divisions from '../common/divisions.js';
 import AssignInstructorsModal from '../assignInstructorsModal.js';
-
+import { useAuth } from '../AuthContext';
 
 function DataEntryComponent() {
     const navigate = useNavigate();
+    const { authToken } = useAuth();
     window.onbeforeunload = function() {
         return "Data will be lost if you leave this page. Are you sure?";
       };
@@ -38,6 +39,10 @@ function DataEntryComponent() {
 
     useEffect(() => {
         const fetchData = async() => {
+            if (!authToken) {
+                navigate('/Login');
+                return;
+              }
           const url = "http://localhost:3000/assignInstructors.json"; // Gets from temporary JSON file. Should be replaced with backend.
           const res = await axios.get(url);
           const data = res.data;

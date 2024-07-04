@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/RoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import AssignInstructorsModal from '../assignInstructorsModal.js';
 
@@ -13,6 +14,8 @@ import { useAuth } from '../AuthContext';
 
 function RoleInformation() {
 const { authToken } = useAuth();
+const navigate = useNavigate();
+
 const [roleData, setRoleData] = useState({"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1});
 const [search, setSearch] = useState('');
 
@@ -25,6 +28,10 @@ const serviceRoleId = params.get('roleid');
 
   useEffect(() => {
     const fetchData = async() => {
+      if (!authToken) {
+        navigate('/Login');
+        return;
+      }
       const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
         params: {serviceRoleId: serviceRoleId},
         headers: { Authorization: `Bearer ${authToken.token}` }

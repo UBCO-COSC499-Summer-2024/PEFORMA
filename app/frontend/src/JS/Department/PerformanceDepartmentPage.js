@@ -6,9 +6,16 @@ import  PhysTable  from './PerformanceImports/PhysTable.js';
 import  StatTable  from './PerformanceImports/StatTable.js';
 import GoodBadBoard from './PerformanceImports/GoodBadBoard.js';
 import BenchMark from './PerformanceImports/BenchMark.js';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 function PerformanceDepartmentPage() {
-
+  const navigate = useNavigate();
+  const { authToken } = useAuth();
+	if (!authToken) {
+		navigate('/Login');
+		return;
+	}
 	return (
 		<div className="dashboard-container">
 			<CreateSidebarDept />
