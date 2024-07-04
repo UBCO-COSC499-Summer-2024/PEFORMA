@@ -14,7 +14,7 @@ const { upsertProfile } = require('./routes/upsertProfile');
 const { createAccount } = require('./routes/createAccount');
 const { assignServiceRole } = require ('./routes/assignServiceRole');
 
-const workingHoursRoutes = require('./routes/workingHoursRoutes');
+//const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
 const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
 const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
@@ -22,12 +22,16 @@ const progressRoutes = require('./routes/progressRoutes');
 const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 //const ResetPassword = require('./routes/ResetPassword');
 //const update = require('./routes/update');
+const instructorFetch = require('./routes/instructorFetch.js');
 const courseRoutes = require('./routes/courses.js');  
-
+const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 
+
+const courseHistoryRouter = require('./routes/courseHistoryRoutes');
+const roleInfoRoutes = require('./routes/roleInfoRoutes');
 const app = express();
 
 app.use(express.json());
@@ -46,20 +50,32 @@ app.use('/',AccountTypeRouter);//check account type
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 
+
 //Performance BE
 app.use('/api/workingHoursRoutes',workingHoursRoutes);
 app.use('/api/deptPerformance',DeptPerformanceRouter);
 app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
 app.use('/api/progressRoutes',progressRoutes);
 
-// Service role retrieval process
+// Course list retrieval process
 app.use('/api/courses', courseRoutes);
+
+app.use('/api/all-courses', allCoursesRoutes);
+
+// Service role retrieval process
+app.use('/api/service-roles', serviceRoleRoutes);
+
+
+app.use('/api/courseHistory',courseHistoryRouter);
 
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
+app.use('/api/service-roles',serviceRoleRoutes);
+
 //reset password
 //app.use('/api',ResetPassword);
+app.use('/api/roleInfo', roleInfoRoutes);
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
@@ -73,6 +89,8 @@ app.post('/enter', async (req, res) => {
     }
 });
 
+//app.use('/api',saveDataToDatabase);
+
 app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
@@ -82,8 +100,19 @@ app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
     //res.send('Data received successfully');  // 响应前端
 
+
+//Profile BE
+app.use('/api/workingHoursRoutes',workingHoursRoutes);
+app.use('/api/deptPerformance',DeptPerformanceRouter);
+app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
+app.use('/api/progressRoutes',progressRoutes);
+
+
+//Performance BE
+//app.use('/api/instructorPerformance',performanceRoutes);
 // Service role retrieval process
 app.use('/api/service-roles', serviceRoleRoutes);
+
 
 
     try {
@@ -100,12 +129,19 @@ app.use('/api/service-roles', serviceRoleRoutes);
 });
 
 
+
+
+console.log('after');
 });
 */
+
+app.use('/api',instructorFetch);
+
 
 const port = 3001;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
     console.log(`Account info page: http://localhost:${port}/Account`);
-    console.log(`Data entrt request: http://localhost:${port}/enter`)
+    console.log(`Data entrt request: http://localhost:${port}/enter`);
+    console.log(`Instructor lists: http://localhost:${port}/api/instructors`)
 });

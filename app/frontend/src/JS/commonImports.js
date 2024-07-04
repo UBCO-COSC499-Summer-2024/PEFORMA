@@ -59,9 +59,9 @@ function CreateProgressChart(){
         <ServiceHoursProgressChart />
     )
 }
-function CreateTopSearchBarDept(){
+function CreateTopSearchBarDept({ onSearch }){
     return (
-        <TopSearchBarDept />
+        <TopSearchBarDept onSearch={ onSearch }/>
     )
 }
 
