@@ -9,7 +9,7 @@ import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/AuthContext');
 useAuth.mockReturnValue({
-  profileId: { profileId: 'mocked-profileId'},
+  profileId: 'mocked-profileId',
 });
 
 axios.get.mockResolvedValue({"data":{"instructors":[{}], instructorCount:0, perPage: 8, currentPage: 1}});
