@@ -87,7 +87,7 @@ async function saveDataToDatabase(data) {
             }
 
         } catch (err) {
-            console.error("Error occured when assigning prof to course:\n\t",err);
+            console.log("Error occured when assigning prof to course:\n\t",err);
         }
     }
 }
