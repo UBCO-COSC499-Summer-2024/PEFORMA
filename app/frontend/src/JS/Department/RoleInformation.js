@@ -13,7 +13,7 @@ import { useAuth } from '../AuthContext';
 
 
 function RoleInformation() {
-const { authToken } = useAuth();
+const { authToken, accountType } = useAuth();
 const navigate = useNavigate();
 
 const [roleData, setRoleData] = useState({"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1});
@@ -31,7 +31,12 @@ const serviceRoleId = params.get('roleid');
       if (!authToken) {
         navigate('/Login');
         return;
-      }
+      };
+      const numericAccountType = Number(accountType);
+      if (numericAccountType !== 1 && numericAccountType !== 2) {
+        alert("No Access, Redirecting to instructor view");
+        navigate("/Dashboard");
+      };
       const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
         params: {serviceRoleId: serviceRoleId},
         headers: { Authorization: `Bearer ${authToken.token}` }

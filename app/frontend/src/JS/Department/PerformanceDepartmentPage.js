@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import '../../CSS/Department/PerformanceDepartmentPage.css';
 import { CreateSidebarDept,CreateTopbar } from '../commonImports.js';
 import  CoscTable  from './PerformanceImports/CoscTable.js';
@@ -11,11 +12,27 @@ import { useAuth } from '../AuthContext';
 
 function PerformanceDepartmentPage() {
   const navigate = useNavigate();
-  const { authToken } = useAuth();
-	if (!authToken) {
-		navigate('/Login');
-		return;
-	}
+  const { authToken, accountType } = useAuth();
+	useEffect(() => {
+		const checkAuth = async () => {
+			if (!authToken) {
+				navigate('/Login');
+				return;
+			}
+			try {
+				const numericAccountType = Number(accountType);
+				if (numericAccountType !== 1 && numericAccountType !== 2) {
+					alert("No Access, Redirecting to instructor view");
+					navigate("/Dashboard");
+				}
+			} catch (error) {
+				console.error("Failed to fetch account type", error);
+				navigate('/Login');
+			}
+		};
+
+		checkAuth();
+	}, [authToken, accountType, navigate]);
 	return (
 		<div className="dashboard-container">
 			<CreateSidebarDept />

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function CourseInformation() {
-const { authToken } = useAuth();
+const { authToken, accountType } = useAuth();
 const navigate = useNavigate();
 const params = new URLSearchParams(window.location.search);
 const courseId = params.get('courseid');
@@ -23,6 +23,11 @@ const [historyData, setHistoryData] = useState({"history":[{}], entryCount:0, pe
         navigate('/Login');
         return;
       }
+      const numericAccountType = Number(accountType);
+				if (numericAccountType !== 1 && numericAccountType !== 2) {
+					alert("No Access, Redirecting to instructor view");
+					navigate("/Dashboard");
+				}
       console.log("Before fetch");
       const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
         params: {courseId: courseId},
