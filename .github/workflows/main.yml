@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        folder: [app/frontend, app/backend]
+        folder: [test, app/backend]
 
     steps:
       - uses: actions/checkout@v4
