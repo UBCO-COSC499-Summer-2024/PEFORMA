@@ -83,7 +83,7 @@ function ServiceRoleList() {
     <div className='container'>
       <CreateTopbar />
       
-      <div className='main'>
+      <div className='srlist-main'>
 
         <div className='subtitle-role'>List of Serivce Roles ({roleData.rolesCount} Active) </div>
         

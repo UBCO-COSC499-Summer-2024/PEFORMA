@@ -79,7 +79,7 @@ let i = 0;
     <div className='container'>
       <CreateTopbar />
       
-      <div className='main'>
+      <div className='ri-main'>
         <h1 className='roleName'>{roleData.roleName}</h1>
         <div className='description'>{roleData.roleDescription}</div>
         <p>Department: <span className='bold' role='contentinfo'>{roleData.department}</span></p>

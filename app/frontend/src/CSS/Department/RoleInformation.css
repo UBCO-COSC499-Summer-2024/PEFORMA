@@ -4,19 +4,20 @@
   }
 
   
-.main {
+.ri-main {
+    margin-top: 1em;
     flex-grow: 1;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    margin-left: 2em;
+    margin-left: 3em;
 }
 
 .roleName {
     text-decoration: underline;
 }
 
-.description {
+.ri-main .description {
     font-size: larger;
     border: 1px solid var(--darkestGrey);
     border-radius: 0.5em;
@@ -27,10 +28,14 @@
     margin-bottom: 1em;
 }
 
-p {
+.ri-main p {
     font-size: large;
     margin-bottom: 0.3em;
     margin-top: 0.3em;
+}
+
+.ri-main button {
+    border-radius: 0.25em;
 }
 
 .bold {
@@ -126,28 +131,28 @@ p {
     cursor: pointer;
   }
 
-  .pagination li a {
+  .ri-main .pagination li a {
     padding: 5px 10px;
     border: 1px solid #ffffff;
     color: #000;
     text-decoration: none;
   }
   
- tr {
+ .ri-main tr {
     height: 2.5em;
   }
 
-  table tfoot tr td {
+  .ri-main table tfoot tr td {
     border: 0px;
     padding-top: 0em;
   }
 
-  .pagination li.active a {
+  .ri-main .pagination li.active a {
     background-color: var(--blue);
     color: white;
   }
 
-  input[type="text"] {
+  .ri-main input[type="text"] {
     width: 40%;
     height: 1.5em;
     margin-bottom: 1em;
