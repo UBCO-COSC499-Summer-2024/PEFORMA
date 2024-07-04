@@ -18,14 +18,9 @@ jobs:
             - name: install dependencies
               run: npm install
 
-            - name: Go BE folder
-              run: cd app/backend
+            - name: install testing
+              run: npm install --save @testing-library/react @testing-library/jest-dom @testing-library/user-event jest react-router-dom axios dotenv sinon faker pg
 
-            - name: install BE dependencies
-              run: npm install
-
-            - name: Go back root folder
-              run: cd ../
 
             - name: run tests
               run: npm test
