@@ -8,12 +8,11 @@
   
   .login-header {
     
-    background-color: var(--sidebarColor); /* Top header line color */
-    color: var(--white);
     display: flex;
     justify-content: space-between;
-    padding: 0.5em 1em 0.5em 1em;
-    
+    height: 5em;
+    background-color: var(--sidebarColor);
+    border-radius: 0.2em;
   }
   
   .logo, nav a {
