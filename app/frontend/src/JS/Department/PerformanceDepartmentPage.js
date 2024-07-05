@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext.js';
 import { CreateSidebarDept,CreateTopbar } from '../commonImports.js';
 import  CoscTable  from './PerformanceImports/CoscTable.js';
 import  MathTable  from './PerformanceImports/MathTable.js';

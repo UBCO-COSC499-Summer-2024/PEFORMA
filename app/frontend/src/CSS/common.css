@@ -17,6 +17,10 @@
     --mainFont: 'Plus Jakarta Sans', sans-serif;
 }
 
+.icon {
+  
+}
+
 .topbar {
     display: flex;
     justify-content: end;

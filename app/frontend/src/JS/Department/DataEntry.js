@@ -226,6 +226,7 @@ function DataEntryComponent() {
 
 
     return (
+
         <div className='DataEntry-page'>
             <CreateSidebarDept />
             <div className="container">
@@ -307,55 +308,10 @@ function DataEntryComponent() {
 											</ul>
 										</div>
 									)}
+									</div>
+									</form>
 								</div>
-
-
-                    {selection === 'Service Role' && (
-                        <div className='form-container'>
-                            <form className="service-role-form" data-testid="service-role-form" role="form" onSubmit={handleSubmit}>
-                                <div className="titleInput formInput">
-                                    <label htmlFor="service-role-title">Service Role Title:</label>
-                                    <input type="text" id="service-role-title" onChange={(e) => setServiceRoleTitle(e.target.value)} placeholder="Enter service role title" name="serviceRoleTitle" required />
-                                </div>
-                                <div className="departmentInput formInput">
-                                    <label htmlFor="service-role-department">Department:</label>
-                                    <select id="service-role-department" name="serviceRoleDepartment" onChange={(e) => setServiceRoleDepartment(e.target.value)} required>
-                                        {divisions.map(division => {
-                                            return (
-                                                <option key={division.code} value={division.code}>{division.label}</option>
-                                            );
-                                        })}
-                                    </select>
-                                </div>
-                                <div className='serviceroleYear formInput'>
-                                    <label htmlFor="serviceroleYear">Year of assignment:</label>
-                                    <input type="text" placeholder='e.g. 2024' id="serviceroleYear" name="serviceroleYear" onChange={(e) => {
-                                        setServiceRoleYear(e.target.value);
-                                    }} required />
-                                </div>
-                                <label htmlFor="service-role-description">Service Role Description:</label>
-                                <textarea id="service-role-description" onChange={(e) => setServiceRoleDescription(e.target.value)} placeholder="Describe the service role" name="serviceRoleDescription" required></textarea>
-                                <button type="button" data-testid="assign-button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
-                                
-                                <div>
-                                    {selectedInstructors.length > 0 && (
-                                        <div className="selected-instructors">
-                                            <h3>Selected Instructors</h3>
-                                            <ul>
-                                                {selectedInstructors.map(instructor => (
-                                                    <li key={instructor.profileId}>{instructor.name} (ID: {instructor.id})</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                </div>
-                                
-                                <input type="submit" id="service-role-submit" className='hidden' />
-                                <input type="hidden" name="formType" value="Service Role" />
-                            </form>
-                            <label className="finish-button" htmlFor='service-role-submit'>Finish</label>
-                        </div>
-                    )}
+								)}
 
 
 					{selection === 'Service Role' && (
@@ -392,7 +348,7 @@ function DataEntryComponent() {
 										})}
 									</select>
 								</div>
-								<div className="serviceroleYear">
+								<div className="serviceroleYear formInput">
 									<label htmlFor="serviceroleYear">Assigned Service Role to year:</label>
 									<input
 										type="text"
@@ -457,3 +413,4 @@ function DataEntryComponent() {
 }
 
 export default DataEntryComponent;
+
