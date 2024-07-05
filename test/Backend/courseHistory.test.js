@@ -84,5 +84,6 @@ describe('getCourseHistory', () => {
         expect(pool.query).toHaveBeenCalled();
         expect(statusFn).toHaveBeenCalledWith(500);
         expect(jsonFn).toHaveBeenCalledWith({ message: 'Database query error' });
+
     });
 });
