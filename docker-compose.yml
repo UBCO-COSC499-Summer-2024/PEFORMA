@@ -2,43 +2,60 @@ version: '3'
 
 services:
   frontend:
-    build: ./app/frontend
+    build: ./app/frontend  
     ports:
-      - "3000:3000"
+      - "3000:3000"     # Expose port 3000 on the host machine to connect to the React frontend
     volumes:
-      - ./app/frontend:/app
-    command: npm start
+      - ./app/frontend:/app  # Mount the frontend code into the container for live updates
+    command: npm start        # Start the React development server
     depends_on:
-      - backend
+      - backend              # Ensure the frontend starts after the backend is ready
 
   backend:
-    build: ./app/backend
+    build: ./app/backend   
     ports:
-      - "3001:3001"  # 로컬 포트를 5001로 변경
+      - "3001:3001"      # Expose port 3001 on the host to connect to the Express backend
     volumes:
-      - ./app/backend:/app
+      - ./app/backend:/app   # Mount the backend code into the container for live updates
+    environment:
+      - POSTGRES_USER=capstone         # PostgreSQL user for both databases
+      - POSTGRES_PASSWORD=teamsix       # PostgreSQL password for both databases
+      - POSTGRES_DB=capstone           # Database name for the main (development/production) database
+      - DB_HOST=postgres               # Hostname for the main database (within the Docker network)
+      - DB_PORT=5432                   # Port for the main database
+      - TEST_DB_HOST=postgres-test   # Hostname for the test database (within the Docker network)
+      - TEST_DB_PORT=5434               # Port for the test database 
+    command: npm start        # Start the Express.js server
+    depends_on:
+      - postgres              # Ensure the backend starts after the main database is ready
+      - postgres-test        # Ensure the backend starts after the test database is ready
+
+  postgres:                 # Main (development/production) database
+    build: 
+      context: .
+      dockerfile: app/postgres/Dockerfile  # Custom Dockerfile for the main database
     environment:
       - POSTGRES_USER=capstone
       - POSTGRES_PASSWORD=teamsix
       - POSTGRES_DB=capstone
-      - DB_HOST=postgres
-      - DB_PORT=5432
-    command: npm start
-    depends_on:
-      - postgres
-
-  postgres:
-    build:
-     context: .
-     dockerfile: app/postgres/Dockerfile
-    environment:
-      POSTGRES_USER: capstone
-      POSTGRES_PASSWORD: teamsix
-      POSTGRES_DB: capstone
     ports:
-      - "5432:5432"
+      - "5432:5432"       # Expose port 5432 on the host for the main database
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data  # Persist main database data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql   # Seed the main database on startup
+
+  postgres-test:            # Test database
+    image: postgres:latest   # Use the official PostgreSQL image for the test database
+    restart: always          # Automatically restart the container if it stops
+    environment:
+      - POSTGRES_DB=capstone_test
+      - POSTGRES_USER=capstone
+      - POSTGRES_PASSWORD=teamsix
+    ports:
+      - "5434:5432"      # Expose port 5434 on the host for the test database
+    volumes:
+      - pgtest:/var/lib/postgresql/data   # Separate data volume for the test database to isolate it from the main database
+      - ./test_data.sql:/docker-entrypoint-initdb.d/init.sql  # Seed the test database on startup
 
   pgadmin:
     image: dpage/pgadmin4
@@ -54,7 +71,6 @@ services:
       - pgadmin_data:/var/lib/pgadmin
 
 volumes:
-  pgdata:
+  pgdata:         # Named volume for main database data persistence
+  pgtest:         # Named volume for test database data persistence
   pgadmin_data:
-
-
