@@ -1,3 +1,7 @@
+const { TextEncoder, TextDecoder } = require('util');
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 const { expect } = require('chai');
 const sinon = require('sinon');
 const faker = require('faker');
