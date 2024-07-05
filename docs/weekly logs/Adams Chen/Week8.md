@@ -49,12 +49,13 @@ I completed the import feature, but it was delayed as I was running into many is
 ## Friday (7/5/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/adamsLogs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_July_5.pdf)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #153: Test instructor view course list BE
+  * #285: Test service role list BE
+  * #286: Test Dept view course list BE
+  * #289: Create MVP presentation slides
 
 ### Progress Update (since 7/3/2024)
 <table>
@@ -63,39 +64,59 @@ I completed the import feature, but it was delayed as I was running into many is
         </td>
         <td><strong>STATUS</strong>
         </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task A
-        </td>
-        <!-- Status -->
-        <td>Complete
+        <td><strong>NOTES</strong>
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td> #153: Test instructor view course list BE
         </td>
         <!-- Status -->
         <td>In Progress
         </td>
+        <!-- Notes -->
+        <td>Can't figure out why test isn't connecting to database
+        </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>#285: Test service role list BE
         </td>
         <!-- Status -->
         <td>In Progress
+        </td>
+        <!-- Notes -->
+        <td>Same as above
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#286: Test Dept view course list BE
+        </td>
+        <!-- Status -->
+        <td>In Progress
+        </td>
+        <!-- Notes -->
+        <td>Same as above
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#289: Create MVP presentation slides
+        </td>
+        <!-- Status -->
+        <td>Completed
+        </td>
+        <!-- Notes -->
+        <td>
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I finished testing the BE code that I've written with mockup database data. However, I'm having major difficulty with querying directly from the database and plan to seek some help, then continue to work on it during the next cycle
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Possibly password reset
 
 
