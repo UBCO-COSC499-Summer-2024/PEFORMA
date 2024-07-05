@@ -11,7 +11,7 @@ import { useAuth } from '../AuthContext.js';
 
 function CourseList() {
 
-  const { authToken } = useAuth();
+  const { authToken, accountType } = useAuth();
   const params = new URLSearchParams(window.location.search);
   const divisionCode = params.get('division') || 'COSC'; 
 
@@ -31,7 +31,11 @@ function CourseList() {
           navigate('/Login'); // Use your navigation mechanism
           return;
         }
-
+        const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
         // Fetch course data with Axios, adding token to header
         const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`, {
           headers: { Authorization: `Bearer ${authToken.token}` } 
@@ -98,7 +102,7 @@ function CourseList() {
     <div className='container'>
       <CreateTopSearchbarIns onSearch={handleSearchChange} />
 
-      <div className="main">
+      <div className="courselist-main">
 
         <header className='ListTitle' id="dropdown-test-content">
           <div className='ListTitle-text'>List of Courses</div>
@@ -125,7 +129,7 @@ function CourseList() {
               {currentCourses.map(course => {
                 return (
                   <tr key={course.id}>
-                    <td>{course.id}</td>
+                    <td><Link to={`http://localhost:3000/CourseHistory?courseid=${course.id}`}>{course.id}</Link></td>
                     <td>{course.title}</td>
                     <td>
                       {course.instructor ? (

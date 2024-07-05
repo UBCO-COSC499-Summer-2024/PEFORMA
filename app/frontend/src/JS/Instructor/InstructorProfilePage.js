@@ -9,7 +9,7 @@ function InstructorProfilePage() {
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
   const ubcid = params.get('ubcid');
-  const { authToken } = useAuth();
+  const { authToken, accountType } = useAuth();
   const initProfile = { roles: [], teachingAssignments: [] };
   const [profile, setProfile] = useState(initProfile);
 
@@ -20,11 +20,15 @@ function InstructorProfilePage() {
           navigate('/Login');
           return;
         }
+        const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
         const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
           params: {ubcid:ubcid }, // Add ubcid as query parameter
           headers: { Authorization: `Bearer ${authToken.token}` }
         });
-        console.log(response);
 
         if (response.data) {
           setProfile(response.data);
@@ -60,9 +64,9 @@ function InstructorProfilePage() {
             <p><strong>Email:</strong> {profile.email}</p>
             <p><strong>Office Location:</strong> {profile.office}</p>
             <p><strong>Teaching Assignments:</strong> 
-              {profile.teachingAssignments.map(teachingAssign => (
-              <a href='{teachingAssign.link}'> {teachingAssign.assign}</a>
-              )).reduce((prev, curr) => [prev, ', ', curr],[])}
+            {profile.teachingAssignments.map((teachingAssign, index) => (
+                <a key={index} href={teachingAssign.link}> {teachingAssign.assign}</a>
+              )).reduce((prev, curr) => [prev, ', ', curr], [])}
             </p>
           </section>
         </div>

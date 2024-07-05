@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/RoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import AssignInstructorsModal from '../assignInstructorsModal.js';
 
@@ -12,7 +13,9 @@ import { useAuth } from '../AuthContext';
 
 
 function RoleInformation() {
-const { authToken } = useAuth();
+const { authToken, accountType } = useAuth();
+const navigate = useNavigate();
+
 const [roleData, setRoleData] = useState({"assignees":[{}], assigneeCount:0, perPage: 5, currentPage: 1});
 const [search, setSearch] = useState('');
 
@@ -25,6 +28,15 @@ const serviceRoleId = params.get('roleid');
 
   useEffect(() => {
     const fetchData = async() => {
+      if (!authToken) {
+        navigate('/Login');
+        return;
+      };
+      const numericAccountType = Number(accountType);
+      if (numericAccountType !== 1 && numericAccountType !== 2) {
+        alert("No Access, Redirecting to instructor view");
+        navigate("/Dashboard");
+      };
       const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
         params: {serviceRoleId: serviceRoleId},
         headers: { Authorization: `Bearer ${authToken.token}` }
@@ -139,7 +151,7 @@ let i = 0;
     <div className='container'>
       <CreateTopbar />
       
-      <div className='main'>
+      <div className='ri-main'>
         <h1 className='roleName'>{roleData.roleName}</h1>
         <div className='description'>{roleData.roleDescription}</div>
         <p>Department: <span className='bold' role='contentinfo'>{roleData.department}</span></p>
@@ -152,7 +164,7 @@ let i = 0;
         <h1 className='roleName'>Assignee's</h1>
         <button type="button" data-testid="assign-button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
         <p>Current Assignee's</p>
-        <input type="text" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
+        <input type="text" id="search" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
         <div className='assigneeTable'>
         <table>
             <tbody>

@@ -3,8 +3,14 @@ import '@testing-library/jest-dom';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 import CourseHistory from '../../../app/frontend/src/JS/Instructor/CourseHistory';
+import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
 
 jest.mock('axios');
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+useAuth.mockReturnValue({
+  profileId: { profileId: 'mocked-profileId'},
+  accountType: { accountType: 'mocked-accountType' },
+});
 axios.get.mockResolvedValue({"data":{"history":[{}], entryCount:0, perPage: 10, currentPage: 1}});
 
 test('Checks if data exists', async () => {

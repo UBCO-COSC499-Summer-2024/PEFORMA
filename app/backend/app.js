@@ -14,7 +14,7 @@ const { upsertProfile } = require('./routes/upsertProfile');
 const { createAccount } = require('./routes/createAccount');
 const { assignServiceRole } = require ('./routes/assignServiceRole');
 
-//const workingHoursRoutes = require('./routes/workingHoursRoutes');
+const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
 const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
 const leaderBoardRoutes = require('./routes/leaderBoardRoutes');

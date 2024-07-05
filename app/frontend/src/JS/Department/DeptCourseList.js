@@ -10,7 +10,7 @@ import { useAuth } from '../AuthContext.js';
 
 function DeptCourseList() {
 
-  const { authToken } = useAuth();
+  const { authToken, accountType } = useAuth();
   const navigate = useNavigate();
 
   const [deptCourseList, setDeptCourseList] = useState({"courses":[{}], coursesCount:0, perPage: 10, currentPage: 1});
@@ -24,7 +24,11 @@ function DeptCourseList() {
           navigate('/Login'); // Use your navigation mechanism
           return;
         }
-
+        const numericAccountType = Number(accountType);
+				if (numericAccountType !== 1 && numericAccountType !== 2) {
+					alert("No Access, Redirecting to instructor view");
+					navigate("/Dashboard");
+				}
         // Fetch course data with Axios, adding token to header
         const res = await axios.get(`http://localhost:3001/api/all-courses`, {
           headers: { Authorization: `Bearer ${authToken.token}` } 
@@ -85,7 +89,7 @@ function DeptCourseList() {
 
   return (
 
-    <div className="dashboard">  
+    <div className="dashboard" id='dept-course-list-test-content'>  
     <CreateSidebarDept />
     <div className='container'>
       <CreateTopSearchBarDept onSearch={handleSearchChange}/>

@@ -109,7 +109,7 @@ flex-direction: column;
     background-color: var(--darkestishGrey);
     border: 1px solid var(--black);
     color: var(--black);
-    
+    border-radius: 0.25em;
     width: 18em;
     text-align: left;
     font-weight: normal;
@@ -124,6 +124,10 @@ flex-direction: column;
 
 .assign-button:hover > .plus {
     background-color: var(--darkestestGrey);
+}
+
+.courseYear input, .courseTerm input {
+    width: 6em;
 }
 
 .plus {
