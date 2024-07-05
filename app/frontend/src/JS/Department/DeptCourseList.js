@@ -89,7 +89,7 @@ function DeptCourseList() {
 
   return (
 
-    <div className="dashboard">  
+    <div className="dashboard" id='dept-course-list-test-content'>  
     <CreateSidebarDept />
     <div className='container'>
       <CreateTopSearchBarDept onSearch={handleSearchChange}/>
