@@ -38,7 +38,7 @@ function GoodBadBoard() {
 
   return (
 
-    <div className="topbottom-table">
+    <div className="topbottom-table" id="goodbad-test-content">
       
       <div className='header-container'>
         <h1 className='subTitleD'>Leaderboard (Top 5 and Bottom 5)</h1>

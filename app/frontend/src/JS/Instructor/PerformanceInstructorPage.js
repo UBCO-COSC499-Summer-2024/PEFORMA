@@ -13,11 +13,7 @@ import { useAuth } from '../AuthContext';
 
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
-	//const params = new URLSearchParams(window.location.search);
-	//const ubcid = params.get('ubcid');
-	//console.log("UBC ID initialized: ",ubcid);
-	const { authToken } = useAuth();
-	const { profileId } = useAuth();
+	const { authToken, accountType, profileId} = useAuth();
 
 	const initProfile = {
 		roles: [],
@@ -35,6 +31,11 @@ function PerformanceInstructorPage() {
 			  navigate('/Login');
 			  return;
 			}
+			const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
 			const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
 			  params: { 
 					profileId:profileId, currentMonth:currentMonth 
@@ -64,7 +65,7 @@ function PerformanceInstructorPage() {
 		<div className="dashboard-container">
 			<CreateSidebar />
 
-			<div className="container">
+			<div className="container" id="info-test-content">
 				<CreateTopbar />
 				<div className="greeting">
 					<h1>Welcome {profile.name}, check out your performance!</h1>

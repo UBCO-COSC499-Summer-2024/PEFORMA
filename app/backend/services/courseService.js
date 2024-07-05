@@ -68,7 +68,7 @@ async function getFormattedCourseData(divisionCode) {
         }) 
     };
 
-    console.log(formattedData);
+    // console.log(formattedData);
 
     return formattedData;
 }

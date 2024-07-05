@@ -3,9 +3,22 @@ import '@testing-library/jest-dom';
 import CourseInformation from '../../../app/frontend/src/JS/Department/CourseInformation';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
+import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+useAuth.mockReturnValue({
+  profileId: { profileId: 'mocked-profileId'},
+  accountType: { accountType: 'mocked-accountType' },
+
+});
 
 jest.mock('axios');
 axios.get.mockResolvedValue({"data":{"history":[{}], entryCount:0, perPage: 10, currentPage: 1}});
+
+jest.mock('../../../app/frontend/src/JS/AuthContext');
+useAuth.mockReturnValue({
+    authToken: { token: 'mocked-token' },
+});
 
 test('Checks if buttons exist', async () => {
     await act(async () => {

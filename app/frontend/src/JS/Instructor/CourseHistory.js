@@ -1,68 +1,142 @@
-import React, { useState } from 'react';
-import '../../CSS/Instructor/CourseHistory.css';
-import CreateSidebar, { CreateTopbar } from '../commonImports.js';
+import React, { useState, useEffect } from 'react';
+import CreateSidebar from '../commonImports.js';
+import { CreateTopbar } from '../commonImports.js';
+import ReactPaginate from 'react-paginate';
+import '../../CSS/Department/CourseInformation.css';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function CourseHistory() {
-  // Example course history data, import required
-  const [selectedCourse, setSelectedCourse] = useState('COSC 304');
-  const courses = ['COSC 304', 'COSC 101', 'MATH 116', 'STAT 200'];
-  const courseDetails = {
-    title: "Databases",
-    description: "Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.",
-    averageScore: 96.2,
-    history: [
-      { year: 2023, term: "Winter Term 2", instructor: "Ramon Lawrence", score: 97.7, hours: "410 Hours" },
-      { year: 2023, term: "Winter Term 1", instructor: "Ramon Lawrence", score: 96.7, hours: "380 Hours" },
-      // More data imported in...
-    ]
+
+  const [historyData, setHistoryData] = useState({"history":[{}], entryCount:0, perPage: 10, currentPage: 1});
+  const navigate = useNavigate();
+  const { authToken, accountType } = useAuth();
+
+  useEffect(() => {
+    const fetchData = async() => {
+      if (!authToken) {
+        navigate('/Login');
+        return;
+      }
+      const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
+      const url = "http://localhost:3000/courseHistory.json";
+      const res = await axios.get(url);
+      const data = res.data;
+      const filledEntries = fillEmptyEntries(data.history, data.perPage);
+      setHistoryData({ ...data, history: filledEntries });
+    }
+    fetchData();
+  }, []);
+
+  const fillEmptyEntries = (history, perPage) => {
+    const filledEntries = [...history];
+    const currentCount = history.length;
+    const fillCount = perPage - (currentCount % perPage);
+    if (fillCount < perPage) {
+      for (let i  = 0; i < fillCount; i++) {
+        filledEntries.push({});
+      }
+    }
+    return filledEntries;
+  }
+
+  function showHistory(historyData, offset){
+    if (historyData.assigneeCount > historyData.perPage) {
+      return historyData.history.slice(offset, offset + historyData.perPage);
+    }
+    return historyData.assignees;
+  }
+
+  const handlePageClick = (data) => {
+    setHistoryData(prevState => ({
+      ...prevState,
+      currentPage: data.selected + 1
+    }))
   };
 
-  return (
-    <div className="course-history-container">
-      <CreateSidebar />
+const pageCount = Math.ceil(historyData.entryCount / historyData.perPage);
+const offset = (historyData.currentPage - 1) * historyData.perPage;
 
-      
-      <div className="container">
+const currentEntries = historyData.history.slice(
+    (historyData.currentPage - 1) * historyData.perPage,
+    historyData.currentPage * historyData.perPage
+  );
+  let i = 0;
+  return (
+
+    <div className="dashboard coursehistory">  
+    <CreateSidebar />
+    <div className='container'>
       <CreateTopbar />
 
-        <div className="header">
-          <div className="average-score-card">
-            <h4>Average Performance Score</h4>
-            <p>{courseDetails.averageScore}</p>
-          </div>
-          <select value={selectedCourse} onChange={e => setSelectedCourse(e.target.value)} className="course-select">
-            {courses.map(course => (
-              <option key={course} value={course}>{course}</option>
-            ))}
-          </select>
-        </div>
-        <h1>{courseDetails.title} Course History</h1>
-        <p><strong>Course Description:</strong> {courseDetails.description}</p>
-        <table className='courseTable'>
-          <thead>
-            <tr>
-              <th>Instructor</th>
-              <th>Semester</th>
-              <th>Term</th>
-              <th>Performance Score</th>
-              <th>Working Hours</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courseDetails.history.map((entry, index) => (
-              <tr key={index}>
-                <td>{entry.instructor}</td>
-                <td>{entry.year}</td>
-                <td>{entry.term}</td>
-                <td>{entry.score}</td>
-                <td>{entry.hours}</td>
+      <div className='main'>
+        <Link to="/CourseList">&lt; Back to All Courses</Link>
+        <h1 className='courseName' role='contentinfo'>{historyData.courseCode}: {historyData.courseName}</h1>
+        <p role='contentinfo'>{historyData.courseDescription}</p>
+
+        <div id="history">
+            <p className='bold'>Course History</p>
+            
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Instructor</th>
+                        <th>Session</th>
+                        <th>Term</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {currentEntries.map(entry => {
+              i++;
+             
+              
+                return (
+                  <tr key={i}>
+                    <td>
+                      <Link to={`/DepartmentProfilePage?ubcid=${(entry.instructorID)}`}>{entry.instructorName}</Link>
+                    </td>
+                    <td>
+                        {entry.session}
+                    </td>
+                    <td>
+                        {entry.term}
+                    </td>
+
+                  </tr>
+                );
+              }
+              )}
+                </tbody>
+                <tfoot>
+              <tr>
+                <td colSpan={4}>
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={3}
+                pageRangeDisplayed={0}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+              />
+              </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </tfoot>
+            </table>
+        </div>
       </div>
     </div>
+  </div>
   );
 }
 

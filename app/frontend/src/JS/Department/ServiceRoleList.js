@@ -17,7 +17,7 @@ function showRoles(roleData, offset){
 
 function ServiceRoleList() {
 
-  const { authToken } = useAuth();
+  const { authToken, accountType } = useAuth();
 
   const navigate = useNavigate();
 
@@ -31,7 +31,11 @@ function ServiceRoleList() {
           navigate('/Login'); // Use your navigation mechanism
           return;
         }
-
+        const numericAccountType = Number(accountType);
+				if (numericAccountType !== 1 && numericAccountType !== 2) {
+					alert("No Access, Redirecting to instructor view");
+					navigate("/Dashboard");
+				}
         // Fetch course data with Axios, adding token to header
         const res = await axios.get(`http://localhost:3001/api/service-roles`, {
           headers: { Authorization: `Bearer ${authToken.token}` } 
@@ -83,9 +87,9 @@ function ServiceRoleList() {
     <div className='container'>
       <CreateTopbar />
       
-      <div className='main'>
+      <div className='main' id='dept-service-role-list-test-content'>
 
-        <div className='subtitle-role'>List of Serivce Roles ({roleData.rolesCount} Active) </div>
+        <div className='subtitle-role'>List of Serivce Roles ({roleData.rolesCount} Active)</div>
         
         <div className="role-table">
           <table>

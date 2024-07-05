@@ -1,0 +1,133 @@
+.assignModalTop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 10%;
+    align-items: center;
+    border-bottom: 1px var(--black) solid;
+}
+
+.close-button {
+ position: relative;
+ bottom: 2em;
+}
+
+.assignModal {
+    background-color: var(--white);
+    width: 40em;
+    height:41em;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10em;
+}
+
+.modalTitle {
+    font-size: x-large;
+    margin: 0.5em 0em 0.5em 1em;
+}
+
+.close-button {
+    margin: 3.5em 0.5em 0em 0em;
+    height: 2.25em;
+    width: 2.25em;
+    border-radius: 100%;
+    font-size: large;
+    background-color: var(--red);
+    color: var(--black);
+}
+
+.close-button:hover {
+    background-color: var(--darkRed);
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.assignModal input[type="text"] {
+    width:80%;
+    margin: 1em 0 0 0;
+    padding: 0.5em;
+    border-radius: 0.5em;
+}
+
+.assignModal table {
+    width: 80%;
+    border: 1px solid var(--black);
+    margin-top: 1em;
+    border-radius: 0.5em;
+}
+
+.assignModal table tr td {
+    text-align: center;
+    align-items: center;
+    padding: 0;
+    height: 3em;
+    width: 5em;
+    background-color: var(--white);
+}
+
+.assignModal table tfoot tr td .pagination {
+    display: flex;
+    padding: 0em 0.5em 0 0.5em;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.assignModal table tfoot tr td .pagination li.active a {
+    background-color: var(--blue);
+    color: white;
+  }
+
+.assignModal table tfoot tr td .pagination li a {
+    padding: 0.5em 1em;
+    border: 1px solid var(--white);
+    color: var(--black);
+    text-decoration: none;
+  }
+
+.assignModal table tfoot .pagination li:hover {
+    cursor: pointer;
+  }
+
+  .assignModal table button {
+    color: var(--black);
+    position: relative;
+    bottom:0.75em;
+  }
+
+  .add {
+    background-color: var(--green);
+  }
+
+  .add:hover {
+    background-color: var(--darkGreen);
+  }
+
+  .remove {
+    background-color: var(--red);
+  }
+
+  .remove:hover {
+    background-color: var(--darkRed);
+  }
+
+  .save-button {
+    background-color: var(--green);
+    color: var(--black);
+    
+    padding: 0.5em 2em 0.5em 2em;
+    font-size: large;
+    border-radius: 0.5em;
+    margin: 0.75em 0 1em 0;
+  }
+
+
+.save-button:hover {
+    background-color: var(--darkGreen);
+}
+

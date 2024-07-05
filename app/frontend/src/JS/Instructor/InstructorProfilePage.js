@@ -9,7 +9,7 @@ function InstructorProfilePage() {
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
   const ubcid = params.get('ubcid');
-  const { authToken } = useAuth();
+  const { authToken, accountType } = useAuth();
   const initProfile = { roles: [], teachingAssignments: [] };
   const [profile, setProfile] = useState(initProfile);
 
@@ -20,11 +20,15 @@ function InstructorProfilePage() {
           navigate('/Login');
           return;
         }
+        const numericAccountType = Number(accountType);
+        if (numericAccountType !== 3 ) {
+					alert("No Access, Redirecting to department view");
+					navigate("/DeptDashboard");
+				}
         const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
           params: {ubcid:ubcid }, // Add ubcid as query parameter
           headers: { Authorization: `Bearer ${authToken.token}` }
         });
-        console.log(response);
 
         if (response.data) {
           setProfile(response.data);
@@ -49,9 +53,9 @@ function InstructorProfilePage() {
       <CreateSidebar />
         <div className='container'>
         <CreateTopbar />
-        <div className="main-content">
+        <div className="main-content" id="text-content">
           <section className='information'>
-            <h1> {profile.name}'s Profile</h1>
+            <h1>{profile.name}'s Profile</h1>
             <p><strong>Name:</strong> {profile.name}</p>
             <p><strong>UBC ID:</strong> {profile.ubcid}</p>
             <p><strong>Service Roles:</strong> {profile.roles.map(role => role).join(', ')}</p>
@@ -60,9 +64,9 @@ function InstructorProfilePage() {
             <p><strong>Email:</strong> {profile.email}</p>
             <p><strong>Office Location:</strong> {profile.office}</p>
             <p><strong>Teaching Assignments:</strong> 
-              {profile.teachingAssignments.map(teachingAssign => (
-              <a href='{teachingAssign.link}'> {teachingAssign.assign}</a>
-              )).reduce((prev, curr) => [prev, ', ', curr],[])}
+            {profile.teachingAssignments.map((teachingAssign, index) => (
+                <a key={index} href={teachingAssign.link}> {teachingAssign.assign}</a>
+              )).reduce((prev, curr) => [prev, ', ', curr], [])}
             </p>
           </section>
         </div>

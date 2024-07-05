@@ -2,25 +2,53 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import {CreateSidebarDept, CreateTopSearchBarDept } from '../commonImports.js';
 import '../../CSS/Department/DeptCourseList.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
 import axios from 'axios';
+import '../AuthContext.js';
+import { useAuth } from '../AuthContext.js';
 
 function DeptCourseList() {
+
+  const { authToken, accountType } = useAuth();
+  const navigate = useNavigate();
 
   const [deptCourseList, setDeptCourseList] = useState({"courses":[{}], coursesCount:0, perPage: 10, currentPage: 1});
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const fetchData = async() => {
-      const url = "http://localhost:3000/deptCourseList.json";
-      const res = await axios.get(url);
-      const data = res.data;
-      const filledCourses = fillEmptyCourses(data.courses, data.perPage);
-      setDeptCourseList({ ...data, courses: filledCourses });
-    }
-    fetchData();
-  }, []);
+    const fetchAllCourses = async () => {
+      try {
+        if (!authToken) {
+          // Redirect to login if no token
+          navigate('/Login'); // Use your navigation mechanism
+          return;
+        }
+        const numericAccountType = Number(accountType);
+				if (numericAccountType !== 1 && numericAccountType !== 2) {
+					alert("No Access, Redirecting to instructor view");
+					navigate("/Dashboard");
+				}
+        // Fetch course data with Axios, adding token to header
+        const res = await axios.get(`http://localhost:3001/api/all-courses`, {
+          headers: { Authorization: `Bearer ${authToken.token}` } 
+        });
+        const data = res.data;
+        const filledCourses = fillEmptyCourses(data.courses, data.perPage);
+        setDeptCourseList({ ...data, courses: filledCourses });
+      } catch (error) {
+        // Handle 401 (Unauthorized) error and other errors
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem('authToken'); // Clear invalid token
+          navigate('/Login'); 
+        } else {
+          console.error('Error fetching service roles:', error);
+        }
+      }
+    };
+
+    fetchAllCourses();
+  }, [authToken]);
 
   const filteredCourses = deptCourseList.courses.filter(course =>
     (course.courseCode?.toLowerCase() ?? "").includes(search.toLowerCase()) ||

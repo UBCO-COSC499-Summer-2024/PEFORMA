@@ -57,14 +57,6 @@ function WorkHoursBarChart() {
                             return {
                                 x: wdata.x,
                                 y: wdata.y,
-                                goals: [
-                                  {
-                                    name: 'Average Working Hours',
-                                    value: wdata.avgWorkHour,
-                                    strokeHeight: 5,
-                                    strokeColor: '#775DD0'
-                                  }
-                                ]
                               };
                         })
                     }]

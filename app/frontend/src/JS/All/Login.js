@@ -23,31 +23,32 @@ function Login() {
           //alert(JSON.stringify(response.data, null, 2));
           alert(`Welcom!  ${response.data.email}!\n Account Id is ${response.data.accountId}! \n
                 retrived token is: ${JSON.stringify(response.data.token.token,null,2)}\n
-                expire time is: ${JSON.stringify(response.data.token.expiresIn,null,2)}\n
-                `);
-          if(response.data.message!==""){alert(`${response.data.message}`);}      
+                expire time is: ${JSON.stringify(response.data.token.expiresIn,null,2)}`);
+                
                 // here is the token and expire time ↑↑↑
                 console.log("profileId: \n")
                 console.log(response.data.profileId)
           const accountTypeResponse = await axios.get(`http://localhost:3001/accountType/${response.data.accountId}`);
-          login(response.data.token, response.data.token.expiresIn, response.data.profileId);
+          const accountType = accountTypeResponse.data.accountType;
+
+          login(response.data.token, response.data.token.expiresIn, response.data.profileId, accountType);
           if (accountTypeResponse.data.success) {
-            const accountType = accountTypeResponse.data.accountType;
             alert(`Log in as account type: ${accountType}`);
             switch (accountType) {
-              /*
-              case 'admin':
-                navigate('/adminDashboard', { replace: true });
+              
+              case 1:
+                navigate(`/PerformanceDepartmentPage?profileId=${response.data.profileId}&accountType=${accountType}`, { replace: true });
                 break;
-              case 'user':
-                navigate('/userDashboard', { replace: true });
+              case 2:
+                navigate(`/PerformanceDepartmentPage?profileId=${response.data.profileId}&accountType=${accountType}`, { replace: true });
                 break;
-              case 'guest':
-                navigate('/guestDashboard', { replace: true });
+              case 3:
+                navigate(`/PerformanceInstructorPage?profileId=${response.data.profileId}&accountType=${accountType}`, { replace: true });
                 break;
-              */
+              case 4:
+                navigate('/adminDashboard', { replace: true});
               default:
-                navigate('/Dashboard', { replace: true });
+                navigate('/', { replace: true });
             }
           } else {
             alert('Failed to get account type');
