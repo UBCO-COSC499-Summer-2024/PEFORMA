@@ -18,5 +18,7 @@ async function connectToDatabase() {
         console.log('Database connection error', err.stack);
     }
 }
-  
-  module.exports = pool;
+
+connectToDatabase();
+
+module.exports = pool;
