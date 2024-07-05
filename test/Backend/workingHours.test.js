@@ -10,19 +10,18 @@ describe('getWorkingHours', () => {
         jest.clearAllMocks();
     });
 
-    it('should return working hours for each month up to the current month', async () => {
+    it('should return correctly formatted working hours up to the specified month minus one', async () => {
         const req = {
-            query: { profileId: '123', currentMonth: '6' }
+            query: { profileId: '123', currentMonth: '12' } //  November data should be shown
         };
         const jsonFn = jest.fn();
         const res = { json: jsonFn, status: jest.fn().mockReturnThis() };
 
-        // Setup mock data for the database responses
         pool.query
-            .mockResolvedValueOnce({ rows: [{ year: '2022' }] }) // Mock for the year query
-            .mockResolvedValueOnce({ // Mock for the service role assignment and working hours
+            .mockResolvedValueOnce({ rows: [{ year: '2023' }] }) // Mock for the year query
+            .mockResolvedValueOnce({ // Mock for the working hours data
                 rows: [
-                    { JANHour: 50, FEBHour: 40, MARHour: 30, APRHour: 20, MAYHour: 10, JUNHour: 0, JULHour: 0, AUGHour: 0, SEPHour: 0, OCTHour: 0, NOVHour: 0, DECHour: 0 }
+                    { JANHour: 100, FEBHour: 90, MARHour: 80, APRHour: 70, MAYHour: 60, JUNHour: 50, JULHour: 40, AUGHour: 30, SEPHour: 20, OCTHour: 10, NOVHour: 5, DECHour: 0 }
                 ]
             });
 
@@ -31,31 +30,23 @@ describe('getWorkingHours', () => {
         expect(pool.query).toHaveBeenCalledTimes(2);
         expect(jsonFn).toHaveBeenCalledWith({
             data: [
-                { x: 'September', y: 0 },
-                { x: 'October', y: 0 },
-                { x: 'November', y: 0 },
-                { x: 'December', y: 0 },
-                { x: 'January', y: 50 },
-                { x: 'February', y: 40 },
-                { x: 'March', y: 30 },
-                { x: 'April', y: 20 },
-                { x: 'May', y: 10 },
-                { x: 'June', y: 0 }
+                { x: "September", y: 20 },
+                { x: "October", y: 10 },
+                { x: "November", y: 5 }
             ]
         });
     });
 
     it('should handle no data found for the specified profile ID', async () => {
         const req = {
-            query: { profileId: '123', currentMonth: '6' }
+            query: { profileId: '123', currentMonth: '1' } // December data should not be shown
         };
         const jsonFn = jest.fn();
         const statusFn = jest.fn().mockReturnThis();
         const res = { json: jsonFn, status: statusFn };
 
-        // Mock no year data found and then no service role data found
         pool.query
-            .mockResolvedValueOnce({ rows: [{ year: '2022' }] })
+            .mockResolvedValueOnce({ rows: [{ year: '2023' }] }) // Year found but no subsequent data
             .mockResolvedValueOnce({ rows: [] });
 
         await getWorkingHours(req, res);
@@ -67,14 +58,13 @@ describe('getWorkingHours', () => {
 
     it('should handle database errors gracefully', async () => {
         const req = {
-            query: { profileId: '123', currentMonth: '6' }
+            query: { profileId: '123', currentMonth: '12' } // Data till November should be considered
         };
         const jsonFn = jest.fn();
         const statusFn = jest.fn().mockReturnThis();
         const res = { json: jsonFn, status: statusFn };
 
-        // Mock a database error on the initial year query
-        pool.query.mockRejectedValueOnce(new Error('Database query error'));
+        pool.query.mockRejectedValueOnce(new Error('Database query error')); // Error on the first query
 
         await getWorkingHours(req, res);
 

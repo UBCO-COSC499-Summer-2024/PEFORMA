@@ -71,7 +71,7 @@ exports.getWorkingHours = async (req, res) => {
         };
 
         //Formatting the data to designated format
-        const currentMonth = parseInt(req.query.currentMonth);
+        const currentMonth = parseInt(req.query.currentMonth)-1;
         console.log("CurrentMonth: ", currentMonth);
         let formattedData = [];
         switch(currentMonth){
