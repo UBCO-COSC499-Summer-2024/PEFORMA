@@ -17,10 +17,15 @@ function CoscTable() {
           params: {divisionId: 1},
           headers: { Authorization: `Bearer ${authToken.token}` }
         });
-        const sortedCourses = res.data.courses.sort((a, b) => b.score - a.score);
-        setCourses(sortedCourses);
-        setFilteredCourses(sortedCourses);
-
+        if (res.data && Array.isArray(res.data.courses)){
+          const coursesData = res.data.courses;
+          const sortedCourses = coursesData.length > 1 ? coursesData.sort((a, b) => b.score - a.score) : coursesData.course;
+          setCourses(sortedCourses);
+          setFilteredCourses(sortedCourses);
+        }
+        else {
+          console.log("wrong data format")
+        }
       } catch (error) {
         console.log("Error fetching data: ", error)
       }
@@ -40,7 +45,7 @@ function CoscTable() {
 
   return (
 
-    <div className="division-performance-table">
+    <div className="division-performance-table" id='cosc-test-content'>
       
       <div className='header-container'>
         <h1 className='subTitleD'>Computer Science</h1>
