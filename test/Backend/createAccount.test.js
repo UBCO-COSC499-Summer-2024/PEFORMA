@@ -15,7 +15,7 @@ describe('createAccount', () => {
     });
 
     afterAll(async () => {
-        pool = null; // Ensure the pool is closed after all tests
+        await pool.end(); // Ensure the pool is closed after all tests
     });
 
     it('should hash the password and insert the account into the database', async () => {
