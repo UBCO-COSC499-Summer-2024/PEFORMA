@@ -89,11 +89,11 @@ The communication issue got better because I feel like compared to previous cycl
 ## Friday (7/05/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-8-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W8C2.png)
 
 ### Current Tasks
-  * #1: 
-  * #2: 
+  * #1: Image in the profile
+  * #2: People's list
 ### Progress Update (since 7/03/2024)
 <table>
     <tr>
@@ -104,30 +104,23 @@ The communication issue got better because I feel like compared to previous cycl
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>
+        <td> Performance BE test
         </td>
         <!-- Status -->
-        <td> 
+        <td> Complete
         </td>
     </tr>
     <tr>
-       <td>
+       <td> Service Role BE test
         </td>
         <!-- Status -->
-        <td> 
-        </td>
-    </tr>
-    <tr>
-       <td>
-        </td>
-        <!-- Status -->
-        <td>
+        <td> Complete
         </td>
     </tr>
 
 </table>
 
 ### Weekly Goal Review
-
+I finished all the tests for what I have implemented. The performance BE test took a while because it is like several features combined into one so I had to make testing for each controller. We cooperated a lot especially on testing and making approvals so our teamwork strengthened. The difficulty that I had mentioned before was solved because everyone put lots of commitment for mvp. 
 ### Next Cycle Goals
-  * 
+  * Finish image in the profile.
