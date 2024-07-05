@@ -1,3 +1,53 @@
+## Wednesday (7/5/2024)
+
+### Timesheet
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.3-7.4/8.2.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.3-7.4/8.2.2.png) 
+
+### Current Tasks
+  * #1: Start implementing other instructor view pages
+
+
+### Progress Update (since 7/3/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+        <td><strong>NOTES</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#272: Course list page test (Department view)
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Finished testing with 6 different tests, checking rendering mock data, pagination, and search functionaility
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#292: Finalizing mvp
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Finished connecting all pages to each respective pages. Enhance url better that contains valuable things, also added a deny access when invalid accountType. Cleaned up the codes a little bit too.
+        </td>
+    </tr>
+</table>
+
+### Weekly Goal Review
+  * In this cycle, I have finisehd my last assigned test which was course list department view and tested all the features inside the page. I also finished finalizing mvp and thanks to Subaru, helped me a lot. I really made a great progress and I feel like im ready for a mvp presentation.
+
+### Next Cycle Goals
+  * My next goal is to start working on implmenting other pages starting from instructor view. Not sure which becase me and my team needs to talk and assign the task for final product. 
+
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Wednesday (7/3/2024)
 
