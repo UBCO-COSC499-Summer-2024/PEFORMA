@@ -1,3 +1,4 @@
+
 const { getCourseHistory } = require('../../app/backend/controllers/courseHistoryController');
 const pool = require('../../app/backend/db/index');
 
