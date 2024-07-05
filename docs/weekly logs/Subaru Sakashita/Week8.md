@@ -89,7 +89,7 @@ The communication issue got better because I feel like compared to previous cycl
 ## Friday (7/05/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-8-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W8C2.png)
 
 ### Current Tasks
   * #1: Image in the profile
