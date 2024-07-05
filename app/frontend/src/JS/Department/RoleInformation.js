@@ -151,7 +151,7 @@ let i = 0;
     <div className='container'>
       <CreateTopbar />
       
-      <div className='main'>
+      <div className='ri-main'>
         <h1 className='roleName'>{roleData.roleName}</h1>
         <div className='description'>{roleData.roleDescription}</div>
         <p>Department: <span className='bold' role='contentinfo'>{roleData.department}</span></p>
@@ -164,7 +164,7 @@ let i = 0;
         <h1 className='roleName'>Assignee's</h1>
         <button type="button" data-testid="assign-button" className="assign-button" onClick={handleShowInstructorModal}><span className="plus">+</span> Assign Professors(s)</button>
         <p>Current Assignee's</p>
-        <input type="text" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
+        <input type="text" id="search" placeholder="Search for people assigned to this role." onChange={e => onSearch(e.target.value)} />
         <div className='assigneeTable'>
         <table>
             <tbody>

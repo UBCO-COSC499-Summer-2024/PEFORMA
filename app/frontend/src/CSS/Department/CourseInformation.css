@@ -1,4 +1,6 @@
-.coursehistory .main {
+
+.courseinfo-main {
+    margin-top: 2em;
     flex-grow: 1;
     display: flex;
     align-items: flex-start;
@@ -21,7 +23,9 @@
     margin-bottom: 1em;
 }
 
+
 .coursehistory p {
+
     font-size: large;
     margin-bottom: 0.3em;
     margin-top: 0.3em;
@@ -88,6 +92,7 @@
     border: 1px solid var(--darkestGrey);
     border-radius: 1em;
     width: 100%;
+    margin-bottom: 2.5em;
 }
 
 
@@ -99,13 +104,16 @@
     justify-content: center;
 }
 
+
 .coursehistory .pagination li.active a {
 
     background-color: var(--blue);
     color: white;
   }
 
+
 .coursehistory .pagination li a {
+
     padding: 0.5em 1em;
     border: 1px solid var(--white);
     color: var(--black);
@@ -121,12 +129,11 @@
     border: 0;
 }
 
-.coursehistory th {
-    border-radius: 1em;
-}
 
 .coursehistory td, .coursehistory th {
+    border-bottom: 1px solid var(--darkestGrey);
     text-align: center;
     height: 1.5em;
     width: 0em;
 }
+

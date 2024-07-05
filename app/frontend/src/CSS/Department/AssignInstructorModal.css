@@ -52,6 +52,7 @@
     margin: 1em 0 0 0;
     padding: 0.5em;
     border-radius: 0.5em;
+    border: 1px solid var(--darkestGrey);
 }
 
 .assignModal table {
@@ -68,6 +69,11 @@
     height: 3em;
     width: 5em;
     background-color: var(--white);
+    border-bottom: 1px solid var(--darkestGrey);
+}
+
+.assignModal table tfoot td {
+  border: 0;
 }
 
 .assignModal table tfoot tr td .pagination {
@@ -97,7 +103,7 @@
   .assignModal table button {
     color: var(--black);
     position: relative;
-    bottom:0.75em;
+    border-radius: 0.25em;
   }
 
   .add {

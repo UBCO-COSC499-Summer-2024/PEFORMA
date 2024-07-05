@@ -3,7 +3,7 @@
   height: 100vh;
 }
 
-.main {
+.srlist-main {
   flex-grow: 1;
   padding: 2em;
   display: flex;
