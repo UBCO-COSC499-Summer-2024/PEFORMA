@@ -1,3 +1,7 @@
+const { TextEncoder, TextDecoder } = require('util');
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 const { createAccount } = require('../../app/backend/routes/createAccount');
 const bcrypt = require('bcryptjs');
 var pool = require('../../app/backend/db/index');
