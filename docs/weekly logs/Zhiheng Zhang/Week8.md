@@ -41,9 +41,10 @@
 
 ### Timesheet
 ![alt text](7-4_00.png)
+![alt text](7-4_01.png)
 
 ### Current Tasks
-  * #1:
+  * #1: Create Account test fixing
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -55,25 +56,19 @@
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> 
+        <td> BE existing tests for MVP
           </td>
         <!-- Status -->
-        <td> 
-          </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td> 
-          </td>
-        <!-- Status -->
-        <td> 
+        <td> done
           </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
+All tests required for MVP is completed and pass github action test. Create Account test needs some problem shooting but it's not in MVP plan so I would work on it for next cycle.
+
 ### Next Cycle Goals
-  * Goal 1 
-  * Goal 2 
-  * Goal 3 
+  * Goal 1 Create Account test
+  * Goal 2A Img for personal profile
+  * Goal 2B Edit Profile BE+Test
