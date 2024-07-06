@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';import axios from 'axios';
+import { CreateTopBar } from '../common/commonImports.js';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';

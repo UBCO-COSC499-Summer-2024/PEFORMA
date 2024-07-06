@@ -46,6 +46,7 @@ jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 useAuth.mockReturnValue({
   authToken: { token: 'mocked-token' },
   accountType: { accountType: 'mocked-accountType' },
+  profileId: { profileId: 'mocked-profileId'},
 });
 axios.get.mockResolvedValue({
   "data": {
