@@ -10,8 +10,8 @@ import InsServiceHoursProgressChart from '../Instructor/InsPerformanceImports/In
 
 // Every page should import this file (Except maybe the home page)
 
-function CreateSidebar() {
-	return <Sidebar />;
+function CreateSidebar({ sideBarType }) {
+	return <Sidebar sideBarType={sideBarType} />;
 }
 
 function CreateTopBar({ searchListType, onSearch }) {
