@@ -213,11 +213,11 @@ function DataEntryComponent() {
 			if (window.confirm(confirmMessage) === true) {
 				axios.post('http://localhost:3001/enter', formData).then(() => {
 					if (selection === 'Course') {
-						console.log('data enter success. Navigate to new page: course list.');
-						navigate('/deptCourseList');
+						alert('data enter success. Navigate to new page: course list.');
+						navigate('/DeptCourseList');
 					} else {
-						console.log('data enter success. Navigate to new page: Service Role list.');
-						navigate('/ServiceRoleList');
+						alert('data enter success. Navigate to new page: Service Role list.');
+						navigate('/DeptServiceRoleList');
 					}
 				});
 			}

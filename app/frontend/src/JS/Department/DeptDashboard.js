@@ -9,7 +9,6 @@ function Dashboard() {
 	const navigate = useNavigate();
 	const { authToken, accountType } = useAuth();
 
-	console.log(accountType);
 	useEffect(() => {
 		const checkAuth = async () => {
 			if (!authToken) {

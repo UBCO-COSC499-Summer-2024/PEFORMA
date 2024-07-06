@@ -7,7 +7,6 @@ const AssignInstructorsModal = (props, instructorData) => {
     let i = 0;
     const [search, setSearch] = useState('');
     const onSearch = (newSearch) => {
-        console.log("Searched:", newSearch);
         setSearch(newSearch);
         props.setInstructorData(prevState => ({ ...prevState, currentPage: 1 }));
       };
