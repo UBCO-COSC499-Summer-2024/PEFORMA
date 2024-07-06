@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import { CreateSidebarDept, CreateTopSearchBarDept } from '../common/commonImports.js';
+import { CreateSidebarDept, CreateTopSearchBar } from '../common/commonImports.js';
 import '../../CSS/Department/DeptCourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -77,7 +77,6 @@ function DeptCourseList() {
 		return filledCourses;
 	};
 	const handleSearchChange = (newSearch) => {
-		console.log('Searched:', newSearch);
 		setSearch(newSearch);
 		setDeptCourseList((prevState) => ({ ...prevState, currentPage: 1 }));
 	};
@@ -95,7 +94,7 @@ function DeptCourseList() {
 		<div className="dashboard" id="dept-course-list-test-content">
 			<CreateSidebarDept />
 			<div className="container">
-				<CreateTopSearchBarDept onSearch={handleSearchChange} />
+				<CreateTopSearchBar searchListType={"DeptCourseList"} onSearch={handleSearchChange} />
 
 				<div className="main">
 					<div className="subtitle-course">
