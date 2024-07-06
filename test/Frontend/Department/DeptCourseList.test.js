@@ -11,7 +11,7 @@ jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
   __esModule: true,
   CreateSidebarDept: () => <div>Mock Sidebar</div>,
-  CreateSearchBar: jest.fn(({ onSearch }) => (
+  CreateTopBar: jest.fn(({ onSearch }) => (
     <div className="topbar-search">
       <input type="text" placeholder="Search by Subject and Title" onChange={e => onSearch(e.target.value)} />
       <div className="logout">Logout</div>
