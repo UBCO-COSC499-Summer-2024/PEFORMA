@@ -1,9 +1,8 @@
 import React from 'react';
 import '../../CSS/common.css';
 import Sidebar from './sidebar.js';
-import Topbar from './topbar.js';
+import TopBar from './TopBar.js';
 import SidebarDept from './sidebarDept.js';
-import TopSearchBar  from './topbarFilter.js';
 import InsWorkHoursBarChart from '../Instructor/InsPerformanceImports/InsWorkHoursBarChart.js';
 import InsPerformancePolarChart from '../Instructor/InsPerformanceImports/InsPerformancePolarChart.js';
 import InsLeaderBoard from '../Instructor/InsPerformanceImports/InsLeaderBoard.js';
@@ -15,12 +14,8 @@ function CreateSidebar() {
 	return <Sidebar />;
 }
 
-function CreateTopbar() {
-	return <Topbar />;
-}
-
-function CreateTopSearchBar({ searchListType, onSearch }) {
-	return <TopSearchBar searchListType={searchListType} onSearch={onSearch} />;
+function CreateTopBar({ searchListType, onSearch }) {
+	return <TopBar searchListType={searchListType} onSearch={onSearch} />;
 }
 
 function CreateSidebarDept() {
@@ -45,9 +40,8 @@ function CreateProgressChart() {
 
 export default CreateSidebar;
 export {
-	CreateTopbar,
+	CreateTopBar,
 	CreateSidebarDept,
-	CreateTopSearchBar,
 	CreateWorkingBarChart,
 	CreateScorePolarChart,
 	CreateLeaderboardChart,

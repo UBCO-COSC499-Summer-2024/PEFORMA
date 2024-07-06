@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CreateSidebarDept, CreateTopbar } from '../common/commonImports.js';
+import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DataEntry.css';
@@ -228,7 +228,7 @@ function DataEntryComponent() {
 		<div className="DataEntry-page">
 			<CreateSidebarDept />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 				<div className="main">
 					<h1>Data Entry</h1>
 					<div className="create-new">

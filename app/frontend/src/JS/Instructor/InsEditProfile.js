@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../CSS/Instructor/EditProfile.css';
-import CreateSidebar, { CreateTopbar } from '../common/commonImports.js';
+import CreateSidebar, { CreateTopBar } from '../common/commonImports.js';
 
 function EditProfile() {
 	const [profile, setProfile] = useState({
@@ -30,7 +30,7 @@ function EditProfile() {
 			<CreateSidebar />
 
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 
 				<div>
 					<header className="web-head">

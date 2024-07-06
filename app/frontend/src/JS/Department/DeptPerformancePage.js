@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
-import { CreateSidebarDept, CreateTopbar } from '../common/commonImports.js';
+import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
 import DeptCoscTable from './PerformanceImports/DeptCoscTable.js';
 import DeptMathTable from './PerformanceImports/DeptMathTable.js';
 import DeptPhysTable from './PerformanceImports/DeptPhysTable.js';
@@ -39,7 +39,7 @@ function PerformanceDepartmentPage() {
 			<CreateSidebarDept />
 
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 				<div className="main">
 					<div className="performanceD-title">
 						<h1>Department Performance Overview</h1>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
-import CreateSidebar, { CreateTopbar } from '../common/commonImports';
+import CreateSidebar, { CreateTopBar } from '../common/commonImports';
 import '../../CSS/Instructor/InstructorProfilePage.css';
 
 function InstructorProfilePage() {
@@ -51,7 +51,7 @@ function InstructorProfilePage() {
 		<div className="dashboard-container">
 			<CreateSidebar />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 				<div className="main-content" id="text-content">
 					<section className="information">
 						<h1>{profile.name}'s Profile</h1>

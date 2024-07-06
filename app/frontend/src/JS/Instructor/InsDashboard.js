@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Instructor/Dashboard.css';
-import CreateSidebar, { CreateTopbar } from '../common/commonImports.js';
+import CreateSidebar, { CreateTopBar } from '../common/commonImports.js';
 import divisions from '../common/divisions.js';
 import cardImages from '../common/cardImages.js';
 import { Link } from 'react-router-dom';
@@ -36,7 +36,7 @@ function Dashboard() {
 		<div className="dashboard">
 			<CreateSidebar />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 
 				<div className="card-container">
 					{divisions.map((division) => {

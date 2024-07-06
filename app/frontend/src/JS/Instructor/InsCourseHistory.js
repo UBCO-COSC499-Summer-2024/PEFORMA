@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CreateSidebar from '../common/commonImports.js';
-import { CreateTopbar } from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/CourseInformation.css';
 import { Link } from 'react-router-dom';
@@ -76,7 +76,7 @@ function CourseHistory() {
 		<div className="dashboard coursehistory">
 			<CreateSidebar />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 
 				<div className="main">
 					<Link to="/InsCourseList">&lt; Back to All Courses</Link>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Department/DeptDashboard.css';
-import { CreateTopbar, CreateSidebarDept } from '../common/commonImports.js';
+import { CreateTopBar, CreateSidebarDept } from '../common/commonImports.js';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
@@ -35,7 +35,7 @@ function Dashboard() {
 		<div className="dashboard">
 			<CreateSidebarDept />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 
 				<div className="card-container">
 					<Link to={'/DeptMemberList'}>

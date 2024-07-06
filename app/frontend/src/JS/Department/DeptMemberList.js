@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import { CreateSidebarDept, CreateTopSearchBar } from '../common/commonImports.js';
+import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
 import '../../CSS/Department/ServiceRoleList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -19,7 +19,6 @@ function DeptMemberList() {
 	});
 	const [search, setSearch] = useState('');
 
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -34,10 +33,10 @@ function DeptMemberList() {
 					navigate('/Dashboard');
 				}
 				const res = await axios.get(`http://localhost:3000/memberList.json`, {
-					headers: { Authorization: `Bearer ${authToken.token}` }
+					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const filledMembers = fillEmptyMembers(res.data.members, res.data.perPage);
-				setMemberData({ ...res.data, members: filledMembers});
+				setMemberData({ ...res.data, members: filledMembers });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
 				if (error.response && error.response.status === 401) {
@@ -51,7 +50,6 @@ function DeptMemberList() {
 
 		fetchData();
 	}, [authToken]);
-
 
 	const fillEmptyMembers = (members, perPage) => {
 		const filledMembers = [...members];
@@ -70,15 +68,15 @@ function DeptMemberList() {
 			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(Array.isArray(member.serviceRole)
-			? member.serviceRole.some(role => role.toLowerCase().includes(search.toLowerCase()))
-			: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
+				? member.serviceRole.some((role) => role.toLowerCase().includes(search.toLowerCase()))
+				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
 	);
 
 	const currentMembers = filteredMembers.slice(
 		(memberData.currentPage - 1) * memberData.perPage,
 		memberData.currentPage * memberData.perPage
 	);
-	
+
 	const handleSearchChange = (newSearch) => {
 		setSearch(newSearch);
 		setMemberData((prevState) => ({ ...prevState, currentPage: 1 }));
@@ -93,12 +91,11 @@ function DeptMemberList() {
 
 	const pageCount = Math.ceil(memberData.membersCount / memberData.perPage);
 
-
 	return (
 		<div className="dashboard">
 			<CreateSidebarDept />
 			<div className="container">
-			<CreateTopSearchBar searchListType={"DeptMemberList"} onSearch={handleSearchChange} />
+				<CreateTopBar searchListType={'DeptMemberList'} onSearch={handleSearchChange} />
 
 				<div className="member-list-main" id="dept-member-list-test-content">
 					<div className="subtitle-role">List of Member ({memberData.membersCount} Active)</div>
@@ -119,17 +116,14 @@ function DeptMemberList() {
 										<tr key={member.ubcid}>
 											<td>{member.ubcid}</td>
 											<td>
-												<Link to={`/DeptProfilePage?ubcid=${member.ubcid}`}>
-													{member.name}
-												</Link>
+												<Link to={`/DeptProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
 											</td>
 											<td>
 												{member.serviceRole ? (
 													Array.isArray(member.serviceRole) ? (
 														member.serviceRole.map((serviceRole, index) => (
 															<React.Fragment key={member.ubcid[index]}>
-																<Link
-																	to={`/DeptRoleInformation?roleid=${member.roleid[index]}`}>
+																<Link to={`/DeptRoleInformation?roleid=${member.roleid[index]}`}>
 																	{serviceRole}
 																</Link>
 																{index < member.serviceRole.length - 1 ? (
@@ -141,8 +135,7 @@ function DeptMemberList() {
 															</React.Fragment>
 														))
 													) : (
-														<Link
-															to={`/DeptRoleInformation?ubcid=${member.roleid}`}>
+														<Link to={`/DeptRoleInformation?ubcid=${member.roleid}`}>
 															{member.roleid}
 														</Link>
 													)
@@ -173,8 +166,7 @@ function DeptMemberList() {
 				</div>
 			</div>
 		</div>
-	)
-	
+	);
 }
 
 export default DeptMemberList;

@@ -5,7 +5,7 @@ import '../../CSS/Instructor/PerformanceInstructorPage.css';
 import CreateSidebar, {
 	CreateLeaderboardChart,
 	CreateScorePolarChart,
-	CreateTopbar,
+	CreateTopBar,
 	CreateWorkingBarChart,
 	CreateProgressChart,
 } from '../common/commonImports.js';
@@ -66,7 +66,7 @@ function PerformanceInstructorPage() {
 			<CreateSidebar />
 
 			<div className="container" id="info-test-content">
-				<CreateTopbar />
+				<CreateTopBar />
 				<div className="greeting">
 					<h1>Welcome {profile.name}, check out your performance!</h1>
 				</div>

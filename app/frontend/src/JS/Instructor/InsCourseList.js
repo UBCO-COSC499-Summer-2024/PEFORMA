@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import CreateSidebar, { CreateTopSearchBar } from '../common/commonImports.js';
+import CreateSidebar, { CreateTopBar } from '../common/commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -107,7 +107,7 @@ function InsCourseList() {
 		<div className="dashboard">
 			<CreateSidebar />
 			<div className="container">
-				<CreateTopSearchBar searchListType={"InsCourseList"} onSearch={handleSearchChange} />
+				<CreateTopBar searchListType={'InsCourseList'} onSearch={handleSearchChange} />
 
 				<div className="courselist-main">
 					<header className="ListTitle" id="dropdown-test-content">
@@ -139,9 +139,7 @@ function InsCourseList() {
 									return (
 										<tr key={course.id}>
 											<td>
-												<Link to={`/InsCourseHistory?courseid=${course.id}`}>
-													{course.id}
-												</Link>
+												<Link to={`/InsCourseHistory?courseid=${course.id}`}>{course.id}</Link>
 											</td>
 											<td>{course.title}</td>
 											<td>
@@ -149,8 +147,7 @@ function InsCourseList() {
 													Array.isArray(course.instructor) ? (
 														course.instructor.map((instructor, index) => (
 															<React.Fragment key={course.ubcid[index]}>
-																<Link
-																	to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
+																<Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
 																	{instructor}
 																</Link>
 																{index < course.instructor.length - 1 ? (
@@ -162,8 +159,7 @@ function InsCourseList() {
 															</React.Fragment>
 														))
 													) : (
-														<Link
-															to={`/InsProfilePage?ubcid=${course.ubcid}`}>
+														<Link to={`/InsProfilePage?ubcid=${course.ubcid}`}>
 															{course.instructor}
 														</Link>
 													)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CreateSidebarDept, CreateTopbar } from '../common/commonImports.js';
+import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/RoleInformation.css';
 import { Link } from 'react-router-dom';
@@ -153,7 +153,7 @@ function RoleInformation() {
 		<div className="dashboard">
 			<CreateSidebarDept />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 
 				<div className="ri-main">
 					<h1 className="roleName">{roleData.roleName}</h1>

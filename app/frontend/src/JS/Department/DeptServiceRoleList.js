@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import { CreateSidebarDept, CreateTopbar } from '../common/commonImports.js';
+import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
 import '../../CSS/Department/ServiceRoleList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -85,7 +85,7 @@ function ServiceRoleList() {
 		<div className="dashboard">
 			<CreateSidebarDept />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 
 				<div className="srlist-main" id="dept-service-role-list-test-content">
 					<div className="subtitle-role">List of Serivce Roles ({roleData.rolesCount} Active)</div>
