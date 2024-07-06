@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
+import CreateSidebar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
 import '../../CSS/Department/DeptCourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -92,7 +93,7 @@ function DeptCourseList() {
 
 	return (
 		<div className="dashboard" id="dept-course-list-test-content">
-			<CreateSidebarDept />
+			<CreateSidebar sideBarType="Department" />
 			<div className="container">
 				<CreateTopBar searchListType={'DeptCourseList'} onSearch={handleSearchChange} />
 

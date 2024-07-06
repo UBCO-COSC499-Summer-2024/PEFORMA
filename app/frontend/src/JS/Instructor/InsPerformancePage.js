@@ -63,7 +63,7 @@ function PerformanceInstructorPage() {
 
 	return (
 		<div className="dashboard-container">
-			<CreateSidebar />
+			<CreateSidebar sideBarType="Instructor" />
 
 			<div className="container" id="info-test-content">
 				<CreateTopBar />
