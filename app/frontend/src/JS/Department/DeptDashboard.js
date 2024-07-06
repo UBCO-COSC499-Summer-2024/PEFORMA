@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Department/DeptDashboard.css';
-import { CreateTopbar, CreateSidebarDept } from '../commonImports.js';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../common/AuthContext.js';
 
 function Dashboard() {
 	const navigate = useNavigate();
-  const { authToken, accountType } = useAuth();
+	const { authToken, accountType } = useAuth();
 
-	console.log(accountType);
 	useEffect(() => {
 		const checkAuth = async () => {
 			if (!authToken) {
@@ -19,11 +19,11 @@ function Dashboard() {
 			try {
 				const numericAccountType = Number(accountType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert("No Access, Redirecting to instructor view");
-					navigate("/Dashboard");
+					alert('No Access, Redirecting to instructor view');
+					navigate('/Dashboard');
 				}
 			} catch (error) {
-				console.error("Failed to fetch account type", error);
+				console.error('Failed to fetch account type', error);
 				navigate('/Login');
 			}
 		};
@@ -33,12 +33,12 @@ function Dashboard() {
 
 	return (
 		<div className="dashboard">
-			<CreateSidebarDept />
+			<CreateSideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopbar />
+				<CreateTopBar />
 
 				<div className="card-container">
-					<Link to={''}>
+					<Link to={'/DeptMemberList'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">View/Edit Profiles</div>
@@ -46,7 +46,7 @@ function Dashboard() {
 							<div className="cardDesc">View and edit various instructor profiles.</div>
 						</div>
 					</Link>
-					<Link to={'/ServiceRoleList'}>
+					<Link to={'/DeptServiceRoleList'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">View/Edit Service Roles</div>
@@ -54,7 +54,7 @@ function Dashboard() {
 							<div className="cardDesc">View and edit service role information.</div>
 						</div>
 					</Link>
-					<Link to={'/DataEntry'}>
+					<Link to={'/DeptDataEntry'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">Data Entry</div>
@@ -70,7 +70,7 @@ function Dashboard() {
 							<div className="cardDesc">View and edit course information.</div>
 						</div>
 					</Link>
-					<Link to={'/PerformanceDepartmentPage'}>
+					<Link to={'/DeptPerformancePage'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">Performace</div>

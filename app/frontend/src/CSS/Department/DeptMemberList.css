@@ -1,0 +1,99 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.member-list-main {
+  flex-grow: 1;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.member-table {
+  position: relative;
+  width: 100%; 
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.member-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.member-table th, .member-table td {
+  padding: 1em;
+  text-align: left;
+  border-bottom: 1px solid #cfcfcfee;
+}
+
+.member-table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: bold;
+}
+
+.member-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.member-table th:nth-child(1), .member-table td:nth-child(1) {
+  padding-left: 2em;
+  width: 15%; 
+}
+
+.member-table th:nth-child(2), .member-table td:nth-child(2) {
+  width: 15%; 
+}
+
+.member-table th:nth-child(3), .member-table td:nth-child(3) {
+  width: 30%; 
+}
+
+.member-table table tbody {
+  height: 48em;
+}
+
+.member-table table tbody tr{
+  height: 4em;
+}
+
+.member-table tfoot .pagination {
+  display: flex;
+  padding: 0.5em;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-table tfoot .pagination li {
+  margin: 0 0.25em;
+}
+
+.member-table tfoot .pagination li:hover {
+  cursor: pointer;
+}
+
+.pagination li a {
+  padding: 5px 10px;
+  border: 1px solid #ffffff;
+  color: #000;
+  text-decoration: none;
+
+}
+
+.pagination li.active a {
+  background-color: var(--blue);
+  color: white;
+}
+
+.subtitle-member {
+  font-size: 1.5em;
+  padding-bottom: 40px;
+}

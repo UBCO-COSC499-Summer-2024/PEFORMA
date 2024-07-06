@@ -17,14 +17,10 @@
     --mainFont: 'Plus Jakarta Sans', sans-serif;
 }
 
-.icon {
-  
-}
-
 .topbar {
     display: flex;
     justify-content: end;
-    height: 4em;
+    align-items: center;
     background-color: #f8f9fa; 
     border-bottom: 1px solid #ccc; 
     padding: 0.5rem 1rem; 
@@ -130,7 +126,6 @@ h2 {
 .topbar-search {
   display: flex;
   align-items: center;
-  height: 4em;
   justify-content: space-between; 
   padding: 0.5rem 1rem; 
   background-color: #f8f9fa; 

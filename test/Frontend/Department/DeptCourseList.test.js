@@ -3,14 +3,17 @@ import '@testing-library/jest-dom';
 import DeptCourseList from '../../../app/frontend/src/JS/Department/DeptCourseList';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
-jest.mock('../../../app/frontend/src/JS/commonImports', () => ({
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
+
+jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
   __esModule: true,
-  CreateSidebarDept: () => <div>Mock Sidebar</div>,
-  CreateTopSearchBarDept: jest.fn(({ onSearch }) => (
+  default: jest.fn(({ sideBarType }) => (
+    <div>{`Mock Sidebar ${sideBarType}`}</div>
+  )),
+  CreateTopBar: jest.fn(({ onSearch }) => (
     <div className="topbar-search">
       <input type="text" placeholder="Search by Subject and Title" onChange={e => onSearch(e.target.value)} />
       <div className="logout">Logout</div>
@@ -24,6 +27,7 @@ describe('DeptCourseList', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
+      profileId: { profileId: 'mocked-profileId'}
 		});
     axios.get.mockImplementation(() => 
 			Promise.resolve({
