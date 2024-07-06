@@ -99,9 +99,9 @@ function DeptMemberList() {
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={handleSearchChange} />
 
 				<div className="member-list-main" id="dept-member-list-test-content">
-					<div className="subtitle-role">List of Member ({memberData.membersCount} Active)</div>
+					<div className="subtitle-member">List of Member ({memberData.membersCount} Active)</div>
 
-					<div className="role-table">
+					<div className="member-table">
 						<table>
 							<thead>
 								<tr>

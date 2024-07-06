@@ -7,6 +7,7 @@ import '../common/divisions.js';
 import axios from 'axios';
 import '../common/AuthContext.js';
 import { useAuth } from '../common/AuthContext.js';
+import '../../CSS/Department/DeptServiceRoleList.css';
 
 function showRoles(roleData, offset) {
 	if (roleData.rolesCount > 10) {
