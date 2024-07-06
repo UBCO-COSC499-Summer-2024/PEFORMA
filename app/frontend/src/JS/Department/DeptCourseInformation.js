@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
-import ReactPaginate from 'react-paginate';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/CourseInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -80,7 +80,7 @@ function CourseInformation() {
 	let i = 0;
 	return (
 		<div className="dashboard coursehistory">
-			<CreateSidebarDept />
+			<CreateSideBar sideBarType="Department" />
 			<div className="container">
 				<CreateTopBar />
 

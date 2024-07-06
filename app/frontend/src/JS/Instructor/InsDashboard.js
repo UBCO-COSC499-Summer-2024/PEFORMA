@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Instructor/Dashboard.css';
-import CreateSidebar, { CreateTopBar } from '../common/commonImports.js';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
 import divisions from '../common/divisions.js';
 import cardImages from '../common/cardImages.js';
 import { Link } from 'react-router-dom';
@@ -34,7 +35,7 @@ function Dashboard() {
 
 	return (
 		<div className="dashboard">
-			<CreateSidebar />
+			<CreateSideBar sideBarType="Instructor" />
 			<div className="container">
 				<CreateTopBar />
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
-import axios from 'axios';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';
@@ -226,7 +226,7 @@ function DataEntryComponent() {
 
 	return (
 		<div className="DataEntry-page">
-			<CreateSidebarDept />
+			<CreateSideBar sideBarType="Department" />
 			<div className="container">
 				<CreateTopBar />
 				<div className="main">

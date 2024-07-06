@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CreateSidebar from '../common/commonImports.js';
+import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/CourseInformation.css';
@@ -74,7 +74,7 @@ function CourseHistory() {
 	let i = 0;
 	return (
 		<div className="dashboard coursehistory">
-			<CreateSidebar />
+			<CreateSideBar sideBarType="Instructor" />
 			<div className="container">
 				<CreateTopBar />
 

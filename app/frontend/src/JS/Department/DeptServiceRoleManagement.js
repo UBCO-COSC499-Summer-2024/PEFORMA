@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../CSS/Department/ServiceRoleManagement.css';
-import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
 
 // Role Details Component
 function RoleDetails({ role, onEdit, onDeactivate }) {
@@ -80,7 +81,7 @@ function ServiceRoleManagement() {
 
 	return (
 		<div className="service-role-management">
-			<CreateSidebarDept />
+			<CreateSideBar sideBarType="Department" />
 			<div className="container">
 				<CreateTopBar />
 				<RoleDetails

@@ -3,7 +3,7 @@ import { FaUser, FaSuitcase, FaPaperclip, FaBook } from 'react-icons/fa';
 import { useAuth } from './AuthContext';
 import { Link } from 'react-router-dom';
 
-function Sidebar({ sideBarType }) {
+function SideBar({ sideBarType }) {
 	const { profileId } = useAuth();
 	if (sideBarType === 'Instructor') {
 		return (
@@ -24,7 +24,7 @@ function Sidebar({ sideBarType }) {
 				</ul>
 			</aside>
 		);
-	} else if (sideBarType === 'Department') { 
+	} else if (sideBarType === 'Department') {
 		return (
 			<aside className="sidebar">
 				<h2>PEFORMA</h2>
@@ -64,15 +64,13 @@ function Sidebar({ sideBarType }) {
 			</aside>
 		);
 	} else {
-		return ( 
+		return (
 			<aside className="sidebar">
 				<h2>PEFORMA</h2>
 				<hr className="divider" />
-				<ul className="menu">
-
-				</ul>
+				<ul className="menu"></ul>
 			</aside>
 		);
 	}
 }
-export default Sidebar;
+export default SideBar;

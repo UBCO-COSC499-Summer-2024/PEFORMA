@@ -1,6 +1,7 @@
 function DeptProfilePage(){
   return (
     <div>whats up</div>
+    
   )
 
 

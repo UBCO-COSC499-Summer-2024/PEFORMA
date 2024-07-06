@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
-import CreateSidebar, { CreateTopBar } from '../common/commonImports';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
 import '../../CSS/Instructor/InstructorProfilePage.css';
 
 function InstructorProfilePage() {
@@ -49,7 +50,7 @@ function InstructorProfilePage() {
 
 	return (
 		<div className="dashboard-container">
-			<CreateSidebar />
+			<CreateSideBar sideBarType="Instructor" />
 			<div className="container">
 				<CreateTopBar />
 				<div className="main-content" id="text-content">

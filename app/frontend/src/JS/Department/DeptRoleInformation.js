@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CreateSidebarDept, CreateTopBar } from '../common/commonImports.js';
-import ReactPaginate from 'react-paginate';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/RoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -151,7 +151,7 @@ function RoleInformation() {
 	let i = 0;
 	return (
 		<div className="dashboard">
-			<CreateSidebarDept />
+			<CreateSideBar sideBarType="Department" />
 			<div className="container">
 				<CreateTopBar />
 

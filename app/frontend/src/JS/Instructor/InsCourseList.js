@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import CreateSidebar, { CreateTopBar } from '../common/commonImports.js';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -105,7 +106,7 @@ function InsCourseList() {
 
 	return (
 		<div className="dashboard">
-			<CreateSidebar />
+			<CreateSideBar sideBarType="Instructor" />
 			<div className="container">
 				<CreateTopBar searchListType={'InsCourseList'} onSearch={handleSearchChange} />
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../CSS/Instructor/PerformanceInstructorPage.css';
-import CreateSidebar, {
+import CreateSideBar, {
 	CreateLeaderboardChart,
 	CreateScorePolarChart,
 	CreateTopBar,
@@ -63,7 +63,7 @@ function PerformanceInstructorPage() {
 
 	return (
 		<div className="dashboard-container">
-			<CreateSidebar sideBarType="Instructor" />
+			<CreateSideBar sideBarType="Instructor" />
 
 			<div className="container" id="info-test-content">
 				<CreateTopBar />
