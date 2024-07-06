@@ -140,7 +140,7 @@ function CourseList() {
 									return (
 										<tr key={course.id}>
 											<td>
-												<Link to={`http://localhost:3000/CourseHistory?courseid=${course.id}`}>
+												<Link to={`/InsCourseHistory?courseid=${course.id}`}>
 													{course.id}
 												</Link>
 											</td>
@@ -151,7 +151,7 @@ function CourseList() {
 														course.instructor.map((instructor, index) => (
 															<React.Fragment key={course.ubcid[index]}>
 																<Link
-																	to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid[index]}`}>
+																	to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
 																	{instructor}
 																</Link>
 																{index < course.instructor.length - 1 ? (
@@ -164,7 +164,7 @@ function CourseList() {
 														))
 													) : (
 														<Link
-															to={`http://localhost:3000/InstructorProfilePage?ubcid=${course.ubcid}`}>
+															to={`/InsProfilePage?ubcid=${course.ubcid}`}>
 															{course.instructor}
 														</Link>
 													)

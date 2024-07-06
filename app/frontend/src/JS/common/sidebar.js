@@ -10,12 +10,12 @@ function Sidebar() {
 			<hr className="divider" />
 			<ul className="menu">
 				<li>
-					<Link to={`http://localhost:3000/Dashboard?`}>
+					<Link to={`/InsDashboard?`}>
 						<FaHome className="icon" size={30} /> Dashboard
 					</Link>
 				</li>
 				<li>
-					<Link to={`http://localhost:3000/PerformanceInstructorPage?profileId=${profileId}`}>
+					<Link to={`/InsPerformancePage?profileId=${profileId}`}>
 						<FaChartLine className="icon" size={30} /> Performance
 					</Link>
 				</li>

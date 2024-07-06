@@ -1,6 +1,6 @@
 import React from 'react';
 //Admin
-import CreateAccount from './JS/Admin/CreateAccount';
+import AdminCreateAccount from './JS/Admin/AdminCreateAccount';
 
 //All
 import HomePage from './JS/All/HomePage';
@@ -8,25 +8,25 @@ import Login from './JS/All/Login';
 import ForgotPasswordPage from './JS/All/ForgotPasswordPage';
 
 //Instructor
-import Dashboard from './JS/Instructor/InsDashboard';
-import CourseList from './JS/Instructor/InsCourseList';
-import EditProfile from './JS/Instructor/InsEditProfile';
-import PerformanceInstructorPage from './JS/Instructor/PerformanceInstructorPage';
-import CourseHistory from './JS/Instructor/InsCourseHistory';
-import InstructorProfilePage from './JS/Instructor/InsProfilePage';
+import InsDashboard from './JS/Instructor/InsDashboard';
+import InsCourseList from './JS/Instructor/InsCourseList';
+import InsEditProfile from './JS/Instructor/InsEditProfile';
+import InsPerformancePage from './JS/Instructor/InsPerformancePage';
+import InsCourseHistory from './JS/Instructor/InsCourseHistory';
+import InsProfilePage from './JS/Instructor/InsProfilePage';
 
 //Department
-import PerformanceDepartmentPage from './JS/Department/DeptPerformancetPage';
+import DeptPerformancePage from './JS/Department/DeptPerformancePage';
 import DeptDashboard from './JS/Department/DeptDashboard';
 import DeptMemberList from './JS/Department/DeptMemberList';
 import DeptCourseList from './JS/Department/DeptCourseList';
-import ServiceRoleList from './JS/Department/DeptServiceRoleList';
-import DataEntry from './JS/Department/DataEntry';
-import RoleInformation from './JS/Department/RoleInformation';
-import CourseInformation from './JS/Department/CourseInformation';
+import DeptServiceRoleList from './JS/Department/DeptServiceRoleList';
+import DeptDataEntry from './JS/Department/DeptDataEntry';
+import DeptRoleInformation from './JS/Department/DeptRoleInformation';
+import DeptCourseInformation from './JS/Department/DeptCourseInformation';
 
 //
-import ServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
+import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
 import { AuthProvider } from './JS/common/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 
@@ -43,36 +43,34 @@ function App() {
 					<Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
 
 					<Route
-						path="/Dashboard"
+						path="/InsDashboard"
 						element={
 							<PrivateRoute>
-								<Dashboard />
+								<InsDashboard />
 							</PrivateRoute>
 						}
 					/>
-					<Route path="/CourseList" element={<CourseList />} />
-					<Route path="/EditProfile" element={<EditProfile />} />
-					<Route path="/PerformanceInstructorPage" element={<PerformanceInstructorPage />} />
-					<Route path="/InstructorProfilePage" element={<InstructorProfilePage />} />
-					<Route path="/CourseHistory" element={<CourseHistory />} />
-					<Route path="/DataEntry" element={<DataEntry />} />
-					<Route path="/ServiceRoleManagement" element={<ServiceRoleManagement />} />
-
-					<Route path="/CreateAccount" element={<CreateAccount />} />
+					<Route path="/InsCourseList" element={<InsCourseList />} />
+					<Route path="/EditProfile" element={<InsEditProfile />} />
+					<Route path="/InsPerformancePage" element={<InsPerformancePage />} />
+					<Route path="/InsProfilePage" element={<InsProfilePage />} />
+					<Route path="/InsCourseHistory" element={<InsCourseHistory />} />
+					<Route path="/DeptDataEntry" element={<DeptDataEntry />} />
+					<Route path="/DeptServiceRoleList" element={<DeptServiceRoleList />} />
 
 					<Route path="/DeptMemberList" element={<DeptMemberList />} />
 
-					<Route path="/CreateAccount" element={<CreateAccount />} />
+					<Route path="/AdminCreateAccount" element={<AdminCreateAccount />} />
 					<Route path="/DeptCourseList" element={<DeptCourseList />} />
-					<Route path="/ServiceRoleList" element={<ServiceRoleList />} />
+					<Route path="/DeptServiceRoleList" element={<DeptServiceRoleList />} />
 					<Route path="/DeptDashboard" element={<DeptDashboard />} />
 
-					<Route path="/ServiceRoleList" element={<ServiceRoleList />} />
-					<Route path="/RoleInformation" element={<RoleInformation />} />
+					<Route path="/DeptServiceRoleManagement" element={<DeptServiceRoleManagement />} />
+					<Route path="/DeptRoleInformation" element={<DeptRoleInformation />} />
 
 					<Route path="/DeptCourseList" element={<DeptCourseList />} />
-					<Route path="/CourseInformation" element={<CourseInformation />} />
-					<Route path="/PerformanceDepartmentPage" element={<PerformanceDepartmentPage />} />
+					<Route path="/DeptCourseInformation" element={<DeptCourseInformation />} />
+					<Route path="/DeptPerformancePage" element={<DeptPerformancePage />} />
 				</Routes>
 			</AuthProvider>
 		</BrowserRouter>

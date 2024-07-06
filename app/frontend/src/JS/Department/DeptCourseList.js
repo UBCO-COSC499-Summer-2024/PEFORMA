@@ -117,7 +117,7 @@ function DeptCourseList() {
 									return (
 										<tr key={course.id}>
 											<td>
-												<Link to={`http://localhost:3000/CourseInformation?courseid=${course.id}`}>
+												<Link to={`http://localhost:3000/DeptCourseInformation?courseid=${course.id}`}>
 													{course.courseCode}
 												</Link>
 											</td>

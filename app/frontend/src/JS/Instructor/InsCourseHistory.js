@@ -79,7 +79,7 @@ function CourseHistory() {
 				<CreateTopbar />
 
 				<div className="main">
-					<Link to="/CourseList">&lt; Back to All Courses</Link>
+					<Link to="/InsCourseList">&lt; Back to All Courses</Link>
 					<h1 className="courseName" role="contentinfo">
 						{historyData.courseCode}: {historyData.courseName}
 					</h1>
@@ -103,7 +103,7 @@ function CourseHistory() {
 									return (
 										<tr key={i}>
 											<td>
-												<Link to={`/DepartmentProfilePage?ubcid=${entry.instructorID}`}>
+												<Link to={`/InsProfilePage?ubcid=${entry.instructorID}`}>
 													{entry.instructorName}
 												</Link>
 											</td>

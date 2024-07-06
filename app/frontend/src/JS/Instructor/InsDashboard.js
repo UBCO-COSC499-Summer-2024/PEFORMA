@@ -42,7 +42,7 @@ function Dashboard() {
 					{divisions.map((division) => {
 						return (
 							<Link
-								to={`/CourseList?division=${division.code}&profileId=${profileId}`}
+								to={`/InsCourseList?division=${division.code}&profileId=${profileId}`}
 								key={division.code}>
 								<div className="card" role="gridcell">
 									<img src={cardImages[division.code]} alt={division.label} />

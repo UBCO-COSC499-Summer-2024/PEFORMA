@@ -209,7 +209,7 @@ function RoleInformation() {
 										return (
 											<tr key={assignee.instructorID}>
 												<td>
-													<Link to={`/DepartmentProfilePage?ubcid=${assignee.instructorID}`}>
+													<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
 														{assignee.name} ID:{assignee.instructorID}
 													</Link>
 												</td>

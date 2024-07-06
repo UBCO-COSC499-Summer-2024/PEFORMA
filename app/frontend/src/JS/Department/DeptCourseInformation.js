@@ -120,7 +120,7 @@ function CourseInformation() {
 									return (
 										<tr key={i}>
 											<td>
-												<Link to={`/DepartmentProfilePage?ubcid=${entry.instructorID}`}>
+												<Link to={`/DeptProfilePage?ubcid=${entry.instructorID}`}>
 													{entry.instructorName}
 												</Link>
 											</td>

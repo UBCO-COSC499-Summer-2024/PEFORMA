@@ -42,19 +42,19 @@ function Login() {
 					switch (accountType) {
 						case 1:
 							navigate(
-								`/PerformanceDepartmentPage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
 								{ replace: true }
 							);
 							break;
 						case 2:
 							navigate(
-								`/PerformanceDepartmentPage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
 								{ replace: true }
 							);
 							break;
 						case 3:
 							navigate(
-								`/PerformanceInstructorPage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/InsPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
 								{ replace: true }
 							);
 							break;

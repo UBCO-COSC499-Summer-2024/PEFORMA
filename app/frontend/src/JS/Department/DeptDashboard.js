@@ -38,7 +38,7 @@ function Dashboard() {
 				<CreateTopbar />
 
 				<div className="card-container">
-					<Link to={''}>
+					<Link to={'/DeptMemberList'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">View/Edit Profiles</div>
@@ -46,7 +46,7 @@ function Dashboard() {
 							<div className="cardDesc">View and edit various instructor profiles.</div>
 						</div>
 					</Link>
-					<Link to={'/ServiceRoleList'}>
+					<Link to={'/DeptServiceRoleList'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">View/Edit Service Roles</div>
@@ -54,7 +54,7 @@ function Dashboard() {
 							<div className="cardDesc">View and edit service role information.</div>
 						</div>
 					</Link>
-					<Link to={'/DataEntry'}>
+					<Link to={'/DeptDataEntry'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">Data Entry</div>
@@ -70,7 +70,7 @@ function Dashboard() {
 							<div className="cardDesc">View and edit course information.</div>
 						</div>
 					</Link>
-					<Link to={'/PerformanceDepartmentPage'}>
+					<Link to={'/DeptPerformancePage'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">Performace</div>

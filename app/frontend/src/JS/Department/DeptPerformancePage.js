@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
 import { CreateSidebarDept, CreateTopbar } from '../common/commonImports.js';
-import CoscTable from './PerformanceImports/DeptCoscTable.js';
-import MathTable from './PerformanceImports/DeptMathTable.js';
-import PhysTable from './PerformanceImports/DeptPhysTable.js';
-import StatTable from './PerformanceImports/DeptStatTable.js';
-import GoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
-import BenchMark from './PerformanceImports/DeptBenchMark.js';
+import DeptCoscTable from './PerformanceImports/DeptCoscTable.js';
+import DeptMathTable from './PerformanceImports/DeptMathTable.js';
+import DeptPhysTable from './PerformanceImports/DeptPhysTable.js';
+import DeptStatTable from './PerformanceImports/DeptStatTable.js';
+import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
+import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
 
 import '../../CSS/Department/PerformanceDepartmentPage.css';
 
@@ -49,31 +47,31 @@ function PerformanceDepartmentPage() {
 
 					<div className="division-top-table">
 						<div className="division">
-							<CoscTable />
+							<DeptCoscTable />
 						</div>
 
 						<div className="division">
-							<MathTable />
+							<DeptMathTable />
 						</div>
 					</div>
 
 					<div className="division-mid-table">
 						<div className="division">
-							<PhysTable />
+							<DeptPhysTable />
 						</div>
 
 						<div className="division">
-							<StatTable />
+							<DeptStatTable />
 						</div>
 					</div>
 
 					<div className="bottom-sectin">
 						<div className="division">
-							<BenchMark />
+							<DeptBenchMark />
 						</div>
 
 						<div className="division">
-							<GoodBadBoard />
+							<DeptGoodBadBoard />
 						</div>
 					</div>
 				</div>

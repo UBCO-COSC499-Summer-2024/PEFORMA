@@ -108,7 +108,7 @@ function ServiceRoleList() {
 									return (
 										<tr key={role.id}>
 											<td>
-												<Link to={`http://localhost:3000/RoleInformation?roleid=${role.id}`}>
+												<Link to={`http://localhost:3000/DeptRoleInformation?roleid=${role.id}`}>
 													{role.name}
 												</Link>
 											</td>

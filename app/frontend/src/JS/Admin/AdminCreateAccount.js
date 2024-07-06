@@ -22,13 +22,11 @@ function CreateAccount() {
         { id : 2, name: 'Graduate Admissions', added: false, year: currentYear },
     ]);
     const toggleRoleAdded = (roleId) => {
-        // 首先确保所有职位都未被选中
         const updatedRoles = roles.map(role => 
             ({ ...role, added: role.id === roleId ? !role.added : false })
         );
         setRoles(updatedRoles);
     
-        // 更新formData以反映当前选中的职位
         const addedRole = updatedRoles.find(role => role.added);
         setFormData({ 
             ...formData, 

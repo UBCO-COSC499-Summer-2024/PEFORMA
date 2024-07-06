@@ -1,4 +1,4 @@
-import {render, screen, waitFor, element } from '@testing-library/react';
+import {render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import InsCourseList from '../../../app/frontend/src/JS/Instructor/InsCourseList';
 import {MemoryRouter} from "react-router-dom";
