@@ -10,7 +10,9 @@ jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
 jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
   __esModule: true,
-  CreateSidebarDept: () => <div>Mock Sidebar</div>,
+  default: jest.fn(({ sideBarType }) => (
+    <div>{`Mock Sidebar ${sideBarType}`}</div>
+  )),
   CreateTopBar: jest.fn(({ onSearch }) => (
     <div className="topbar-search">
       <input type="text" placeholder="Search by Subject and Title" onChange={e => onSearch(e.target.value)} />
@@ -25,6 +27,7 @@ describe('DeptCourseList', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
+      profileId: { profileId: 'mocked-profileId'}
 		});
     axios.get.mockImplementation(() => 
 			Promise.resolve({
