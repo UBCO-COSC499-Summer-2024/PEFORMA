@@ -19,7 +19,7 @@ function TopSearchBar({ onSearch, searchListType }) {
             placeHolderText = "Search by Subject (e.g. COSC 111), Title (e.g. Computer Programming I)";
             break;
         case "DeptMemberList":
-            placeHolderText = "Search by Name (e.g. John Doe), Service Role (e.g. Advisor)";
+            placeHolderText = "Search by UBC ID (e.g. 78233419), Name (e.g. John Doe), Service Role (e.g. Advisor)";
             break;
         default:
             placeHolderText = "Search ..."
