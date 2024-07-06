@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../CSS/Department/ServiceRoleManagement.css';
+import '../../CSS/Department/DeptServiceRoleManagement.css';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 

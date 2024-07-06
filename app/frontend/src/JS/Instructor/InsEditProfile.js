@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../CSS/Instructor/EditProfile.css';
+import '../../CSS/Instructor/InsEditProfile.css';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 

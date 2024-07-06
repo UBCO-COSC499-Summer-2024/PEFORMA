@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../../CSS/Instructor/PerformanceInstructorPage.css';
+import '../../CSS/Instructor/InsPerformancePage.css';
 import CreateSideBar, {
 	CreateLeaderboardChart,
 	CreateScorePolarChart,

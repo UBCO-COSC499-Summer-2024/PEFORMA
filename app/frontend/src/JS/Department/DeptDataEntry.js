@@ -3,7 +3,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../../CSS/Department/DataEntry.css';
+import '../../CSS/Department/DeptDataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';

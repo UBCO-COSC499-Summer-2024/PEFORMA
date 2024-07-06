@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import '../../CSS/Department/ServiceRoleList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
 import axios from 'axios';

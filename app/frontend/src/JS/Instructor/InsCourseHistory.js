@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
-import '../../CSS/Department/CourseInformation.css';
+import '../../CSS/Instructor/InsCourseHistory.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../common/AuthContext.js';

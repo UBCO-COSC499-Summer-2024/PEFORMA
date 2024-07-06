@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Department/DeptDashboard.css';
 import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';import { Link } from 'react-router-dom';
+import { CreateTopBar } from '../common/commonImports.js';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
 

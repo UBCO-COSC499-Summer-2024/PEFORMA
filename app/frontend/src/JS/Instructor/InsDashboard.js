@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import '../../CSS/Instructor/Dashboard.css';
+import '../../CSS/Instructor/InsDashboard.css';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import divisions from '../common/divisions.js';

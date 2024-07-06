@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import '../../CSS/Instructor/InstructorProfilePage.css';
+import '../../CSS/Instructor/InsProfilePage.css';
 
 function InstructorProfilePage() {
 	const navigate = useNavigate();

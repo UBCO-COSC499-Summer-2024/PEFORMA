@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
 import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';import DeptCoscTable from './PerformanceImports/DeptCoscTable.js';
+import { CreateTopBar } from '../common/commonImports.js';
+import DeptCoscTable from './PerformanceImports/DeptCoscTable.js';
 import DeptMathTable from './PerformanceImports/DeptMathTable.js';
 import DeptPhysTable from './PerformanceImports/DeptPhysTable.js';
 import DeptStatTable from './PerformanceImports/DeptStatTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
 
-import '../../CSS/Department/PerformanceDepartmentPage.css';
+import '../../CSS/Department/DeptPerformancePage.css';
 
 function PerformanceDepartmentPage() {
 	const navigate = useNavigate();

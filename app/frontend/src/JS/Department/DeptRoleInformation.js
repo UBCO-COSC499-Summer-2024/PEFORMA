@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';import ReactPaginate from 'react-paginate';
-import '../../CSS/Department/RoleInformation.css';
+import { CreateTopBar } from '../common/commonImports.js';
+import ReactPaginate from 'react-paginate';
+import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
