@@ -3,7 +3,7 @@ import '../../CSS/common.css';
 import Sidebar from './sidebar.js';
 import Topbar from './topbar.js';
 import SidebarDept from './sidebarDept.js';
-import { TopSearchBarIns, TopSearchBarDept } from './topbarFilter.js';
+import TopSearchBar  from './topbarFilter.js';
 import InsWorkHoursBarChart from '../Instructor/InsPerformanceImports/InsWorkHoursBarChart.js';
 import InsPerformancePolarChart from '../Instructor/InsPerformanceImports/InsPerformancePolarChart.js';
 import InsLeaderBoard from '../Instructor/InsPerformanceImports/InsLeaderBoard.js';
@@ -19,8 +19,8 @@ function CreateTopbar() {
 	return <Topbar />;
 }
 
-function CreateTopSearchbarIns({ onSearch }) {
-	return <TopSearchBarIns onSearch={onSearch} />;
+function CreateTopSearchBar({ searchListType, onSearch }) {
+	return <TopSearchBar searchListType={searchListType} onSearch={onSearch} />;
 }
 
 function CreateSidebarDept() {
@@ -42,18 +42,14 @@ function CreateLeaderboardChart() {
 function CreateProgressChart() {
 	return <InsServiceHoursProgressChart />;
 }
-function CreateTopSearchBarDept({ onSearch }) {
-	return <TopSearchBarDept onSearch={onSearch} />;
-}
 
 export default CreateSidebar;
 export {
 	CreateTopbar,
 	CreateSidebarDept,
-	CreateTopSearchbarIns,
+	CreateTopSearchBar,
 	CreateWorkingBarChart,
 	CreateScorePolarChart,
 	CreateLeaderboardChart,
 	CreateProgressChart,
-	CreateTopSearchBarDept,
 };
