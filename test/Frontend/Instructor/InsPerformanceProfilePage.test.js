@@ -1,20 +1,20 @@
-import { render, element, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import PerformanceInstructorPage from '../../../app/frontend/src/JS/Instructor/PerformanceInstructorPage';
+import InsPerformancePage from '../../../app/frontend/src/JS/Instructor/InsPerformancePage';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 import { __esModule } from '@babel/preset-env';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('react-apexcharts', () => ({
 	__esModule: true,
 	default: () => <div />
 }));
 
 
-describe('PerformanceInstructorPage', () => {
+describe('InsPerformancePage', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
@@ -45,7 +45,7 @@ describe('PerformanceInstructorPage', () => {
 
 		render(
 			<MemoryRouter>
-				<PerformanceInstructorPage />
+				<InsPerformancePage />
 			</MemoryRouter>
 		);
 
@@ -86,7 +86,7 @@ describe('PerformanceInstructorPage', () => {
 
 		render(
 			<MemoryRouter>
-				<PerformanceInstructorPage />
+				<InsPerformancePage />
 			</MemoryRouter>
 		);
 

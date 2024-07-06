@@ -36,14 +36,13 @@ test('Checks if form appears properly', async () => {
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import DataEntryComponent from '../../../app/frontend/src/JS/Department/DataEntry';
+import DataEntryComponent from '../../../app/frontend/src/JS/Department/DeptDataEntry';
 import { MemoryRouter } from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
-
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 useAuth.mockReturnValue({
   authToken: { token: 'mocked-token' },
   accountType: { accountType: 'mocked-accountType' },

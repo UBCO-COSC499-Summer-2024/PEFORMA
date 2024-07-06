@@ -1,14 +1,12 @@
 import {act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import RoleInformation from '../../../app/frontend/src/JS/Department/RoleInformation';
+import DeptRoleInformation from '../../../app/frontend/src/JS/Department/DeptRoleInformation';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
-
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 useAuth.mockReturnValue({
   authToken: { token: 'mocked-token' },
   accountType: { accountType: 'mocked-accountType' },
@@ -24,14 +22,14 @@ axios.get.mockImplementation((url) => {
 
 test('Checks if buttons exist', async () => {
     await act(async () => {
-        render(<MemoryRouter><RoleInformation/></MemoryRouter>);
+        render(<MemoryRouter><DeptRoleInformation/></MemoryRouter>);
     });
     const buttons = await screen.getAllByRole('button');
     expect(buttons.length).toBe(5);
 });
 test('Checks if data exists', async () => {
     await act(async () => {
-        render(<MemoryRouter><RoleInformation/></MemoryRouter>);
+        render(<MemoryRouter><DeptRoleInformation/></MemoryRouter>);
     });
     
     const data = await screen.getAllByRole("contentinfo");

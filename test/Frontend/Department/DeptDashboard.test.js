@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptDashboard from '../../../app/frontend/src/JS/Department/DeptDashboard';
 import {MemoryRouter} from "react-router-dom";
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
-jest.mock('../../../app/frontend/src/JS/AuthContext');
 useAuth.mockReturnValue({
   profileId: { profileId: 'mocked-profileId'},
   accountType: { accountType: 'mocked-accountType' },

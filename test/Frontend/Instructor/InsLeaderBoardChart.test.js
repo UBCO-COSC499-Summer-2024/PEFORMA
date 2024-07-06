@@ -1,19 +1,19 @@
 import { render, element, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import LeaderBoard from '../../../app/frontend/src/JS/leaderBoard';
+import InsLeaderBoard from '../../../app/frontend/src/JS/Instructor/InsPerformanceImports/InsLeaderBoard';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 import { __esModule } from '@babel/preset-env';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('react-apexcharts', () => ({
 	__esModule: true,
 	default: () => <div />
 }));
 
-describe('LeaderBoard', () => {
+describe('InsLeaderBoard', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			accountType: { accountType: 'mocked-accountType' },
@@ -25,7 +25,7 @@ describe('LeaderBoard', () => {
 
 		render(
 			<MemoryRouter>
-				<LeaderBoard />
+				<InsLeaderBoard />
 			</MemoryRouter>
 		);
 

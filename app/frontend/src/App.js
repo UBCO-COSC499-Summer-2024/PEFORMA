@@ -27,7 +27,7 @@ import CourseInformation from './JS/Department/CourseInformation';
 
 //
 import ServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
-import { AuthProvider } from './JS/AuthContext';
+import { AuthProvider } from './JS/common/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 
 import { BrowserRouter, Router, Route, Routes } from 'react-router-dom';

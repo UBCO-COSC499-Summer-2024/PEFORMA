@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Department/DeptDashboard.css';
-import { CreateTopbar, CreateSidebarDept } from '../commonImports.js';
+import { CreateTopbar, CreateSidebarDept } from '../common/commonImports.js';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../common/AuthContext.js';
 
 function Dashboard() {
 	const navigate = useNavigate();
-  const { authToken, accountType } = useAuth();
+	const { authToken, accountType } = useAuth();
 
 	console.log(accountType);
 	useEffect(() => {
@@ -19,11 +19,11 @@ function Dashboard() {
 			try {
 				const numericAccountType = Number(accountType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert("No Access, Redirecting to instructor view");
-					navigate("/Dashboard");
+					alert('No Access, Redirecting to instructor view');
+					navigate('/Dashboard');
 				}
 			} catch (error) {
-				console.error("Failed to fetch account type", error);
+				console.error('Failed to fetch account type', error);
 				navigate('/Login');
 			}
 		};

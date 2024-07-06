@@ -3,11 +3,12 @@ import '@testing-library/jest-dom';
 import DeptCourseList from '../../../app/frontend/src/JS/Department/DeptCourseList';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
-jest.mock('../../../app/frontend/src/JS/commonImports', () => ({
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
+
+jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
   __esModule: true,
   CreateSidebarDept: () => <div>Mock Sidebar</div>,
   CreateTopSearchBarDept: jest.fn(({ onSearch }) => (

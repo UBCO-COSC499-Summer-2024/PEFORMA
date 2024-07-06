@@ -1,15 +1,14 @@
 import {render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import GoodBadBoard from '../../../../app/frontend/src/JS/Department/PerformanceImports/GoodBadBoard';
+import DeptGoodBadBoard from '../../../../app/frontend/src/JS/Department/PerformanceImports/DeptGoodBadBoard';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../../app/frontend/src/JS/common/AuthContext';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('axios');
-jest.mock('../../../../app/frontend/src/JS/AuthContext');
-
-describe('GoodBadBoard', () => {
+jest.mock('../../../../app/frontend/src/JS/common/AuthContext');
+describe('DeptGoodBadBoard', () => {
   let element;
 
 	beforeEach(() => {
@@ -33,10 +32,10 @@ describe('GoodBadBoard', () => {
 		);
     render(
 			<MemoryRouter>
-				<GoodBadBoard />
+				<DeptGoodBadBoard />
 			</MemoryRouter>
 		);
-    element = document.getElementById('goodbad-test-content'); // 정의를 여기로 옮김
+    element = document.getElementById('goodbad-test-content');
 	});
 
 	test('Testing rendering default people list on table', async () => {

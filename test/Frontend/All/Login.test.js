@@ -3,10 +3,10 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import Login from '../../../app/frontend/src/JS/All/Login';
 import {MemoryRouter} from "react-router-dom";
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 import axios from 'axios';
 
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('axios');
 
 useAuth.mockResolvedValue('MOCK');

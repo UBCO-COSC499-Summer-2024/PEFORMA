@@ -1,15 +1,15 @@
 import {render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import CoscTable from '../../../../app/frontend/src/JS/Department/PerformanceImports/CoscTable';
+import DeptCoscTable from '../../../../app/frontend/src/JS/Department/PerformanceImports/DeptCoscTable';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../../app/frontend/src/JS/common/AuthContext';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('axios');
-jest.mock('../../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../../app/frontend/src/JS/common/AuthContext');
 
-describe('CoscTable', () => {
+describe('DeptCoscTable', () => {
   let element; 
 
 	beforeEach(() => {
@@ -28,7 +28,7 @@ describe('CoscTable', () => {
 		);
     render(
 			<MemoryRouter>
-				<CoscTable />
+				<DeptCoscTable />
 			</MemoryRouter>
 		);
     element = document.getElementById('cosc-test-content');

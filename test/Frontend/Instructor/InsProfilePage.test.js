@@ -1,12 +1,12 @@
-import { render, element, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import InstructorProfilePage from '../../../app/frontend/src/JS/Instructor/InstructorProfilePage';
+import InsProfilePage from '../../../app/frontend/src/JS/Instructor/InsProfilePage';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
 beforeAll(() => {
 	global.alert = jest.fn();
@@ -17,7 +17,7 @@ afterAll(() => {
 });
 
 
-describe('InstructorProfilePage', () => {
+describe('InsProfilePage', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
@@ -46,7 +46,7 @@ describe('InstructorProfilePage', () => {
 
 		render(
 			<MemoryRouter>
-				<InstructorProfilePage />
+				<InsProfilePage />
 			</MemoryRouter>
 		);
 

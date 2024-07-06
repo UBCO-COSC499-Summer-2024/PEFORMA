@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CreateSidebarDept, CreateTopbar } from '../commonImports.js';
+import { CreateSidebarDept, CreateTopbar } from '../common/commonImports.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
-import AssignInstructorsModal from '../assignInstructorsModal.js';
-import { useAuth } from '../AuthContext';
+import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
+import { useAuth } from '../common/AuthContext.js';
 
 function DataEntryComponent() {
 	const navigate = useNavigate();
@@ -224,60 +224,106 @@ function DataEntryComponent() {
 		}
 	};
 
-
-    return (
-
-        <div className='DataEntry-page'>
-            <CreateSidebarDept />
-            <div className="container">
-                <CreateTopbar />
-                <div className='main'>
-                    <h1>Data Entry</h1>
-                    <div className="create-new">
-                        <label htmlFor="create-new-select">Create New:</label>
-                        <select id="create-new-select" value={selection} onChange={(e) => handleChange(e)} role="button" name="dropdown">
-                            <option value="" disabled>Select</option>
-                            <option value="Service Role" name="newServiceRole" role="button">Service Role</option>
-                            <option value="Course" name="newCourse" role="button">Course</option>
-                        </select>
-                    </div>
-                    {selection === 'Course' && (
-                        <div className='form-container'>
-                            <form className="course-form" data-testid="course-form" role='form' onSubmit={handleSubmit}>
-                                <div className="titleInput formInput">
-                                    <label htmlFor="course-title">Course Title:</label>
-                                    <input type="text" onChange={(e) => setCourseTitle(e.target.value)} id="course-title" placeholder="Enter course title" name="courseTitle" required />
-                                </div>
-                                <div className='departmentInput formInput'>
-                                    <label htmlFor="course-department">Department:</label>
-                                    <select id="course-department" placeholder="Select" name="courseDepartment" onChange={(e) => setCourseDepartment(e.target.value)} required>
-                                        <option disabled="disabled">Select a division</option>
-                                        {divisions.map(division => {
-                                            return (
-                                                <option key={division.code} value={division.code}>{division.label}</option>
-                                            );
-                                        })}
-                                    </select>
-                                    <div className='coursecodeInput formInput'>
-                                        <label htmlFor="course-code">Course Code:</label>
-                                        <input type="text" id="course-code" name="courseCode" onChange={(e) => {
-                                            setCourseCode(e.target.value);
-                                        }} required />
-                                    </div>
-                                    <div className='courseYear formInput'>
-                                        <label htmlFor="courseYear">Session Year:</label>
-                                        <input type="text" placeholder='e.g. 2024' id="courseYear" name="courseYear" onChange={(e) => {
-                                            setCourseYear(e.target.value);
-                                        }} required />
-                                    </div>
-                                    <div className='courseTerm formInput'>
-                                        <label htmlFor="courseTerm">Session Term:</label>
-                                        <input type="text" placeholder='1,2,3 or 4' id="courseTerm" name="courseTerm" onChange={(e) => {
-                                            setCourseTerm(e.target.value);
-                                        }} required />
-                                    </div>
-                                </div>
-
+	return (
+		<div className="DataEntry-page">
+			<CreateSidebarDept />
+			<div className="container">
+				<CreateTopbar />
+				<div className="main">
+					<h1>Data Entry</h1>
+					<div className="create-new">
+						<label htmlFor="create-new-select">Create New:</label>
+						<select
+							id="create-new-select"
+							value={selection}
+							onChange={(e) => handleChange(e)}
+							role="button"
+							name="dropdown">
+							<option value="" disabled>
+								Select
+							</option>
+							<option value="Service Role" name="newServiceRole" role="button">
+								Service Role
+							</option>
+							<option value="Course" name="newCourse" role="button">
+								Course
+							</option>
+						</select>
+					</div>
+					{selection === 'Course' && (
+						<div className="form-container">
+							<form
+								className="course-form"
+								data-testid="course-form"
+								role="form"
+								onSubmit={handleSubmit}>
+								<div className="titleInput formInput">
+									<label htmlFor="course-title">Course Title:</label>
+									<input
+										type="text"
+										onChange={(e) => setCourseTitle(e.target.value)}
+										id="course-title"
+										placeholder="Enter course title"
+										name="courseTitle"
+										required
+									/>
+								</div>
+								<div className="departmentInput formInput">
+									<label htmlFor="course-department">Department:</label>
+									<select
+										id="course-department"
+										placeholder="Select"
+										name="courseDepartment"
+										onChange={(e) => setCourseDepartment(e.target.value)}
+										required>
+										<option disabled="disabled">Select a division</option>
+										{divisions.map((division) => {
+											return (
+												<option key={division.code} value={division.code}>
+													{division.label}
+												</option>
+											);
+										})}
+									</select>
+									<div className="coursecodeInput formInput">
+										<label htmlFor="course-code">Course Code:</label>
+										<input
+											type="text"
+											id="course-code"
+											name="courseCode"
+											onChange={(e) => {
+												setCourseCode(e.target.value);
+											}}
+											required
+										/>
+									</div>
+									<div className="courseYear formInput">
+										<label htmlFor="courseYear">Session Year:</label>
+										<input
+											type="text"
+											placeholder="e.g. 2024"
+											id="courseYear"
+											name="courseYear"
+											onChange={(e) => {
+												setCourseYear(e.target.value);
+											}}
+											required
+										/>
+									</div>
+									<div className="courseTerm formInput">
+										<label htmlFor="courseTerm">Session Term:</label>
+										<input
+											type="text"
+											placeholder="1,2,3 or 4"
+											id="courseTerm"
+											name="courseTerm"
+											onChange={(e) => {
+												setCourseTerm(e.target.value);
+											}}
+											required
+										/>
+									</div>
+								</div>
 
 								<label htmlFor="course-description">Course Description:</label>
 								<textarea
@@ -308,11 +354,10 @@ function DataEntryComponent() {
 											</ul>
 										</div>
 									)}
-									</div>
-									</form>
 								</div>
-								)}
-
+							</form>
+						</div>
+					)}
 
 					{selection === 'Service Role' && (
 						<div className="form-container">
@@ -413,4 +458,3 @@ function DataEntryComponent() {
 }
 
 export default DataEntryComponent;
-

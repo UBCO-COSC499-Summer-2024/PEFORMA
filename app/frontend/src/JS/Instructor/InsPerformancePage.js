@@ -7,13 +7,13 @@ import CreateSidebar, {
 	CreateScorePolarChart,
 	CreateTopbar,
 	CreateWorkingBarChart,
-	CreateProgressChart
-} from '../commonImports.js';
-import { useAuth } from '../AuthContext';
+	CreateProgressChart,
+} from '../common/commonImports.js';
+import { useAuth } from '../common/AuthContext.js';
 
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
-	const { authToken, accountType, profileId} = useAuth();
+	const { authToken, accountType, profileId } = useAuth();
 
 	const initProfile = {
 		roles: [],
@@ -26,40 +26,40 @@ function PerformanceInstructorPage() {
 		const currentMonth = date.getMonth() + 1;
 
 		const fetchData = async () => {
-		  try {
-			if (!authToken) {
-			  navigate('/Login');
-			  return;
-			}
-			const numericAccountType = Number(accountType);
-        if (numericAccountType !== 3 ) {
-					alert("No Access, Redirecting to department view");
-					navigate("/DeptDashboard");
+			try {
+				if (!authToken) {
+					navigate('/Login');
+					return;
 				}
-			const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
-			  params: { 
-					profileId:profileId, currentMonth:currentMonth 
-				}, 
-			  headers: { Authorization: `Bearer ${authToken.token}` }
-			});
-			console.log(response);
-	
-			if (response.data) {
-			  setProfile(response.data);
-			}
-		  } catch (error) {
-			if (error.response && error.response.status === 401) {
-			  localStorage.removeItem('authToken');
-			  navigate('/Login');
-			} else {
-			  console.error('Error fetching instructor profile:', error);
-			}
-		  }
-		};
-	
-		fetchData();
-	  }, [authToken, profileId, navigate]);
+				const numericAccountType = Number(accountType);
+				if (numericAccountType !== 3) {
+					alert('No Access, Redirecting to department view');
+					navigate('/DeptDashboard');
+				}
+				const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
+					params: {
+						profileId: profileId,
+						currentMonth: currentMonth,
+					},
+					headers: { Authorization: `Bearer ${authToken.token}` },
+				});
+				console.log(response);
 
+				if (response.data) {
+					setProfile(response.data);
+				}
+			} catch (error) {
+				if (error.response && error.response.status === 401) {
+					localStorage.removeItem('authToken');
+					navigate('/Login');
+				} else {
+					console.error('Error fetching instructor profile:', error);
+				}
+			}
+		};
+
+		fetchData();
+	}, [authToken, profileId, navigate]);
 
 	return (
 		<div className="dashboard-container">
@@ -95,7 +95,7 @@ function PerformanceInstructorPage() {
 						<div className="assignment-table">
 							<ul className="teaching-assignments">
 								<p className="teaching-margin">
-									<h2 className='subTitle'>Teaching Assignments:</h2>
+									<h2 className="subTitle">Teaching Assignments:</h2>
 								</p>
 								{profile.teachingAssignments.map((teachingAssign) => (
 									<li key={teachingAssign.id}>
@@ -125,11 +125,10 @@ function PerformanceInstructorPage() {
 				</div>
 
 				<div>
-					<h2 className='subTitle'>Progress Chart</h2>
+					<h2 className="subTitle">Progress Chart</h2>
 					<CreateProgressChart />
 				</div>
 			</div>
-
 		</div>
 	);
 }

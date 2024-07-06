@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import CreateSidebar from '../commonImports.js';
-import { CreateTopbar } from '../commonImports.js';
+import CreateSidebar from '../common/commonImports.js';
+import { CreateTopbar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/CourseInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../AuthContext.js';
+import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 
 function CourseHistory() {

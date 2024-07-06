@@ -1,28 +1,25 @@
 import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import CourseInformation from '../../../app/frontend/src/JS/Department/CourseInformation';
+import DeptCourseInformation from '../../../app/frontend/src/JS/Department/DeptCourseInformation';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
-
-jest.mock('../../../app/frontend/src/JS/AuthContext');
-useAuth.mockReturnValue({
-  profileId: { profileId: 'mocked-profileId'},
-  accountType: { accountType: 'mocked-accountType' },
-
-});
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-axios.get.mockResolvedValue({"data":{"history":[{}], entryCount:0, perPage: 10, currentPage: 1}});
-
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 useAuth.mockReturnValue({
     authToken: { token: 'mocked-token' },
+    profileId: { profileId: 'mocked-profileId'},
+    accountType: { accountType: 'mocked-accountType' },
+  
 });
+
+axios.get.mockResolvedValue({"data":{"history":[{}], entryCount:0, perPage: 10, currentPage: 1}});
+
 
 test('Checks if buttons exist', async () => {
     await act(async () => {
-        render(<MemoryRouter><CourseInformation/></MemoryRouter>);
+        render(<MemoryRouter><DeptCourseInformation/></MemoryRouter>);
     });
     const edit = await screen.getByRole('button', { name: /edit/i});
     const deactivate = await screen.getByRole('button', { name: /deactivate/i});
@@ -31,7 +28,7 @@ test('Checks if buttons exist', async () => {
 });
 test('Checks if data exists', async () => {
     await act(async () => {
-        render(<MemoryRouter><CourseInformation/></MemoryRouter>);
+        render(<MemoryRouter><DeptCourseInformation/></MemoryRouter>);
     });
 
     const data = await screen.getAllByRole("contentinfo");

@@ -1,18 +1,18 @@
 import {render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import BenchMark from '../../../../app/frontend/src/JS/Department/PerformanceImports/BenchMark';
+import DeptBenchMark from '../../../../app/frontend/src/JS/Department/PerformanceImports/DeptBenchMark';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-jest.mock('../../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../../app/frontend/src/JS/common/AuthContext');
 
 // Date.getMonth() starts from 0 index (0 = january) so 6 means july 
 const mockCurrentDate = new Date(2024,6); 
 global.Date = jest.fn(() => mockCurrentDate);
 
-describe('BenchMark', () => {
+describe('DeptBenchMark', () => {
   let element; 
 
 	beforeEach(() => {
@@ -33,7 +33,7 @@ describe('BenchMark', () => {
 		);
     render(
 			<MemoryRouter>
-				<BenchMark />
+				<DeptBenchMark />
 			</MemoryRouter>
 		);
     element = document.getElementById('benchmark-test-content');

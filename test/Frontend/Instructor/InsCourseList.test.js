@@ -1,14 +1,14 @@
 import {render, screen, waitFor, element } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import CourseList from '../../../app/frontend/src/JS/Instructor/CourseList';
+import InsCourseList from '../../../app/frontend/src/JS/Instructor/InsCourseList';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
-describe('CourseList', () => {
+describe('InsCourseList', () => {
   let element;
 
 	beforeEach(() => {
@@ -28,7 +28,7 @@ describe('CourseList', () => {
 		);
     render(
 			<MemoryRouter>
-				<CourseList />
+				<InsCourseList />
 			</MemoryRouter>      
 		);
     element = document.getElementById('course-test-content');

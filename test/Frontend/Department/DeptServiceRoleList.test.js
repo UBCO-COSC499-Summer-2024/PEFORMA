@@ -1,14 +1,14 @@
 import {fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ServiceRoleList from '../../../app/frontend/src/JS/Department/ServiceRoleList';
+import DeptServiceRoleList from '../../../app/frontend/src/JS/Department/DeptServiceRoleList';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/AuthContext';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
-describe('ServiceRoleList', () => {
+describe('DeptServiceRoleList', () => {
   let element; 
 
 	beforeEach(() => {
@@ -38,7 +38,7 @@ describe('ServiceRoleList', () => {
 		);
     render(
 			<MemoryRouter>
-				<ServiceRoleList />
+				<DeptServiceRoleList />
 			</MemoryRouter>
 		);
     element = document.getElementById('dept-service-role-list-test-content');
