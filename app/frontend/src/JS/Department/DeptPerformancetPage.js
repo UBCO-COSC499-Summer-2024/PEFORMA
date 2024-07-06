@@ -5,12 +5,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext.js';
 import { CreateSidebarDept,CreateTopbar } from '../commonImports.js';
-import  CoscTable  from './PerformanceImports/CoscTable.js';
-import  MathTable  from './PerformanceImports/MathTable.js';
-import  PhysTable  from './PerformanceImports/PhysTable.js';
-import  StatTable  from './PerformanceImports/StatTable.js';
-import GoodBadBoard from './PerformanceImports/GoodBadBoard.js';
-import BenchMark from './PerformanceImports/BenchMark.js';
+import  CoscTable  from './PerformanceImports/DeptCoscTable.js';
+import  MathTable  from './PerformanceImports/DeptMathTable.js';
+import  PhysTable  from './PerformanceImports/DeptPhysTable.js';
+import  StatTable  from './PerformanceImports/DeptStatTable.js';
+import GoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
+import BenchMark from './PerformanceImports/DeptBenchMark.js';
 
 import '../../CSS/Department/PerformanceDepartmentPage.css';
 
