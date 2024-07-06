@@ -17,9 +17,7 @@ function showRoles(roleData, offset) {
 
 function ServiceRoleList() {
 	const { authToken, accountType } = useAuth();
-
 	const navigate = useNavigate();
-
 	const [roleData, setRoleData] = useState({
 		roles: [{}],
 		rolesCount: 0,
@@ -82,7 +80,6 @@ function ServiceRoleList() {
 	const pageCount = Math.ceil(roleData.rolesCount / roleData.perPage);
 	const offset = (roleData.currentPage - 1) * roleData.perPage;
 	const currentRoles = showRoles(roleData, offset);
-	console.log(currentRoles);
 
 	return (
 		<div className="dashboard">
