@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import CreateSidebar, { CreateTopSearchbarIns } from '../common/commonImports.js';
+import CreateSidebar, { CreateTopSearchBar } from '../common/commonImports.js';
 import '../../CSS/Instructor/CourseList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
@@ -9,7 +9,7 @@ import axios from 'axios';
 import '../common/AuthContext.js';
 import { useAuth } from '../common/AuthContext.js';
 
-function CourseList() {
+function InsCourseList() {
 	const { authToken, accountType } = useAuth();
 	const params = new URLSearchParams(window.location.search);
 	const divisionCode = params.get('division') || 'COSC';
@@ -69,7 +69,6 @@ function CourseList() {
 	};
 
 	const handleSearchChange = (newSearch) => {
-		console.log('Searched:', newSearch);
 		setSearch(newSearch);
 		setDivisionData((prevState) => ({ ...prevState, currentPage: 1 }));
 	};
@@ -108,7 +107,7 @@ function CourseList() {
 		<div className="dashboard">
 			<CreateSidebar />
 			<div className="container">
-				<CreateTopSearchbarIns onSearch={handleSearchChange} />
+				<CreateTopSearchBar searchListType={"InsCourseList"} onSearch={handleSearchChange} />
 
 				<div className="courselist-main">
 					<header className="ListTitle" id="dropdown-test-content">
@@ -215,4 +214,4 @@ function CourseList() {
 	);
 }
 
-export default CourseList;
+export default InsCourseList;
