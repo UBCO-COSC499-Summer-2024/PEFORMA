@@ -202,5 +202,10 @@ flex-direction: column;
 }
 
 .monthlyHours {
-    width: 100%;
+    width: 40%;
+    padding: 0.75em;
+    border: solid 1px var(--darkestestGrey);
+    border-radius: 0.5em;
+    margin-bottom: 1em;
+    background-color: var(--darkGrey);
 }

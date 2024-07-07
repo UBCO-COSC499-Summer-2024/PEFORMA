@@ -186,6 +186,7 @@ function DataEntryComponent() {
 			serviceRoleDescription,
 			assignedInstructors, // Array of instructor ID's that will be added to the newly created course/service role
 			serviceRoleYear,
+			monthlyHours
 		};
 
 		console.log(
@@ -216,6 +217,10 @@ function DataEntryComponent() {
 				`${serviceRoleYear}\n\t` +
 				''
 		);
+		// Show monthly hours is working
+		for (let i = 0; i<Object.keys(monthlyHours).length;i++) {
+			console.log(Object.keys(monthlyHours)[i]+": "+Object.values(monthlyHours)[i]);
+		}
 
 		let valid = false;
 		let confirmMessage = '';
@@ -436,58 +441,59 @@ function DataEntryComponent() {
 										required
 									/>
 								</div>
+								<label>Estimated hours per month:</label>
 								<div className="monthlyHours">
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.january = e.target.value}}/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.january = e.target.value}} required/>
 											<div>January</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.february = e.target.value}}/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.february = e.target.value}}required/>
 											<div>February</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.march = e.target.value}}/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.march = e.target.value}}required/> 
 											<div>March</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.april = e.target.value}}/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.april = e.target.value}}required/> 
 											<div>April</div>
 										</span>
 									</div>
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.may = e.target.value}}/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.may = e.target.value}}required/>
 											<div>May</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.june = e.target.value}}/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.june = e.target.value}}required/>
 											<div>June</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.july = e.target.value}}/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.july = e.target.value}}required/> 
 											<div>July</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.august = e.target.value}}/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.august = e.target.value}}required/> 
 											<div>August</div>
 										</span>
 									</div>
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.september = e.target.value}}/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.september = e.target.value}}required/>
 											<div>September</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.october = e.target.value}}/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.october = e.target.value}}required/>
 											<div>October</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.november = e.target.value}}/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.november = e.target.value}}required/> 
 											<div>November</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.december = e.target.value}}/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.december = e.target.value}}required/> 
 											<div>December</div>
 										</span>
 									</div>
