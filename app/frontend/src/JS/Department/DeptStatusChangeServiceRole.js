@@ -36,11 +36,11 @@ function DeptStatusChangeServiceRole(){
 		const updatedRole = { ...role, status: newStatus };
 		const updatedRoles = roleData.roles.map(r => r.id === role.id ? updatedRole : r);
 	
-		console.log("request\n",  { roleId: role.id, newStatus: updatedRole.status })
+		console.log("request\n",  { roleId: role.id, newStatus })
 		try {
 			await axios.post(`http://localhost:3000/DeptStatusChangeServiceRole`, {
 				roleId: role.id,
-				newStatus: updatedRole.status
+				newStatus
 			});
 			setRoleData({ ...roleData, roles: updatedRoles });
 		} catch (error) {
@@ -81,8 +81,8 @@ function DeptStatusChangeServiceRole(){
 											</td>
 											<td>{role.department}</td>
                       <td>
-											<button className={`${role.status === 'active' ? 'active-button' : 'default-button'} button`} onClick={() => toggleStatus(role, 'active')}>Active</button>
-											<button className={`${role.status === 'inactive' ? 'inactive-button' : 'default-button'} button`} onClick={() => toggleStatus(role, 'inactive')}>Inactive</button>
+											<button className={`${role.status === 'active' ? 'active-button' : 'default-button'} button`} onClick={() => toggleStatus(role, true)}>Active</button>
+											<button className={`${role.status === 'inactive' ? 'inactive-button' : 'default-button'} button`} onClick={() => toggleStatus(role, false)}>Inactive</button>
                       </td>
 										</tr>
 									);
