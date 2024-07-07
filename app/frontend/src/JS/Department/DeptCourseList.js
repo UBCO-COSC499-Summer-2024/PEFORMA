@@ -45,9 +45,8 @@ function DeptCourseList() {
 				const res = await axios.get(`http://localhost:3001/api/all-courses`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				const data = res.data;
-				const filledCourses = fillEmptyItems(data.courses, data.perPage);
-				setDeptCourseList({ ...data, courses: filledCourses });
+				const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
+				setDeptCourseList({ ...res.data, courses: filledCourses });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
 				if (error.response && error.response.status === 401) {
@@ -76,7 +75,7 @@ function DeptCourseList() {
 			<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
 				<div className="main">
-					<div className="subtitle-course">List of Course Lists ({deptCourseList.coursesCount} Active)
+					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} Active in current)
 					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`}>Manage Course</Link></button>
 
 					</div>
