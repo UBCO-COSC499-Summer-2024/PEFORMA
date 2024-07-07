@@ -23,36 +23,31 @@ function DeptStatusChangeServiceRole(){
       currentPage: 1 
     });
 
-  // useEffect(() => {
-  //   if (location.state.roleData){
-  //     const filledRoles = fillEmptyItems(location.state.roleData.roles, location.state.roleData.perPage);
-  //     setRoleData({ ...location.state.roleData, roles: filledRoles });
-  //   }
-  // }, [location.state]);
-
   useEffect(() => {
-    const fetchServiceRoles = async () => {
-      try {
-        const res = await axios.get(`http://localhost:3000/serviceRoles.json`);
-        const data = res.data;
-        const filledRoles = fillEmptyItems(data.roles, data.perPage);
-        setRoleData({ ...data, roles: filledRoles });
-      } catch (error) {
-        console.error('Error fetching service roles:', error);
-      }
-    };
-
-    fetchServiceRoles();
-  }, []);
+    if (location.state.roleData){
+      const filledRoles = fillEmptyItems(location.state.roleData.roles, location.state.roleData.perPage);
+      setRoleData({ ...location.state.roleData, roles: filledRoles });
+    }
+  }, [location.state]);
   
   const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
 
-  const toggleStatus = (role) => {
-    const updatedRoles = roleData.roles.map(r => 
-      r.id === role.id ? { ...r, status: r.status === 'active' ? 'inactive' : 'active' } : r
-    );
-    setRoleData({ ...roleData, roles: updatedRoles });
-  };
+	const toggleStatus = async (role) => {
+		const updatedRole = { ...role, status: role.status === 'active' ? 'inactive' : 'active' };
+		const updatedRoles = roleData.roles.map(r => r.id === role.id ? updatedRole : r);
+	
+		console.log("request\n",  { roleId: role.id, newStatus: updatedRole.status })
+		try {
+			await axios.post(`http://localhost:3000/DeptStatusChangeServiceRole`, {
+				roleId: role.id,
+				newStatus: updatedRole.status
+			});
+			setRoleData({ ...roleData, roles: updatedRoles });
+		} catch (error) {
+			console.error('Error updating role status:', error);
+		}
+	};
+	
   return (
     <div className="dashboard">
 			<CreateSideBar sideBarType="Department" />
