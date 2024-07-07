@@ -7,12 +7,17 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
+import { fillEmptyItems, 
+	handlePageClick, 
+	pageCount, 
+	currentItems
+ } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
 import '../../CSS/Department/DeptServiceRoleList.css';
 
 function ServiceRoleList() {
-
+	
 	const { authToken, accountType } = useAuth();
 	const navigate = useNavigate();
 	const [roleData, setRoleData] = useState({
@@ -40,7 +45,7 @@ function ServiceRoleList() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const data = res.data;
-				const filledRoles = fillEmptyRoles(data.roles, data.perPage);
+				const filledRoles = fillEmptyItems(data.roles, data.perPage);
 				setRoleData({ ...data, roles: filledRoles });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
@@ -55,33 +60,7 @@ function ServiceRoleList() {
 		fetchServiceRoles();
 	}, [authToken]);
 
-	const fillEmptyRoles = (roles, perPage) => {
-		const filledRoles = [...roles];
-		const currentCount = roles.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledRoles.push({});
-			}
-		}
-		return filledRoles;
-	};
-
-	
-
-	const handlePageClick = (data) => {
-		setRoleData((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
-
-	const currentRoles = roleData.roles.slice(
-		(roleData.currentPage - 1) * roleData.perPage,
-		roleData.currentPage * roleData.perPage
-	);
-
-	const pageCount = Math.ceil(roleData.rolesCount / roleData.perPage);
+	const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage)
 
 	return (
 		<div className="dashboard">
@@ -124,10 +103,10 @@ function ServiceRoleList() {
 								previousLabel={'<'}
 								nextLabel={'>'}
 								breakLabel={'...'}
-								pageCount={pageCount}
+								pageCount={pageCount(roleData.rolesCount, roleData.perPage)}
 								marginPagesDisplayed={3}
 								pageRangeDisplayed={0}
-								onPageChange={handlePageClick}
+								onPageChange={(data) => handlePageClick(data, setRoleData)}
 								containerClassName={'pagination'}
 								activeClassName={'active'}
 							/>

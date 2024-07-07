@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import '../../CSS/Department/DeptCourseList.css';
-import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
-import axios from 'axios';
 import '../common/AuthContext.js';
+import { fillEmptyItems, 
+	handlePageClick, 
+	pageCount, 
+	currentItems,
+	handleSearchChange
+ } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
+import '../../CSS/Department/DeptCourseList.css';
+
 function DeptCourseList() {
+
 	const { authToken, accountType } = useAuth();
 	const navigate = useNavigate();
-
 	const [deptCourseList, setDeptCourseList] = useState({
 		courses: [{}],
 		coursesCount: 0,
@@ -20,6 +28,7 @@ function DeptCourseList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
+
 
 	useEffect(() => {
 		const fetchAllCourses = async () => {
@@ -32,14 +41,14 @@ function DeptCourseList() {
 				const numericAccountType = Number(accountType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
+					navigate('/InsDashboard');
 				}
 				// Fetch course data with Axios, adding token to header
 				const res = await axios.get(`http://localhost:3001/api/all-courses`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const data = res.data;
-				const filledCourses = fillEmptyCourses(data.courses, data.perPage);
+				const filledCourses = fillEmptyItems(data.courses, data.perPage);
 				setDeptCourseList({ ...data, courses: filledCourses });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
@@ -51,52 +60,23 @@ function DeptCourseList() {
 				}
 			}
 		};
-
 		fetchAllCourses();
 	}, [authToken]);
 
 	const filteredCourses = deptCourseList.courses.filter(
-		(course) =>
-			(course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
-	);
+    (course) =>
+        (course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+        (course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
+);
 
-	const currentCourses = filteredCourses.slice(
-		(deptCourseList.currentPage - 1) * deptCourseList.perPage,
-		deptCourseList.currentPage * deptCourseList.perPage
-	);
-
-	const fillEmptyCourses = (courses, perPage) => {
-		const filledCourses = [...courses];
-		const currentCount = courses.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledCourses.push({});
-			}
-		}
-		return filledCourses;
-	};
-	const handleSearchChange = (newSearch) => {
-		setSearch(newSearch);
-		setDeptCourseList((prevState) => ({ ...prevState, currentPage: 1 }));
-	};
-
-	const handlePageClick = (data) => {
-		setDeptCourseList((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
-
-	const pageCount = Math.ceil(deptCourseList.coursesCount / deptCourseList.perPage);
+	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
 		<div className="dashboard" id="dept-course-list-test-content">
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar searchListType={'DeptCourseList'} onSearch={handleSearchChange} />
-
+			<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
+				
 				<div className="main">
 					<div className="subtitle-course">
 						List of Course Lists ({deptCourseList.coursesCount} Active){' '}
@@ -134,10 +114,10 @@ function DeptCourseList() {
 									previousLabel={'<'}
 									nextLabel={'>'}
 									breakLabel={'...'}
-									pageCount={pageCount}
+									pageCount={pageCount(deptCourseList.coursesCount, deptCourseList.perPage)}
 									marginPagesDisplayed={3}
 									pageRangeDisplayed={0}
-									onPageChange={handlePageClick}
+									onPageChange={(data) => handlePageClick(data, setDeptCourseList)}
 									containerClassName={'pagination'}
 									activeClassName={'active'}
 									forcePage={deptCourseList.currentPage - 1}
