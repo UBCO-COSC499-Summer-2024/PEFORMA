@@ -59,7 +59,7 @@ describe('DeptCourseList', () => {
 
   test('Testing rendering with mock data course list', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    expect(element).toHaveTextContent("List of Course Lists (12 Active");
+    expect(element).toHaveTextContent("List of Courses (12 Active in current");
     
     expect(element).toHaveTextContent("COSC 111");
     expect(element).toHaveTextContent("STAT 121");
