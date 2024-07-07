@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
-import axios from 'axios';
 import '../common/AuthContext.js';
 import { useAuth } from '../common/AuthContext.js';
+
 import '../../CSS/Department/DeptServiceRoleList.css';
 
-function showRoles(roleData, offset) {
-	if (roleData.rolesCount > 10) {
-		return roleData.roles.slice(offset, offset + roleData.perPage);
-	}
-	return roleData.roles;
-}
-
 function ServiceRoleList() {
+
 	const { authToken, accountType } = useAuth();
 	const navigate = useNavigate();
 	const [roleData, setRoleData] = useState({
@@ -37,7 +33,7 @@ function ServiceRoleList() {
 				const numericAccountType = Number(accountType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
+					navigate('/InsDashboard');
 				}
 				// Fetch course data with Axios, adding token to header
 				const res = await axios.get(`http://localhost:3001/api/service-roles`, {
@@ -71,6 +67,8 @@ function ServiceRoleList() {
 		return filledRoles;
 	};
 
+	
+
 	const handlePageClick = (data) => {
 		setRoleData((prevState) => ({
 			...prevState,
@@ -78,9 +76,12 @@ function ServiceRoleList() {
 		}));
 	};
 
+	const currentRoles = roleData.roles.slice(
+		(roleData.currentPage - 1) * roleData.perPage,
+		roleData.currentPage * roleData.perPage
+	);
+
 	const pageCount = Math.ceil(roleData.rolesCount / roleData.perPage);
-	const offset = (roleData.currentPage - 1) * roleData.perPage;
-	const currentRoles = showRoles(roleData, offset);
 
 	return (
 		<div className="dashboard">
@@ -90,7 +91,7 @@ function ServiceRoleList() {
 
 				<div className="srlist-main" id="dept-service-role-list-test-content">
 					<div className="subtitle-role">List of Serivce Roles ({roleData.rolesCount} Active)</div>
-
+					<button className='status-change-button'><Link to={`/DeptStatusChangeServiceRole`}>Manage Service Role</Link></button>
 					<div className="role-table">
 						<table>
 							<thead>
@@ -106,7 +107,7 @@ function ServiceRoleList() {
 									return (
 										<tr key={role.id}>
 											<td>
-												<Link to={`http://localhost:3000/DeptRoleInformation?roleid=${role.id}`}>
+												<Link to={`/DeptRoleInformation?roleid=${role.id}`}>
 													{role.name}
 												</Link>
 											</td>
