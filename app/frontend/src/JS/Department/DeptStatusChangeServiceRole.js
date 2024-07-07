@@ -32,8 +32,8 @@ function DeptStatusChangeServiceRole(){
   
   const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
 
-	const toggleStatus = async (role) => {
-		const updatedRole = { ...role, status: role.status === 'active' ? 'inactive' : 'active' };
+	const toggleStatus = async (role, newStatus) => {
+		const updatedRole = { ...role, status: newStatus };
 		const updatedRoles = roleData.roles.map(r => r.id === role.id ? updatedRole : r);
 	
 		console.log("request\n",  { roleId: role.id, newStatus: updatedRole.status })
@@ -81,8 +81,8 @@ function DeptStatusChangeServiceRole(){
 											</td>
 											<td>{role.department}</td>
                       <td>
-                        <button className={`${role.status === 'active' ? 'active-button' : 'default-button'} button`}onClick={() => toggleStatus(role)}>Active</button>
-                        <button className={`${role.status === 'inactive' ? 'inactive-button' : 'default-button'} button`}onClick={() => toggleStatus(role)}>Inactive</button>
+											<button className={`${role.status === 'active' ? 'active-button' : 'default-button'} button`} onClick={() => toggleStatus(role, 'active')}>Active</button>
+											<button className={`${role.status === 'inactive' ? 'inactive-button' : 'default-button'} button`} onClick={() => toggleStatus(role, 'inactive')}>Inactive</button>
                       </td>
 										</tr>
 									);
