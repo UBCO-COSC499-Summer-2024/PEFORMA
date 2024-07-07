@@ -3,7 +3,11 @@ display: flex;
 height: 100vh;
 
 }
-
+.DataEntry-page ::-webkit-outer-spin-button,
+.DataEntry-page ::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 .DataEntry-page .container {
 
@@ -17,6 +21,7 @@ flex-direction: column;
     text-decoration: underline;
     width: 100%;
 }
+
 
 
 .DataEntry-page .main {
@@ -44,6 +49,8 @@ flex-direction: column;
     bottom: 0.3em;
 }
 
+
+
 .course-form, .service-role-form {
     padding: 1em;
     font-size: large;
@@ -59,7 +66,7 @@ flex-direction: column;
 
 .formInput {
     margin-bottom: 0.5em;
-    width: 100%;
+    
     display: flex;
     flex-direction: row;
 }
@@ -83,6 +90,7 @@ flex-direction: column;
 }
 
 .coursecodeInput {
+    width:20%;
     margin-left: 1em;
     position: relative;
     bottom:0.1em;
@@ -90,6 +98,7 @@ flex-direction: column;
 
 .coursecodeInput input {
     width: 25%;
+    margin-right: 0;
 }
 
 #course-description, #service-role-description {
@@ -127,7 +136,9 @@ flex-direction: column;
 }
 
 .courseYear input, .courseTerm input {
-    width: 6em;
+    width: 4em;
+    margin: 0em 0em 0em 0.5em;
+    
 }
 
 .plus {
@@ -163,4 +174,33 @@ flex-direction: column;
 
 .hidden {
     display: none;
+}
+
+.courseSession {
+    margin: 0em 1em 0em 0em;
+    width: 3em;
+}
+
+.monthlyHoursRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.monthlyHoursRow span {
+    display: flex;
+    width: 5em;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+
+.monthlyHours input {
+    width: 3em;
+    margin-left: 0;
+}
+
+.monthlyHours {
+    width: 100%;
 }
