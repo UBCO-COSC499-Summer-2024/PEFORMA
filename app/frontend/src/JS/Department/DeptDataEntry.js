@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DeptDataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { useAuth } from '../common/AuthContext.js';
+import { FaFileUpload } from "react-icons/fa";
 
 function DataEntryComponent() {
 	const navigate = useNavigate();
@@ -272,6 +273,8 @@ function DataEntryComponent() {
 								Course
 							</option>
 						</select>
+						<span>OR</span>
+						<Link to={'/FileUpload'} id="import">Import Data <FaFileUpload className='upload-icon'/></Link>
 					</div>
 					{selection === 'Course' && (
 						<div className="form-container">
