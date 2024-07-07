@@ -13,7 +13,6 @@ import { fillEmptyItems,
 	currentItems
  } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
-
 import '../../CSS/Department/DeptServiceRoleList.css';
 
 function ServiceRoleList() {
@@ -69,8 +68,11 @@ function ServiceRoleList() {
 				<CreateTopBar />
 
 				<div className="srlist-main" id="dept-service-role-list-test-content">
-					<div className="subtitle-role">List of Serivce Roles ({roleData.rolesCount} Active)</div>
-					<button className='status-change-button'><Link to={`/DeptStatusChangeServiceRole`}>Manage Service Role</Link></button>
+					<div className="subtitle-role">List of Serivce Roles ({roleData.rolesCount} Active)
+					<button className='status-change-button'><Link to={`/DeptStatusChangeServiceRole`} state={{ roleData }}>Manage Service Role</Link></button>
+					</div>
+					
+
 					<div className="role-table">
 						<table>
 							<thead>

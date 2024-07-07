@@ -14,7 +14,6 @@ import { fillEmptyItems,
 	handleSearchChange
  } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
-
 import '../../CSS/Department/DeptCourseList.css';
 
 function DeptCourseList() {
@@ -28,7 +27,6 @@ function DeptCourseList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
-
 
 	useEffect(() => {
 		const fetchAllCourses = async () => {
@@ -67,7 +65,7 @@ function DeptCourseList() {
     (course) =>
         (course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
         (course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
-);
+	);
 
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
@@ -76,10 +74,11 @@ function DeptCourseList() {
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
 			<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
-				
+
 				<div className="main">
-					<div className="subtitle-course">
-						List of Course Lists ({deptCourseList.coursesCount} Active){' '}
+					<div className="subtitle-course">List of Course Lists ({deptCourseList.coursesCount} Active)
+					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`}>Manage Course</Link></button>
+
 					</div>
 
 					<div className="dcourse-table">
