@@ -14,7 +14,7 @@ import '../../CSS/Department/DeptPerformancePage.css';
 
 function PerformanceDepartmentPage() {
 	const navigate = useNavigate();
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	useEffect(() => {
 		const checkAuth = async () => {
 			if (!authToken) {
@@ -22,7 +22,7 @@ function PerformanceDepartmentPage() {
 				return;
 			}
 			try {
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/Dashboard');
@@ -34,7 +34,7 @@ function PerformanceDepartmentPage() {
 		};
 
 		checkAuth();
-	}, [authToken, accountType, navigate]);
+	}, [authToken, accountLogInType, navigate]);
 	return (
 		<div className="dp-container">
 			<CreateSideBar sideBarType="Department" />

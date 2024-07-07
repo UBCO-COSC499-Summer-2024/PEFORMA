@@ -18,7 +18,7 @@ import '../../CSS/Department/DeptCourseList.css';
 
 function DeptCourseList() {
 
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [deptCourseList, setDeptCourseList] = useState({
 		courses: [{}],
@@ -36,7 +36,7 @@ function DeptCourseList() {
 					navigate('/Login'); // Use your navigation mechanism
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/InsDashboard');

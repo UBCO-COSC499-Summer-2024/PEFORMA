@@ -17,7 +17,7 @@ import '../../CSS/Department/DeptServiceRoleList.css';
 
 function ServiceRoleList() {
 	
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [roleData, setRoleData] = useState({
 		roles: [{}],
@@ -34,7 +34,7 @@ function ServiceRoleList() {
 					navigate('/Login'); // Use your navigation mechanism
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/InsDashboard');

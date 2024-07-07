@@ -8,7 +8,7 @@ import { useAuth } from '../common/AuthContext.js';
 
 function Dashboard() {
 	const navigate = useNavigate();
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -17,7 +17,7 @@ function Dashboard() {
 				return;
 			}
 			try {
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/Dashboard');
@@ -29,7 +29,7 @@ function Dashboard() {
 		};
 
 		checkAuth();
-	}, [authToken, accountType, navigate]);
+	}, [authToken, navigate]);
 
 	return (
 		<div className="dashboard">

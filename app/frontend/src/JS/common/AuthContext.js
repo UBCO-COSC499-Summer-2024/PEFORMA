@@ -11,21 +11,21 @@ export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken'));
     const [profileId, setProfileId] = useState(() => localStorage.getItem('profileId'));
     const [accountType, setAccountType] = useState(() => localStorage.getItem('accountType'));
-    const [accountLoggedInType, setAccountLoggedInType] = useState(() => localStorage.getItem('accountLoggedInType'));
+    const [accountLogInType, setAccountLogInType] = useState(() => localStorage.getItem('accountLogInType'));
 
     const navigate = useNavigate();
 
-    const login = (token, expiresIn, profileId, accountType, accountLoggedInType) => {
+    const login = (token, expiresIn, profileId, accountType, accountLogInType) => {
         const tokenString = JSON.stringify(token);
         //alert(`expire time: ${expiresIn}`);
         setAuthToken(token);
         setProfileId(profileId);
         setAccountType(accountType);
-        setAccountLoggedInType(accountLoggedInType)
+        setAccountLogInType(accountLogInType)
         localStorage.setItem('authToken', tokenString);
         localStorage.setItem('profileId', profileId);
         localStorage.setItem('accountType', accountType);
-        localStorage.setItem('accountLoggedInType', accountLoggedInType);
+        localStorage.setItem('accountLogInType', accountLogInType);
         setTimeout( () => {
             alert('Session about to expire.');
             logout();
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ authToken, profileId, accountType, accountLoggedInType, login, logout }}>
+        <AuthContext.Provider value={{ authToken, profileId, accountType, accountLogInType, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

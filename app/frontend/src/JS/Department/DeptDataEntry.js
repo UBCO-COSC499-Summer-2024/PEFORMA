@@ -11,7 +11,7 @@ import { useAuth } from '../common/AuthContext.js';
 
 function DataEntryComponent() {
 	const navigate = useNavigate();
-	const { accountType } = useAuth();
+	const { accountLogInType } = useAuth();
 	window.onbeforeunload = function () {
 		return 'Data will be lost if you leave this page. Are you sure?';
 	};
@@ -48,7 +48,7 @@ function DataEntryComponent() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/Dashboard');
