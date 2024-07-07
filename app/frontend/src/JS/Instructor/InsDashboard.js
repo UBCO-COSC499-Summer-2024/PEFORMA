@@ -9,7 +9,7 @@ import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-	const { profileId, accountType, authToken } = useAuth();
+	const { profileId, accountLogInType, authToken } = useAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -19,7 +19,7 @@ function Dashboard() {
 				return;
 			}
 			try {
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 3) {
 					alert('No Access, Redirecting to department view');
 					navigate('/DeptDashboard');
@@ -31,7 +31,7 @@ function Dashboard() {
 		};
 
 		checkAuth();
-	}, [authToken, accountType, navigate]);
+	}, [authToken, navigate]);
 
 	return (
 		<div className="dashboard">
