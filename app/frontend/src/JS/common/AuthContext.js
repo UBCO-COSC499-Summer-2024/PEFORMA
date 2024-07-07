@@ -11,18 +11,21 @@ export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken'));
     const [profileId, setProfileId] = useState(() => localStorage.getItem('profileId'));
     const [accountType, setAccountType] = useState(() => localStorage.getItem('accountType'));
+    const [accountLoggedInType, setAccountLoggedInType] = useState(() => localStorage.getItem('accountLoggedInType'));
+
     const navigate = useNavigate();
 
-    const login = (token, expiresIn, profileId, accountType) => {
+    const login = (token, expiresIn, profileId, accountType, accountLoggedInType) => {
         const tokenString = JSON.stringify(token);
         //alert(`expire time: ${expiresIn}`);
         setAuthToken(token);
         setProfileId(profileId);
         setAccountType(accountType);
+        setAccountLoggedInType(accountLoggedInType)
         localStorage.setItem('authToken', tokenString);
         localStorage.setItem('profileId', profileId);
         localStorage.setItem('accountType', accountType);
-
+        localStorage.setItem('accountLoggedInType', accountLoggedInType);
         setTimeout( () => {
             alert('Session about to expire.');
             logout();
@@ -37,12 +40,13 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('profileId');
         localStorage.removeItem('accountType');
+        localStorage.removeItem('AccountLoggedInType');
         navigate('/HomePage');
 
     };
 
     return (
-        <AuthContext.Provider value={{ authToken, profileId, accountType, login, logout }}>
+        <AuthContext.Provider value={{ authToken, profileId, accountType, accountLoggedInType, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
