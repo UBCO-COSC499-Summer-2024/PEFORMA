@@ -6,45 +6,61 @@ import { useAuth } from './AuthContext';
 function TopBar({ searchListType, onSearch }) {
 	const navigate = useNavigate();
 	const [showDropdown, setShowDropdown] = useState(false);
-	const { accountType, setAccountType } = useAuth();
-	const accountTypes = Array.isArray(accountType) ? accountType : [accountType];
-	//const [testAccountTypes, setTestAccountTypes] = useState([]);
+	const { accountType, accountLogInType, setAccountLogInType } = useAuth();
 
-	console.log("Account type: ", accountType);
-	
 	const handleLogOut = () => {
 		localStorage.removeItem('token');
 		localStorage.removeItem('profileId');
 		localStorage.removeItem('accountType');
-		alert('Log out successfully.\n\nRedirecting to Home Page.');
+		localStorage.removeItem('accountLogInType');
+		alert('Log out successfully\n\nRedirecting to Home Page');
 		navigate('/');
 	};
 
-	// useEffect(() => {
-	// 	setTestAccountTypes([1, 3]);
-	// }, []);
-
-
 	const handleSwitchAccount = (type) => {
-		setAccountType(type);
-		localStorage.setItem('accountType', type);
-		alert(`Switched to ${type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'} account.`);
+		// if same accountLogInType, dropdown switch button will not be clicked
+		if (type === accountLogInType) return;
+
+		setAccountLogInType(type);
+		localStorage.setItem('accountLogInType', type);
+		alert(`Switching to ${type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'} account`);
 		setShowDropdown(false);
 		switch (type) {
 				case 1:
+						setAccountLogInType(1);
+						navigate('/DeptPerformancePage');
+						break;
 				case 2:
+						setAccountLogInType(2);
 						navigate('/DeptPerformancePage');
 						break;
 				case 3:
+						setAccountLogInType(3);
 						navigate('/InsPerformancePage');
 						break;
 				case 4:
-						navigate('/AdminPage');
+						setAccountLogInType(4);
+						navigate('/AdminPage'); // needs to be fixed with new admin file name
 						break;
 				default:
 						break;
 		}
-};
+	};
+
+	const getAccountTypeLabel = (type) => {
+		switch (type) {
+			case 1:
+				return 'Department';
+			case 2:
+				return 'Department';
+			case 3:
+				return 'Instructor';
+			case 4:
+				return 'Admin';
+			default:
+				return '';
+		}
+	}
 
 	const renderAccountSwitcher = () => {
 		return (
@@ -55,9 +71,9 @@ function TopBar({ searchListType, onSearch }) {
 					onClick={toggleDropdown}
 					style={{ cursor: 'pointer' }}
 				/>
-				{showDropdown && accountTypes.length > 1 && (
+				{showDropdown && accountType.length > 1 && (
 					<ul className="dropdown-menu">
-						{accountTypes.map((type) => (
+						{accountType.map((type) => (
 							<li key={type} onClick={() => handleSwitchAccount(type)}>
 								{type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'}
 							</li>
@@ -98,6 +114,9 @@ function TopBar({ searchListType, onSearch }) {
 					onChange={(e) => onSearch(e.target.value)}
 				/>
 				{renderAccountSwitcher()}
+				<div className="account-type">
+					{getAccountTypeLabel(accountLogInType)}
+				</div>
 				<div className="logout" onClick={handleLogOut}>
 					Logout
 				</div>
@@ -107,6 +126,9 @@ function TopBar({ searchListType, onSearch }) {
 		return (
 			<div className="topbar">
 				{renderAccountSwitcher()}
+				<div className="account-type">
+					{getAccountTypeLabel(accountLogInType)}
+				</div>
 				<div className="logout" onClick={handleLogOut}>
 					Logout
 				</div>
