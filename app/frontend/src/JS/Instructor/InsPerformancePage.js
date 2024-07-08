@@ -43,7 +43,6 @@ function PerformanceInstructorPage() {
 					},
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				console.log(response);
 
 				if (response.data) {
 					setProfile(response.data);
