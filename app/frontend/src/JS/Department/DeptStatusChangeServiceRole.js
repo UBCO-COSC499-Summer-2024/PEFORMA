@@ -23,7 +23,7 @@ function DeptStatusChangeServiceRole() {
 				location.state.roleData.roles,
 				location.state.roleData.perPage
 			);
-			setRoleData({ ...location.state.roleData, roles: filledRoles });
+			setRoleData({ ...location.state.roleData, roles: filledRoles, currentPage: 1 });
 		}
 	}, [location.state]);
 
@@ -74,6 +74,7 @@ function DeptStatusChangeServiceRole() {
 								<tr>
 									<th>Role</th>
 									<th>Department</th>
+									<th>Description</th>
 									<th>Status</th>
 								</tr>
 							</thead>
@@ -86,6 +87,7 @@ function DeptStatusChangeServiceRole() {
 												<Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link>
 											</td>
 											<td>{role.department}</td>
+											<td>{role.description}</td>
 											<td>
 												{role.status !== undefined && (
 													<>

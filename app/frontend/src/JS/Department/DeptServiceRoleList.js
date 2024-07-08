@@ -7,16 +7,11 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, 
-	handlePageClick, 
-	pageCount, 
-	currentItems
- } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptServiceRoleList.css';
 
 function ServiceRoleList() {
-	
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [roleData, setRoleData] = useState({
@@ -59,7 +54,7 @@ function ServiceRoleList() {
 		fetchServiceRoles();
 	}, [authToken]);
 
-	const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage)
+	const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
 
 	return (
 		<div className="dashboard">
@@ -68,10 +63,14 @@ function ServiceRoleList() {
 				<CreateTopBar />
 
 				<div className="srlist-main" id="dept-service-role-list-test-content">
-					<div className="subtitle-role">List of Serivce Roles ({roleData.rolesCount} Active)
-					<button className='status-change-button'><Link to={`/DeptStatusChangeServiceRole`} state={{ roleData }}>Manage Service Role</Link></button>
+					<div className="subtitle-role">
+						List of Serivce Roles ({roleData.rolesCount} Active)
+						<button className="status-change-button">
+							<Link to={`/DeptStatusChangeServiceRole`} state={{ roleData }}>
+								Manage Service Role
+							</Link>
+						</button>
 					</div>
-					
 
 					<div className="role-table">
 						<table>
@@ -86,18 +85,20 @@ function ServiceRoleList() {
 
 							<tbody>
 								{currentRoles.map((role) => {
-									return (
-										<tr key={role.id}>
-											<td>
-												<Link to={`/DeptRoleInformation?roleid=${role.id}`}>
-													{role.name}
-												</Link>
-											</td>
-											<td>{role.department}</td>
-											<td>{role.description}</td>
-											<td>{role.status ? 'Active' : role.status === false ? 'Inactive' : ''}</td>
+									if (role.status !== undefined) {
+										return (
+											<tr key={role.id}>
+												<td>
+													<Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link>
+												</td>
+												<td>{role.department}</td>
+												<td>{role.description}</td>
+												<td>{role.status ? 'Active' : 'Inactive'}</td>
 											</tr>
-									);
+										);
+									} else {
+										return null;
+									}
 								})}
 							</tbody>
 						</table>

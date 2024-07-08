@@ -1,11 +1,7 @@
 export const fillEmptyItems = (items, perPage) => {
   const filledItems = [...items];
-  const currentCount = items.length;
-  const fillCount = perPage - (currentCount % perPage);
-  if (fillCount < perPage) {
-      for (let i = 0; i < fillCount; i++) {
-        filledItems.push({ status: undefined });
-      }
+  while (filledItems.length < perPage) {
+      filledItems.push({}); 
   }
   return filledItems;
 };
