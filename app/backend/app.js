@@ -40,7 +40,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 console.log('before:');
-
 //login pprocess
 app.use('/',queryAccountRouter);//serach account in db
 app.use('/', loginRouter);//check for login
