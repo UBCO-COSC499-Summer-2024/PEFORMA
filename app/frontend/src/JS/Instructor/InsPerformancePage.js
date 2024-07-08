@@ -98,7 +98,7 @@ function PerformanceInstructorPage() {
 								</p>
 								{profile.teachingAssignments.map((teachingAssign) => (
 									<li key={teachingAssign.id}>
-										<Link to={`/InsCourseHistory?courseid=${profile.id}`}>{teachingAssign.assign}</Link>
+										<Link to={`/InsCourseHistory?courseid=${teachingAssign.courseid}`}>{teachingAssign.assign}</Link>
 									</li>
 								))}
 							</ul>
@@ -123,9 +123,11 @@ function PerformanceInstructorPage() {
 					</div>
 				</div>
 
-				<div>
-					<h2 className="subTitle">Progress Chart</h2>
-					<CreateProgressChart />
+				<div className="under-bottom-section">
+					<div className="progress-section">
+						<h2 className="subTitle">Progress Chart (Year)</h2>
+						<CreateProgressChart />
+					</div>
 				</div>
 			</div>
 		</div>
