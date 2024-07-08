@@ -80,6 +80,7 @@ function ServiceRoleList() {
 									<th>Role</th>
 									<th>Department</th>
 									<th>Description</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 
@@ -94,7 +95,8 @@ function ServiceRoleList() {
 											</td>
 											<td>{role.department}</td>
 											<td>{role.description}</td>
-										</tr>
+											<td>{role.status ? 'Active' : role.status === false ? 'Inactive' : ''}</td>
+											</tr>
 									);
 								})}
 							</tbody>

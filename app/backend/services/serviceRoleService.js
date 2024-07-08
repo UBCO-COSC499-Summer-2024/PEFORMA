@@ -15,7 +15,6 @@ async function getAllServiceRoles() {
                s."isActive" 
         FROM public."ServiceRole" s
         JOIN public."Division" d ON s."divisionId" = d."divisionId"
-        WHERE s."isActive" = true  
         ORDER BY d."divisionId" ASC, s."stitle" ASC;
       `);
 
