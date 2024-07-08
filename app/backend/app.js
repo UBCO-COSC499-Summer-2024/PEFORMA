@@ -28,7 +28,7 @@ const allCoursesRoutes = require('./routes/allCoursesRoutes.js');
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
-
+const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
@@ -72,6 +72,8 @@ app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
 app.use('/api/service-roles',serviceRoleRoutes);
+
+app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
 
 //reset password
 //app.use('/api',ResetPassword);

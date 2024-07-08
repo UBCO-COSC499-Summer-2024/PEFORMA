@@ -11,7 +11,8 @@ async function getAllServiceRoles() {
         SELECT "serviceRoleId" as id,
                "stitle" as name, 
                "description", 
-               "dname" as department 
+               "dname" as department,
+               s."isActive" 
         FROM public."ServiceRole" s
         JOIN public."Division" d ON s."divisionId" = d."divisionId"
         WHERE s."isActive" = true  
@@ -28,12 +29,12 @@ async function getAllServiceRoles() {
                 id: row.id,
                 name: row.name,
                 department: row.department,
-                description: row.description
+                description: row.description,
+                status: row.isActive
             };
         })
     };
 
-    console.log(formattedData);
 
     return formattedData;
   } catch (error) {

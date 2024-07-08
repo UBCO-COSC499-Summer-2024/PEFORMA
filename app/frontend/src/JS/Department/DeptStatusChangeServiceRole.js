@@ -15,6 +15,7 @@ import { fillEmptyItems,
 import { useAuth } from '../common/AuthContext.js';
 
 function DeptStatusChangeServiceRole(){
+  const authToken = useAuth();
   const location = useLocation();
   const [roleData, setRoleData] = useState(location.state.roleData || 
     { roles: [], 
@@ -38,9 +39,11 @@ function DeptStatusChangeServiceRole(){
 	
 		console.log("request\n",  { roleId: role.id, newStatus })
 		try {
-			await axios.post(`http://localhost:3000/DeptStatusChangeServiceRole`, {
+			axios.post(`http://localhost:3001/api/DeptStatusChangeServiceRole`, {
 				roleId: role.id,
-				newStatus
+				newStatus: newStatus,
+			}, {
+				headers: { Authorization: `Bearer ${authToken.token}` }
 			});
 			setRoleData({ ...roleData, roles: updatedRoles });
 		} catch (error) {
