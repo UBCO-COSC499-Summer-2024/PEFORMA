@@ -45,7 +45,13 @@ function DeptStatusChangeServiceRole() {
 				}
 			);
 			if (response.status === 200) {
-				setRoleData({ ...roleData, roles: updatedRoles });
+				setRoleData((prevState) => {
+					const filledRoles = fillEmptyItems(updatedRoles, prevState.perPage);
+					return {
+						...prevState,
+						roles: filledRoles,
+					};
+				});
 			} else {
 				console.error('Error updating role status:', response.statusText);
 			}
@@ -95,14 +101,14 @@ function DeptStatusChangeServiceRole() {
 															className={`${
 																role.status ? 'active-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(role, true)}>
+															onClick={() => toggleStatus(role, true)} disabled={role.status}>
 															Active
 														</button>
 														<button
 															className={`${
 																role.status === false ? 'inactive-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(role, false)}>
+															onClick={() => toggleStatus(role, false)} disabled={!role.status}>
 															Inactive
 														</button>
 													</>

@@ -3,8 +3,7 @@ const pool = require('../db/index.js');
 async function getAllServiceRoles() {
   try {
     const countResult = await pool.query(`SELECT COUNT(*) 
-                                          FROM public."ServiceRole"
-                                          WHERE "isActive" = true`);
+                                          FROM public."ServiceRole"`);
     const rolesCount = parseInt(countResult.rows[0].count);
 
     const result = await pool.query(`

@@ -20,6 +20,8 @@ function ServiceRoleList() {
 		perPage: 10,
 		currentPage: 1,
 	});
+	const [activeRolesCount, setActiveRolesCount] = useState(0);
+
 
 	useEffect(() => {
 		const fetchServiceRoles = async () => {
@@ -40,6 +42,8 @@ function ServiceRoleList() {
 				});
 				const data = res.data;
 				const filledRoles = fillEmptyItems(data.roles, data.perPage);
+				const activeRoles = filledRoles.filter(role => role.status); // Filter active roles
+				setActiveRolesCount(activeRoles.length); // Update state with active roles count
 				setRoleData({ ...data, roles: filledRoles });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
@@ -64,7 +68,7 @@ function ServiceRoleList() {
 
 				<div className="srlist-main" id="dept-service-role-list-test-content">
 					<div className="subtitle-role">
-						List of Serivce Roles ({roleData.rolesCount} Active)
+						List of Serivce Roles ({activeRolesCount} Active)
 						<button className="status-change-button">
 							<Link to={`/DeptStatusChangeServiceRole`} state={{ roleData }}>
 								Manage Service Role
@@ -88,17 +92,22 @@ function ServiceRoleList() {
 									if (role.status !== undefined) {
 										return (
 											<tr key={role.id}>
-												<td>
-													<Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link>
-												</td>
-												<td>{role.department}</td>
-												<td>{role.description}</td>
-												<td>{role.status ? 'Active' : 'Inactive'}</td>
+												<td><Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link></td>
+													<td>{role.department}</td>
+													<td>{role.description}</td>
+													<td>{role.status ? 'Active' : 'Inactive'}</td>
+												</tr>
+											);
+										} else {
+											return (
+												<tr key={role.id}>
+													<td><Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link></td>
+													<td>{role.department}</td>
+													<td>{role.description}</td>
+													<td></td>
 											</tr>
-										);
-									} else {
-										return null;
-									}
+											);
+										}
 								})}
 							</tbody>
 						</table>
