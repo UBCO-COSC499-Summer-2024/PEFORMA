@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import '../../CSS/Instructor/InsPerformancePage.css';
 import CreateSideBar, {
 	CreateLeaderboardChart,
@@ -99,7 +99,7 @@ function PerformanceInstructorPage() {
 								</p>
 								{profile.teachingAssignments.map((teachingAssign) => (
 									<li key={teachingAssign.id}>
-										<a href="{teachingAssign.link}"> {teachingAssign.assign}</a>
+										<Link to={`/InsCourseHistory?courseid=${profile.id}`}>{teachingAssign.assign}</Link>
 									</li>
 								))}
 							</ul>
