@@ -6,11 +6,28 @@
 .greeting {
   margin-left: 2em;
   font-size: 1em;
-  width: 90%;
+  width: auto;
+  padding-right: 2em;
+  display: flex;
+  justify-content: space-between;
 }
 
 .greeting h2 {
   font-size: 1.5em;
+}
+
+.edit-button {
+  background-color: #bebebe; 
+  color: rgb(0, 0, 0); 
+  border: none;
+  border-radius: 10px; 
+  font-size: 14px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.edit-button:hover {
+  background-color: #57a8ff;
 }
   
 header {
@@ -92,6 +109,7 @@ button:hover {
 .teaching-assignments {
   margin-top: 0px;
   padding-left: 1em;
+  overflow-y: auto;
 }
 
 .info-section .teaching-assignments {
