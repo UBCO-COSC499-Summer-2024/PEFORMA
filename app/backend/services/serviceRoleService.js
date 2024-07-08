@@ -1,13 +1,13 @@
 const pool = require('../db/index.js');
 
 async function getAllServiceRoles() {
-  try {
-    const countResult = await pool.query(`SELECT COUNT(*) 
+	try {
+		const countResult = await pool.query(`SELECT COUNT(*) 
                                           FROM public."ServiceRole"
                                           WHERE "isActive" = true`);
-    const rolesCount = parseInt(countResult.rows[0].count);
+		const rolesCount = parseInt(countResult.rows[0].count);
 
-    const result = await pool.query(`
+		const result = await pool.query(`
         SELECT "serviceRoleId" as id,
                "stitle" as name, 
                "description", 
@@ -18,29 +18,26 @@ async function getAllServiceRoles() {
         ORDER BY d."divisionId" ASC, s."stitle" ASC;
       `);
 
-     // Reformat the data
-     const formattedData = {
-        currentPage: 1,
-        perPage: 10,
-        rolesCount: rolesCount,
-        roles: result.rows.map(row => {
-            return {
-                id: row.id,
-                name: row.name,
-                department: row.department,
-                description: row.description
-            };
-        })
-    };
-
-    console.log(formattedData);
-
-    return formattedData;
-  } catch (error) {
-    throw error; 
-  }
+		// Reformat the data
+		const formattedData = {
+			currentPage: 1,
+			perPage: 10,
+			rolesCount: isNaN(rolesCount) ? 0 : rolesCount, // Handle NaN case
+			roles: result.rows.map(row => {
+				return {
+					id: row.id,
+					name: row.name,
+					department: row.department,
+					description: row.description
+				};
+			})
+		};
+		return formattedData;
+	} catch (error) {
+		throw error;
+	}
 }
 
 module.exports = {
-  getAllServiceRoles
+	getAllServiceRoles
 };
