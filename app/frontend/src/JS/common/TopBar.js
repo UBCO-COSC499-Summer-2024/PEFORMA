@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
+import '../../CSS/common.css';
 
 
 function TopBar({ searchListType, onSearch }) {
@@ -21,31 +22,28 @@ function TopBar({ searchListType, onSearch }) {
 		// if same accountLogInType, dropdown switch button will not be clicked
 		if (type === accountLogInType) return;
 
-		setAccountLogInType(type);
-		localStorage.setItem('accountLogInType', type);
-		alert(`Switching to ${type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'} account`);
-		setShowDropdown(false);
-		switch (type) {
-				case 1:
-						setAccountLogInType(1);
-						navigate('/DeptPerformancePage');
-						break;
-				case 2:
-						setAccountLogInType(2);
-						navigate('/DeptPerformancePage');
-						break;
-				case 3:
-						setAccountLogInType(3);
-						navigate('/InsPerformancePage');
-						break;
-				case 4:
-						setAccountLogInType(4);
-						navigate('/AdminPage'); // needs to be fixed with new admin file name
-						break;
-				default:
-						break;
-		}
-	};
+    setAccountLogInType(type);
+    localStorage.setItem('accountLogInType', JSON.stringify(type)); 
+		// set new accountLogInType with input, stringify in order to prevent parsing error for using json format
+    alert(`Switching to ${type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'} account`);
+    setShowDropdown(false);
+    switch (type) {
+        case 1:
+            navigate('/DeptPerformancePage');
+            break;
+        case 2:
+            navigate('/DeptPerformancePage');
+            break;
+        case 3:
+            navigate('/InsPerformancePage');
+            break;
+        case 4:
+            navigate('/AdminPage'); // needs to be fixed with new admin file name
+            break;
+        default:
+            break;
+    }
+};
 
 	const getAccountTypeLabel = (type) => {
 		switch (type) {
