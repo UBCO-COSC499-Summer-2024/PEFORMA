@@ -22,6 +22,7 @@ function DeptCourseList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
+	const [activeCoursesCount, setActiveCoursesCount] = useState(0);
 
 	useEffect(() => {
 		const fetchAllCourses = async () => {
@@ -41,6 +42,7 @@ function DeptCourseList() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
+				setActiveCoursesCount(filledCourses.filter(course => course.status).length); 
 				setDeptCourseList({ ...res.data, courses: filledCourses });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
@@ -48,7 +50,7 @@ function DeptCourseList() {
 					localStorage.removeItem('authToken'); // Clear invalid token
 					navigate('/Login');
 				} else {
-					console.error('Error fetching service roles:', error);
+					console.error('Error fetching courses:', error);
 				}
 			}
 		};
@@ -70,7 +72,7 @@ function DeptCourseList() {
 			<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
 				<div className="clist-main">
-					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} Active in current)
+					<div className="subtitle-course">List of Courses ({activeCoursesCount} Active in current)
 					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`} state={{ deptCourseList }}>Manage Course</Link></button>
 
 					</div>

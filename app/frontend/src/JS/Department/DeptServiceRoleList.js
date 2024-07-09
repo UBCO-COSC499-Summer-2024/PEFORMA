@@ -37,14 +37,13 @@ function ServiceRoleList() {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/InsDashboard');
 				}
-				// Fetch course data with Axios, adding token to header
+				// Fetch role data with Axios, adding token to header
 				const res = await axios.get(`http://localhost:3001/api/service-roles`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const data = res.data;
 				const filledRoles = fillEmptyItems(data.roles, data.perPage);
-				const activeRoles = filledRoles.filter(role => role.status); // Filter active roles
-				setActiveRolesCount(activeRoles.length); // Update state with active roles count
+				setActiveRolesCount(filledRoles.filter(role => role.status).length); // Update state with active roles count
 				setRoleData({ ...data, roles: filledRoles });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors

@@ -77,7 +77,7 @@ function DeptStatusChangeCourse() {
 				<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
 				<div className="clist-main">
-					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} Active in current)
+					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} in Database)
 						<button className="status-change-button">
 							<Link to={`/DeptCourseList`}>Return</Link>
 						</button>
