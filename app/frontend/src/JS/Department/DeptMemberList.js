@@ -32,7 +32,7 @@ function DeptMemberList() {
 					return;
 				}
 				checkAccess(accountLogInType, navigate, 'department');
-				const res = await axios.get(`http://localhost:3000/memberList.json`, {
+				const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
