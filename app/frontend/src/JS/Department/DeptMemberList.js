@@ -22,8 +22,6 @@ function DeptMemberList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
-	const [activeMembersCount, setActiveMembersCount] = useState(0);
-
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -38,8 +36,6 @@ function DeptMemberList() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
-				const activeMembersCount = filledMembers.filter(member => member.status); // Filter active roles
-				setActiveMembersCount(activeMembersCount.length); // Update state with active roles count
 				setMemberData({ ...res.data, members: filledMembers });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
@@ -73,8 +69,7 @@ function DeptMemberList() {
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
 
 				<div className="member-list-main" id="dept-member-list-test-content">
-					<div className="subtitle-member">List of Members ({activeMembersCount} Active)
-					<button className='status-change-button'><Link to={`/DeptStatusChangeMember`} state={{ memberData }}>Manage Member</Link></button>
+					<div className="subtitle-member">List of Members ({memberData.membersCount} Active)
 					</div>
 
 
@@ -85,7 +80,8 @@ function DeptMemberList() {
 									<th>Name</th>
 									<th>UBC ID</th>
 									<th>Service Role</th>
-									<th>Status</th>
+									<th>Department</th>
+									<th>Email</th>
 								</tr>
 							</thead>
 
@@ -122,7 +118,8 @@ function DeptMemberList() {
 													''
 												)}
 											</td>
-											<td>{member.status !== undefined ? (member.status ? 'Active' : 'Inactive') : ''}</td>
+											<td>{member.department}</td>
+											<td>{member.email}</td>
 										</tr>
 									);
 								})}
