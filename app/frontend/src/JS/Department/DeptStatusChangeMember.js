@@ -7,11 +7,12 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function DeptStatusChangeMember() {
-	const authToken = useAuth();
+	const { authToken, accountLogInType } = useAuth();
+	const navigate = useNavigate();
 	const location = useLocation();
 	const [memberData, setMemberData] = useState(
 		location.state.memberData || { members: [], rolesCount: 0, perPage: 10, currentPage: 1 }
@@ -20,6 +21,7 @@ function DeptStatusChangeMember() {
 
 
 	useEffect(() => {
+		checkAccess(accountLogInType, navigate, 'department');
 		if (location.state.memberData) {
 			const filledMembers = fillEmptyItems(
 				location.state.memberData.members,

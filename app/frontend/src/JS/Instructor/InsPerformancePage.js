@@ -10,6 +10,7 @@ import CreateSideBar, {
 	CreateProgressChart,
 } from '../common/commonImports.js';
 import { useAuth } from '../common/AuthContext.js';
+import { checkAccess } from '../common/utils.js'
 
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
@@ -31,11 +32,7 @@ function PerformanceInstructorPage() {
 					navigate('/Login');
 					return;
 				}
-				const numericAccountType = Number(accountLogInType);
-				if (numericAccountType !== 3) {
-					alert('No Access, Redirecting to department view');
-					navigate('/DeptDashboard');
-				}
+				checkAccess(accountLogInType, navigate, 'instructor');
 				const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
 					params: {
 						profileId: profileId,
