@@ -22,8 +22,8 @@ exports.getStatusChangeMembers = async (req, res) => {
         return res.status(404).json({ message: 'No serviceRole data found.' });
         } else {
             console.log("Update status account complete");
-            const rolesData = await getAllInstructors(); // Call the function correctly
-            res.json(rolesData);  // Send the fetched roles data as response
+            const rolesData = await getAllInstructors(); 
+            res.json(rolesData); 
         }
 
     }

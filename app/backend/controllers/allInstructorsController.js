@@ -8,26 +8,30 @@ exports.getAllInstructors = async (req, res) => {
                    d."dname" AS department,
                    ARRAY_AGG(sra."serviceRoleId") AS roleid,
                    ARRAY_AGG(sr."stitle") AS serviceRole,
-                   p."email"
+                   p."email",
+                   a."isActive"
             FROM "Profile" p
-            JOIN "Division" d ON d."divisionId" = p."divisionId"
-            JOIN "ServiceRoleAssignment" sra ON sra."profileId" = p."profileId"
-            JOIN "ServiceRole" sr ON sr."serviceRoleId" = sra."serviceRoleId"
-            GROUP BY p."UBCId", p."firstName", p."middleName", p."lastName", d."dname", p."email";
+            LEFT JOIN "Division" d ON d."divisionId" = p."divisionId"
+            LEFT JOIN "ServiceRoleAssignment" sra ON sra."profileId" = p."profileId"
+            LEFT JOIN "ServiceRole" sr ON sr."serviceRoleId" = sra."serviceRoleId"
+            LEFT JOIN "Account" a ON a."profileId" = p."profileId"
+            GROUP BY p."UBCId", p."firstName", p."middleName", p."lastName", d."dname", p."email", a."isActive";
         `;
-        let result = await pool.query(query);
+        const result = await pool.query(query);
 
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'No instructor data found.' });
         }
 
+
         const members = result.rows.map(row => ({
-            ubcid: row.UBCId,
-            name: row.full_name,
-            department: row.department,
-            roleid: row.roleid,
-            serviceRole: row.serviceRole,
-            email: row.email
+            ubcid: row.UBCId || '',
+            name: row.full_name || '',
+            department: row.department || '',
+            roleid: row.roleid || '',
+            serviceRole: row.servicerole || '',
+            email: row.email || '',
+            status: row.isActive || ''
         }));
 
         const output = {
@@ -37,7 +41,7 @@ exports.getAllInstructors = async (req, res) => {
             members: members
         };
 
-        console.log(output);
+        console.log("Formatted output:", output);
         return res.json(output);
     } catch (error) {
         console.error('Database query error:', error);

@@ -29,7 +29,7 @@ const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
-
+const allInstructors = require('./routes/allInstructorsRoutes');
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
 const app = express();
@@ -73,6 +73,7 @@ app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
 app.use('/api/service-roles',serviceRoleRoutes);
 
+app.use('/api/allInstructors',allInstructors);
 app.use('/api/adminStatusChangeMembers',adminStatusChangeMembers);
 //reset password
 //app.use('/api',ResetPassword);

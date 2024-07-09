@@ -34,7 +34,7 @@ function AdminMemberList() {
 					return;
 				}
         checkAccess(accountLogInType, navigate, 'admin')
-				const res = await axios.get(`http://localhost:3000/memberList.json`, {
+				const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
