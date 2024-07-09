@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar, CreateWorkingBarChart } from '../common/commonImports.js';
-import '../../CSS/Instructor/InsProfilePage.css';
+import '../../CSS/Department/DeptProfilePage.css';
 
 function DeptProfilePage() {
 	const navigate = useNavigate();
@@ -48,15 +48,25 @@ function DeptProfilePage() {
 	}, [authToken, ubcid, navigate]);
 	// const profile = {"name":"Billy Guy", "id":"18592831", "benchmark":"1300", "roles":["Role1", "Role2"], "email":"billyGuy@instructor.ubc.ca", "phone":"778-333-2222", "office":"SCI 300", "teachingAssignments":[{"assign":"COSC 211","link":"abc.com"},{"assign":"COSC 304","link":"def.com"}]};
 
+	const getProfileId = async() => {
+		console.log(ubcid);
+		return ubcid;
+	}
+
 	return (
-		<div className="dashboard-container">
+		<div className="deptProfile-container">
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
+				
 				<CreateTopBar />
+				<div className='outside'>
+					<Link to="/DeptMemberList">&lt; Back to All People</Link>
+					<h1>{profile.name}'s Profile</h1>
+				</div>
 				<div className="main-content" id="text-content">
-        <Link to="/DeptMemberList">&lt; Back to All People</Link>
+        
 					<section className="information">
-						<h1>{profile.name}'s Profile</h1>
+						
 						<p>
 							<strong>Name:</strong> {profile.name}
 						</p>
@@ -64,7 +74,7 @@ function DeptProfilePage() {
 							<strong>UBC ID:</strong> {profile.ubcid}
 						</p>
 						<p>
-							<strong>Service Roles:</strong> {profile.roles.map((role, index) => <span><Link to={"/DeptRoleInformation?roleid="+role.roleid} key={index}>{role.roleTitle}</Link>
+							<strong>Service Role Assignments:</strong> {profile.roles.map((role, index) => <span><Link to={"/DeptRoleInformation?roleid="+role.roleid} key={index}>{role.roleTitle}</Link>
               {index < profile.roles.length - 1 && (', ')}
               </span>)}
 						</p>
@@ -91,7 +101,9 @@ function DeptProfilePage() {
 								))}
 								
 						</p>
-            <CreateWorkingBarChart/>
+				<p><strong>Service Hours:</strong></p>
+            	<CreateWorkingBarChart profileid={ubcid} height={400} width={500} className='performance-chart'/>
+			
 					</section>
 				</div>
 			</div>

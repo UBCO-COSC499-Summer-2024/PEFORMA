@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../common/AuthContext';
 
-function WorkHoursBarChart() {
+function WorkHoursBarChart({profileid, height, width}) {
 	const navigate = useNavigate();
 	const [workingHours, setWorkingHours] = useState({
 		series: [
@@ -28,7 +28,7 @@ function WorkHoursBarChart() {
 		},
 	});
 	const { authToken } = useAuth();
-	const { profileId } = useAuth();
+	const profileId = profileid;
 	useEffect(() => {
 		const date = new Date();
 		const currentMonth = date.getMonth() + 1;
@@ -77,7 +77,8 @@ function WorkHoursBarChart() {
 					options={workingHours.options}
 					series={workingHours.series}
 					type="bar"
-					height={600}
+					height={height}
+					width={width}
 				/>
 			</div>
 		</div>

@@ -17,8 +17,8 @@ function CreateTopBar({ searchListType, onSearch }) {
 	return <TopBar searchListType={searchListType} onSearch={onSearch} />;
 }
 
-function CreateWorkingBarChart() {
-	return <InsWorkHoursBarChart />;
+function CreateWorkingBarChart({profileid, height, width}) {
+	return <InsWorkHoursBarChart profileid={profileid} height={height} width={width}/>;
 }
 
 function CreateScorePolarChart() {
