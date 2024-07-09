@@ -36,9 +36,8 @@ function AdminStatusChangeMember() {
 		const updatedMembers = memberData.members.map((m) => (m.id === m.ubcid ? updatedMember : m));
 		console.log("request\n",  { memberUbcId: member.ubcid, newStatus })
 		try {
-			const response = await axios.post(///////////////////////////////////////////////////////////////////////////fix this this this this 
-				`http://localhost:3001//api/adminStatusChangeMembers`, //// fix this Subaru //////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////// tfiszbfnsdifgubs;GJs":DGjs'ZJgzsmf'gjn zsBjt;zd,fjtgvlzdmljtgm]p[ ]
+			const response = await axios.post 
+				(`http://localhost:3001/api/adminStatusChangeMembers`, 
 				{
 					memberId: member.ubcid,
 					newStatus: newStatus,
@@ -47,6 +46,7 @@ function AdminStatusChangeMember() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				}
 			);
+			console.log("Admin status change before: ");
 			if (response.status === 200) {
 				setMemberData((prevState) => {
 					const filledMembers = fillEmptyItems(updatedMembers, prevState.perPage);
