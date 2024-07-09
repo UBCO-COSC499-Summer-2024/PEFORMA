@@ -12,6 +12,7 @@ import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptServiceRoleList.css';
 
 function ServiceRoleList() {
+	
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [roleData, setRoleData] = useState({
@@ -88,27 +89,14 @@ function ServiceRoleList() {
 							</thead>
 
 							<tbody>
-								{currentRoles.map((role) => {
-									if (role.status !== undefined) {
-										return (
-											<tr key={role.id}>
-												<td><Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link></td>
-													<td>{role.department}</td>
-													<td>{role.description}</td>
-													<td>{role.status ? 'Active' : 'Inactive'}</td>
-												</tr>
-											);
-										} else {
-											return (
-												<tr key={role.id}>
-													<td><Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link></td>
-													<td>{role.department}</td>
-													<td>{role.description}</td>
-													<td></td>
-											</tr>
-											);
-										}
-								})}
+							{currentRoles.map((role) => (
+								<tr key={role.id}>
+									<td><Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link></td>
+									<td>{role.department}</td>
+									<td>{role.description}</td>
+									<td>{role.status !== undefined ? (role.status ? 'Active' : 'Inactive') : ''}</td>
+								</tr>
+							))}
 							</tbody>
 						</table>
 
