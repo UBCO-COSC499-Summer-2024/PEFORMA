@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import '../../CSS/Department/DeptMemberList.css';
-import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
-import axios from 'axios';
 import '../common/AuthContext.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
+import '../../CSS/Department/DeptMemberList.css';
+
 
 function DeptMemberList() {
 	const { authToken, accountLogInType } = useAuth();
@@ -19,6 +22,8 @@ function DeptMemberList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
+	const [activeMembersCount, setActiveMembersCount] = useState(0);
+
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -36,7 +41,9 @@ function DeptMemberList() {
 				const res = await axios.get(`http://localhost:3000/memberList.json`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				const filledMembers = fillEmptyMembers(res.data.members, res.data.perPage);
+				const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
+				const activeMembersCount = filledMembers.filter(member => member.status); // Filter active roles
+				setActiveMembersCount(activeMembersCount.length); // Update state with active roles count
 				setMemberData({ ...res.data, members: filledMembers });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
@@ -52,18 +59,6 @@ function DeptMemberList() {
 		fetchData();
 	}, [authToken]);
 
-	const fillEmptyMembers = (members, perPage) => {
-		const filledMembers = [...members];
-		const currentCount = members.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledMembers.push({});
-			}
-		}
-		return filledMembers;
-	};
-
 	const filteredMembers = memberData.members.filter(
 		(member) =>
 			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -73,33 +68,16 @@ function DeptMemberList() {
 				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
 	);
 
-	const currentMembers = filteredMembers.slice(
-		(memberData.currentPage - 1) * memberData.perPage,
-		memberData.currentPage * memberData.perPage
-	);
-
-	const handleSearchChange = (newSearch) => {
-		setSearch(newSearch);
-		setMemberData((prevState) => ({ ...prevState, currentPage: 1 }));
-	};
-
-	const handlePageClick = (data) => {
-		setMemberData((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
-
-	const pageCount = Math.ceil(memberData.membersCount / memberData.perPage);
+	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
 		<div className="dashboard">
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar searchListType={'DeptMemberList'} onSearch={handleSearchChange} />
+				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
 
 				<div className="member-list-main" id="dept-member-list-test-content">
-					<div className="subtitle-member">List of Member ({memberData.membersCount} Active)</div>
+					<div className="subtitle-member">List of Member ({activeMembersCount} Active)</div>
 
 					<div className="member-table">
 						<table>
@@ -108,6 +86,7 @@ function DeptMemberList() {
 									<th>UBC ID</th>
 									<th>Name</th>
 									<th>Service Role</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 
@@ -144,6 +123,7 @@ function DeptMemberList() {
 													''
 												)}
 											</td>
+											<td>{member.status !== undefined ? (member.status ? 'Active' : 'Inactive') : ''}</td>
 										</tr>
 									);
 								})}
@@ -155,10 +135,10 @@ function DeptMemberList() {
 								previousLabel={'<'}
 								nextLabel={'>'}
 								breakLabel={'...'}
-								pageCount={pageCount}
+								pageCount={pageCount(memberData.membersCount, memberData.perPage)}
 								marginPagesDisplayed={3}
 								pageRangeDisplayed={0}
-								onPageChange={handlePageClick}
+								onPageChange={(data) => handlePageClick(data, setMemberData)}
 								containerClassName={'pagination'}
 								activeClassName={'active'}
 							/>
