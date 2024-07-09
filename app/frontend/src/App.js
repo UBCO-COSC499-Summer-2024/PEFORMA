@@ -26,6 +26,8 @@ import DeptRoleInformation from './JS/Department/DeptRoleInformation';
 import DeptCourseInformation from './JS/Department/DeptCourseInformation';
 import DeptProfilePage from './JS/Department/DeptProfilePage';
 import DeptStatusChangeServiceRole from './JS/Department/DeptStatusChangeServiceRole';
+import DeptStatusChangeCourse from './JS/Department/DeptStatusChangeCourse';
+
 
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
@@ -76,6 +78,9 @@ function App() {
 					<Route path="/DeptCourseInformation" element={<DeptCourseInformation />} />
 					<Route path="/DeptPerformancePage" element={<DeptPerformancePage />} />
 					<Route path="/DeptStatusChangeServiceRole" element={<DeptStatusChangeServiceRole />} />
+					<Route path="/DeptStatusChangeCourse" element={<DeptStatusChangeCourse />} />
+
+					
 				</Routes>
 			</AuthProvider>
 		</BrowserRouter>
