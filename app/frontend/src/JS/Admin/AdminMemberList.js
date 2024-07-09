@@ -33,6 +33,7 @@ function AdminMemberList() {
 					navigate('/Login'); // Use your navigation mechanism
 					return;
 				}
+        checkAccess(accountLogInType, navigate, 'admin')
 				const res = await axios.get(`http://localhost:3000/memberList.json`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
