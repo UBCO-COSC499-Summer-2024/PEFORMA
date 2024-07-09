@@ -29,7 +29,7 @@ describe('InsPerformancePage', () => {
 				data: {
 					name: 'Billy Guy',
 					ubcid: '18592831',
-					roles: ['Role1', 'Role2'],
+					roles: [{roleTitle:'Role1'}, {roleTitle:'Role2'}],
           benchmark: '1300',
 					email: 'billyGuy@instructor.ubc.ca',
           teachingAssignments: [
