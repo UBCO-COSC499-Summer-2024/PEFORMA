@@ -23,6 +23,7 @@ services:
       - POSTGRES_DB=capstone
       - DB_HOST=postgres
       - DB_PORT=5432
+    entrypoint: ["/app/entrypoint.sh"]
     command: npm start
     depends_on:
       - postgres
