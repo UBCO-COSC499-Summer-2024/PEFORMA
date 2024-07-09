@@ -7,37 +7,39 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
-function DeptStatusChangeServiceRole() {
-	const authToken = useAuth();
+function DeptStatusChangeCourse() {
+	const { authToken, accountLogInType } = useAuth();
+	const navigate = useNavigate();
 	const location = useLocation();
-	const [roleData, setRoleData] = useState(
-		location.state.roleData || { roles: [], rolesCount: 0, perPage: 10, currentPage: 1 }
+	const [deptCourseList, setDeptCourseList] = useState(
+		location.state.deptCourseList || { courses: [], coursesCount: 0, perPage: 10, currentPage: 1 }
 	);
+  const [search, setSearch] = useState('');
+
 
 	useEffect(() => {
-		if (location.state.roleData) {
-			const filledRoles = fillEmptyItems(
-				location.state.roleData.roles,
-				location.state.roleData.perPage
+		// add checkAccess here
+		if (location.state.deptCourseList) {
+				const filledCourses = fillEmptyItems(
+				location.state.deptCourseList.courses,
+				location.state.deptCourseList.perPage
 			);
-			setRoleData({ ...location.state.roleData, roles: filledRoles, currentPage: 1 });
+			setDeptCourseList({ ...location.state.deptCourseList, courses: filledCourses, currentPage: 1 });
 		}
 	}, [location.state]);
 
-	const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
-
-	const toggleStatus = async (role, newStatus) => {
-		const updatedRole = { ...role, status: newStatus };
-		const updatedRoles = roleData.roles.map((r) => (r.id === role.id ? updatedRole : r));
-
+	const toggleStatus = async (course, newStatus) => {
+		const updatedCourse = { ...course, status: newStatus };
+		const updatedCourses = deptCourseList.courses.map((c) => (course.id === c.id ? updatedCourse : c));
+		console.log("request\n",  { courseid : course.id, newStatus })
 		try {
 			const response = await axios.post(
-				`http://localhost:3001/api/DeptStatusChangeServiceRole`,
+				`http://localhost:3001/api/adminStatusChangeMembers`, // URL 수정됨
 				{
-					roleId: role.id,
+					courseid: course.id,
 					newStatus: newStatus,
 				},
 				{
@@ -45,99 +47,111 @@ function DeptStatusChangeServiceRole() {
 				}
 			);
 			if (response.status === 200) {
-				setRoleData((prevState) => {
-					const filledRoles = fillEmptyItems(updatedRoles, prevState.perPage);
+				setDeptCourseList((prevState) => {
+					const filledCourses = fillEmptyItems(updatedCourses, prevState.perPage);
 					return {
 						...prevState,
-						roles: filledRoles,
+						courses: filledCourses,
 					};
 				});
 			} else {
-				console.error('Error updating role status:', response.statusText);
+				console.error('Error updating course status:', response.statusText);
 			}
 		} catch (error) {
-			console.error('Error updating role status:', error);
+			console.error('Error updating course status:', error);
 		}
 	};
 
+	const filteredCourses = deptCourseList.courses.filter(
+		(course) =>
+			(course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+			(course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
+	);
+
+	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
+
 	return (
-		<div className="dashboard">
+		<div className="dashboard" id="dept-course-list-test-content">
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar />
+				<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
-				<div className="srlist-main" id="dept-service-role-list-test-content">
-					<div className="subtitle-role">
-						List of Serivce Roles ({roleData.rolesCount} in Database)
+				<div className="main">
+					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} Active in current)
 						<button className="status-change-button">
-							<Link to={`/DeptServiceRoleList`}>Return</Link>
+							<Link to={`/DeptCourseList`}>Return</Link>
 						</button>
 					</div>
 
-					<div className="role-table">
+					<div className="dcourse-table">
 						<table>
 							<thead>
 								<tr>
-									<th>Role</th>
-									<th>Department</th>
+									<th>Course</th>
+									<th>Title</th>
 									<th>Description</th>
 									<th>Status</th>
 								</tr>
 							</thead>
 
 							<tbody>
-								{currentRoles.map((role) => {
+								{currentCourses.map((course) => {
 									return (
-										<tr key={role.id}>
+										<tr key={course.id}>
 											<td>
-												<Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link>
+												<Link
+													to={`http://localhost:3000/DeptCourseInformation?courseid=${course.id}`}>
+													{course.courseCode}
+												</Link>
 											</td>
-											<td>{role.department}</td>
-											<td>{role.description}</td>
+											<td>{course.title}</td>
+											<td>{course.description}</td>
 											<td>
-												{role.status !== undefined && (
+												{course.status !== undefined && (
 													<>
 														<button
 															className={`${
-																role.status ? 'active-button' : 'default-button'
+																course.status ? 'active-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(role, true)} disabled={role.status}>
+															onClick={() => toggleStatus(course, true)} disabled={course.status}>
 															Active
 														</button>
 														<button
 															className={`${
-																role.status === false ? 'inactive-button' : 'default-button'
+																course.status === false ? 'inactive-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(role, false)} disabled={!role.status}>
+															onClick={() => toggleStatus(course, false)} disabled={!course.status}>
 															Inactive
 														</button>
 													</>
 												)}
-											</td>
+											</td>										
 										</tr>
 									);
 								})}
 							</tbody>
-						</table>
+						
 
 						<tfoot>
 							<ReactPaginate
 								previousLabel={'<'}
 								nextLabel={'>'}
 								breakLabel={'...'}
-								pageCount={pageCount(roleData.rolesCount, roleData.perPage)}
+								pageCount={pageCount(deptCourseList.coursesCount, deptCourseList.perPage)}
 								marginPagesDisplayed={3}
 								pageRangeDisplayed={0}
-								onPageChange={(data) => handlePageClick(data, setRoleData)}
+								onPageChange={(data) => handlePageClick(data, setDeptCourseList)}
 								containerClassName={'pagination'}
 								activeClassName={'active'}
+								forcePage={deptCourseList.currentPage - 1}
 							/>
 						</tfoot>
-					</div>
+					</table>
 				</div>
 			</div>
 		</div>
+	</div>
 	);
 }
 
-export default DeptStatusChangeServiceRole;
+export default DeptStatusChangeCourse;
