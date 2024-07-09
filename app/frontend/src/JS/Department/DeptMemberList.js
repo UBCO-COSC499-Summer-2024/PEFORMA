@@ -77,14 +77,17 @@ function DeptMemberList() {
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
 
 				<div className="member-list-main" id="dept-member-list-test-content">
-					<div className="subtitle-member">List of Member ({activeMembersCount} Active)</div>
+					<div className="subtitle-member">List of Members ({activeMembersCount} Active)
+					<button className='status-change-button'><Link to={`/DeptStatusChangeMember`} state={{ memberData }}>Manage Member</Link></button>
+					</div>
+
 
 					<div className="member-table">
 						<table>
 							<thead>
 								<tr>
-									<th>UBC ID</th>
 									<th>Name</th>
+									<th>UBC ID</th>
 									<th>Service Role</th>
 									<th>Status</th>
 								</tr>
@@ -94,10 +97,10 @@ function DeptMemberList() {
 								{currentMembers.map((member) => {
 									return (
 										<tr key={member.ubcid}>
-											<td>{member.ubcid}</td>
 											<td>
 												<Link to={`/DeptProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
 											</td>
+											<td>{member.ubcid}</td>
 											<td>
 												{member.serviceRole ? (
 													Array.isArray(member.serviceRole) ? (
