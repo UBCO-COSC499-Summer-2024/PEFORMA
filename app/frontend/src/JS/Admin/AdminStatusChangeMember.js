@@ -21,9 +21,9 @@ function AdminStatusChangeMember() {
 
 
 	useEffect(() => {
-		checkAccess(accountLogInType, navigate, 'department');
+		checkAccess(accountLogInType, navigate, 'admin');		
 		if (location.state.memberData) {
-			const filledMembers = fillEmptyItems(
+				const filledMembers = fillEmptyItems(
 				location.state.memberData.members,
 				location.state.memberData.perPage
 			);
@@ -34,7 +34,7 @@ function AdminStatusChangeMember() {
 	const toggleStatus = async (member, newStatus) => {
 		const updatedMember = { ...member, status: newStatus };
 		const updatedMembers = memberData.members.map((m) => (m.id === m.ubcid ? updatedMember : m));
-		console.log("request\n",  { member: member.ubcid, newStatus })
+		console.log("request\n",  { memberUbcId: member.ubcid, newStatus })
 		try {
 			const response = await axios.post(///////////////////////////////////////////////////////////////////////////fix this this this this 
 				`http://localhost:3001/api/DeptStatusChangeServiceRole`, //// fix this Subaru //////////////////////////////////////////////////////////
@@ -104,14 +104,14 @@ function AdminStatusChangeMember() {
 									return (
 										<tr key={member.ubcid}>
 											<td>
-												<Link to={`/DeptRoleInformation?roleid=${member.ubcid}`}>{member.name}</Link>
+												<Link to={`/AdminRoleInformation?roleid=${member.ubcid}`}>{member.name}</Link>
 											</td>
 											<td>{member.ubcid}</td>
 											<td>{member.serviceRole ? (
 													Array.isArray(member.serviceRole) ? (
 														member.serviceRole.map((serviceRole, index) => (
 															<React.Fragment key={member.ubcid[index]}>
-																<Link to={`/DeptRoleInformation?roleid=${member.roleid[index]}`}>
+																<Link to={`/AdminRoleInformation?roleid=${member.roleid[index]}`}>
 																	{serviceRole}
 																</Link>
 																{index < member.serviceRole.length - 1 ? (
@@ -123,7 +123,7 @@ function AdminStatusChangeMember() {
 															</React.Fragment>
 														))
 													) : (
-														<Link to={`/DeptRoleInformation?ubcid=${member.roleid}`}>
+														<Link to={`/AdminRoleInformation?ubcid=${member.roleid}`}>
 															{member.roleid}
 														</Link>
 													)

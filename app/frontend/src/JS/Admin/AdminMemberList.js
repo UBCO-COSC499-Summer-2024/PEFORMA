@@ -85,6 +85,7 @@ function AdminMemberList() {
 									<th>Name</th>
 									<th>UBC ID</th>
 									<th>Service Role</th>
+                  <th>Department</th>
 									<th>Status</th>
 								</tr>
 							</thead>
@@ -94,7 +95,7 @@ function AdminMemberList() {
 									return (
 										<tr key={member.ubcid}>
 											<td>
-												<Link to={`/DeptProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
+												<Link to={`/AdminProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
 											</td>
 											<td>{member.ubcid}</td>
 											<td>
@@ -102,7 +103,7 @@ function AdminMemberList() {
 													Array.isArray(member.serviceRole) ? (
 														member.serviceRole.map((serviceRole, index) => (
 															<React.Fragment key={member.ubcid[index]}>
-																<Link to={`/DeptRoleInformation?roleid=${member.roleid[index]}`}>
+																<Link to={`/AdminRoleInformation?roleid=${member.roleid[index]}`}>
 																	{serviceRole}
 																</Link>
 																{index < member.serviceRole.length - 1 ? (
@@ -114,7 +115,7 @@ function AdminMemberList() {
 															</React.Fragment>
 														))
 													) : (
-														<Link to={`/DeptRoleInformation?ubcid=${member.roleid}`}>
+														<Link to={`/AdminRoleInformation?ubcid=${member.roleid}`}>
 															{member.roleid}
 														</Link>
 													)
@@ -122,6 +123,7 @@ function AdminMemberList() {
 													''
 												)}
 											</td>
+                      <td>{member.department}</td>
 											<td>{member.status !== undefined ? (member.status ? 'Active' : 'Inactive') : ''}</td>
 										</tr>
 									);
