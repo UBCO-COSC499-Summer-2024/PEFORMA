@@ -13,7 +13,7 @@ import { useAuth } from '../common/AuthContext.js';
 
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
-	const { authToken, accountType, profileId } = useAuth();
+	const { authToken, accountLogInType, profileId } = useAuth();
 
 	const initProfile = {
 		roles: [],
@@ -31,7 +31,7 @@ function PerformanceInstructorPage() {
 					navigate('/Login');
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 3) {
 					alert('No Access, Redirecting to department view');
 					navigate('/DeptDashboard');

@@ -13,36 +13,32 @@ function Login() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const logindata = { email, password };
-		//console.log('Sending:'+logindata);
 		// login logic function call below (BE)
 		try {
 			const response = await axios.post('http://localhost:3001/logincheck', logindata);
 			if (response.data.success) {
-				//alert(JSON.stringify(response.data, null, 2));
 				alert(`Welcom!  ${response.data.email}!\n Account Id is ${response.data.accountId}! \n
                 retrived token is: ${JSON.stringify(response.data.token.token, null, 2)}\n
                 expire time is: ${JSON.stringify(response.data.token.expiresIn, null, 2)}`);
-
 				// here is the token and expire time ↑↑↑
-				console.log('profileId: \n');
-				console.log(response.data.profileId);
 				const accountTypeResponse = await axios.get(
 					`http://localhost:3001/accountType/${response.data.accountId}`
 				);
-				const accountType = accountTypeResponse.data.accountType;
-
+				const accountType = accountTypeResponse.data.accountTypes;
+				const accountLoggedInType = accountType[0];
 				login(
 					response.data.token,
 					response.data.token.expiresIn,
 					response.data.profileId,
-					accountType
+					accountType,
+					accountLoggedInType
 				);
 				if (accountTypeResponse.data.success) {
-					alert(`Log in as account type: ${accountType}`);
-					switch (accountType) {
+					alert(`Log in as account type: ${accountLoggedInType}`);
+					switch (accountLoggedInType) {
 						case 1:
 							navigate(
-								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountLoggedInType}`,
 								{ replace: true }
 							);
 							break;

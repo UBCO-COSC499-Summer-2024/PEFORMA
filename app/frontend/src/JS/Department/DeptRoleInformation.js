@@ -12,7 +12,7 @@ import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function RoleInformation() {
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 
 	const [roleData, setRoleData] = useState({
@@ -40,7 +40,7 @@ function RoleInformation() {
 				navigate('/Login');
 				return;
 			}
-			const numericAccountType = Number(accountType);
+			const numericAccountType = Number(accountLogInType);
 			if (numericAccountType !== 1 && numericAccountType !== 2) {
 				alert('No Access, Redirecting to instructor view');
 				navigate('/Dashboard');

@@ -10,7 +10,7 @@ import '../common/AuthContext.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function DeptMemberList() {
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [memberData, setMemberData] = useState({
 		members: [{}],
@@ -28,7 +28,7 @@ function DeptMemberList() {
 					navigate('/Login'); // Use your navigation mechanism
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/Dashboard');

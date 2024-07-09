@@ -10,7 +10,7 @@ function InstructorProfilePage() {
 	const navigate = useNavigate();
 	const params = new URLSearchParams(window.location.search);
 	const ubcid = params.get('ubcid');
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const initProfile = { roles: [], teachingAssignments: [] };
 	const [profile, setProfile] = useState(initProfile);
 
@@ -21,7 +21,7 @@ function InstructorProfilePage() {
 					navigate('/Login');
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 3) {
 					alert('No Access, Redirecting to department view');
 					navigate('/DeptDashboard');
