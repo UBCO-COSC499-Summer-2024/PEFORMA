@@ -115,7 +115,7 @@ function AdminMemberList() {
 															</React.Fragment>
 														))
 													) : (
-														<Link to={`/AdminRoleInformation?ubcid=${member.roleid}`}>
+														<Link to={`/AdminRoleInformation?roleid=${member.roleid}`}>
 															{member.roleid}
 														</Link>
 													)

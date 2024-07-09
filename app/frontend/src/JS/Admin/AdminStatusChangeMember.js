@@ -104,7 +104,7 @@ function AdminStatusChangeMember() {
 									return (
 										<tr key={member.ubcid}>
 											<td>
-												<Link to={`/AdminRoleInformation?roleid=${member.ubcid}`}>{member.name}</Link>
+												<Link to={`/AdminProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
 											</td>
 											<td>{member.ubcid}</td>
 											<td>{member.serviceRole ? (
@@ -123,7 +123,7 @@ function AdminStatusChangeMember() {
 															</React.Fragment>
 														))
 													) : (
-														<Link to={`/AdminRoleInformation?ubcid=${member.roleid}`}>
+														<Link to={`/AdminRoleInformation?roleid=${member.roleid}`}>
 															{member.roleid}
 														</Link>
 													)
