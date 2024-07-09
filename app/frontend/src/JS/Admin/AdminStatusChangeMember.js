@@ -37,7 +37,7 @@ function AdminStatusChangeMember() {
 		console.log("request\n",  { memberUbcId: member.ubcid, newStatus })
 		try {
 			const response = await axios.post(///////////////////////////////////////////////////////////////////////////fix this this this this 
-				`http://localhost:3001/api/DeptStatusChangeServiceRole`, //// fix this Subaru //////////////////////////////////////////////////////////
+				`http://localhost:3001//api/adminStatusChangeMembers`, //// fix this Subaru //////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////// tfiszbfnsdifgubs;GJs":DGjs'ZJgzsmf'gjn zsBjt;zd,fjtgvlzdmljtgm]p[ ]
 				{
 					memberId: member.ubcid,
