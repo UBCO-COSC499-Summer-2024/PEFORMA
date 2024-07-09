@@ -7,12 +7,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, 
-	handlePageClick, 
-	pageCount, 
-	currentItems,
-	handleSearchChange
- } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptCourseList.css';
 
@@ -76,7 +71,7 @@ function DeptCourseList() {
 
 				<div className="main">
 					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} Active in current)
-					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`}>Manage Course</Link></button>
+					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`} state={{ deptCourseList }}>Manage Course</Link></button>
 
 					</div>
 
@@ -87,6 +82,7 @@ function DeptCourseList() {
 									<th>Course</th>
 									<th>Title</th>
 									<th>Description</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 
@@ -102,6 +98,7 @@ function DeptCourseList() {
 											</td>
 											<td>{course.title}</td>
 											<td>{course.description}</td>
+											<td>{course.status !== undefined ? (course.status ? 'Active' : 'Inactive') : ''}</td>
 										</tr>
 									);
 								})}
