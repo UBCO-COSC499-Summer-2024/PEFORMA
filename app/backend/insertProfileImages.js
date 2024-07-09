@@ -1,20 +1,16 @@
-// app/backend/insert_images.js
-
-const { Pool } = require('pg');
-const fs = require('fs');
+const pool = require('./db/index.js');
+const fs = require('fs').promises;
 const path = require('path');
-
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.DB_HOST,
-  database: process.env.POSTGRES_DB,
-  password: process.env.POSTGRES_PASSWORD,
-  port: process.env.DB_PORT,
-});
 
 async function insertImage(filePath) {
   const fileType = path.extname(filePath).slice(1).toLowerCase();
-  const imageData = fs.readFileSync(filePath);
+  let imageData;
+  try {
+    imageData = await fs.readFile(filePath);
+  } catch (err) {
+    console.error(`Error reading file ${filePath}:`, err);
+    return;
+  }
 
   const query = 'INSERT INTO "Image" (file_type, image_data) VALUES ($1, $2) RETURNING "imageId"';
   const values = [fileType, imageData];
@@ -28,31 +24,49 @@ async function insertImage(filePath) {
 }
 
 async function insertImagesFromDirectory(directory) {
-  const files = fs.readdirSync(directory);
+  console.log(`Attempting to read directory: ${directory}`);
+  let files;
+  try {
+    files = await fs.readdir(directory);
+    console.log(`Found ${files.length} files in the directory`);
+  } catch (err) {
+    console.error(`Error reading directory ${directory}:`, err);
+    return;
+  }
 
   for (const file of files) {
     const filePath = path.join(directory, file);
+    console.log(`Processing file: ${filePath}`);
     await insertImage(filePath);
   }
 
-  console.log('All profile images inserted');
-  await pool.end();
+  console.log('All profile images processed');
 }
 
 async function checkImagesInserted() {
-  const res = await pool.query('SELECT COUNT(*) FROM "Image"');
-  return parseInt(res.rows[0].count) > 0;
-}
-
-async function main() {
-  const imagesAlreadyInserted = await checkImagesInserted();
-  if (!imagesAlreadyInserted) {
-    console.log('Inserting profile images...');
-    await insertImagesFromDirectory('/app/profile_images');
-  } else {
-    console.log('Profile images already inserted, skipping...');
+  try {
+    const res = await pool.query('SELECT COUNT(*) FROM "Image"');
+    const count = parseInt(res.rows[0].count);
+    console.log(`Number of images in the database: ${count}`);
+    return count > 0;
+  } catch (err) {
+    console.error('Error checking if images are inserted:', err);
+    return false;
   }
-  await pool.end();
 }
 
-main().catch(console.error);
+async function setupDatabase() {
+  try {
+    const imagesAlreadyInserted = await checkImagesInserted();
+    if (!imagesAlreadyInserted) {
+      console.log('Inserting profile images...');
+      await insertImagesFromDirectory(path.join(__dirname, 'profile_images'));
+    } else {
+      console.log('Profile images already inserted, skipping...');
+    }
+  } catch (error) {
+    console.error('Database setup error:', error);
+  }
+}
+
+module.exports = { setupDatabase };

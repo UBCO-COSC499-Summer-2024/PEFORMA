@@ -8,7 +8,7 @@ const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
 const { saveDataToDatabase } = require('./routes/DataEntry');
-
+const { setupDatabase } = require('./insertProfileImages');
 
 const { upsertProfile } = require('./routes/upsertProfile');
 const { createAccount } = require('./routes/createAccount');
@@ -139,9 +139,26 @@ app.use('/api',instructorFetch);
 
 
 const port = 3001;
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-    console.log(`Account info page: http://localhost:${port}/Account`);
-    console.log(`Data entrt request: http://localhost:${port}/enter`);
-    console.log(`Instructor lists: http://localhost:${port}/api/instructors`)
+// Wrap server startup in an async function
+const startServer = async () => {
+    app.listen(port, () => {
+        console.log(`Server running on http://localhost:${port}`);
+        console.log(`Account info page: http://localhost:${port}/Account`);
+        console.log(`Data entry request: http://localhost:${port}/enter`);
+        console.log(`Instructor lists: http://localhost:${port}/api/instructors`);
+    });
+
+    try {
+        // Run database setup after server starts
+        await setupDatabase();
+        console.log('Database setup completed successfully');
+    } catch (error) {
+        console.error('Error during database setup:', error);
+    }
+};
+
+// Call the async function to start the server
+startServer().catch(error => {
+    console.error('Failed to start server:', error);
+    process.exit(1);
 });
