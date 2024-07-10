@@ -11,7 +11,6 @@ import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchC
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
-
 function DeptMemberList() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
@@ -35,8 +34,9 @@ function DeptMemberList() {
 				const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
-				setMemberData({ ...res.data, members: filledMembers });
+				const activeMembers = res.data.members.filter(member => member.status);
+				const filledMembers = fillEmptyItems(activeMembers, res.data.perPage);
+				setMemberData({ ...res.data, members: filledMembers, membersCount: activeMembers.length });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
 				if (error.response && error.response.status === 401) {
@@ -71,7 +71,6 @@ function DeptMemberList() {
 				<div className="member-list-main" id="dept-member-list-test-content">
 					<div className="subtitle-member">List of Members ({memberData.membersCount} Active)
 					</div>
-
 
 					<div className="member-table">
 						<table>
