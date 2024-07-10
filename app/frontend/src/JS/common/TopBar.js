@@ -38,7 +38,7 @@ function TopBar({ searchListType, onSearch }) {
             navigate('/InsPerformancePage');
             break;
         case 4:
-            navigate('/AdminPage'); // needs to be fixed with new admin file name
+            navigate('/AdminMemberList'); // needs to be fixed with new admin file name
             break;
         default:
             break;
