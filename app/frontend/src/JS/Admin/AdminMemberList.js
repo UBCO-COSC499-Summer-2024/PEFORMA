@@ -85,7 +85,6 @@ function AdminMemberList() {
 									<th>Name</th>
 									<th>UBC ID</th>
 									<th>Service Role</th>
-                  <th>Department</th>
 									<th>Status</th>
 								</tr>
 							</thead>
@@ -122,7 +121,6 @@ function AdminMemberList() {
 												''
 											)}
 										</td>
-										<td>{member.department}</td>
 										<td>
 											{member.status !== undefined ? (member.status ? 'Active' : 'Inactive') : ''}
 										</td>

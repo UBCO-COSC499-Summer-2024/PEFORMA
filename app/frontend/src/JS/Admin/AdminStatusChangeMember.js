@@ -15,15 +15,14 @@ function AdminStatusChangeMember() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [memberData, setMemberData] = useState(
-		location.state.memberData || { members: [], rolesCount: 0, perPage: 10, currentPage: 1 }
+		location.state.memberData || { members: [], membersCount: 0, perPage: 10, currentPage: 1 }
 	);
   const [search, setSearch] = useState('');
-
 
 	useEffect(() => {
 		checkAccess(accountLogInType, navigate, 'admin');		
 		if (location.state.memberData) {
-				const filledMembers = fillEmptyItems(
+			const filledMembers = fillEmptyItems(
 				location.state.memberData.members,
 				location.state.memberData.perPage
 			);
@@ -33,11 +32,11 @@ function AdminStatusChangeMember() {
 
 	const toggleStatus = async (member, newStatus) => {
 		const updatedMember = { ...member, status: newStatus };
-		const updatedMembers = memberData.members.map((m) => (m.id === m.ubcid ? updatedMember : m));
+		const updatedMembers = memberData.members.map((m) => (m.ubcid === member.ubcid ? updatedMember : m));
 		console.log("request\n",  { memberUbcId: member.ubcid, newStatus })
 		try {
-			const response = await axios.post 
-				(`http://localhost:3001/api/adminStatusChangeMembers`, 
+			const response = await axios.post(
+				`http://localhost:3001/api/adminStatusChangeMembers`, 
 				{
 					memberId: member.ubcid,
 					newStatus: newStatus,
@@ -46,10 +45,9 @@ function AdminStatusChangeMember() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				}
 			);
-			console.log("Admin status change before: ");
 			if (response.status === 200) {
 				setMemberData((prevState) => {
-					const filledMembers = fillEmptyItems(updatedMembers, prevState.perPage);
+					const filledMembers = fillEmptyItems(updatedMembers, memberData.perPage);
 					return {
 						...prevState,
 						members: filledMembers,
@@ -68,7 +66,7 @@ function AdminStatusChangeMember() {
 			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(Array.isArray(member.serviceRole)
-				? member.serviceRole.some((role) => role.toLowerCase().includes(search.toLowerCase()))
+				? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
 				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
 	);
 
@@ -78,7 +76,7 @@ function AdminStatusChangeMember() {
 		<div className="dashboard">
 			<CreateSideBar sideBarType="Admin" />
 			<div className="container">
-        <CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
+				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); handleSearchChange(setMemberData); }} />
 
 				<div className="srlist-main" id="dept-member-list-test-content">
 					<div className="subtitle-member">
@@ -100,59 +98,50 @@ function AdminStatusChangeMember() {
 							</thead>
 
 							<tbody>
-								{currentMembers.map((member) => {
-									return (
-										<tr key={member.ubcid}>
-											<td>
-												<Link to={`/AdminProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
-											</td>
-											<td>{member.ubcid}</td>
-											<td>{member.serviceRole ? (
-													Array.isArray(member.serviceRole) ? (
-														member.serviceRole.map((serviceRole, index) => (
-															<React.Fragment key={member.ubcid[index]}>
-																<Link to={`/AdminRoleInformation?roleid=${member.roleid[index]}`}>
-																	{serviceRole}
-																</Link>
-																{index < member.serviceRole.length - 1 ? (
-																	<>
-																		<br />
-																		<br />
-																	</>
-																) : null}
-															</React.Fragment>
-														))
-													) : (
-														<Link to={`/AdminRoleInformation?roleid=${member.roleid}`}>
-															{member.roleid}
-														</Link>
-													)
+								{currentMembers.map((member, index) => (
+									<tr key={index}>
+										<td>
+											<Link to={`/AdminProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
+										</td>
+										<td>{member.ubcid}</td>
+										<td>
+											{member.serviceRole ? (
+												Array.isArray(member.serviceRole) ? (
+													member.serviceRole.map((serviceRole, index) => (
+														<React.Fragment key={index}>
+															<Link to={`/AdminRoleInformation?roleid=${member.roleid[index]}`}>
+																{serviceRole}
+															</Link>
+															{index < member.serviceRole.length - 1 && <><br /><br /></>}
+														</React.Fragment>
+													))
 												) : (
-													''
-												)}</td>
-											<td>
-												{member.status !== undefined && (
-													<>
-														<button
-															className={`${
-																member.status ? 'active-button' : 'default-button'
-															} button`}
-															onClick={() => toggleStatus(member, true)} disabled={member.status}>
-															Active
-														</button>
-														<button
-															className={`${
-																member.status === false ? 'inactive-button' : 'default-button'
-															} button`}
-															onClick={() => toggleStatus(member, false)} disabled={!member.status}>
-															Inactive
-														</button>
-													</>
-												)}
-											</td>
-										</tr>
-									);
-								})}
+													<Link to={`/AdminRoleInformation?roleid=${member.roleid}`}>
+														{member.serviceRole}
+													</Link>
+												)
+											) : ('')}
+										</td>
+										<td>
+											{member.status !== undefined && (
+												<>
+													<button
+														className={`${member.status ? 'active-button' : 'default-button'} button`}
+														onClick={() => toggleStatus(member, true)}
+														disabled={member.status}>
+														Active
+													</button>
+													<button
+														className={`${!member.status ? 'inactive-button' : 'default-button'} button`}
+														onClick={() => toggleStatus(member, false)}
+														disabled={!member.status}>
+														Inactive
+													</button>
+												</>
+											)}
+										</td>
+									</tr>
+								))}
 							</tbody>
 						</table>
 
