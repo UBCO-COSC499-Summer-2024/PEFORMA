@@ -141,11 +141,11 @@ function InsCourseList() {
                                             {course.instructor ? (
                                                 Array.isArray(course.instructor) ? (
                                                     course.instructor.map((instructor, index) => (
-                                                        <React.Fragment key={course.ubcid[index]}>
+                                                        <React.Fragment key={course.profileid[index]}>
                                                             <div className="instructor-container">
                                                                 <img 
                                                                     className="instructor-image"
-                                                                    src={`http://localhost:3001/api/image/${course.ubcid[index]}`} 
+                                                                    src={`http://localhost:3001/api/image/${course.profileid[index]}`} 
                                                                     alt={instructor}
                                                                     onError={(e) => { e.target.onerror = null; e.target.src = '/path/to/default/image.jpg' }}
                                                                 />
@@ -160,7 +160,7 @@ function InsCourseList() {
                                                     <div className="single-instructor">
                                                         <img 
                                                             className="instructor-image"
-                                                            src={`http://localhost:3001/api/image/${course.ubcid}`} 
+                                                            src={`http://localhost:3001/api/image/${course.profileid}`} 
                                                             alt={course.instructor}
                                                             onError={(e) => { e.target.onerror = null; e.target.src = '/path/to/default/image.jpg' }}
                                                         />

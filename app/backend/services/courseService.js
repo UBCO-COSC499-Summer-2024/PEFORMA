@@ -38,6 +38,7 @@ async function getFormattedCourseData(divisionCode) {
             ARRAY_AGG(p."firstName" || ' ' || p."lastName") AS instructor,
             ARRAY_AGG(p."UBCId") AS ubcid, 
             ARRAY_AGG(p."email") AS email,
+            ARRAY_AGG(p."profileId") AS profileid,
             c2."divisionId" AS division_id
         FROM public."Course" c2
         JOIN public."InstructorTeachingAssignment" a2 ON c2."courseId" = a2."courseId"
@@ -63,7 +64,8 @@ async function getFormattedCourseData(divisionCode) {
                 title: row.course_title,
                 instructor: row.instructor,
                 ubcid: row.ubcid,
-                email: row.email
+                email: row.email,
+                profileid: row.profileid
             };
         }) 
     };
