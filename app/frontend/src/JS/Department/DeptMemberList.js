@@ -56,7 +56,7 @@ function DeptMemberList() {
 			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(Array.isArray(member.serviceRole)
-				? member.serviceRole.some((role) => role.toLowerCase().includes(search.toLowerCase()))
+				? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
 				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
 	);
 
