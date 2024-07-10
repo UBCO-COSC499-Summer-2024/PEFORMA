@@ -30,6 +30,7 @@ const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
+const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
 const app = express();
@@ -75,6 +76,9 @@ app.use('/api/service-roles',serviceRoleRoutes);
 
 app.use('/api/allInstructors',allInstructors);
 app.use('/api/adminStatusChangeMembers',adminStatusChangeMembers);
+
+app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
+
 //reset password
 //app.use('/api',ResetPassword);
 app.use('/api/roleInfo', roleInfoRoutes);
