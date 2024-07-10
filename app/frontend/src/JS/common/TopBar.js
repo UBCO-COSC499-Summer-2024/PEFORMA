@@ -7,7 +7,7 @@ import '../../CSS/common.css';
 function TopBar({ searchListType, onSearch }) {
 	const navigate = useNavigate();
 	const [showDropdown, setShowDropdown] = useState(false);
-	const { accountType, accountLogInType, setAccountLogInType } = useAuth();
+	const { accountType, accountLogInType, setAccountLogInType, profileId } = useAuth();
 
 	const handleLogOut = () => {
 		localStorage.removeItem('token');
@@ -64,10 +64,11 @@ function TopBar({ searchListType, onSearch }) {
 		return (
 			<div className="account-switcher">
 				<img
-					src=""
-					alt="Switch Account"
+					src={`http://localhost:3001/api/image/${profileId}`} 
+					alt="Profile image"
 					onClick={toggleDropdown}
 					style={{ cursor: 'pointer' }}
+					onError={(e) => { e.target.onerror = null; e.target.src = '/path/to/default/image.jpg' }}
 				/>
 				{showDropdown && accountType.length > 1 && (
 					<ul className="dropdown-menu">
