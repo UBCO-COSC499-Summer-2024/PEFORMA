@@ -1,32 +1,42 @@
 .create-account-form {
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f4f4f4;
+    padding-left: 2em;
+    padding-right: 2em;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+    background-color: #f2f2f2;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .create-account-form form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #ffffff;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .create-account-form input {
-    margin-bottom: 10px;
-    /*padding: 8px;
-    border-radius: 4px;*/
-    width: 80%;
+    margin: 1em;
+    padding: 10px;
+    border-radius: 10px;
+    width: 70%;
     border: 1px solid #ccc;
 }
 
 .create-account-form .create-button, .create-account-form .cancel-button {
-    /*padding: 10px;*/
     margin-top: 10px;
     border-radius: 4px;
     border: none;
     cursor: pointer;
+    padding: 1em;
+    width: 40%;
 }
 
 .create-account-form .create-button {
@@ -43,8 +53,15 @@
     text-align: center;
 }
 
+.create-account-form .button-align-div{
+    display: flex;
+    justify-content: space-between;
+    width:60%;
+    
+}
+
 .modal-overlay {
-    position: fixed;
+    position: absolute; /* fixed에서 absolute로 변경 */
     top: 0;
     left: 0;
     right: 0;
@@ -57,6 +74,10 @@
 }
 
 .modal-content {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -65,20 +86,21 @@
     text-align: center;
 }
 
-.create-account-form button {
-    padding: 10px 15px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
+
+.service-role-button-align {
+    display: flex;
+    width: 75%;
+}
+
+.service-role-button-align input {
+    flex-grow: 1;
+}
+
+.service-role-button-align button {
+    background-color: #00a1d7;
+    border-radius: 10px;
     cursor: pointer;
+    width: auto;
+    margin: 1em;
 }
 
-.create-account-form .create-button {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.create-account-form .cancel-button {
-    background-color: #f44336;
-    color: white;
-}
