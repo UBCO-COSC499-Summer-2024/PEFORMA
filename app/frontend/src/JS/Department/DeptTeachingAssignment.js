@@ -18,9 +18,29 @@ function DeptTeachingAssignment() {
 	});
 	const [professorList, setProfessorList] = useState([]);
 	const [selectedDivision, setSelectedDivision] = useState('computer-science');
+	const [currentTerm, setCurrentTerm] = useState('');
 
 	const handleItemClick = (type, id) => {
 		navigate(`/${type === 'course' ? 'DeptCourseInformation' : 'DeptProfilePage'}?${type === 'course' ? 'courseid' : 'ubcid'}=${id}`);
+	};
+
+	const getTermString = (term) => {
+		const termStr = term.toString();
+		const year = termStr.slice(0, -1);
+		const termCode = termStr.slice(-1);
+	
+		const termMap = {
+			1: 'Winter Term 1',
+			2: 'Winter Term 2',
+			3: 'Summer Term 1',
+			4: 'Summer Term 2',
+		};
+	
+		if (termStr.length === 4) { // edge case
+			return `${termStr} Winter Term 1`;
+		}
+	
+		return `${year} ${termMap[termCode] || ''}`;
 	};
 
 	useEffect(() => {
@@ -30,6 +50,7 @@ function DeptTeachingAssignment() {
 				const res = await axios.get(`http://localhost:3000/teachingAssignment.json`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
+				
 				const filledCourses = fillEmptyItems(res.data['teaching-info'].flatMap(info => 
 					info.courses.map((course, index) => ({
 						courseCode: course,
@@ -54,6 +75,7 @@ function DeptTeachingAssignment() {
 					currentPage: 1,
 				});
 				setProfessorList(professors);
+				setCurrentTerm(getTermString(res.data.currentTerm));
 			} catch (error) {
 				if (error.response && error.response.status === 401) {
 					localStorage.removeItem('authToken');
@@ -90,7 +112,7 @@ function DeptTeachingAssignment() {
 			<div className="container" id="info-test-content">
 				<CreateTopBar />
 				<div className="teaching-assignment-subtitle">
-					<h1>Teaching assignment (2024 winter term)</h1>
+					<h1>Teaching assignment ({currentTerm})</h1>
 				</div>
 				<div className="division-box">
 					<div className="division-card">
