@@ -74,7 +74,7 @@ function DeptCourseList() {
 			<div className="container">
 			<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
-				<div className="main">
+				<div className="srlist-main">
 					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} Active in current)
 					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`}>Manage Course</Link></button>
 
