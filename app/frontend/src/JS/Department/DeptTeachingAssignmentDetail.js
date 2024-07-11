@@ -88,8 +88,8 @@ function DeptTeachingAssignmentDetail() {
 							<tbody>
 								{currentCourses.map((course) => (
 									<tr key={course.id}>
-										<td>{course.instructor}</td>
-										<td>{course.courseCode}</td>
+										<td><Link to={`http://localhost:3000/DeptProfilePage?ubcid=${course.ubcid}`}>{course.instructor}</Link></td>
+										<td><Link to={`http://localhost:3000/DeptCourseInformation?courseid=${course.id}`}>{course.courseCode}</Link></td>
 										<td>{course.courseName}</td>
 										<td>{course.email}</td>
 									</tr>
