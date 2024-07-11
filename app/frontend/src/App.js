@@ -28,6 +28,10 @@ import DeptRoleInformation from './JS/Department/DeptRoleInformation';
 import DeptCourseInformation from './JS/Department/DeptCourseInformation';
 import DeptProfilePage from './JS/Department/DeptProfilePage';
 import DeptStatusChangeServiceRole from './JS/Department/DeptStatusChangeServiceRole';
+import DeptTeachingAssignment from './JS/Department/DeptTeachingAssignment';
+import DeptTeachingAssignmentDetail from './JS/Department/DeptTeachingAssignmentDetail';
+
+
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
 import { AuthProvider } from './JS/common/AuthContext';
@@ -79,6 +83,8 @@ function App() {
 					<Route path="/DeptStatusChangeServiceRole" element={<DeptStatusChangeServiceRole />} />
 					<Route path="/AdminMemberList" element={<AdminMemberList />} />
 					<Route path="/AdminStatusChangeMember" element={<AdminStatusChangeMember />} />
+					<Route path="/DeptTeachingAssignment" element={<DeptTeachingAssignment />} />
+					<Route path="/DeptTeachingAssignmentDetail" element={<DeptTeachingAssignmentDetail />} />
 
 				</Routes>
 			</AuthProvider>

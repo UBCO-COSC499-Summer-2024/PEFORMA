@@ -1,0 +1,101 @@
+.teaching-assignment-subtitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.division-box {
+  width: auto;
+  display: flex;
+  padding: 2em;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.division-card {
+  padding: 10px;
+  width: 100%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  margin-right: 10px;
+  background-color: #ffffff;
+}
+
+.division-selection-assign {
+  width: 80%; 
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.detail-button {
+  width: 18%; 
+  padding: 10px;
+  margin-left: 2%; 
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.detail-button:hover {
+  background-color: #0056b3;
+}
+
+.course-list {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.course-list p {
+  font-weight: bold;
+}
+
+.course-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 200px; 
+  overflow-y: auto;
+}
+
+.professor-list {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.professor-list p {
+  font-weight: bold;
+}
+
+.professor-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 140px; 
+  overflow-y: auto;
+}
+
+.course-card, .professor-card {
+  flex: 1 1 200px; 
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 200px; 
+}
+
+.division-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
