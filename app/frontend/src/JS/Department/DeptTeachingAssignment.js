@@ -58,6 +58,7 @@ function DeptTeachingAssignment() {
 						id: info.courseid[index],
 						instructor: info.instructor,
 						ubcid: info.ubcid,
+						email: info.email,
 						division: info.division.toLowerCase().replace(' ', '-')
 					}))
 				), res.data.perPage);
@@ -65,6 +66,7 @@ function DeptTeachingAssignment() {
 				const professors = res.data['teaching-info'].map(info => ({
 					instructor: info.instructor,
 					ubcid: info.ubcid,
+					email: info.email,
 					division: info.division.toLowerCase().replace(' ', '-')
 				}));
 
