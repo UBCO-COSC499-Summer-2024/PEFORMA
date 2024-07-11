@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, getDivisionName, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, handleSearchChange, pageCount, currentItems, checkAccess } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptTeachingAssignment.css';
 
@@ -19,6 +19,7 @@ function DeptTeachingAssignmentDetail() {
 		currentPage: 1,
 	});
 	const [currentDivision, setCurrentDivision] = useState(selectedDivision);
+	const [search, setSearch] = useState('');
 
 	useEffect(() => {
 		checkAccess(accountLogInType, navigate, 'department');
@@ -37,7 +38,14 @@ function DeptTeachingAssignmentDetail() {
 		}
 	}, [currentDivision, courses, professors, courseList.perPage]);
 
-	const currentCourses = currentItems(courseList.courses, courseList.currentPage, courseList.perPage);
+	const filteredCourses = courseList.courses.filter(
+    (course) =>
+        (course.instructor?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+        (course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+        (course.courseName?.toLowerCase() ?? '').includes(search.toLowerCase())
+);
+
+	const currentCourses = currentItems(filteredCourses, courseList.currentPage, courseList.perPage);
 
 	const handleDivisionChange = (event) => {
 		setCurrentDivision(event.target.value);
@@ -47,7 +55,7 @@ function DeptTeachingAssignmentDetail() {
 		<div className="dashboard" id="dept-course-list-test-content">
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar searchListType={'DeptCourseList'} />
+				<CreateTopBar searchListType={'DeptTeachingAssignmentDetail'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setCourseList);}} />
 
 				<div className="srlist-main">
 					<div className="subtitle-course">
