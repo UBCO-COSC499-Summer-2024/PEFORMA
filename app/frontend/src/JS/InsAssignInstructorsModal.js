@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import ReactPaginate from 'react-paginate';
 import '../CSS/Department/AssignInstructorModal.css';
 
@@ -6,6 +6,7 @@ import '../CSS/Department/AssignInstructorModal.css';
 const AssignInstructorsModal = (props, instructorData) => {
     let i = 0;
     const [search, setSearch] = useState('');
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     const onSearch = (newSearch) => {
         setSearch(newSearch);
         props.setInstructorData(prevState => ({ ...prevState, currentPage: 1 }));
@@ -24,14 +25,12 @@ const AssignInstructorsModal = (props, instructorData) => {
              if (props.instructorData.instructors[i].id === id) {
                  if (!assign) {
                      props.instructorData.instructors[i].assigned = true;
-                     button.innerHTML = "Remove";
-                     button.classList.toggle("remove");
-                     button.classList.toggle("add");
+                     setSearch(search);
+                     forceUpdate();
                  } else {
                      props.instructorData.instructors[i].assigned = false;
-                     button.innerHTML = "Add";
-                     button.classList.toggle("remove");
-                     button.classList.toggle("add");
+                     setSearch(search);
+                     forceUpdate();
                  }
                  
              }

@@ -30,7 +30,7 @@ import DeptProfilePage from './JS/Department/DeptProfilePage';
 import DeptStatusChangeServiceRole from './JS/Department/DeptStatusChangeServiceRole';
 import DeptTeachingAssignment from './JS/Department/DeptTeachingAssignment';
 import DeptTeachingAssignmentDetail from './JS/Department/DeptTeachingAssignmentDetail';
-
+import DeptStatusChangeCourse from './JS/Department/DeptStatusChangeCourse';
 
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
@@ -81,6 +81,10 @@ function App() {
 					<Route path="/DeptCourseInformation" element={<DeptCourseInformation />} />
 					<Route path="/DeptPerformancePage" element={<DeptPerformancePage />} />
 					<Route path="/DeptStatusChangeServiceRole" element={<DeptStatusChangeServiceRole />} />
+					<Route path="/DeptStatusChangeCourse" element={<DeptStatusChangeCourse />} />
+
+					
+
 					<Route path="/AdminMemberList" element={<AdminMemberList />} />
 					<Route path="/AdminStatusChangeMember" element={<AdminStatusChangeMember />} />
 					<Route path="/DeptTeachingAssignment" element={<DeptTeachingAssignment />} />
