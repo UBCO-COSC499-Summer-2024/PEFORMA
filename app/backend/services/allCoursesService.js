@@ -2,16 +2,14 @@ const pool = require('../db/index.js');
 
 async function getAllCourses() {
   try {
-    let result = await pool.query('SELECT MAX("term") AS current_term FROM public."CourseByTerm";');
-    const currTerm = result.rows[0].current_term;
 
     const countResult = await pool.query(`
                                         SELECT COUNT(*) 
-                                        FROM public."CourseByTerm"
+                                        FROM "Course"
                                         `,);
     const coursesCount = parseInt(countResult.rows[0].count);
 
-    result = await pool.query(`
+    let result = await pool.query(`
       SELECT c."courseId",
              c."ctitle",
              c."description",
@@ -19,11 +17,9 @@ async function getAllCourses() {
              c."courseNum",
              c."isActive"
       FROM public."Course" c
-      JOIN public."CourseByTerm" cbt ON c."courseId" = cbt."courseId"
       JOIN public."Division" d ON c."divisionId" = d."divisionId"
-      WHERE cbt."term" = $1
       ORDER BY c."divisionId" ASC, c."courseNum" ASC;
-    `, [currTerm]); // Removed LIMIT and OFFSET
+    `); // Removed LIMIT and OFFSET
 
     // Reformat the data
     const formattedData = {
@@ -40,6 +36,8 @@ async function getAllCourses() {
             };
         })
     }
+    console.log("The length of the result is ", result.rowCount);
+    console.log("Formatted Data: ", formattedData);
     return formattedData;
 
   } catch (error) {
