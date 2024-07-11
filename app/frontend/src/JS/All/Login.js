@@ -44,18 +44,21 @@ function Login() {
 							break;
 						case 2:
 							navigate(
-								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountLoggedInType}`,
 								{ replace: true }
 							);
 							break;
 						case 3:
 							navigate(
-								`/InsPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/InsPerformancePage?profileId=${response.data.profileId}&accountType=${accountLoggedInType}`,
 								{ replace: true }
 							);
 							break;
 						case 4:
-							navigate('/adminDashboard', { replace: true });
+							navigate(
+								`/AdminMemberList`, 
+								{ replace: true });
+								break;
 						default:
 							navigate('/', { replace: true });
 					}
