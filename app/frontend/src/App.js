@@ -1,6 +1,8 @@
 import React from 'react';
 //Admin
 import AdminCreateAccount from './JS/Admin/AdminCreateAccount';
+import AdminMemberList from './JS/Admin/AdminMemberList';
+import AdminStatusChangeMember from './JS/Admin/AdminStatusChangeMember';
 
 //All
 import HomePage from './JS/All/HomePage';
@@ -26,7 +28,7 @@ import DeptRoleInformation from './JS/Department/DeptRoleInformation';
 import DeptCourseInformation from './JS/Department/DeptCourseInformation';
 import DeptProfilePage from './JS/Department/DeptProfilePage';
 import DeptStatusChangeServiceRole from './JS/Department/DeptStatusChangeServiceRole';
-
+import DeptStatusChangeCourse from './JS/Department/DeptStatusChangeCourse';
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
 import { AuthProvider } from './JS/common/AuthContext';
@@ -76,6 +78,13 @@ function App() {
 					<Route path="/DeptCourseInformation" element={<DeptCourseInformation />} />
 					<Route path="/DeptPerformancePage" element={<DeptPerformancePage />} />
 					<Route path="/DeptStatusChangeServiceRole" element={<DeptStatusChangeServiceRole />} />
+					<Route path="/DeptStatusChangeCourse" element={<DeptStatusChangeCourse />} />
+
+					
+
+					<Route path="/AdminMemberList" element={<AdminMemberList />} />
+					<Route path="/AdminStatusChangeMember" element={<AdminStatusChangeMember />} />
+
 				</Routes>
 			</AuthProvider>
 		</BrowserRouter>

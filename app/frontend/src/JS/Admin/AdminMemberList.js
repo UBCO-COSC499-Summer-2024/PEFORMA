@@ -11,7 +11,7 @@ import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchC
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
-function DeptMemberList() {
+function AdminMemberList() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [memberData, setMemberData] = useState({
@@ -21,6 +21,7 @@ function DeptMemberList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
+	const [activeMembersCount, setActiveMembersCount] = useState(0);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -30,17 +31,22 @@ function DeptMemberList() {
 					navigate('/Login'); // Use your navigation mechanism
 					return;
 				}
-				checkAccess(accountLogInType, navigate, 'department');
+        checkAccess(accountLogInType, navigate, 'admin');
 				const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				const activeMembers = res.data.members.filter(member => member.status);
-				const filledMembers = fillEmptyItems(activeMembers, res.data.perPage);
-				setMemberData({ ...res.data, members: filledMembers, membersCount: activeMembers.length });
+				const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
+				const activeMembersCount = filledMembers.filter((member) => member.status).length;
+				setActiveMembersCount(activeMembersCount);
+				setMemberData({
+					members: filledMembers,
+					membersCount: res.data.membersCount,
+					perPage: res.data.perPage,
+					currentPage: 1,
+				});
 			} catch (error) {
-				// Handle 401 (Unauthorized) error and other errors
 				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken'); // Clear invalid token
+					localStorage.removeItem('authToken');
 					navigate('/Login');
 				} else {
 					console.error('Error fetching members:', error);
@@ -59,17 +65,17 @@ function DeptMemberList() {
 				? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
 				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
 	);
-
 	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Department" />
+			<CreateSideBar sideBarType="Admin" />
 			<div className="container">
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
 
 				<div className="member-list-main" id="dept-member-list-test-content">
-					<div className="subtitle-member">List of Members ({memberData.membersCount} Active)
+					<div className="subtitle-member">List of Members ({activeMembersCount} Active)
+					<button className='status-change-button'><Link to={`/AdminStatusChangeMember`} state={{ memberData }}>Manage Member</Link></button>
 					</div>
 
 					<div className="member-table">
@@ -79,49 +85,47 @@ function DeptMemberList() {
 									<th>Name</th>
 									<th>UBC ID</th>
 									<th>Service Role</th>
-									<th>Department</th>
-									<th>Email</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 
 							<tbody>
-								{currentMembers.map((member) => {
-									return (
-										<tr key={member.ubcid}>
-											<td>
-												<Link to={`/DeptProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
-											</td>
-											<td>{member.ubcid}</td>
-											<td>
-												{member.serviceRole ? (
-													Array.isArray(member.serviceRole) ? (
-														member.serviceRole.map((serviceRole, index) => (
-															<React.Fragment key={member.ubcid[index]}>
-																<Link to={`/DeptRoleInformation?roleid=${member.roleid[index]}`}>
-																	{serviceRole}
-																</Link>
-																{index < member.serviceRole.length - 1 ? (
-																	<>
-																		<br />
-																		<br />
-																	</>
-																) : null}
-															</React.Fragment>
-														))
-													) : (
-														<Link to={`/DeptRoleInformation?ubcid=${member.roleid}`}>
-															{member.roleid}
-														</Link>
-													)
+								{currentMembers.map((member, index) => (
+									<tr key={index}>
+										<td>
+											<Link to={`/AdminProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
+										</td>
+										<td>{member.ubcid}</td>
+										<td>
+											{member.serviceRole ? (
+												Array.isArray(member.serviceRole) ? (
+													member.serviceRole.map((serviceRole, idx) => (
+														<React.Fragment key={idx}>
+															<Link to={`/AdminRoleInformation?roleid=${member.roleid[idx]}`}>
+																{serviceRole}
+															</Link>
+															{idx < member.serviceRole.length - 1 && (
+																<>
+																	<br />
+																	<br />
+																</>
+															)}
+														</React.Fragment>
+													))
 												) : (
-													''
-												)}
-											</td>
-											<td>{member.department}</td>
-											<td>{member.email}</td>
-										</tr>
-									);
-								})}
+													<Link to={`/AdminRoleInformation?roleid=${member.roleid}`}>
+														{member.serviceRole}
+													</Link>
+												)
+											) : (
+												''
+											)}
+										</td>
+										<td>
+											{member.status !== undefined ? (member.status ? 'Active' : 'Inactive') : ''}
+										</td>
+									</tr>
+								))}
 							</tbody>
 						</table>
 
@@ -145,4 +149,4 @@ function DeptMemberList() {
 	);
 }
 
-export default DeptMemberList;
+export default AdminMemberList;
