@@ -8,8 +8,7 @@ async function getAllCourses() {
     const countResult = await pool.query(`
                                         SELECT COUNT(*) 
                                         FROM public."CourseByTerm"
-                                        WHERE "term" = $1
-                                        `, [currTerm]);
+                                        `,);
     const coursesCount = parseInt(countResult.rows[0].count);
 
     result = await pool.query(`
@@ -17,7 +16,8 @@ async function getAllCourses() {
              c."ctitle",
              c."description",
              d."dcode",
-             c."courseNum"
+             c."courseNum",
+             c."isActive"
       FROM public."Course" c
       JOIN public."CourseByTerm" cbt ON c."courseId" = cbt."courseId"
       JOIN public."Division" d ON c."divisionId" = d."divisionId"
@@ -35,7 +35,8 @@ async function getAllCourses() {
                 id: row.courseId,
                 courseCode: `${row.dcode} ${row.courseNum}`,
                 title: row.ctitle,
-                description: row.description
+                description: row.description,
+                status:row.isActive
             };
         })
     }

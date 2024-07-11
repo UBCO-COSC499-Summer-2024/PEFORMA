@@ -37,7 +37,7 @@ function DeptStatusChangeCourse() {
 		console.log("request\n",  { courseid : course.id, newStatus })
 		try {
 			const response = await axios.post(
-				`http://localhost:3001/api/adminStatusChangeMembers`, // URL 수정됨
+				`http://localhost:3001/api/DeptStatusChangeCourse`, // URL 수정됨
 				{
 					courseid: course.id,
 					newStatus: newStatus,

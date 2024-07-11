@@ -32,6 +32,8 @@ const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceR
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
+
+const deptStatusChangeCourseRoutes = require('./routes/deptStatusChangeCourseRouters.js')
 const app = express();
 
 app.use(express.json());
@@ -74,6 +76,7 @@ app.use('/api/coursePerformance',coursePerformance);
 app.use('/api/service-roles',serviceRoleRoutes);
 
 app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
+app.use('/api/DeptStatusChangeCourse',deptStatusChangeCourseRoutes);
 
 //reset password
 //app.use('/api',ResetPassword);
