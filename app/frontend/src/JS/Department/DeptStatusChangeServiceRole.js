@@ -19,7 +19,7 @@ function DeptStatusChangeServiceRole() {
 
 	useEffect(() => {
 		if (location.state.roleData) {
-			const filledRoles = fillEmptyItems(
+				const filledRoles = fillEmptyItems(
 				location.state.roleData.roles,
 				location.state.roleData.perPage
 			);

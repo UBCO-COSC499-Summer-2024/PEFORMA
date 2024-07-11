@@ -7,12 +7,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, 
-	handlePageClick, 
-	pageCount, 
-	currentItems,
-	handleSearchChange
- } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptCourseList.css';
 
@@ -27,6 +22,7 @@ function DeptCourseList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
+	const [activeCoursesCount, setActiveCoursesCount] = useState(0);
 
 	useEffect(() => {
 		const fetchAllCourses = async () => {
@@ -46,6 +42,7 @@ function DeptCourseList() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
+				setActiveCoursesCount(filledCourses.filter(course => course.status).length); 
 				setDeptCourseList({ ...res.data, courses: filledCourses });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
@@ -53,7 +50,7 @@ function DeptCourseList() {
 					localStorage.removeItem('authToken'); // Clear invalid token
 					navigate('/Login');
 				} else {
-					console.error('Error fetching service roles:', error);
+					console.error('Error fetching courses:', error);
 				}
 			}
 		};
@@ -74,9 +71,9 @@ function DeptCourseList() {
 			<div className="container">
 			<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
-				<div className="main">
-					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} Active in current)
-					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`}>Manage Course</Link></button>
+				<div className="clist-main">
+					<div className="subtitle-course">List of Courses ({activeCoursesCount} Active in current)
+					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`} state={{ deptCourseList }}>Manage Course</Link></button>
 
 					</div>
 
@@ -87,6 +84,7 @@ function DeptCourseList() {
 									<th>Course</th>
 									<th>Title</th>
 									<th>Description</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 
@@ -102,6 +100,7 @@ function DeptCourseList() {
 											</td>
 											<td>{course.title}</td>
 											<td>{course.description}</td>
+											<td>{course.status !== undefined ? (course.status ? 'Active' : 'Inactive') : ''}</td>
 										</tr>
 									);
 								})}
