@@ -22,6 +22,7 @@
     padding: 10px;
 }
 
+.create-account-form select, 
 .create-account-form input {
     margin: 1em;
     padding: 10px;
@@ -53,54 +54,8 @@
     text-align: center;
 }
 
-.create-account-form .button-align-div{
+.create-account-form .button-align-div {
     display: flex;
     justify-content: space-between;
-    width:60%;
-    
+    width: 60%;
 }
-
-.modal-overlay {
-    position: absolute; /* fixed에서 absolute로 변경 */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-
-.service-role-button-align {
-    display: flex;
-    width: 75%;
-}
-
-.service-role-button-align input {
-    flex-grow: 1;
-}
-
-.service-role-button-align button {
-    background-color: #00a1d7;
-    border-radius: 10px;
-    cursor: pointer;
-    width: auto;
-    margin: 1em;
-}
-

@@ -4,87 +4,22 @@ import axios from 'axios';
 import CreateSideBar, { CreateTopBar } from '../common/commonImports.js';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
-import { fillEmptyItems } from '../common/utils.js';
 
 function CreateAccount() {
-    const { authToken, accountLogInType } = useAuth();
+    const { authToken } = useAuth();
     const navigate = useNavigate();
-    const [roleData, setRoleData] = useState({
-        roles: [{}],
-        rolesCount: 0,
-        perPage: 10,
-        currentPage: 1,
-    });
-    const currentYear = new Date().getFullYear();
-    const [formData, setFormData] = useState({
+
+    const initialFormData = {
         email: '',
         firstName: '',
         lastName: '',
         ubcId: '',
-        serviceRole: '',
-        year: '',
         division: '',
         password: '',
         confirmPassword: ''
-    });
-
-    const [roles, setRoles] = useState([]);
-    const [showRoleModal, setShowRoleModal] = useState(false);
-
-    useEffect(() => {
-        const fetchServiceRoles = async () => {
-            try {
-                if (!authToken) {
-                    navigate('/Login'); // Use your navigation mechanism
-                    return;
-                }
-
-                const res = await axios.get(`http://localhost:3001/api/service-roles`, {
-                    headers: { Authorization: `Bearer ${authToken.token}` },
-                });
-                const data = res.data;
-                const filledRoles = fillEmptyItems(data.roles, data.perPage);
-                setRoleData({ ...data, roles: filledRoles });
-            } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    localStorage.removeItem('authToken'); // Clear invalid token
-                    navigate('/Login');
-                } else {
-                    console.error('Error fetching service roles:', error);
-                }
-            }
-        };
-        fetchServiceRoles();
-    }, [authToken]);
-
-    useEffect(() => {
-        const fetchRoles = async () => {
-            try {
-                const res = await axios.get(`http://localhost:3001/api/service-roles`, {
-                    headers: { Authorization: `Bearer ${authToken.token}` },
-                });
-                setRoles(res.data.roles);
-            } catch (error) {
-                console.error('Error fetching roles:', error);
-            }
-        };
-        if (showRoleModal) {
-            fetchRoles();
-        }
-    }, [showRoleModal, authToken]);
-
-    const toggleRoleAdded = (roleId) => {
-        const updatedRoles = roles.map(role =>
-            ({ ...role, added: role.id === roleId ? !role.added : role.added })
-        );
-        setRoles(updatedRoles);
-
-        const addedRole = updatedRoles.find(role => role.added);
-        setFormData({
-            ...formData,
-            serviceRole: addedRole ? [addedRole.name] : []
-        });
     };
+
+    const [formData, setFormData] = useState(initialFormData);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -98,23 +33,40 @@ function CreateAccount() {
         event.preventDefault();
         console.log('Form data submitted:', formData);
 
+        if (formData.password !== formData.confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
         const postData = {
-            ...formData,
-            serviceRole: formData.serviceRole,
+            email: formData.email,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            ubcId: formData.ubcId,
+            division: formData.division,
+            password: formData.password,
+            confirmPassword: formData.confirmPassword
         };
+
         try {
             const response = await axios.post('http://localhost:3001/create-account', postData);
+            console.log("checking")
             console.log('Server response:', response.data);
+            alert('Account created successfully.');
+            setFormData(initialFormData); 
         } catch (error) {
             console.error('Error sending data to the server:', error);
+            if (error.response && error.response.status === 400 && error.response.data.message === 'Email already exists') {
+                alert('Error: Email already exists');
+            } else {
+                alert('Error creating account: ' + error.message);
+            }
         }
     };
 
     const handleCancel = () => {
-        console.log('Form cancelled');
+        setFormData(initialFormData);
     };
-
-    const handleAssign = () => setShowRoleModal(true);
 
     return (
         <div className="dashboard">
@@ -127,29 +79,15 @@ function CreateAccount() {
                         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                         <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
                         <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
-                        <input type="text" name="ubcId" placeholder="UBC ID (optional)" value={formData.ubcId} onChange={handleChange} required minLength="8" maxLength="8" />
-                        <div className='service-role-button-align'>
-                            <input type="text" name="serviceRole" placeholder="Service Role" value={formData.serviceRole} readOnly />
-                            <button type="button" onClick={handleAssign}>Assign Role(s)</button>
-                            {showRoleModal && (
-                                <div className="modal-overlay">
-                                    <div className="modal-content">
-                                        <button onClick={() => setShowRoleModal(false)}>Close</button>
-                                        {roles.map(role => (
-                                            <div key={role.id}>
-                                                {role.name}
-                                                <button onClick={() => toggleRoleAdded(role.id)}>
-                                                    {role.added ? 'Remove' : 'Add'}
-                                                </button>
-                                            </div>
-                                        ))}
-                                        <button onClick={() => setShowRoleModal(false)}>Save</button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <input type='number' name="year" placeholder="Assigned Year" value={formData.year} onChange={handleChange} required/>
-                        <input type="integer" name="division" placeholder="Division" value={formData.division} onChange={handleChange} required />
+                        <input type="text" name="ubcId" placeholder="UBC ID (optional)" value={formData.ubcId} onChange={handleChange} />
+                        <select name="division" value={formData.division} onChange={handleChange} required>
+                            <option value="">Select Department</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Statistics">Statistics</option>
+                            <option value="N/A">N/A</option>
+                        </select>
                         <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                         <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
                         <div className='button-align-div'>
