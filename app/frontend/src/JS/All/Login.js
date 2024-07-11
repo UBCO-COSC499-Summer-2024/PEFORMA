@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../CSS/All/Login.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
 
 function Login() {
@@ -44,18 +44,21 @@ function Login() {
 							break;
 						case 2:
 							navigate(
-								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/DeptPerformancePage?profileId=${response.data.profileId}&accountType=${accountLoggedInType}`,
 								{ replace: true }
 							);
 							break;
 						case 3:
 							navigate(
-								`/InsPerformancePage?profileId=${response.data.profileId}&accountType=${accountType}`,
+								`/InsPerformancePage?profileId=${response.data.profileId}&accountType=${accountLoggedInType}`,
 								{ replace: true }
 							);
 							break;
 						case 4:
-							navigate('/adminDashboard', { replace: true });
+							navigate(
+								`/AdminMemberList`, 
+								{ replace: true });
+								break;
 						default:
 							navigate('/', { replace: true });
 					}
@@ -72,7 +75,7 @@ function Login() {
 	return (
 		<div className="login-container">
 			<header className="login-header">
-				<h2 className="logo">PEFORMA</h2>
+				<h2 className="logo"><Link to="/">PEFORMA</Link></h2>
 			</header>
 			<div className="login-form-container">
 				<form onSubmit={handleSubmit}>
@@ -91,9 +94,11 @@ function Login() {
 						placeholder="Password"
 						required
 					/>
-					<a id="forgot" href="#forgot">
+					<Link to="/ForgotPasswordPage" id="forgot">
+					
 						Forgot password?
-					</a>
+					
+					</Link>
 					<button type="submit" role="button">
 						Log In
 					</button>
