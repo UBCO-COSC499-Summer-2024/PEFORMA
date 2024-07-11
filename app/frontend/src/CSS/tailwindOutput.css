@@ -1,0 +1,470 @@
+#tailwind-scope {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+  }
+  body {
+    color: hsl(var(--foreground));
+  }
+  *, ::before, ::after {
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x:  ;
+    --tw-pan-y:  ;
+    --tw-pinch-zoom:  ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-gradient-from-position:  ;
+    --tw-gradient-via-position:  ;
+    --tw-gradient-to-position:  ;
+    --tw-ordinal:  ;
+    --tw-slashed-zero:  ;
+    --tw-numeric-figure:  ;
+    --tw-numeric-spacing:  ;
+    --tw-numeric-fraction:  ;
+    --tw-ring-inset:  ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgb(59 130 246 / 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur:  ;
+    --tw-brightness:  ;
+    --tw-contrast:  ;
+    --tw-grayscale:  ;
+    --tw-hue-rotate:  ;
+    --tw-invert:  ;
+    --tw-saturate:  ;
+    --tw-sepia:  ;
+    --tw-drop-shadow:  ;
+    --tw-backdrop-blur:  ;
+    --tw-backdrop-brightness:  ;
+    --tw-backdrop-contrast:  ;
+    --tw-backdrop-grayscale:  ;
+    --tw-backdrop-hue-rotate:  ;
+    --tw-backdrop-invert:  ;
+    --tw-backdrop-opacity:  ;
+    --tw-backdrop-saturate:  ;
+    --tw-backdrop-sepia:  ;
+    --tw-contain-size:  ;
+    --tw-contain-layout:  ;
+    --tw-contain-paint:  ;
+    --tw-contain-style:  ;
+  }
+  ::backdrop {
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x:  ;
+    --tw-pan-y:  ;
+    --tw-pinch-zoom:  ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-gradient-from-position:  ;
+    --tw-gradient-via-position:  ;
+    --tw-gradient-to-position:  ;
+    --tw-ordinal:  ;
+    --tw-slashed-zero:  ;
+    --tw-numeric-figure:  ;
+    --tw-numeric-spacing:  ;
+    --tw-numeric-fraction:  ;
+    --tw-ring-inset:  ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgb(59 130 246 / 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur:  ;
+    --tw-brightness:  ;
+    --tw-contrast:  ;
+    --tw-grayscale:  ;
+    --tw-hue-rotate:  ;
+    --tw-invert:  ;
+    --tw-saturate:  ;
+    --tw-sepia:  ;
+    --tw-drop-shadow:  ;
+    --tw-backdrop-blur:  ;
+    --tw-backdrop-brightness:  ;
+    --tw-backdrop-contrast:  ;
+    --tw-backdrop-grayscale:  ;
+    --tw-backdrop-hue-rotate:  ;
+    --tw-backdrop-invert:  ;
+    --tw-backdrop-opacity:  ;
+    --tw-backdrop-saturate:  ;
+    --tw-backdrop-sepia:  ;
+    --tw-contain-size:  ;
+    --tw-contain-layout:  ;
+    --tw-contain-paint:  ;
+    --tw-contain-style:  ;
+  }
+  .container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+  @media (min-width: 1400px) {
+    .container {
+      max-width: 1400px;
+    }
+  }
+  #tailwind-scope :is(.fixed) {
+    position: fixed;
+  }
+  #tailwind-scope :is(.flex) {
+    display: flex;
+  }
+  #tailwind-scope :is(.table) {
+    display: table;
+  }
+  #tailwind-scope :is(.hidden) {
+    display: none;
+  }
+  #tailwind-scope :is(.p-4) {
+    padding: 1rem;
+  }
+  #tailwind-scope :is(.text-2xl) {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  #tailwind-scope :is(.text-lg) {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  #tailwind-scope :is(.font-bold) {
+    font-weight: 700;
+  }
+  #tailwind-scope :is(.blur) {
+    --tw-blur: blur(8px);
+    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  }
+  #tailwind-scope :is(.filter) {
+    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  }
+  @keyframes enter {
+    from {
+      opacity: var(--tw-enter-opacity, 1);
+      transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1)) rotate(var(--tw-enter-rotate, 0));
+    }
+  }
+  @keyframes exit {
+    to {
+      opacity: var(--tw-exit-opacity, 1);
+      transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1)) rotate(var(--tw-exit-rotate, 0));
+    }
+  }
+  #tailwind-scope :is(.running) {
+    animation-play-state: running;
+  }
+}
+
+#tailwind-scope :is(.\[\&\]\:col-span-1) {
+  grid-column: span 1 / span 1;
+}
+
+#tailwind-scope :is(.\[\&\]\:mx-auto) {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tailwind-scope :is(.\[\&\]\:my-8) {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:mb-2) {
+  margin-bottom: 0.5rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:mb-4) {
+  margin-bottom: 1rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:mb-8) {
+  margin-bottom: 2rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:ml-auto) {
+  margin-left: auto;
+}
+
+#tailwind-scope :is(.\[\&\]\:mr-10) {
+  margin-right: 2.5rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:mt-1) {
+  margin-top: 0.25rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:mt-8) {
+  margin-top: 2rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:flex) {
+  display: flex;
+}
+
+#tailwind-scope :is(.\[\&\]\:grid) {
+  display: grid;
+}
+
+#tailwind-scope :is(.\[\&\]\:h-40) {
+  height: 10rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:min-h-screen) {
+  min-height: 100vh;
+}
+
+#tailwind-scope :is(.\[\&\]\:w-40) {
+  width: 10rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:w-\[95\%\]) {
+  width: 95%;
+}
+
+#tailwind-scope :is(.\[\&\]\:grid-cols-1) {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+#tailwind-scope :is(.\[\&\]\:grid-cols-2) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#tailwind-scope :is(.\[\&\]\:items-center) {
+  align-items: center;
+}
+
+#tailwind-scope :is(.\[\&\]\:justify-between) {
+  justify-content: space-between;
+}
+
+#tailwind-scope :is(.\[\&\]\:gap-x-8) {
+  column-gap: 2rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:gap-y-4) {
+  row-gap: 1rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:rounded) {
+  border-radius: 0.25rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:rounded-full) {
+  border-radius: 9999px;
+}
+
+#tailwind-scope :is(.\[\&\]\:rounded-xl) {
+  border-radius: 0.75rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:rounded-t-xl) {
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:border-t) {
+  border-top-width: 1px;
+}
+
+#tailwind-scope :is(.\[\&\]\:border-gray-300) {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:bg-gray-800) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:bg-gray-950) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(3 7 18 / var(--tw-bg-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:bg-white) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:bg-gradient-to-r) {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+#tailwind-scope :is(.\[\&\]\:from-blue-200) {
+  --tw-gradient-from: #bfdbfe var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(191 219 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+#tailwind-scope :is(.\[\&\]\:to-yellow-100) {
+  --tw-gradient-to: #fef9c3 var(--tw-gradient-to-position);
+}
+
+#tailwind-scope :is(.\[\&\]\:p-4) {
+  padding: 1rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:p-6) {
+  padding: 1.5rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:px-12) {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:px-6) {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:py-3) {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:py-8) {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:pb-16) {
+  padding-bottom: 4rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:text-right) {
+  text-align: right;
+}
+
+#tailwind-scope :is(.\[\&\]\:text-2xl) {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:text-4xl) {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:text-lg) {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:text-sm) {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:text-xl) {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+#tailwind-scope :is(.\[\&\]\:font-bold) {
+  font-weight: 700;
+}
+
+#tailwind-scope :is(.\[\&\]\:font-medium) {
+  font-weight: 500;
+}
+
+#tailwind-scope :is(.\[\&\]\:text-gray-400) {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:text-gray-500) {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:text-gray-600) {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:text-gray-900) {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+#tailwind-scope :is(.\[\&\]\:shadow-md) {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
