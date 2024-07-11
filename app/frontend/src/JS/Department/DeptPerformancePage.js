@@ -9,6 +9,8 @@ import DeptPhysTable from './PerformanceImports/DeptPhysTable.js';
 import DeptStatTable from './PerformanceImports/DeptStatTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
+import { checkAccess } from '../common/utils.js';
+
 
 import '../../CSS/Department/DeptPerformancePage.css';
 
@@ -22,11 +24,7 @@ function PerformanceDepartmentPage() {
 				return;
 			}
 			try {
-				const numericAccountType = Number(accountLogInType);
-				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
-				}
+				checkAccess(accountLogInType, navigate, 'department');
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
