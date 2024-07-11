@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
-import { fillEmptyItems, currentItems, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, currentItems, checkAccess, getDivisionName } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptTeachingAssignment.css';
 
@@ -18,42 +16,44 @@ function DeptTeachingAssignment() {
 		perPage: 10,
 		currentPage: 1,
 	});
-	const [memberData, setMemberData] = useState({
-		members: [],
-		membersCount: 0,
-		perPage: 10,
-		currentPage: 1,
-	});
+	const [professorList, setProfessorList] = useState([]);
 	const [selectedDivision, setSelectedDivision] = useState('computer-science');
 
-	const getDivisionName = (division) => {
-		const divisionNames = {
-			'computer-science': 'Computer Science',
-			mathematics: 'Mathematics',
-			physics: 'Physics',
-			statistics: 'Statistics',
-		};
-		return divisionNames[division] || '';
-	};
-
 	const handleItemClick = (type, id) => {
-		navigate(`/${type === 'course' ? 'DeptCourseInformation' : 'DeptProfilePage'}?${type}id=${id}`);
+		navigate(`/${type === 'course' ? 'DeptCourseInformation' : 'DeptProfilePage'}?${type === 'course' ? 'courseid' : 'ubcid'}=${id}`);
 	};
 
-	useEffect(() => { // will add course.status later after api is fixed
-		checkAccess(accountLogInType, navigate, 'department');
+	useEffect(() => {
 		const fetchCourses = async () => {
 			try {
-				const res = await axios.get(`http://localhost:3001/api/all-courses`, {
+        checkAccess(accountLogInType, navigate, 'department');
+				const res = await axios.get(`http://localhost:3000/teachingAssignment.json`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
+				const filledCourses = fillEmptyItems(res.data['teaching-info'].flatMap(info => 
+					info.courses.map((course, index) => ({
+						courseCode: course,
+						courseName: info.courseName[index],
+						id: info.courseid[index],
+						instructor: info.instructor,
+						ubcid: info.ubcid,
+						division: info.division.toLowerCase().replace(' ', '-')
+					}))
+				), res.data.perPage);
+
+				const professors = res.data['teaching-info'].map(info => ({
+					instructor: info.instructor,
+					ubcid: info.ubcid,
+					division: info.division.toLowerCase().replace(' ', '-')
+				}));
+
 				setDeptCourseList({
 					courses: filledCourses,
-					coursesCount: res.data.courses.length,
+					coursesCount: res.data['teaching-info'].reduce((sum, info) => sum + info.courses.length, 0),
 					perPage: res.data.perPage,
 					currentPage: 1,
 				});
+				setProfessorList(professors);
 			} catch (error) {
 				if (error.response && error.response.status === 401) {
 					localStorage.removeItem('authToken');
@@ -64,32 +64,8 @@ function DeptTeachingAssignment() {
 			}
 		};
 
-		const fetchMembers = async () => {
-			try {
-				const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const activeMembers = res.data.members.filter((member) => member.status);
-				const filledMembers = fillEmptyItems(activeMembers, res.data.perPage);
-				setMemberData({
-					members: filledMembers,
-					membersCount: activeMembers.length,
-					perPage: res.data.perPage,
-					currentPage: 1,
-				});
-			} catch (error) {
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken');
-					navigate('/Login');
-				} else {
-					console.error('Error fetching members:', error);
-				}
-			}
-		};
-
 		fetchCourses();
-		fetchMembers();
-	}, [authToken]);
+	}, [authToken, accountLogInType, navigate]);
 
 	const handleDivisionChange = (event) => {
 		setSelectedDivision(event.target.value);
@@ -100,27 +76,13 @@ function DeptTeachingAssignment() {
 			state: {
 				selectedDivision,
 				courses: deptCourseList.courses,
-				members: memberData.members,
+				professors: professorList,
 			},
 		});
 	};
 
-	const filteredCourses = deptCourseList.courses.filter((course) => {
-		const prefix =
-			selectedDivision === 'computer-science' ? 'COSC' : selectedDivision.slice(0, 4).toUpperCase();
-		return course.courseCode.startsWith(prefix);
-	});
-
-	const currentCourses = currentItems(
-		filteredCourses,
-		deptCourseList.currentPage,
-		deptCourseList.perPage
-	);
-
-	const filteredMembers = memberData.members.filter(
-		(member) => member.department === getDivisionName(selectedDivision)
-	);
-	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
+	const filteredCourses = deptCourseList.courses.filter((course) => course.division === selectedDivision);
+	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
 		<div className="dashboard-container">
@@ -133,7 +95,7 @@ function DeptTeachingAssignment() {
 				<div className="division-box">
 					<div className="division-card">
 						<div className="division-header">
-							<select className="division-selection-assign" onChange={handleDivisionChange}>
+							<select className="division-selection-assign" onChange={handleDivisionChange} value={selectedDivision}>
 								<option value="computer-science">Computer Science</option>
 								<option value="mathematics">Mathematics</option>
 								<option value="physics">Physics</option>
@@ -152,7 +114,7 @@ function DeptTeachingAssignment() {
 										className="course-card"
 										onClick={() => handleItemClick('course', course.id)}
 										style={{ cursor: 'pointer' }}>
-										{course.courseCode}: {course.title}
+										{course.courseCode}: {course.courseName}
 									</div>
 								))}
 							</div>
@@ -160,15 +122,17 @@ function DeptTeachingAssignment() {
 						<div className="professor-list">
 							<p>{getDivisionName(selectedDivision)} Professors:</p>
 							<div className="professor-cards">
-								{currentMembers.map((member) => (
-									<div
-										key={member.id}
-										className="professor-card"
-										onClick={() => handleItemClick('professor', member.ubcId)}
-										style={{ cursor: 'pointer' }}>
-										{member.name}
-									</div>
-								))}
+								{professorList
+									.filter(prof => prof.division === selectedDivision)
+									.map((professor, index) => (
+										<div
+											key={index}
+											className="professor-card"
+											onClick={() => handleItemClick('professor', professor.ubcid)}
+											style={{ cursor: 'pointer' }}>
+											{professor.instructor}
+										</div>
+									))}
 							</div>
 						</div>
 					</div>
