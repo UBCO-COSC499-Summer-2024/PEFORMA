@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import axios from 'axios';
@@ -40,6 +40,7 @@ function DataEntryComponent() {
 	const [serviceRoleDescription, setServiceRoleDescription] = useState('');
 	const [selectedInstructors, setSelectedInstructors] = useState([]);
 	const [serviceRoleYear, setServiceRoleYear] = useState('');
+	const [, forceUpdate] = useReducer(x => x + 1, 0);
 	const [monthlyHours, setMonthlyHours] = useState({january:0, february:0, march:0, april:0, may:0, june:0, july:0, august:0, september:0, october:0, november:0, december:0});
 
 	const handleChange = (event) => {
@@ -106,6 +107,17 @@ function DataEntryComponent() {
 		instructorData.currentPage = 1;
 		setShowInstructorModal(false);
 	};
+
+const removeInstructor = (id, index) => {
+	selectedInstructors.splice(index, 1);
+	for (let i = 0; i < instructorData.instructors.length; i++) {
+		if (id === instructorData.instructors[i].id) {
+			instructorData.instructors[i].assigned = false;
+			break;
+		}
+	}
+	forceUpdate();
+}
 
 	function checkLength(input, limit, section, valid) {
 		if (!valid) {
@@ -304,11 +316,13 @@ function DataEntryComponent() {
 										required>
 										<option disabled="disabled">Select a division</option>
 										{divisions.map((division) => {
+											if (division.code != "ALL") {
 											return (
 												<option key={division.code} value={division.code}>
 													{division.label}
 												</option>
 											);
+										}
 										})}
 									</select>
 									<div className="coursecodeInput formInput">
@@ -378,9 +392,9 @@ function DataEntryComponent() {
 										<div className="selected-instructors">
 											<h3>Selected Instructors</h3>
 											<ul>
-												{selectedInstructors.map((instructor) => (
+												{selectedInstructors.map((instructor, index) => (
 													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id})
+														{instructor.name} (ID: {instructor.id})<button type="button" className='remove-instructor' onClick={(e)=>{removeInstructor(instructor.id, index)}}>X</button>
 													</li>
 												))}
 											</ul>
@@ -521,9 +535,9 @@ function DataEntryComponent() {
 										<div className="selected-instructors">
 											<h3>Selected Instructors</h3>
 											<ul>
-												{selectedInstructors.map((instructor) => (
+												{selectedInstructors.map((instructor, index) => (
 													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id})
+														{instructor.name} (ID: {instructor.id}) <button type="button" className='remove-instructor' onClick={(e)=>{removeInstructor(instructor.id, index)}}>X</button>
 													</li>
 												))}
 											</ul>

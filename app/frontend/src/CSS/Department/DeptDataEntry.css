@@ -238,3 +238,17 @@ flex-direction: column;
     margin-bottom: 1em;
     background-color: var(--darkGrey);
 }
+
+.DataEntry-page .remove-instructor {
+    background-color: var(--red);
+    color: var(--black);
+    margin-left: 1em;
+    height: 2.25em;
+    width: 2.25em;
+    transition: background-color 0.1s;
+    border-radius: 40%;
+}
+
+.DataEntry-page .remove-instructor:hover {
+    background-color: var(--darkRed);
+}
