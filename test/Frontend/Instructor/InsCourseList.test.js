@@ -35,7 +35,7 @@ describe('InsCourseList', () => {
 	});
 
 	test('Testing course list to be rendered with mock data', async () => {
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
     expect(element).toHaveTextContent("Course");
     expect(element).toHaveTextContent("Title");
     expect(element).toHaveTextContent("Instructor");
@@ -48,7 +48,7 @@ describe('InsCourseList', () => {
 	});
 
   test('Check if drop down menu exists', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
     const element = document.getElementById('dropdown-test-content');
     expect(element).toHaveTextContent('List of Courses');
     
@@ -61,7 +61,7 @@ describe('InsCourseList', () => {
     expect(screen.getByRole('combobox')).toBeInTheDocument();
   })
   test('Testing on course where it containts two or more instructors', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
     expect(element).toHaveTextContent('Brandi Floyd');
     expect(element).toHaveTextContent('Leo Ma');
     expect(element).toBeInTheDocument('brandi@instructor.ubc.ca')
