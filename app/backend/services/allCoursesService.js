@@ -3,12 +3,6 @@ const pool = require('../db/index.js');
 async function getAllCourses() {
   try {
 
-    const countResult = await pool.query(`
-                                        SELECT COUNT(*) 
-                                        FROM "Course"
-                                        `,);
-    const coursesCount = parseInt(countResult.rows[0].count);
-
     let result = await pool.query(`
       SELECT c."courseId",
              c."ctitle",
@@ -25,7 +19,7 @@ async function getAllCourses() {
     const formattedData = {
         currentPage: 1,
         perPage: 10,
-        coursesCount: coursesCount,
+        coursesCount: result.rowCount,
         courses: result.rows.map(row => {
             return {
                 id: row.courseId,
@@ -36,8 +30,6 @@ async function getAllCourses() {
             };
         })
     }
-    console.log("The length of the result is ", result.rowCount);
-    console.log("Formatted Data: ", formattedData);
     return formattedData;
 
   } catch (error) {
