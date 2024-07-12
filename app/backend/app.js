@@ -88,7 +88,9 @@ app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
 
 
 //reset password
+
 app.use('/api/reset-password', resetPasswordRouter);
+
 //app.use('/api', updatePasswordRouter);
 
 app.use('/api/roleInfo', roleInfoRoutes);
