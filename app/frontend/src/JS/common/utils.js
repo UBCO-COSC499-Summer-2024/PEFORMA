@@ -32,7 +32,13 @@ export const handleSearchChange = (setStateFunction) => {
   setStateFunction(prevState => ({ ...prevState, currentPage: 1 }));
 };
 
-export const checkAccess = (accountLogInType, navigate, accessView) => {
+export const checkAccess = (accountLogInType, navigate, accessView, authToken) => {
+  if (!authToken) {
+    alert('No Access, Redirecting to login');
+    navigate('/Login');
+    return;
+  }
+
   const numericAccountType = Number(accountLogInType);
 
   // if your accLogInType is 1 or 2 = dept view only and trying to access Instructor? deny access
@@ -48,6 +54,7 @@ export const checkAccess = (accountLogInType, navigate, accessView) => {
     navigate('/AdminDashboard');
   }
 };
+
 
 export const getDivisionName = (division) => {
   const divisionNames = {
