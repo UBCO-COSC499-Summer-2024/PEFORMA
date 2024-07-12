@@ -95,11 +95,11 @@ the number of commits in insights, it was pretty uneven. I feel like we need to 
 ## Friday (7/05/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-8-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W8C2.png)
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-9-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W9_C2.png)
 
 ### Current Tasks
-  * #1: Image in the profile
-  * #2: People's list
+  * #1: Fix create-account
+  * #2: Fix course history
 ### Progress Update (since 7/03/2024)
 <table>
     <tr>
@@ -110,23 +110,40 @@ the number of commits in insights, it was pretty uneven. I feel like we need to 
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> Performance BE test
+        <td> Instructor Teaching Assignment BE
         </td>
         <!-- Status -->
         <td> Complete
         </td>
     </tr>
     <tr>
-       <td> Service Role BE test
+       <td> Create Account Fixing bugs
+        </td>
+        <!-- Status -->
+        <td> In progress
+        </td>
+    </tr>
+     <tr>
+       <td> Course history fixing 
+        </td>
+        <!-- Status -->
+        <td> In progress
+        </td>
+    </tr>
+       <tr>
+       <td> Update course status
         </td>
         <!-- Status -->
         <td> Complete
         </td>
     </tr>
 
+
 </table>
 
 ### Weekly Goal Review
-I finished all the tests for what I have implemented. The performance BE test took a while because it is like several features combined into one so I had to make testing for each controller. We cooperated a lot especially on testing and making approvals so our teamwork strengthened. The difficulty that I had mentioned before was solved because everyone put lots of commitment for mvp. 
+I finished course status and intstructor teaching assignment BE. I am doing both doing implementation and code refactoring at the same time so it is taking longer than expected. But I am confident that I will finish my tasks by  Sunday that includes both refactoring and finishing up the BE. The testing was postponed because I need to refactor BE and move files to necessary folders. There was a big allocation changes to the team for example, Adams and Zhiheng became full-stack with a concentration in FE. Since we only have limited time left, I will put more hours to this project and pass this course. The difficulty I face is refactoring. Since I need to adjust the BE code to have uniformity, I need to understand their coding and functionality and adjust them which would take time but as I said before, it can be done through myself putting more hours into this project. 
 ### Next Cycle Goals
-  * Finish image in the profile.
+  * Finish Course history fixing
+  * Finish create account bug fix
+  * Finish refactoring
