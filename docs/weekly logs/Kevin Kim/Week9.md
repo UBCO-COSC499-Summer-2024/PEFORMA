@@ -1,4 +1,66 @@
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+## Friday (7/12/2024)
+
+### Timesheet
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.10-7.11/9.2.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.10-7.11/9.2.2.png)
+
+
+### Current Tasks
+  * #1: Start testing of what I have implemented
+
+### Progress Update (since 7/10/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+        <td><strong>NOTES</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#374: Create account (admin view)
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#355: Side bar for admin view
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#375: Teaching assignment (department view)
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Having seperate landing page to show overview of current term showing what courses are there, whos assigned into each division. Detail page has all layouts of teaching assignments.
+        </td>
+    </tr>
+</table>
+
+### Weekly Goal Review
+  * In terms of admin view, our team decided not to have course list, service role list, dashboard in admin view because it is going to be the same from department view. So I was able to manage my task with finishing create account admin page and teaching assignment in department view. My goal was to finish all implementation by July 12, friday so I can enter to testing phase. I feel like im on the right schedule, not delayed for a single step and making a good progress.
+
+### Next Cycle Goals
+  * I hope to finish at least 60 ~ 70% of tests that I have implemented so far. Meanwhile testing, I will start working on refactoring at the same time because refactoring sometimes affect on original test files as well. 
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Wednesday (7/10/2024)
 
 ### Timesheet
