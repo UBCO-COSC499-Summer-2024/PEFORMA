@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../../CSS/All/NewPassword.css';
+import axios from 'axios';
 
 const NewPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
-  
+  const [success, setSuccess] = useState(false);
 
   React.useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -19,10 +21,10 @@ const NewPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match!');
+      alert("Passwords do not match.")
       return;
     }
-    console.log("Restting password for email:\n\t"+email+"\n with new password:\n\t"+password);
+    
     const response = await fetch(`http://localhost:3001/api/update-password?email=${email}`, {
       method: 'POST',
       headers: {
@@ -31,13 +33,21 @@ const NewPassword = () => {
       body: JSON.stringify({ password }),
     });
     const data = await response.json();
-    setMessage(data.message);
-    alert(data.message);
+    if (data.message === "success") {
+      setSuccess(true);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Set New Password for account {email} </h2>
+    <div className="forgot-container">
+    <header className="forgot-header">
+    <h2 className="logo"><Link to="/">PEFORMA</Link></h2>
+    </header>
+    <div className="forgot-form-container">
+    
+      {!success && (
+    <form onSubmit={handleSubmit}>    
+    <p>Set new password for <strong>{email}</strong>: </p>
       <input
         type="password"
         value={password}
@@ -54,6 +64,16 @@ const NewPassword = () => {
       />
       <button type="submit">Update Password</button>
     </form>
+      )}
+      {success && (
+        <form className="success-message">
+          <p>Password reset successfully!</p>
+          <Link to="/Login"><button className="return" type="button">Return to Login</button></Link>
+        </form>
+      )}
+      
+    </div>
+    </div>
   );
 };
 

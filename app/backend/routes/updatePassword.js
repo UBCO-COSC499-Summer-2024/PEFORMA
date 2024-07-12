@@ -1,9 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 const pool = require('../db/index.js');
 
-router.post('/update-password', async (req, res) => {
+
+router.post('/', async (req, res) => {
   const { password } = req.body;
   const email = req.query.email;
 
@@ -24,7 +25,7 @@ router.post('/update-password', async (req, res) => {
     await client.query('UPDATE public."Account" SET password = $1 WHERE email = $2', [hashedPassword, email]);
     client.release();
 
-    return res.status(200).json({ message: 'Password updated successfully' });
+    return res.status(200).json({ message: 'success' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error updating password' });
