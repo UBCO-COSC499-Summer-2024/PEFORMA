@@ -86,7 +86,7 @@ function CourseInformation() {
 				<CreateTopBar />
 
 				<div className="courseinfo-main">
-					<Link to="/DeptCourseList">&lt; Back to All Courses</Link>
+					<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
 					<h1 className="courseName" role="contentinfo">
 						{historyData.courseCode}: {historyData.courseName}
 					</h1>
