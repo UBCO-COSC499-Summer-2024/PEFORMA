@@ -10,6 +10,7 @@ const { generateToken, TOKEN_EXPIRY_SECONDS } = require('../Manager/jwtManager')
 const { queryAccount } = require('./queryAccountRouter');
 const pool = require('../db/index');
 const { uncry } = require('./checkpassword');
+const bcrypt = require ('bcrypt');
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ async (email, password, done) => {
     if (!user) {
         return done(null, false, { message: `Incorrect email.Input is ${user.email}` });
     }
-    const Match = await uncry(password,user.password);
+    const Match = bcrypt.compareSync(password,user.password);
     const isMatch = (password===user.password);
     const result = (Match | isMatch);
     console.log(JSON.stringify(Match));
