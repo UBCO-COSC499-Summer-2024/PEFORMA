@@ -23,6 +23,12 @@ function DeptCourseList() {
         perPage: 10,
         currentPage: 1,
     });
+    const [exportData, setExportData] = useState({
+        courses: [{}],
+        coursesCount: 0,
+        perPage: 10,
+        currentPage: 1,
+    });
     const [search, setSearch] = useState('');
     const [activeCoursesCount, setActiveCoursesCount] = useState(0);
 
@@ -44,6 +50,7 @@ function DeptCourseList() {
                 const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
                 setActiveCoursesCount(filledCourses.filter(course => course.status).length); 
                 setDeptCourseList({ ...res.data, courses: filledCourses });
+                setExportData({ ...res.data });
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     localStorage.removeItem('authToken');
@@ -68,7 +75,7 @@ function DeptCourseList() {
         const doc = new jsPDF();
         doc.autoTable({
             head: [['Course', 'Title', 'Description', 'Status']],
-            body: currentCourses.map(course => [
+            body: exportData.courses.map(course => [
                 course.courseCode,
                 course.title,
                 course.description,
