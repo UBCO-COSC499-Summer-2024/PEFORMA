@@ -7,7 +7,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptCourseList.css';
 
@@ -27,16 +27,7 @@ function DeptCourseList() {
 	useEffect(() => {
 		const fetchAllCourses = async () => {
 			try {
-				if (!authToken) {
-					// Redirect to login if no token
-					navigate('/Login'); // Use your navigation mechanism
-					return;
-				}
-				const numericAccountType = Number(accountLogInType);
-				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert('No Access, Redirecting to instructor view');
-					navigate('/InsDashboard');
-				}
+				checkAccess(accountLogInType, navigate, 'department', authToken);
 				// Fetch course data with Axios, adding token to header
 				const res = await axios.get(`http://localhost:3001/api/all-courses`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },

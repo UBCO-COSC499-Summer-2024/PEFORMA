@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const fillEmptyItems = (items, perPage) => {
   const filledItems = [...items];
   const currentCount = items.length;
@@ -55,7 +57,6 @@ export const checkAccess = (accountLogInType, navigate, accessView, authToken) =
   }
 };
 
-
 export const getDivisionName = (division) => {
   const divisionNames = {
     'computer-science': 'Computer Science',
@@ -64,4 +65,26 @@ export const getDivisionName = (division) => {
     'statistics': 'Statistics',
   };
   return divisionNames[division] || '';
+};
+
+//////////////////  testing refactoring with useEffect ///////////////////////////
+export const handleUnauthorizedError = (error, navigate) => {
+  if (error.response && error.response.status === 401) {
+    localStorage.removeItem('authToken');
+    navigate('/Login');
+  } else {
+    console.error('Error:', error);
+  }
+};
+
+export const fetchWithAuth = async (url, authToken, navigate) => {
+  try {
+    const res = await axios.get(url, {
+      headers: { Authorization: `Bearer ${authToken.token}` },
+    });
+    return res.data;
+  } catch (error) {
+    handleUnauthorizedError(error, navigate);
+    throw error; 
+  }
 };
