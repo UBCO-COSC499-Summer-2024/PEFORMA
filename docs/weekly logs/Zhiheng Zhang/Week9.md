@@ -75,11 +75,11 @@
 ## Friday (7/12/2024)
 
 ### Timesheet
-![alt text](7-12_00.png)
-![alt text](7-12_01.png)
+![alt text](7-1_00.png)
+![alt text](7-11_01.png)
 
 ### Current Tasks
-  * #1: 
+  * #1: edit course FE+BE
 
 ### Progress Update (since 6/5/2024)
 <table>
@@ -91,19 +91,42 @@
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> 
+        <td> Edit service role FE
           </td>
         <!-- Status -->
-        <td> 
+        <td> finished
+          </td>
+    </tr>
+  <tr>
+        <!-- Task/Issue # -->
+        <td> Edit service role title/descriotion
+          </td>
+        <!-- Status -->
+        <td> finished
+          </td>
+    </tr>
+  <tr>
+        <!-- Task/Issue # -->
+        <td> Edit service role active status
+          </td>
+        <!-- Status -->
+        <td> finished
+          </td>
+    </tr>
+  <tr>
+        <!-- Task/Issue # -->
+        <td> Assign prof to service role
+          </td>
+        <!-- Status -->
+        <td> finished
           </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
-
+Edit service role all function finished, need a refresh after backend success, will find out and implement in edit course page and come back for this page later.
 
 ### Next Cycle Goals
-  * Goal 1 
-  * Goal 2A 
-  * Goal 2B 
+  * Goal 1 Edit course info full stack 
+  * Goal 2 BE tests + refactoring
