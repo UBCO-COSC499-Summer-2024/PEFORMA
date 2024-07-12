@@ -47,10 +47,10 @@ function DeptTeachingAssignment() {
 		const fetchCourses = async () => {
 			try {
         checkAccess(accountLogInType, navigate, 'department');
-				const res = await axios.get(`http://localhost:3000/teachingAssignment.json`, {
+				const res = await axios.get(`http://localhost:3001/api/teachingAssignment`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				
+				console.log(res);
 				const filledCourses = fillEmptyItems(res.data['teaching-info'].flatMap(info => 
 					info.courses.map((course, index) => ({
 						courseCode: course,

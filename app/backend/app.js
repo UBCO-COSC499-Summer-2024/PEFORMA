@@ -33,6 +33,7 @@ const allInstructors = require('./routes/allInstructorsRoutes');
 const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
+const teachingAssignment = require('./routes/teachingAssignment.js');
 const app = express();
 
 app.use(express.json());
@@ -66,7 +67,7 @@ app.use('/api/all-courses', allCoursesRoutes);
 // Service role retrieval process
 app.use('/api/service-roles', serviceRoleRoutes);
 
-
+app.use('/api/teachingAssignment',teachingAssignment);
 app.use('/api/courseHistory',courseHistoryRouter);
 
 app.use('/api/benchmark', benchmark);
