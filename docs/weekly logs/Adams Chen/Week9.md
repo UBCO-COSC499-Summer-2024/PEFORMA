@@ -70,12 +70,11 @@ I didn't complete as many tasks as I hoped. Edit profile page is being developed
 ## Friday (7/12/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/adamsLogs/docs/weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_July_12.jpg)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #386: Change password
+  * #387: Export data 
 
 ### Progress Update (since 7/10/2024)
 <table>
@@ -87,7 +86,7 @@ I didn't complete as many tasks as I hoped. Edit profile page is being developed
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>#388: User profile page 
         </td>
         <!-- Status -->
         <td>Complete
@@ -95,28 +94,28 @@ I didn't complete as many tasks as I hoped. Edit profile page is being developed
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>#389: Edit feaature for user profile 
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Complete
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>#357: Update dept view course list BE to include all courses, not only ones in the current term
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Not started
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I completed the user profile page and the edit profile feature, both frontend and backend. I really wanted to push myself and make it aethetic and shifted away from our team's practice to create a separate CSS file for styling. Instead, I used shadcn and Taiwind, and they work very nicely. It took a while to set up and learn. 
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+   * #386: Change password
+   * #387: Export data 
+   * Wrapping up implementations for final delivery
 
 
