@@ -26,12 +26,7 @@ function AdminMemberList() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				if (!authToken) {
-					// Redirect to login if no token
-					navigate('/Login'); // Use your navigation mechanism
-					return;
-				}
-        checkAccess(accountLogInType, navigate, 'admin');
+        checkAccess(accountLogInType, navigate, 'admin', authToken);
 				const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
@@ -68,7 +63,7 @@ function AdminMemberList() {
 	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
-		<div className="dashboard">
+		<div className="dashboard" id="admin-member-list-test-content">
 			<CreateSideBar sideBarType="Admin" />
 			<div className="container">
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
