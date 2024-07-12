@@ -37,7 +37,7 @@ CREATE TABLE "Profile" (
   "UBCId"                 varchar(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  "imageId"               integer,
+  "imageId"               integer "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
   UNIQUE ("profileId", "email")
 );
 
