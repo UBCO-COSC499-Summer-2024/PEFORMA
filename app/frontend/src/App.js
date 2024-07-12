@@ -55,7 +55,7 @@ function App() {
 						}
 					/>
 					<Route path="/InsCourseList" element={<InsCourseList />} />
-					<Route path="/EditProfile" element={<InsEditProfile />} />
+					<Route path="/InsEditProfile" element={<InsEditProfile />} />
 					<Route path="/InsPerformancePage" element={<InsPerformancePage />} />
 					<Route path="/InsProfilePage" element={<InsProfilePage />} />
 					<Route path="/InsCourseHistory" element={<InsCourseHistory />} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import '../../CSS/Instructor/InsPerformancePage.css';
 import CreateSideBar, {
 	CreateLeaderboardChart,
@@ -40,7 +40,6 @@ function PerformanceInstructorPage() {
 					},
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				console.log(response);
 
 				if (response.data) {
 					setProfile(response.data);
@@ -72,6 +71,7 @@ function PerformanceInstructorPage() {
 					<section className="info-section">
 						<div className="info">
 							<h2 className="subTitle">Your Information</h2>
+							<button className='edit-button'><Link to={`/InsEditProfile?ubcid=${profile.ubcid}`}>Edit Profile</Link></button>
 							<p>
 								<strong>Name:</strong> {profile.name}
 							</p>
@@ -96,7 +96,7 @@ function PerformanceInstructorPage() {
 								</p>
 								{profile.teachingAssignments.map((teachingAssign) => (
 									<li key={teachingAssign.id}>
-										<a href="{teachingAssign.link}"> {teachingAssign.assign}</a>
+										<Link to={`/InsCourseHistory?courseid=${teachingAssign.courseid}`}>{teachingAssign.assign}</Link>
 									</li>
 								))}
 							</ul>
@@ -121,9 +121,11 @@ function PerformanceInstructorPage() {
 					</div>
 				</div>
 
-				<div>
-					<h2 className="subTitle">Progress Chart</h2>
-					<CreateProgressChart />
+				<div className="under-bottom-section">
+					<div className="progress-section">
+						<h2 className="subTitle">Progress Chart (Year)</h2>
+						<CreateProgressChart />
+					</div>
 				</div>
 			</div>
 		</div>
