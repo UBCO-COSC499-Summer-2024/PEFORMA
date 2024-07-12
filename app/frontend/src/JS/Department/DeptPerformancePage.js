@@ -90,11 +90,28 @@ function PerformanceDepartmentPage() {
         const addTable = (title, data, columns, formatters = {}) => {
             doc.setFontSize(16);
             doc.text(title, 14, yOffset);
+            
+            const rankedData = data.map((item, index) => ({
+                '#': index + 1,
+                ...item
+            }));
+
+            const readableColumns = columns.map(col => {
+                switch(col) {
+                    case 'courseCode': return 'Course Code';
+                    case 'rank': return 'Rank';
+                    case 'score': return 'Score';
+                    case 'name': return 'Name';
+                    case 'shortage': return 'Shortage';
+                    default: return col.charAt(0).toUpperCase() + col.slice(1);
+                }
+            });
+
             doc.autoTable({
                 startY: yOffset + 10,
-                head: [columns],
-                body: data.map(item => 
-                    columns.map(col => 
+                head: [['#', ...readableColumns]],
+                body: rankedData.map(item => 
+                    ['#', ...columns].map(col => 
                         formatters[col] ? formatters[col](item[col]) : item[col]
                     )
                 ),
@@ -106,7 +123,10 @@ function PerformanceDepartmentPage() {
         addTable('Mathematics Courses', data.math, ['courseCode', 'rank', 'score']);
         addTable('Physics Courses', data.phys, ['courseCode', 'rank', 'score']);
         addTable('Statistics Courses', data.stat, ['courseCode', 'rank', 'score']);
-        addTable('Benchmark', data.benchmark, ['name', 'shortage'], { shortage: formatTime });
+        
+        // Sort benchmark data by shortage in descending order
+        const sortedBenchmark = [...data.benchmark].sort((a, b) => b.shortage - a.shortage);
+        addTable('Benchmark', sortedBenchmark, ['name', 'shortage'], { shortage: formatTime });
         
         doc.addPage();
         yOffset = 10;
