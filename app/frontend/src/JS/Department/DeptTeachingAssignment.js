@@ -50,34 +50,52 @@ function DeptTeachingAssignment() {
 				const res = await axios.get(`http://localhost:3001/api/teachingAssignment`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				console.log(res);
-				const filledCourses = fillEmptyItems(res.data['teaching-info'].flatMap(info => 
-					info.courses.map((course, index) => ({
-						courseCode: course,
-						courseName: info.courseName[index],
-						id: info.courseid[index],
+
+				if (res.data && res.data.teachinginfo) {
+					const filledCourses = fillEmptyItems(res.data.teachinginfo.flatMap(info => 
+						info.courses.map((course, index) => ({
+							courseCode: course,
+							courseName: info.courseName[index],
+							id: info.courseid[index],
+							instructor: info.instructor,
+							ubcid: info.ubcid,
+							email: info.email,
+							division: info.division.toLowerCase().replace(' ', '-')
+						}))
+					), res.data.perPage);
+
+					setDeptCourseList({
+						courses: filledCourses,
+						coursesCount: res.data.teachinginfo.reduce((sum, info) => sum + info.courses.length, 0),
+						perPage: res.data.perPage || 10,
+						currentPage: 1,
+					});
+
+					const divisionMap = {
+						'computer-science': 'COSC',
+						'mathematics': 'MATH',
+						'physics': 'PHYS',
+						'statistics': 'STAT',
+					};
+
+					const selectedDivisionPrefix = divisionMap[selectedDivision];
+
+					const filteredProfessors = res.data.teachinginfo.filter(info => 
+						info.courses.some(course => course.startsWith(selectedDivisionPrefix))
+					).map(info => ({
 						instructor: info.instructor,
 						ubcid: info.ubcid,
 						email: info.email,
 						division: info.division.toLowerCase().replace(' ', '-')
-					}))
-				), res.data.perPage);
+					}));
 
-				const professors = res.data['teaching-info'].map(info => ({
-					instructor: info.instructor,
-					ubcid: info.ubcid,
-					email: info.email,
-					division: info.division.toLowerCase().replace(' ', '-')
-				}));
+					setProfessorList(filteredProfessors);
+					setCurrentTerm(getTermString(res.data.currentTerm));
 
-				setDeptCourseList({
-					courses: filledCourses,
-					coursesCount: res.data['teaching-info'].reduce((sum, info) => sum + info.courses.length, 0),
-					perPage: res.data.perPage,
-					currentPage: 1,
-				});
-				setProfessorList(professors);
-				setCurrentTerm(getTermString(res.data.currentTerm));
+				} else {
+					console.error('Unexpected response structure:', res.data);
+				}
+
 			} catch (error) {
 				if (error.response && error.response.status === 401) {
 					localStorage.removeItem('authToken');
@@ -89,7 +107,7 @@ function DeptTeachingAssignment() {
 		};
 
 		fetchCourses();
-	}, [authToken, accountLogInType, navigate]);
+	}, [authToken, accountLogInType, navigate, selectedDivision]);
 
 	const handleDivisionChange = (event) => {
 		setSelectedDivision(event.target.value);
@@ -105,7 +123,18 @@ function DeptTeachingAssignment() {
 		});
 	};
 
-	const filteredCourses = deptCourseList.courses.filter((course) => course.division === selectedDivision);
+	const divisionMap = {
+		'computer-science': 'COSC',
+		'mathematics': 'MATH',
+		'physics': 'PHYS',
+		'statistics': 'STAT',
+	};
+
+	const filteredCourses = deptCourseList.courses.filter((course) => {
+		const divisionPrefix = divisionMap[selectedDivision];
+		return course.courseCode.startsWith(divisionPrefix);
+	});
+
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
@@ -147,7 +176,6 @@ function DeptTeachingAssignment() {
 							<p>{getDivisionName(selectedDivision)} Professors:</p>
 							<div className="professor-cards">
 								{professorList
-									.filter(prof => prof.division === selectedDivision)
 									.map((professor, index) => (
 										<div
 											key={index}
