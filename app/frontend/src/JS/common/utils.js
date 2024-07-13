@@ -35,11 +35,11 @@ export const handleSearchChange = (setStateFunction) => {
 };
 
 export const checkAccess = (accountLogInType, navigate, accessView, authToken) => {
-  if (!authToken) {
-    alert('No Access, Redirecting to login');
-    navigate('/Login');
-    return;
-  }
+  // if (!authToken) {
+  //   alert('No Access, Redirecting to login');
+  //   navigate('/Login');
+  //   return;
+  // }
 
   const numericAccountType = Number(accountLogInType);
 

@@ -24,7 +24,7 @@ function PerformanceDepartmentPage() {
 				return;
 			}
 			try {
-				checkAccess(accountLogInType, navigate, 'department');
+				checkAccess(accountLogInType, navigate, 'department', authToken);
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
