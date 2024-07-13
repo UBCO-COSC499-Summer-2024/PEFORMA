@@ -28,11 +28,8 @@ function PerformanceInstructorPage() {
 
 		const fetchData = async () => {
 			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
-				}
-				checkAccess(accountLogInType, navigate, 'instructor');
+
+				checkAccess(accountLogInType, navigate, 'instructor', authToken);
 				const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
 					params: {
 						profileId: profileId,

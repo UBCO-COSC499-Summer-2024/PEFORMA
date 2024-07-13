@@ -7,7 +7,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, fetchWithAuth } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
@@ -23,34 +23,53 @@ function AdminMemberList() {
 	const [search, setSearch] = useState('');
 	const [activeMembersCount, setActiveMembersCount] = useState(0);
 
+	// delete this if system works well
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+  //       checkAccess(accountLogInType, navigate, 'admin', authToken);
+	// 			const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
+	// 				headers: { Authorization: `Bearer ${authToken.token}` },
+	// 			});
+	// 			const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
+	// 			const activeMembersCount = filledMembers.filter((member) => member.status).length;
+	// 			setActiveMembersCount(activeMembersCount);
+	// 			setMemberData({
+	// 				members: filledMembers,
+	// 				membersCount: res.data.membersCount,
+	// 				perPage: res.data.perPage,
+	// 				currentPage: 1,
+	// 			});
+	// 		} catch (error) {
+	// 			if (error.response && error.response.status === 401) {
+	// 				localStorage.removeItem('authToken');
+	// 				navigate('/Login');
+	// 			} else {
+	// 				console.error('Error fetching members:', error);
+	// 			}
+	// 		}
+	// 	};
+
+	// 	fetchData();
+	// }, [authToken]);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				if (!authToken) {
-					// Redirect to login if no token
-					navigate('/Login'); // Use your navigation mechanism
-					return;
-				}
-        checkAccess(accountLogInType, navigate, 'admin');
-				const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
+        checkAccess(accountLogInType, navigate, 'admin', authToken);
+				const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
+				console.log("asdhasd", data);
+				const filledMembers = fillEmptyItems(data.members, data.perPage);
 				const activeMembersCount = filledMembers.filter((member) => member.status).length;
 				setActiveMembersCount(activeMembersCount);
 				setMemberData({
 					members: filledMembers,
-					membersCount: res.data.membersCount,
-					perPage: res.data.perPage,
+					membersCount: data.membersCount,
+					perPage: data.perPage,
 					currentPage: 1,
 				});
-			} catch (error) {
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken');
-					navigate('/Login');
-				} else {
-					console.error('Error fetching members:', error);
-				}
+			} catch (error) { 
+				console.log('Error fetching members: ', error);
 			}
 		};
 
@@ -68,7 +87,7 @@ function AdminMemberList() {
 	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
-		<div className="dashboard">
+		<div className="dashboard" id="admin-member-list-test-content">
 			<CreateSideBar sideBarType="Admin" />
 			<div className="container">
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />

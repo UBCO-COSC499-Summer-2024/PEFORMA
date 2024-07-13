@@ -58,7 +58,7 @@ describe('DeptCourseList', () => {
 	});
 
   test('Testing rendering with mock data course list', async () => {
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
     expect(element).toHaveTextContent("List of Courses (7 Active in current)"); // 5 are not active in 12 courses, so 7 active should be expected
     
     expect(element).toHaveTextContent("COSC 111");
@@ -86,13 +86,13 @@ describe('DeptCourseList', () => {
 
   });
   test('Check if pagination exists', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
 
     const paginationElement = element.querySelector('.pagination'); 
     expect(paginationElement).toBeInTheDocument();
   });
   test('Test next button in pagination', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
 
     const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');
     fireEvent.click(nextPageButton);
@@ -111,7 +111,7 @@ describe('DeptCourseList', () => {
     });
   });
   test('Test prev button in pagination', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(8));
 
     const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a');
     fireEvent.click(prevPageButton);
@@ -130,13 +130,13 @@ describe('DeptCourseList', () => {
     });
   });
   test('Check if search bar exists', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(10));
 
     const searchInput = screen.getByPlaceholderText('Search by Subject and Title'); 
     expect(searchInput).toBeInTheDocument();
   });
   test('Test search functionality', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(12));
 
     const searchInput = screen.getByPlaceholderText('Search by Subject and Title'); 
     fireEvent.change(searchInput, { target: { value: 'Computer' }});
