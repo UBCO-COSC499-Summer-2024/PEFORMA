@@ -8,16 +8,19 @@ function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log(email);
-    setSent(true);
-    axios.post("http://localhost:3001/api/reset-password", {email});
+
+    // logic function (BE) for reset password below
+    // .....
+
+    let password = '';
+    const response = await axios.post("http://localhost:3001/api/reset-password", {email, password});
+    console.log(response);
   };
 
   const handleLogin = () => {
     // add login jump-to-page logic here
-    console.log('Login button clicked');
     navigate('/Login');
   };
 
@@ -51,5 +54,4 @@ function ForgotPasswordPage() {
     </div>
   );
 }
-
 export default ForgotPasswordPage;
