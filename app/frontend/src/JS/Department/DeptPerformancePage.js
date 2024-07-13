@@ -154,7 +154,7 @@ function PerformanceDepartmentPage() {
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
-                        <button className='icon-button' onClick={handleExport} disabled={isLoading}>
+                        <button className='icon-button boxed' onClick={handleExport} disabled={isLoading}>
                             <Download size={20} color="black" />
                             {isLoading ? 'Loading...' : ''}
                         </button>
