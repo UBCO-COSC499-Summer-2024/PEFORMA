@@ -107,7 +107,8 @@ CREATE TABLE "Course" (
   "ctitle"        varchar(100),
   "description"   TEXT,
   "divisionId"    integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "courseNum"     integer
+  "courseNum"     integer,
+  "isActive"      boolean
 );
 
 -- Create courses by terms

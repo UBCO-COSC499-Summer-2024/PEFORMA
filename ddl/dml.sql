@@ -501,3 +501,5 @@ INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId",
 INSERT INTO public."SingleTeachingPerformance" ("profileId", "courseId", "term", "score")
 SELECT "profileId", "courseId", "term", (random() * 99 + 1) -- Random score between 1.0 and 100.0
 FROM public."InstructorTeachingAssignment";
+
+UPDATE "Course" SET "isActive" = true;
