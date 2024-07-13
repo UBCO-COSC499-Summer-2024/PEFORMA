@@ -29,9 +29,17 @@ const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 
+const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
+const allInstructors = require('./routes/allInstructorsRoutes');
+const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
+const teachingAssignment = require('./routes/teachingAssignment.js');
+
+const resetPasswordRouter = require('./routes/resetPassword');
+//const updatePasswordRouter = require('./routes/updatePassword.js')
+
 const app = express();
 
 app.use(express.json());
@@ -65,7 +73,7 @@ app.use('/api/all-courses', allCoursesRoutes);
 // Service role retrieval process
 app.use('/api/service-roles', serviceRoleRoutes);
 
-
+app.use('/api/teachingAssignment',teachingAssignment);
 app.use('/api/courseHistory',courseHistoryRouter);
 
 app.use('/api/benchmark', benchmark);
@@ -73,8 +81,16 @@ app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
 app.use('/api/service-roles',serviceRoleRoutes);
 
+
+app.use('/api/allInstructors',allInstructors);
+app.use('/api/adminStatusChangeMembers',adminStatusChangeMembers);
+
+app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
+
 //reset password
-//app.use('/api',ResetPassword);
+app.use('/api', resetPasswordRouter);
+//app.use('/api', updatePasswordRouter);
+
 app.use('/api/roleInfo', roleInfoRoutes);
 
 app.post('/enter', async (req, res) => {

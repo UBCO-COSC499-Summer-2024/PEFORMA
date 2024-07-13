@@ -64,7 +64,7 @@ body {
 
 /* sidebar stuff*/
 .sidebar {
-  width: 15vw;
+  width: 330px;
   background-color: #002145;
   color: white;
   padding: 1%;
@@ -138,4 +138,45 @@ h2 {
   padding: 1em 0.5em 0.5em 0.5em;
   border: 1px solid #ddd; 
   border-radius: 0.5em;
+}
+
+.account-switcher {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+.account-switcher img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.account-type {
+  margin: 10px;
+}
+
+.dropdown-menu {
+  display: block;
+  position: absolute;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  min-width: 150px;
+  padding: 10px 0;
+  left: 0;
+}
+
+.dropdown-menu li {
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  list-style-type: none;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  color: #333;
 }

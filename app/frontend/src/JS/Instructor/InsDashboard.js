@@ -7,9 +7,11 @@ import cardImages from '../common/cardImages.js';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { checkAccess } from '../common/utils.js'
+
 
 function Dashboard() {
-	const { profileId, accountType, authToken } = useAuth();
+	const { profileId, accountLogInType, authToken } = useAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -19,11 +21,8 @@ function Dashboard() {
 				return;
 			}
 			try {
-				const numericAccountType = Number(accountType);
-				if (numericAccountType !== 3) {
-					alert('No Access, Redirecting to department view');
-					navigate('/DeptDashboard');
-				}
+				checkAccess(accountLogInType, navigate, 'instructor');
+
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
@@ -31,7 +30,7 @@ function Dashboard() {
 		};
 
 		checkAuth();
-	}, [authToken, accountType, navigate]);
+	}, [authToken, navigate]);
 
 	return (
 		<div className="dashboard">

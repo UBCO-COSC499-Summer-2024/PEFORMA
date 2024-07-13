@@ -49,7 +49,7 @@ describe('InsPerformancePage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
 
     const element = document.getElementById('info-test-content');
     
@@ -74,8 +74,8 @@ describe('InsPerformancePage', () => {
           benchmark: '1300',
 					email: 'billyGuy@instructor.ubc.ca',
           teachingAssignments: [
-						{ assign: 'COSC 211', link: 'abc.com' },
-						{ assign: 'COSC 304', link: 'def.com' },
+						{ assign: 'COSC 211' },
+						{ assign: 'COSC 304' },
 					],
           data:[
             {"x": "January", "y": 150},
@@ -90,10 +90,10 @@ describe('InsPerformancePage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(12));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(10));
 
     const element = document.getElementById('info-test-content');
     
-    expect(element).toHaveTextContent("Teaching Assignments: COSC 211 COSC 304")
+    expect(element).toHaveTextContent("Teaching Assignments:COSC 211COSC 304")
 	})
 });

@@ -11,7 +11,7 @@ import '../common/AuthContext.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function InsCourseList() {
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const params = new URLSearchParams(window.location.search);
 	const divisionCode = params.get('division') || 'COSC';
 
@@ -36,7 +36,7 @@ function InsCourseList() {
 					navigate('/Login'); // Use your navigation mechanism
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 3) {
 					alert('No Access, Redirecting to department view');
 					navigate('/DeptDashboard');

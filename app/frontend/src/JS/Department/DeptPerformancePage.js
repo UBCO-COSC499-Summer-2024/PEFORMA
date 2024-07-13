@@ -9,12 +9,14 @@ import DeptPhysTable from './PerformanceImports/DeptPhysTable.js';
 import DeptStatTable from './PerformanceImports/DeptStatTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
+import { checkAccess } from '../common/utils.js';
+
 
 import '../../CSS/Department/DeptPerformancePage.css';
 
 function PerformanceDepartmentPage() {
 	const navigate = useNavigate();
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	useEffect(() => {
 		const checkAuth = async () => {
 			if (!authToken) {
@@ -22,11 +24,7 @@ function PerformanceDepartmentPage() {
 				return;
 			}
 			try {
-				const numericAccountType = Number(accountType);
-				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
-				}
+				checkAccess(accountLogInType, navigate, 'department');
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
@@ -34,7 +32,7 @@ function PerformanceDepartmentPage() {
 		};
 
 		checkAuth();
-	}, [authToken, accountType, navigate]);
+	}, [authToken, accountLogInType, navigate]);
 	return (
 		<div className="dp-container">
 			<CreateSideBar sideBarType="Department" />

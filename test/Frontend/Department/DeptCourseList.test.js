@@ -33,18 +33,18 @@ describe('DeptCourseList', () => {
 			Promise.resolve({
 				data: {"currentPage":1, "perPage": 10, "coursesCount":12,
           courses:[
-            { "id": 1, "courseCode": "COSC 101", "title": "Digital Citizenship", "description":"description testing"},
-            { "id": 2, "courseCode": "COSC 111", "title": "Computer Programming I", "description":"description testing"},
-            { "id": 3, "courseCode": "COSC 123", "title": "Computer Creativity", "description":"description testing"},
-            { "id": 4, "courseCode": "COSC 304", "title": "Introduction to Database", "description":"Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies." },
-            { "id": 5, "courseCode": "COSC 211", "title": "Machine Architecture", "description":"description testing" },
-            { "id": 6, "courseCode": "COSC 221", "title": "Introduction to Discrete Structures", "description":"description testing"},
-            { "id": 7, "courseCode": "STAT 121", "title": "Elementary Statistics", "description":"description testing"},
-            { "id": 8, "courseCode": "PHYS 205", "title": "Introduction to Mathematical Statistics","description":"description testing"},
-            { "id": 9, "courseCode": "PHYS 400", "title": "Statistical Communication and Consulting", "description":"description testing"},
-            { "id": 10, "courseCode": "COSC 341", "title": "Human computer Interaction","description":"description testing"},
-            { "id": 11, "courseCode": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering","description":"MATH IS MATH"},
-            { "id": 12, "courseCode": "TEST 17", "title": "Testing 123","description":"description testing"},
+            { "id": 1, "courseCode": "COSC 101", "title": "Digital Citizenship", "description":"description testing", "status":false},
+            { "id": 2, "courseCode": "COSC 111", "title": "Computer Programming I", "description":"description testing", "status":true},
+            { "id": 3, "courseCode": "COSC 123", "title": "Computer Creativity", "description":"description testing", "status":false},
+            { "id": 4, "courseCode": "COSC 304", "title": "Introduction to Database", "description":"Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.", "status":false},
+            { "id": 5, "courseCode": "COSC 211", "title": "Machine Architecture", "description":"description testing", "status":true},
+            { "id": 6, "courseCode": "COSC 221", "title": "Introduction to Discrete Structures", "description":"description testing", "status":true},
+            { "id": 7, "courseCode": "STAT 121", "title": "Elementary Statistics", "description":"description testing", "status":true},
+            { "id": 8, "courseCode": "PHYS 205", "title": "Introduction to Mathematical Statistics","description":"description testing", "status":true},
+            { "id": 9, "courseCode": "PHYS 400", "title": "Statistical Communication and Consulting", "description":"description testing", "status":false},
+            { "id": 10, "courseCode": "COSC 341", "title": "Human computer Interaction","description":"description testing", "status":true},
+            { "id": 11, "courseCode": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering","description":"MATH IS MATH", "status":false},
+            { "id": 12, "courseCode": "TEST 17", "title": "Testing 123","description":"description testing", "status":true},
           ]
         }
 			})
@@ -59,7 +59,7 @@ describe('DeptCourseList', () => {
 
   test('Testing rendering with mock data course list', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    expect(element).toHaveTextContent("List of Course Lists (12 Active");
+    expect(element).toHaveTextContent("List of Courses (7 Active in current)"); // 5 are not active in 12 courses, so 7 active should be expected
     
     expect(element).toHaveTextContent("COSC 111");
     expect(element).toHaveTextContent("STAT 121");
@@ -80,6 +80,9 @@ describe('DeptCourseList', () => {
 
     expect(element).toHaveTextContent("Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.");
     expect(element).toHaveTextContent("description testing");
+
+    expect(element).toHaveTextContent("Active");
+    expect(element).toHaveTextContent("Inactive");
 
   });
   test('Check if pagination exists', async() => {

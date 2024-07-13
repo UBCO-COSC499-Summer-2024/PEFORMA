@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import '../../CSS/Department/DeptCourseList.css';
-import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
-import axios from 'axios';
 import '../common/AuthContext.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
+import '../../CSS/Department/DeptCourseList.css';
 
 function DeptCourseList() {
-	const { authToken, accountType } = useAuth();
-	const navigate = useNavigate();
 
+	const { authToken, accountLogInType } = useAuth();
+	const navigate = useNavigate();
 	const [deptCourseList, setDeptCourseList] = useState({
 		courses: [{}],
 		coursesCount: 0,
@@ -20,6 +22,7 @@ function DeptCourseList() {
 		currentPage: 1,
 	});
 	const [search, setSearch] = useState('');
+	const [activeCoursesCount, setActiveCoursesCount] = useState(0);
 
 	useEffect(() => {
 		const fetchAllCourses = async () => {
@@ -29,77 +32,49 @@ function DeptCourseList() {
 					navigate('/Login'); // Use your navigation mechanism
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
+					navigate('/InsDashboard');
 				}
 				// Fetch course data with Axios, adding token to header
 				const res = await axios.get(`http://localhost:3001/api/all-courses`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				const data = res.data;
-				const filledCourses = fillEmptyCourses(data.courses, data.perPage);
-				setDeptCourseList({ ...data, courses: filledCourses });
+				const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
+				setActiveCoursesCount(filledCourses.filter(course => course.status).length); 
+				setDeptCourseList({ ...res.data, courses: filledCourses });
 			} catch (error) {
 				// Handle 401 (Unauthorized) error and other errors
 				if (error.response && error.response.status === 401) {
 					localStorage.removeItem('authToken'); // Clear invalid token
 					navigate('/Login');
 				} else {
-					console.error('Error fetching service roles:', error);
+					console.error('Error fetching courses:', error);
 				}
 			}
 		};
-
 		fetchAllCourses();
 	}, [authToken]);
 
 	const filteredCourses = deptCourseList.courses.filter(
-		(course) =>
-			(course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
+    (course) =>
+        (course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+        (course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
 	);
 
-	const currentCourses = filteredCourses.slice(
-		(deptCourseList.currentPage - 1) * deptCourseList.perPage,
-		deptCourseList.currentPage * deptCourseList.perPage
-	);
-
-	const fillEmptyCourses = (courses, perPage) => {
-		const filledCourses = [...courses];
-		const currentCount = courses.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledCourses.push({});
-			}
-		}
-		return filledCourses;
-	};
-	const handleSearchChange = (newSearch) => {
-		setSearch(newSearch);
-		setDeptCourseList((prevState) => ({ ...prevState, currentPage: 1 }));
-	};
-
-	const handlePageClick = (data) => {
-		setDeptCourseList((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
-
-	const pageCount = Math.ceil(deptCourseList.coursesCount / deptCourseList.perPage);
+	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
 		<div className="dashboard" id="dept-course-list-test-content">
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar searchListType={'DeptCourseList'} onSearch={handleSearchChange} />
+			<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
-				<div className="main">
-					<div className="subtitle-course">
-						List of Course Lists ({deptCourseList.coursesCount} Active){' '}
+				<div className="srlist-main">
+					<div className="subtitle-course">List of Courses ({activeCoursesCount} Active in current)
+					<button className='status-change-button'><Link to={`/DeptStatusChangeCourse`} state={{ deptCourseList }}>Manage Course</Link></button>
+
 					</div>
 
 					<div className="dcourse-table">
@@ -109,6 +84,7 @@ function DeptCourseList() {
 									<th>Course</th>
 									<th>Title</th>
 									<th>Description</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 
@@ -124,6 +100,7 @@ function DeptCourseList() {
 											</td>
 											<td>{course.title}</td>
 											<td>{course.description}</td>
+											<td>{course.status !== undefined ? (course.status ? 'Active' : 'Inactive') : ''}</td>
 										</tr>
 									);
 								})}
@@ -134,10 +111,10 @@ function DeptCourseList() {
 									previousLabel={'<'}
 									nextLabel={'>'}
 									breakLabel={'...'}
-									pageCount={pageCount}
+									pageCount={pageCount(deptCourseList.coursesCount, deptCourseList.perPage)}
 									marginPagesDisplayed={3}
 									pageRangeDisplayed={0}
-									onPageChange={handlePageClick}
+									onPageChange={(data) => handlePageClick(data, setDeptCourseList)}
 									containerClassName={'pagination'}
 									activeClassName={'active'}
 									forcePage={deptCourseList.currentPage - 1}
