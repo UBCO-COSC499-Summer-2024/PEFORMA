@@ -49,7 +49,12 @@ function CreateAccount() {
         };
 
         try {
-            const response = await axios.post('http://localhost:3001/create-account', postData);
+            const response = await axios.post('http://localhost:3001/api/create-account', postData,
+                {
+                    headers: { Authorization: `Bearer ${authToken.token}` },
+                }
+
+            );
             console.log("checking")
             console.log('Server response:', response.data);
             alert('Account created successfully.');
@@ -82,11 +87,11 @@ function CreateAccount() {
                         <input type="text" name="ubcId" placeholder="UBC ID (optional)" value={formData.ubcId} onChange={handleChange} />
                         <select name="division" value={formData.division} onChange={handleChange} required>
                             <option value="">Select Department</option>
-                            <option value="Computer Science">Computer Science</option>
-                            <option value="Mathematics">Mathematics</option>
-                            <option value="Physics">Physics</option>
-                            <option value="Statistics">Statistics</option>
-                            <option value="N/A">N/A</option>
+                            <option value="1">Computer Science</option>
+                            <option value="2">Mathematics</option>
+                            <option value="3">Physics</option>
+                            <option value="4">Statistics</option>
+                            <option value="">N/A</option>
                         </select>
                         <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                         <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />

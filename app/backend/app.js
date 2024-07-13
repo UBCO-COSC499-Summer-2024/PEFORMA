@@ -11,7 +11,7 @@ const { saveDataToDatabase } = require('./routes/DataEntry');
 
 
 const { upsertProfile } = require('./routes/upsertProfile');
-const { createAccount } = require('./routes/createAccount');
+const createAccount = require('./routes/createAccount');
 const { assignServiceRole } = require ('./routes/assignServiceRole');
 
 const workingHoursRoutes = require('./routes/workingHoursRoutes');
@@ -59,7 +59,7 @@ app.use('/',AccountTypeRouter);//check account type
 
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
-
+app.use('/api/create-account', createAccount);
 
 //Performance BE
 app.use('/api/workingHoursRoutes',workingHoursRoutes);
@@ -110,10 +110,6 @@ app.post('/enter', async (req, res) => {
 
 //app.use('/api',saveDataToDatabase);
 
-app.post('/create-account', async (req, res) => {
-    console.log('Received data:', req.body);  // 打印接收到的数据
-    //res.send('Data received successfully');  // 响应前端
-});
 /*
 app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
