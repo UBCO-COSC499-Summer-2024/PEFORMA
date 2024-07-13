@@ -6,6 +6,7 @@ import AdminCreateAccount from './JS/Admin/AdminCreateAccount';
 import HomePage from './JS/All/HomePage';
 import Login from './JS/All/Login';
 import ForgotPasswordPage from './JS/All/ForgotPasswordPage';
+import UserProfile from './JS/All/UserProfile';
 
 //Instructor
 import InsDashboard from './JS/Instructor/InsDashboard';
@@ -43,6 +44,7 @@ function App() {
 					<Route path="/HomePage" element={<HomePage />} />
 					<Route path="/Login" element={<Login />} />
 					<Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
+					<Route path="/UserProfile" element={<UserProfile />} />
 
 					<Route
 						path="/InsDashboard"

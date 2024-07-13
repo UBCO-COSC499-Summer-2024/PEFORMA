@@ -29,6 +29,7 @@ const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
 const imageRoutes = require('./routes/imageRoutes');
+const userProfileRoutes = require('./routes/userProfileRoutes');
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
@@ -67,6 +68,12 @@ app.use('/api/service-roles', serviceRoleRoutes);
 
 // Image retrieval process
 app.use('/api/image', imageRoutes);
+
+// User profile
+app.use('/api/profile', (req, res, next) => {
+    console.log('Profile route hit:', req.url);
+    next();
+  }, userProfileRoutes);
 
 app.use('/api/courseHistory',courseHistoryRouter);
 
