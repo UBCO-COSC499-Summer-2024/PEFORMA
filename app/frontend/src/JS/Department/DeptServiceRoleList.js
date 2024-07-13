@@ -4,7 +4,7 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { Edit, Download } from 'lucide-react';
+import { Edit, Download, ArrowUpDown } from 'lucide-react';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
@@ -23,13 +23,14 @@ function ServiceRoleList() {
         perPage: 10,
         currentPage: 1,
     });
-	const [exportData, setExportData] = useState({
+    const [exportData, setExportData] = useState({
         roles: [{}],
         rolesCount: 0,
         perPage: 10,
         currentPage: 1,
     });
     const [activeRolesCount, setActiveRolesCount] = useState(0);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
         const fetchServiceRoles = async () => {
@@ -50,7 +51,7 @@ function ServiceRoleList() {
                 const filledRoles = fillEmptyItems(data.roles, data.perPage);
                 setActiveRolesCount(filledRoles.filter(role => role.status).length);
                 setRoleData({ ...data, roles: filledRoles });
-				setExportData({ ...data });
+                setExportData({ ...data });
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     localStorage.removeItem('authToken');
@@ -63,7 +64,31 @@ function ServiceRoleList() {
         fetchServiceRoles();
     }, [authToken]);
 
-    const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
+    const sortedRoles = React.useMemo(() => {
+        let sortableItems = [...roleData.roles];
+        if (sortConfig.key !== null) {
+            sortableItems.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableItems;
+    }, [roleData.roles, sortConfig]);
+
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const currentRoles = currentItems(sortedRoles, roleData.currentPage, roleData.perPage);
 
     const exportToPDF = () => {
         const doc = new jsPDF();
@@ -73,7 +98,7 @@ function ServiceRoleList() {
                 role.name,
                 role.department,
                 role.description,
-                role.status !== undefined ? (role.status ? 'Active' : 'Inactive') : ''
+                { content: role.status ? 'Active' : 'Inactive', styles: { textColor: role.status ? [0, 128, 0] : [255, 0, 0] } }
             ]),
         });
         doc.save("service_roles_list.pdf");
@@ -104,10 +129,25 @@ function ServiceRoleList() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Role</th>
-                                    <th>Department</th>
+                                    <th>
+                                        Role
+                                        <button className='sort-button' onClick={() => requestSort('name')}>
+                                            <ArrowUpDown size={16} color="black" />
+                                        </button>
+                                    </th>
+                                    <th>
+                                        Department
+                                        <button className='sort-button' onClick={() => requestSort('department')}>
+                                            <ArrowUpDown size={16} color="black" />
+                                        </button>
+                                    </th>
                                     <th>Description</th>
-                                    <th>Status</th>
+                                    <th>
+                                        Status
+                                        <button className='sort-button' onClick={() => requestSort('status')}>
+                                            <ArrowUpDown size={16} color="black" />
+                                        </button>
+                                    </th>
                                 </tr>
                             </thead>
 
