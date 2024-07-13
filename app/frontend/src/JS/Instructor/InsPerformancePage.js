@@ -79,7 +79,9 @@ function PerformanceInstructorPage() {
 								<strong>UBC ID:</strong> {profile.ubcid}
 							</p>
 							<p>
-								<strong>Service Roles:</strong> {profile.roles.map((role) => role).join(', ')}
+								<strong>Service Roles:</strong> {profile.roles.map((role, index) => <span>{role.roleTitle}
+              {index < profile.roles.length - 1 && (', ')}
+              </span>)}
 							</p>
 							<p>
 								<strong>Monthly Hours Benchmark:</strong> {profile.benchmark}
@@ -105,7 +107,7 @@ function PerformanceInstructorPage() {
 
 					<div className="graph-section">
 						<h2 className="subTitle">Working Hours</h2>
-						<CreateWorkingBarChart />
+						<CreateWorkingBarChart profileid={profileId} height={600}/>
 					</div>
 				</div>
 
