@@ -18,6 +18,7 @@ function CourseInformation() {
 		entryCount: 0,
 		perPage: 10,
 		currentPage: 1,
+		currentInstructor: "Willem Dafoe"
 	});
 
 	useEffect(() => {
@@ -91,6 +92,8 @@ function CourseInformation() {
 						{historyData.courseCode}: {historyData.courseName}
 					</h1>
 					<p role="contentinfo">{historyData.courseDescription}</p>
+					<br/>
+					<p id="current-instructor">Current Instructor: {historyData.currentInstructor}</p>
 					<div className="bold score">
 						Average Performance Score: <span role="contentinfo">{historyData.avgScore}</span>
 					</div>
