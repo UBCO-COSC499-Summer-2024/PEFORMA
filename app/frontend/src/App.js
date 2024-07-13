@@ -1,6 +1,8 @@
 import React from 'react';
 //Admin
 import AdminCreateAccount from './JS/Admin/AdminCreateAccount';
+import AdminMemberList from './JS/Admin/AdminMemberList';
+import AdminStatusChangeMember from './JS/Admin/AdminStatusChangeMember';
 
 //All
 import HomePage from './JS/All/HomePage';
@@ -26,8 +28,9 @@ import DeptRoleInformation from './JS/Department/DeptRoleInformation';
 import DeptCourseInformation from './JS/Department/DeptCourseInformation';
 import DeptProfilePage from './JS/Department/DeptProfilePage';
 import DeptStatusChangeServiceRole from './JS/Department/DeptStatusChangeServiceRole';
+import DeptTeachingAssignment from './JS/Department/DeptTeachingAssignment';
+import DeptTeachingAssignmentDetail from './JS/Department/DeptTeachingAssignmentDetail';
 import DeptStatusChangeCourse from './JS/Department/DeptStatusChangeCourse';
-
 
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
@@ -55,7 +58,7 @@ function App() {
 						}
 					/>
 					<Route path="/InsCourseList" element={<InsCourseList />} />
-					<Route path="/EditProfile" element={<InsEditProfile />} />
+					<Route path="/InsEditProfile" element={<InsEditProfile />} />
 					<Route path="/InsPerformancePage" element={<InsPerformancePage />} />
 					<Route path="/InsProfilePage" element={<InsProfilePage />} />
 					<Route path="/InsCourseHistory" element={<InsCourseHistory />} />
@@ -81,6 +84,12 @@ function App() {
 					<Route path="/DeptStatusChangeCourse" element={<DeptStatusChangeCourse />} />
 
 					
+
+					<Route path="/AdminMemberList" element={<AdminMemberList />} />
+					<Route path="/AdminStatusChangeMember" element={<AdminStatusChangeMember />} />
+					<Route path="/DeptTeachingAssignment" element={<DeptTeachingAssignment />} />
+					<Route path="/DeptTeachingAssignmentDetail" element={<DeptTeachingAssignmentDetail />} />
+
 				</Routes>
 			</AuthProvider>
 		</BrowserRouter>

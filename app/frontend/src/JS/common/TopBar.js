@@ -38,7 +38,7 @@ function TopBar({ searchListType, onSearch }) {
             navigate('/InsPerformancePage');
             break;
         case 4:
-            navigate('/AdminPage'); // needs to be fixed with new admin file name
+            navigate('/AdminMemberList'); // needs to be fixed with new admin file name
             break;
         default:
             break;
@@ -98,6 +98,10 @@ function TopBar({ searchListType, onSearch }) {
 		case 'DeptMemberList':
 			placeHolderText =
 				'Search by UBC ID (e.g. 78233419), Name (e.g. John Doe), Service Role (e.g. Advisor)';
+			break;
+		case 'DeptTeachingAssignmentDetail':
+			placeHolderText =
+				'Search by Instructor (e.g. John Doe), Course Code (e.g. COSC 222), Course Name (e.g. Data Structures)';
 			break;
 		default:
 			placeHolderText = 'Search ...';
