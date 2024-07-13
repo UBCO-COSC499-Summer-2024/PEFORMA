@@ -8,7 +8,6 @@ services:
     volumes:
       - ./app/frontend:/app
       - /app/node_modules
-    command: sh -c "npx tailwindcss -i ./app/frontend/src/CSS/tailwindInput.css -o ./app/frontend/src/CSS/tailwindOutput.css --watch & npm start"
     depends_on:
       - backend
 
