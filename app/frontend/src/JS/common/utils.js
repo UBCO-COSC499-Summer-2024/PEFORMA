@@ -47,4 +47,14 @@ export const checkAccess = (accountLogInType, navigate, accessView) => {
     alert('No Access, Redirecting to admin view');
     navigate('/AdminDashboard');
   }
-}
+};
+
+export const getDivisionName = (division) => {
+  const divisionNames = {
+    'computer-science': 'Computer Science',
+    'mathematics': 'Mathematics',
+    'physics': 'Physics',
+    'statistics': 'Statistics',
+  };
+  return divisionNames[division] || '';
+};

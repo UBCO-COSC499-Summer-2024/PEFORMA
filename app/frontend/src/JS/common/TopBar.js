@@ -99,6 +99,10 @@ function TopBar({ searchListType, onSearch }) {
 			placeHolderText =
 				'Search by UBC ID (e.g. 78233419), Name (e.g. John Doe), Service Role (e.g. Advisor)';
 			break;
+		case 'DeptTeachingAssignmentDetail':
+			placeHolderText =
+				'Search by Instructor (e.g. John Doe), Course Code (e.g. COSC 222), Course Name (e.g. Data Structures)';
+			break;
 		default:
 			placeHolderText = 'Search ...';
 	}

@@ -46,7 +46,6 @@ function DeptPerformancePieChart() {
 				const res = await axios.get('http://localhost:3001/api/deptPerformance', {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				console.log(res);
 				return res.data;
 			} catch (error) {
 				console.error('Error fetching data: ', error);

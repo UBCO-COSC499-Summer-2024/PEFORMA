@@ -42,7 +42,6 @@ function WorkHoursBarChart() {
 					params: { profileId: profileId, currentMonth: currentMonth },
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				console.log(res);
 				return res.data;
 			} catch (error) {
 				console.error('Error fetching data: ', error);
