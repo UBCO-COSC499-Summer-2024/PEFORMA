@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { Download } from 'lucide-react';
+import { Download, ArrowUpDown } from 'lucide-react';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
@@ -25,6 +25,7 @@ function DeptMemberList() {
     });
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,7 +54,31 @@ function DeptMemberList() {
         fetchData();
     }, [authToken]);
 
-    const filteredMembers = memberData.members.filter(
+    const sortedMembers = useMemo(() => {
+        let sortableItems = [...memberData.members];
+        if (sortConfig.key !== null) {
+            sortableItems.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableItems;
+    }, [memberData.members, sortConfig]);
+
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const filteredMembers = sortedMembers.filter(
         (member) =>
             (member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
             (member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -130,10 +155,31 @@ function DeptMemberList() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>UBC ID</th>
+                                    <th>
+                                        <div className="th-content">
+                                            <span className="th-text">Name</span>
+                                            <button className='sort-button' onClick={() => requestSort('name')}>
+                                                <ArrowUpDown size={16} color="black" />
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="th-content">
+                                            <span className="th-text">UBC ID</span>
+                                            <button className='sort-button' onClick={() => requestSort('ubcid')}>
+                                                <ArrowUpDown size={16} color="black" />
+                                            </button>
+                                        </div>
+                                    </th>
                                     <th>Service Role</th>
-                                    <th>Department</th>
+                                    <th>
+                                        <div className="th-content">
+                                            <span className="th-text">Department</span>
+                                            <button className='sort-button' onClick={() => requestSort('department')}>
+                                                <ArrowUpDown size={16} color="black" />
+                                            </button>
+                                        </div>
+                                    </th>
                                     <th>Email</th>
                                 </tr>
                             </thead>

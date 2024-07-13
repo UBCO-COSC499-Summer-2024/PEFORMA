@@ -124,3 +124,17 @@
 .icon-button:hover {
   background-color: #f0f0f0;
 }
+
+.sort-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 5px;
+  vertical-align: middle;
+  opacity: 0.75;
+}
+
+.sort-button:hover {
+  opacity: 1.0;
+  background-color: #f4f4f4;
+}
