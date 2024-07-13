@@ -46,7 +46,7 @@ describe('DeptServiceRoleList', () => {
 
   test('Testing rendering with mock data service role list', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    expect(element).toHaveTextContent("List of Serivce Roles (9 Active)");
+    expect(element).toHaveTextContent("List of Service Roles (9 Active)");
 
     expect(element).toHaveTextContent("Role");
     expect(element).toHaveTextContent("Department");
