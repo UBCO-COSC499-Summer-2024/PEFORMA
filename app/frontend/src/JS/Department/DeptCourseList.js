@@ -4,7 +4,7 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { Edit, Download } from 'lucide-react';
+import { Edit, Download, ArrowUpDown } from 'lucide-react';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
@@ -31,6 +31,7 @@ function DeptCourseList() {
     });
     const [search, setSearch] = useState('');
     const [activeCoursesCount, setActiveCoursesCount] = useState(0);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
         const fetchAllCourses = async () => {
@@ -63,7 +64,31 @@ function DeptCourseList() {
         fetchAllCourses();
     }, [authToken]);
 
-    const filteredCourses = deptCourseList.courses.filter(
+    const sortedCourses = React.useMemo(() => {
+        let sortableItems = [...deptCourseList.courses];
+        if (sortConfig.key !== null) {
+            sortableItems.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableItems;
+    }, [deptCourseList.courses, sortConfig]);
+
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const filteredCourses = sortedCourses.filter(
         (course) =>
             (course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
             (course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
@@ -79,7 +104,7 @@ function DeptCourseList() {
                 course.courseCode,
                 course.title,
                 course.description,
-                course.status !== undefined ? (course.status ? 'Active' : 'Inactive') : ''
+                { content: course.status ? 'Active' : 'Inactive', styles: { textColor: course.status ? [0, 128, 0] : [255, 0, 0] } }
             ]),
         });
         doc.save("course_list.pdf");
@@ -110,10 +135,31 @@ function DeptCourseList() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Course</th>
-                                    <th>Title</th>
+                                    <th>
+                                        <div className="th-content">
+                                            <span className="th-text">Course</span>
+                                            <button className='sort-button' onClick={() => requestSort('courseCode')}>
+                                                <ArrowUpDown size={16} color="black" />
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="th-content">
+                                            <span className="th-text">Title</span>
+                                            <button className='sort-button' onClick={() => requestSort('title')}>
+                                                <ArrowUpDown size={16} color="black" />
+                                            </button>
+                                        </div>
+                                    </th>
                                     <th>Description</th>
-                                    <th>Status</th>
+                                    <th>
+                                        <div className="th-content">
+                                            <span className="th-text">Status</span>
+                                            <button className='sort-button' onClick={() => requestSort('status')}>
+                                                <ArrowUpDown size={16} color="black" />
+                                            </button>
+                                        </div>
+                                    </th>
                                 </tr>
                             </thead>
 
