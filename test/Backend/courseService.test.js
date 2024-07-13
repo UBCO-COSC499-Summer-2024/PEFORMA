@@ -4,12 +4,18 @@ const pool = require('../../app/backend/db/index.js');
 // Mock the database pool
 jest.mock('../../app/backend/db/index.js', () => ({
   query: jest.fn(),
+  closePool: jest.fn(),
 }));
 
 describe('getFormattedCourseData', () => {
   beforeEach(() => {
     // Clear all mocks before each test
     jest.clearAllMocks();
+  });
+
+  afterEach(async () => {
+    // Close the pool after each test
+    await pool.closePool();
   });
 
   it('should return formatted course data for ALL divisions', async () => {
