@@ -38,15 +38,15 @@ async function getCourseHistory(req) {
         //Retrieve score for each course
         const perPage = 10;
         const currentPage = 1;
-        const entryCount = result.rows.length; // Number of entries found
+        const entryCount = result.rows.length; 
         
         // Extract course details from the first result row
         const { ctitle, description, courseCode, dname } = result.rows[0];
         // Map the result to create history entries
         const history = result.rows.map(row => {
             // Extract the year and term code from row.term
-            const year = row.term ? row.term.toString().slice(0, 4) : ''; // Gets the first four characters as the year
-            const termCode = row.term ? row.term.toString().slice(-1) : ''; // Gets the last character as the term code
+            const year = row.term ? row.term.toString().slice(0, 4) : ''; 
+            const termCode = row.term ? row.term.toString().slice(-1) : ''; 
             // Determine the session based on the term code
             let sessionSuffix;
             let session;
@@ -100,7 +100,6 @@ async function getCourseHistory(req) {
             avgScore: avgScore, 
             history
         };
-        console.log(output);
         return output;
     } catch (error) {
         console.error('Database query error:', error);
