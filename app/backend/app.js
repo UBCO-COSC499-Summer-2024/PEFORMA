@@ -35,6 +35,7 @@ const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceR
 const imageRoutes = require('./routes/imageRoutes');
 const userProfileRoutes = require('./routes/userProfileRoutes');
 const userRoutes = require('./routes/userRoutes');
+const changePasswordRoutes = require('./routes/changePasswordRoutes');
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
@@ -81,6 +82,8 @@ app.use('/api/service-roles', serviceRoleRoutes);
 app.use('/api/teachingAssignment',teachingAssignment);
 // Image retrieval process
 app.use('/api/image', imageRoutes);
+
+app.use('/api/change-password', changePasswordRoutes);
 
 // User profile
 app.use('/api/profile', (req, res, next) => {

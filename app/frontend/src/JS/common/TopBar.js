@@ -140,8 +140,8 @@ function TopBar({ searchListType, onSearch }) {
 					<ul className="dropdown-menu">
 						{activeMenu === 'main' ? (
 							<>
-								<li onClick={() => navigate('/userProfile')}>My profile</li>
-								<li onClick={() => navigate('/account')}>My account</li>
+								<li onClick={() => navigate('/UserProfile')}>My profile</li>
+								<li onClick={() => navigate('/ChangePassword')}>My account</li>
 								{accountType.length > 1 && (
 									<li onClick={() => setActiveMenu('switch')}>Switch account</li>
 								)}

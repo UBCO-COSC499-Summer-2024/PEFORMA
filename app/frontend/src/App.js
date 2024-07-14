@@ -9,6 +9,7 @@ import HomePage from './JS/All/HomePage';
 import Login from './JS/All/Login';
 import ForgotPasswordPage from './JS/All/ForgotPasswordPage';
 import UserProfile from './JS/All/UserProfile';
+import ChangePassword from './JS/All/ChangePassword';
 
 //Instructor
 import InsDashboard from './JS/Instructor/InsDashboard';
@@ -50,6 +51,7 @@ function App() {
 					<Route path="/Login" element={<Login />} />
 					<Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
 					<Route path="/UserProfile" element={<UserProfile />} />
+					<Route path="/ChangePassword" element={<ChangePassword />} />
 
 					<Route
 						path="/InsDashboard"

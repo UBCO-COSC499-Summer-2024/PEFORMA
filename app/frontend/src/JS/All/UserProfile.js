@@ -4,6 +4,7 @@ import { CreateTopBar } from '../common/commonImports.js';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 import '../../CSS/All/UserProfile.css';
 
 const ProfilePage = () => {
