@@ -70,7 +70,7 @@ describe('AdminStatusChangeMember', () => {
     element = document.getElementById('admin-status-controller-test-content');
 	});
 
-  test('Testing rendering with mock data course list', async () => { 
+  test('Testing rendering with mock data member list', async () => { 
     // expect to be 0 times called because its using location.state to receive datas 0 times of calling axios
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(0));
 		await waitFor(() => {
