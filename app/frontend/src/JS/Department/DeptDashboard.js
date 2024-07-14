@@ -5,10 +5,11 @@ import { CreateTopBar } from '../common/commonImports.js';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
+import { checkAccess } from '../common/utils.js';
 
 function Dashboard() {
 	const navigate = useNavigate();
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -17,11 +18,8 @@ function Dashboard() {
 				return;
 			}
 			try {
-				const numericAccountType = Number(accountType);
-				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
-				}
+				checkAccess(accountLogInType, navigate, 'department');
+
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
@@ -29,7 +27,7 @@ function Dashboard() {
 		};
 
 		checkAuth();
-	}, [authToken, accountType, navigate]);
+	}, [authToken, navigate]);
 
 	return (
 		<div className="dashboard">

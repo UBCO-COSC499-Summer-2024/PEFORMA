@@ -16,7 +16,7 @@ function CourseHistory() {
 		currentPage: 1,
 	});
 	const navigate = useNavigate();
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -24,7 +24,7 @@ function CourseHistory() {
 				navigate('/Login');
 				return;
 			}
-			const numericAccountType = Number(accountType);
+			const numericAccountType = Number(accountLogInType);
 			if (numericAccountType !== 3) {
 				alert('No Access, Redirecting to department view');
 				navigate('/DeptDashboard');

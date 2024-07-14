@@ -1,141 +1,186 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
+import { Edit, Download, ArrowUpDown } from 'lucide-react';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import { Link, useNavigate } from 'react-router-dom';
 import '../common/divisions.js';
-import axios from 'axios';
 import '../common/AuthContext.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptServiceRoleList.css';
 
-function showRoles(roleData, offset) {
-	if (roleData.rolesCount > 10) {
-		return roleData.roles.slice(offset, offset + roleData.perPage);
-	}
-	return roleData.roles;
-}
-
 function ServiceRoleList() {
-	const { authToken, accountType } = useAuth();
-	const navigate = useNavigate();
-	const [roleData, setRoleData] = useState({
-		roles: [{}],
-		rolesCount: 0,
-		perPage: 10,
-		currentPage: 1,
-	});
+    const { authToken, accountLogInType } = useAuth();
+    const navigate = useNavigate();
+    const [roleData, setRoleData] = useState({
+        roles: [{}],
+        rolesCount: 0,
+        perPage: 10,
+        currentPage: 1,
+    });
+    const [exportData, setExportData] = useState({
+        roles: [{}],
+        rolesCount: 0,
+        perPage: 10,
+        currentPage: 1,
+    });
+    const [activeRolesCount, setActiveRolesCount] = useState(0);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-	useEffect(() => {
-		const fetchServiceRoles = async () => {
-			try {
-				if (!authToken) {
-					// Redirect to login if no token
-					navigate('/Login'); // Use your navigation mechanism
-					return;
-				}
-				const numericAccountType = Number(accountType);
-				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
-				}
-				// Fetch course data with Axios, adding token to header
-				const res = await axios.get(`http://localhost:3001/api/service-roles`, {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const data = res.data;
-				const filledRoles = fillEmptyRoles(data.roles, data.perPage);
-				setRoleData({ ...data, roles: filledRoles });
-			} catch (error) {
-				// Handle 401 (Unauthorized) error and other errors
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken'); // Clear invalid token
-					navigate('/Login');
-				} else {
-					console.error('Error fetching service roles:', error);
-				}
-			}
-		};
-		fetchServiceRoles();
-	}, [authToken]);
+    useEffect(() => {
+        const fetchServiceRoles = async () => {
+            try {
+                if (!authToken) {
+                    navigate('/Login');
+                    return;
+                }
+                const numericAccountType = Number(accountLogInType);
+                if (numericAccountType !== 1 && numericAccountType !== 2) {
+                    alert('No Access, Redirecting to instructor view');
+                    navigate('/InsDashboard');
+                }
+                const res = await axios.get(`http://localhost:3001/api/service-roles`, {
+                    headers: { Authorization: `Bearer ${authToken.token}` },
+                });
+                const data = res.data;
+                const filledRoles = fillEmptyItems(data.roles, data.perPage);
+                setActiveRolesCount(filledRoles.filter(role => role.status).length);
+                setRoleData({ ...data, roles: filledRoles });
+                setExportData({ ...data });
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    localStorage.removeItem('authToken');
+                    navigate('/Login');
+                } else {
+                    console.error('Error fetching service roles:', error);
+                }
+            }
+        };
+        fetchServiceRoles();
+    }, [authToken]);
 
-	const fillEmptyRoles = (roles, perPage) => {
-		const filledRoles = [...roles];
-		const currentCount = roles.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledRoles.push({});
-			}
-		}
-		return filledRoles;
-	};
+    const sortedRoles = React.useMemo(() => {
+        let sortableItems = [...roleData.roles];
+        if (sortConfig.key !== null) {
+            sortableItems.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableItems;
+    }, [roleData.roles, sortConfig]);
 
-	const handlePageClick = (data) => {
-		setRoleData((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
 
-	const pageCount = Math.ceil(roleData.rolesCount / roleData.perPage);
-	const offset = (roleData.currentPage - 1) * roleData.perPage;
-	const currentRoles = showRoles(roleData, offset);
+    const currentRoles = currentItems(sortedRoles, roleData.currentPage, roleData.perPage);
 
-	return (
-		<div className="dashboard">
-			<CreateSideBar sideBarType="Department" />
-			<div className="container">
-				<CreateTopBar />
+    const exportToPDF = () => {
+        const doc = new jsPDF();
+        doc.autoTable({
+            head: [['Role', 'Department', 'Description', 'Status']],
+            body: exportData.roles.map(role => [
+                role.name,
+                role.department,
+                role.description,
+                { content: role.status ? 'Active' : 'Inactive', styles: { textColor: role.status ? [0, 128, 0] : [255, 0, 0] } }
+            ]),
+        });
+        doc.save("service_roles_list.pdf");
+    };
 
-				<div className="srlist-main" id="dept-service-role-list-test-content">
-					<div className="subtitle-role">List of Serivce Roles ({roleData.rolesCount} Active)</div>
+    return (
+        <div className="dashboard">
+            <CreateSideBar sideBarType="Department" />
+            <div className="container">
+                <CreateTopBar />
 
-					<div className="role-table">
-						<table>
-							<thead>
-								<tr>
-									<th>Role</th>
-									<th>Department</th>
-									<th>Description</th>
-								</tr>
-							</thead>
+                <div className="srlist-main" id="dept-service-role-list-test-content">
+                    <div className="subtitle-role">
+                        List of Service Roles ({activeRolesCount} Active)
+                        <div className="action-buttons">
+                            <Link to={`/DeptStatusChangeServiceRole`} state={{ roleData }}>
+                                <button className='icon-button'>
+                                    <Edit size={20} color="black" />
+                                </button>
+                            </Link>
+                            <button className='icon-button' onClick={exportToPDF}>
+                                <Download size={20} color="black" />
+                            </button>
+                        </div>
+                    </div>
 
-							<tbody>
-								{currentRoles.map((role) => {
-									return (
-										<tr key={role.id}>
-											<td>
-												<Link to={`http://localhost:3000/DeptRoleInformation?roleid=${role.id}`}>
-													{role.name}
-												</Link>
-											</td>
-											<td>{role.department}</td>
-											<td>{role.description}</td>
-										</tr>
-									);
-								})}
-							</tbody>
-						</table>
+                    <div className="role-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Role
+                                        <button className='sort-button' onClick={() => requestSort('name')}>
+                                            <ArrowUpDown size={16} color="black" />
+                                        </button>
+                                    </th>
+                                    <th>
+                                        Department
+                                        <button className='sort-button' onClick={() => requestSort('department')}>
+                                            <ArrowUpDown size={16} color="black" />
+                                        </button>
+                                    </th>
+                                    <th>Description</th>
+                                    <th>
+                                        Status
+                                        <button className='sort-button' onClick={() => requestSort('status')}>
+                                            <ArrowUpDown size={16} color="black" />
+                                        </button>
+                                    </th>
+                                </tr>
+                            </thead>
 
-						<tfoot>
-							<ReactPaginate
-								previousLabel={'<'}
-								nextLabel={'>'}
-								breakLabel={'...'}
-								pageCount={pageCount}
-								marginPagesDisplayed={3}
-								pageRangeDisplayed={0}
-								onPageChange={handlePageClick}
-								containerClassName={'pagination'}
-								activeClassName={'active'}
-							/>
-						</tfoot>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+                            <tbody>
+                                {currentRoles.map((role) => (
+                                    <tr key={role.id}>
+                                        <td><Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link></td>
+                                        <td>{role.department}</td>
+                                        <td>{role.description}</td>
+                                        <td>{role.status !== undefined ? (role.status ? 'Active' : 'Inactive') : ''}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
+                        <tfoot>
+                            <ReactPaginate
+                                previousLabel={'<'}
+                                nextLabel={'>'}
+                                breakLabel={'...'}
+                                pageCount={pageCount(roleData.rolesCount, roleData.perPage)}
+                                marginPagesDisplayed={3}
+                                pageRangeDisplayed={0}
+                                onPageChange={(data) => handlePageClick(data, setRoleData)}
+                                containerClassName={'pagination'}
+                                activeClassName={'active'}
+                            />
+                        </tfoot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default ServiceRoleList;

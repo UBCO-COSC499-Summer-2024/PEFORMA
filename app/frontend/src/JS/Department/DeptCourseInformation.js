@@ -9,7 +9,7 @@ import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 
 function CourseInformation() {
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const params = new URLSearchParams(window.location.search);
 	const courseId = params.get('courseid');
@@ -18,6 +18,7 @@ function CourseInformation() {
 		entryCount: 0,
 		perPage: 10,
 		currentPage: 1,
+		currentInstructor: "Willem Dafoe"
 	});
 
 	useEffect(() => {
@@ -27,7 +28,7 @@ function CourseInformation() {
 				navigate('/Login');
 				return;
 			}
-			const numericAccountType = Number(accountType);
+			const numericAccountType = Number(accountLogInType);
 			if (numericAccountType !== 1 && numericAccountType !== 2) {
 				alert('No Access, Redirecting to instructor view');
 				navigate('/Dashboard');
@@ -86,11 +87,13 @@ function CourseInformation() {
 				<CreateTopBar />
 
 				<div className="courseinfo-main">
-					<Link to="/DeptCourseList">&lt; Back to All Courses</Link>
+					<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
 					<h1 className="courseName" role="contentinfo">
 						{historyData.courseCode}: {historyData.courseName}
 					</h1>
 					<p role="contentinfo">{historyData.courseDescription}</p>
+					<br/>
+					<p id="current-instructor">Current Instructor: {historyData.currentInstructor}</p>
 					<div className="bold score">
 						Average Performance Score: <span role="contentinfo">{historyData.avgScore}</span>
 					</div>
