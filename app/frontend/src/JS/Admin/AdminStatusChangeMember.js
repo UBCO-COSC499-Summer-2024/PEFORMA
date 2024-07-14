@@ -78,7 +78,7 @@ function AdminStatusChangeMember() {
 			<div className="container">
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); handleSearchChange(setMemberData); }} />
 
-				<div className="srlist-main" id="dept-member-list-test-content">
+				<div className="srlist-main" id="admin-status-controller-test-content">
 					<div className="subtitle-member">
 						List of Members ({memberData.membersCount} in Database)
 						<button className="status-change-button">
