@@ -160,7 +160,7 @@ const ProfilePage = () => {
 				<div className="user-profilepage">
 					<div className="user-profilecard">
 						<div className="card-header">
-							<h2>Faculty Profile</h2>
+							<h2>My Profile</h2>
 							<div className="performance-score">
 								<div>Performance Score</div>
 								<div>{profileData.performance_score}</div>
