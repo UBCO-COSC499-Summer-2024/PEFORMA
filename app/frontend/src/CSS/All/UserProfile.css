@@ -39,17 +39,16 @@
   .user-profilepage {
     background-color: hsl(0, 0%, 100%);
     padding: 1rem;
-    min-height: 100vh;
+    height: auto;
   }
   
   .user-profilecard {
     width: 95%;
-    height: 91%;
+    height: auto;
     margin: 1rem auto;
     background-color: hsl(var(--card));
     border-radius: 0.75rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    padding-bottom: 4rem;
   }
   
   .card-header {
@@ -256,6 +255,5 @@
   
   .edit-input:focus {
     outline: none;
-    ring: 2px solid hsl(var(--ring));
     border-color: transparent;
   }
