@@ -34,8 +34,6 @@ const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
 
 const updateRoleInfo = require('./routes/updateRoleInfo.js');
-//const assignedInstructorServiceRole = require('./routes/assignedInstructorServiceRole.js');
-const assignedInstructorServiceRole = require('./routes/AssignInstructorServiceRole.js');
 
 const app = express();
 
@@ -145,11 +143,6 @@ console.log('after');
 app.use('/api',instructorFetch);
 
 app.use('/api',updateRoleInfo);
-
-
-
-app.use('/api',assignedInstructorServiceRole);
-
 
 
 
