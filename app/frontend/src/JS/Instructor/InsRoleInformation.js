@@ -42,7 +42,7 @@ function InsRoleInformation() {
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Department" />
+			<CreateSideBar sideBarType="Instructor" />
 			<div className="container">
 				<CreateTopBar />
                 <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
