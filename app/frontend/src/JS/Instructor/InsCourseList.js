@@ -147,7 +147,7 @@ function InsCourseList() {
                                                                     className="instructor-image"
                                                                     src={`http://localhost:3001/api/image/${course.profileid[index]}`} 
                                                                     alt={instructor}
-                                                                    onError={(e) => { e.target.onerror = null; e.target.src = '/path/to/default/image.jpg' }}
+                                                                    onError={(e) => { e.target.onerror = null }}
                                                                 />
                                                                 <Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
                                                                     {instructor}
