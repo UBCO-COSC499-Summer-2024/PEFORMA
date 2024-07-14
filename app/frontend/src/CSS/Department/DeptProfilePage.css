@@ -14,6 +14,7 @@
     flex-direction: column;
     border-radius: 1em;
     box-shadow: 1em 1em 1em var(--darkestGrey);
+    min-height: 50em;
 }
 
 .deptProfile-container .performance-chart {
@@ -68,4 +69,37 @@
     transition: background-color 0.3s ease; 
 }
 
+.deptProfile-container .edit-button {
+    font-weight: bold;
+    height: 3em;
+    width: 9em;
+    margin-top: 1em;
+    transition: 0.1s background-color;
+}
 
+.deptProfile-container .edit-button:hover {
+    background-color: var(--darkestestGrey);
+}
+
+.deptProfile-container .save-button {
+    transition: 0.1s background-color
+}
+
+.deptProfile-container .save-button:hover {
+    background-color: var(--darkGreen);
+}
+
+.deptProfile-container .cancel-button {
+    background-color: var(--red);
+    color: black;
+    margin-left: 1em;
+    border-radius: 0.5em;
+    font-size: large;
+    padding: 0.5em 2em 0.5em 2em;
+    margin: 0.75em 0 1em 1em;
+    transition: 0.1s background-color;
+}
+
+.deptProfile-container .cancel-button:hover {
+    background-color: var(--darkRed);
+}
