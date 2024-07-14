@@ -30,14 +30,6 @@
     display: flex;
   }
   
-  .container {
-    flex-grow: 1;
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-    background-color: white;
-  }
-  
   /* @media (min-width: 1400px) {
     .container {
       max-width: 1400px;
