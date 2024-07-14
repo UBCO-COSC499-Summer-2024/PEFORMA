@@ -14,7 +14,7 @@ useAuth.mockReturnValue({
   
 });
 
-axios.get.mockResolvedValue({"data":{"history":[{}], entryCount:0, perPage: 10, currentPage: 1}});
+axios.get.mockResolvedValue({"data":{"history":[{instructorID:1, instructorName:"dohn joe", session:"2024S", term:2, score:11, term_num:1}], entryCount:0, perPage: 10, currentPage: 1, courseID: 1, courseCode: "123", latestTerm:20244, courseName:"Hi", courseDescription:"what", division:"COSC", avgScore:11}});
 
 
 test('Checks if buttons exist', async () => {

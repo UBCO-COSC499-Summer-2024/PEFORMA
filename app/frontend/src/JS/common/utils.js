@@ -62,8 +62,7 @@ export const getDivisionName = (division) => {
 export const getCurrentInstructor = (historyData) => {
     let history = historyData.history;
 		let currentInstructor = [];
-    console.log(history);
-		if (history[0].instructorID !== "") {
+		if (history.length > 0 && history[0].instructorID !== "") {
 		for (let i = 0; i < history.length; i++) {
       
       let term = "1";
