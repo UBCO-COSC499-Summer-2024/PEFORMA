@@ -66,7 +66,7 @@ function DeptStatusChangeServiceRole() {
 			<div className="container">
 				<CreateTopBar />
 
-				<div className="srlist-main" id="dept-service-role-list-test-content">
+				<div className="srlist-main" id="role-status-change-test-content">
 					<div className="subtitle-role">
 						List of Serivce Roles ({roleData.rolesCount} in Database)
 						<button className="status-change-button">
