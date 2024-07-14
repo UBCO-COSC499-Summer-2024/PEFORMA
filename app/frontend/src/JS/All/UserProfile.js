@@ -157,8 +157,8 @@ const ProfilePage = () => {
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
 				<CreateTopBar />
-				<div className="profile-page">
-					<div className="profile-card">
+				<div className="user-profilepage">
+					<div className="user-profilecard">
 						<div className="card-header">
 							<h2>Faculty Profile</h2>
 							<div className="performance-score">
@@ -167,58 +167,60 @@ const ProfilePage = () => {
 							</div>
 						</div>
 						<div className="card-content">
-							<div className="profile-header">
-								<div className="profile-image-container" onClick={handleImageClick}>
-									{editedData.image_data ? (
-										<img
-											src={`data:image/${editedData.image_type};base64,${editedData.image_data}`}
-											alt="Profile"
-											className="profile-image"
-										/>
-									) : (
-										<div className="no-image">
-											<span>No Image</span>
-										</div>
-									)}
-									{isEditing && (
-										<div className="image-overlay">
-											<span>Click to upload</span>
-										</div>
-									)}
-									<input
-										type="file"
-										ref={fileInputRef}
-										onChange={handleImageChange}
-										className="hidden-input"
-										accept="image/*"
-									/>
-								</div>
-								<div className="profile-info">
-									{isEditing ? (
+							<div className="user-profileheader">
+								<div className="user-profileheader-section">
+									<div className="user-profileimage-container" onClick={handleImageClick}>
+										{editedData.image_data ? (
+											<img
+												src={`data:image/${editedData.image_type};base64,${editedData.image_data}`}
+												alt="Profile"
+												className="user-profileimage"
+											/>
+										) : (
+											<div className="no-image">
+												<span>No Image</span>
+											</div>
+										)}
+										{isEditing && (
+											<div className="image-overlay">
+												<span>Click to upload</span>
+											</div>
+										)}
 										<input
-											name="name"
-											value={editedData.name}
-											onChange={handleInputChange}
-											className="edit-input name-input"
+											type="file"
+											ref={fileInputRef}
+											onChange={handleImageChange}
+											className="hidden-input"
+											accept="image/*"
 										/>
-									) : (
-										<h3>{profileData.name}</h3>
-									)}
-									<p className="ubc-id">UBC ID: {profileData.UBCId}</p>
-									{isEditing ? (
-										<input
-											name="email"
-											value={editedData.email}
-											onChange={handleInputChange}
-											className="edit-input email-input"
-										/>
-									) : (
-										<p className="email">{profileData.email}</p>
-									)}
+									</div>
+									<div className="user-profileinfo">
+										{isEditing ? (
+											<input
+												name="name"
+												value={editedData.name}
+												onChange={handleInputChange}
+												className="edit-input name-input"
+											/>
+										) : (
+											<h3>{profileData.name}</h3>
+										)}
+										{isEditing ? (
+											<input
+												name="email"
+												value={editedData.email}
+												onChange={handleInputChange}
+												className="edit-input email-input"
+											/>
+										) : (
+											<p className="email">{profileData.email}</p>
+										)}
+										<p className="ubc-id">UBC ID: {profileData.UBCId}</p>
+									</div>
 								</div>
 								{isEditing ? (
 									<div className="edit-buttons">
-										<button className="save-button" onClick={handleSave}>
+										<button className="user-profile-save-button" onClick={handleSave}>
 											Save
 										</button>
 										<button className="cancel-button" onClick={handleCancel}>
@@ -232,7 +234,7 @@ const ProfilePage = () => {
 								)}
 							</div>
 
-							<div className="profile-details">
+							<div className="user-profiledetails">
 								<div className="personal-info">
 									<h4>Personal Information</h4>
 									<hr />
