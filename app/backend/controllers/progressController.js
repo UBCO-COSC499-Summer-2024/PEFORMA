@@ -14,7 +14,6 @@ exports.getProgress = async (req, res) => {
         }
         const year = result.rows[0].year;
 
-        console.log("Latest year: ", year);
         query = `
         SELECT sra."profileId", sra."serviceRoleId", sra."year", sry."JANHour", sry."FEBHour",
         sry."MARHour", sry."APRHour", sry."MAYHour", sry."JUNHour",sry."JULHour",
@@ -46,44 +45,56 @@ exports.getProgress = async (req, res) => {
     }, { JANHour: 0, FEBHour: 0, MARHour: 0, APRHour: 0, MAYHour: 0, JUNHour: 0, JULHour: 0, AUGHour: 0, SEPHour: 0, OCTHour: 0, NOVHour: 0, DECHour: 0 });
     const currentMonth = parseInt(req.query.currentMonth);
     let progressHours;
+    let countMonth;
     console.log("CurrentMonth: ", currentMonth);
     switch(currentMonth){
   case 9:
-    progressHours = totals.SEPHour;
+    progressHours = 0;
+    countMonth = 0;
     break;
   case 10:
-    progressHours = totals.OCTHour;
+    progressHours = totals.SEPHour;
+    countMonth = 1;
     break;
   case 11:
-    progressHours = totals.NOVHour;
+    progressHours = totals.SEPHour+totals.OCTHour;
+    countMonth = 2;
     break;
   case 12:
-    progressHours = totals.DECHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour;
+    countMonth = 3;
     break;
   case 1:
-    progressHours = totals.JANHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour;
+    countMonth = 4;
     break;
   case 2:
-    progressHours = totals.FEBHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour+totals.JANHour;
+    countMonth = 5;
     break;
   case 3:
-    progressHours = totals.MARHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour+totals.JANHour+totals.FEBHour;
+    countMonth = 6;
     break;
   case 4:    
-    progressHours = totals.APRHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour+totals.JANHour+totals.FEBHour+totals.MARHour;
+    countMonth = 7;
     break;
   case 5:
-    progressHours = totals.MAYHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour+totals.JANHour+totals.FEBHour+totals.MARHour+totals.APRHour;
+    countMonth = 8;
     break;
   case 6:
-   
-    progressHours = totals.JUNHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour+totals.JANHour+totals.FEBHour+totals.MARHour+totals.APRHour+totals.MAYHour;
+    countMonth = 9;
     break;
   case 7:
-    progressHours = totals.JULHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour+totals.JANHour+totals.FEBHour+totals.MARHour+totals.APRHour+totals.MAYHour+totals.JUNHour;
+    countMonth = 10;
     break;
   case 8:
-    progressHours = totals.AUGHour;
+    progressHours = totals.SEPHour+totals.OCTHour+totals.NOVHour+totals.DECHour+totals.JANHour+totals.FEBHour+totals.MARHour+totals.APRHour+totals.MAYHour+totals.JUNHour+totals.JULHour;
+    countMonth = 11;
     break;
     }
     query = `SELECT "sRoleBenchmark" FROM "Profile" WHERE "profileId" = $1;`;
@@ -92,7 +103,7 @@ exports.getProgress = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const benchmark = result.rows[0].sRoleBenchmark;
+    const benchmark = result.rows[0].sRoleBenchmark*countMonth;
     const progressRate = Math.round((progressHours / benchmark) * 100);
     const output = {
       series: [progressRate]

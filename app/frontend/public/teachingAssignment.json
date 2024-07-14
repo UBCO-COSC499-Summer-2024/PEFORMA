@@ -1,0 +1,197 @@
+{
+  "currentTerm": 20241,
+  "currentPage": 1,
+  "perPage": 10,
+  "divisionCoursesCount": 21,
+  "teaching-info": [
+    {
+      "instructor": "Alice Johnson",
+      "ubcid": 72639284,
+      "division": "Mathematics",
+      "courses": ["MATH 101", "MATH 202"],
+      "courseName":["asd", "zxbcv"],
+      "courseid": [11, 12],
+      "email": "alice.johnson@example.com"
+    },
+    {
+      "instructor": "Bob Smith",
+      "ubcid": 38291057,
+      "division": "Physics",
+      "courses": ["PHYS 201", "PHYS 302"],
+      "courseName":["asdf", "gadsfg"],
+      "courseid": [21, 22],
+      "email": "bob.smith@example.com"
+    },
+    {
+      "instructor": "Carol Davis",
+      "ubcid": 10239485,
+      "division": "Physics",
+      "courses": ["CHEM 101", "CHEM 202"],
+      "courseName":["adfgasd", "adfg"],
+      "courseid": [31, 32],
+      "email": "carol.davis@example.com"
+    },
+    {
+      "instructor": "David Martinez",
+      "ubcid": 83920475,
+      "division": "Computer Science",
+      "courses": ["COSC 101", "COSC 202"],
+      "courseName":["COMPSICICICI 101", "test"],
+      "courseid": [41, 42],
+      "email": "david.martinez@example.com"
+    },
+    {
+      "instructor": "Eva Brown",
+      "ubcid": 28495023,
+      "division": "Mathematics",
+      "courses": ["MATH 103", "MATH 204"],
+      "courseName":["Test", "test"],
+      "courseid": [51, 52],
+      "email": "eva.brown@example.com"
+    },
+    {
+      "instructor": "Frank Wilson",
+      "ubcid": 74582013,
+      "division": "Physics",
+      "courses": ["PHYS 101", "PHYS 202"],
+      "courseName":["Test", "test"],
+      "courseid": [61, 62],
+      "email": "frank.wilson@example.com"
+    },
+    {
+      "instructor": "Grace Lewis",
+      "ubcid": 94857201,
+      "division": "Statistics",
+      "courses": ["STAT 101", "STAT 202"],
+      "courseName":["Test", "test"],
+      "courseid": [71, 72],
+      "email": "grace.lewis@example.com"
+    },
+    {
+      "instructor": "Henry Clark",
+      "ubcid": 38475629,
+      "division": "Mathematics",
+      "courses": ["MATH 102", "MATH 203"],
+      "courseName":["Test", "test"],
+      "courseid": [81, 82],
+      "email": "henry.clark@example.com"
+    },
+    {
+      "instructor": "Irene Adams",
+      "ubcid": 10293847,
+      "division": "Computer Science",
+      "courses": ["COSC 103", "COSC 204"],
+      "courseName":["Test", "DATA STUR"],
+      "courseid": [91, 92],
+      "email": "irene.adams@example.com"
+    },
+    {
+      "instructor": "Jack Taylor",
+      "ubcid": 29384756,
+      "division": "Statistics",
+      "courses": ["STAT 201", "STAT 302"],
+      "courseName":["Test", "test"],
+      "courseid": [101, 102],
+      "email": "jack.taylor@example.com"
+    },
+    {
+      "instructor": "Karen White",
+      "ubcid": 84759320,
+      "division": "Physics",
+      "courses": ["PHYS 103", "PHYS 204"],
+      "courseName":["Test", "test"],
+      "courseid": [111, 112],
+      "email": "karen.white@example.com"
+    },
+    {
+      "instructor": "Larry Hall",
+      "ubcid": 83920157,
+      "division": "Mathematics",
+      "courses": ["MATH 105", "MATH 206"],
+      "courseName":["Test", "test"],
+      "courseid": [121, 122],
+      "email": "larry.hall@example.com"
+    },
+    {
+      "instructor": "Maria Clark",
+      "ubcid": 49573920,
+      "division": "Computer Science",
+      "courses": ["COSC 105", "COSC 206"],
+      "courseName":["Test", "test"],
+      "courseid": [131, 132],
+      "email": "maria.clark@example.com"
+    },
+    {
+      "instructor": "Nancy Green",
+      "ubcid": 85749302,
+      "division": "Statistics",
+      "courses": ["STAT 103", "STAT 204"],
+      "courseName":["Test", "test"],
+      "courseid": [141, 142],
+      "email": "nancy.green@example.com"
+    },
+    {
+      "instructor": "Oscar Brown",
+      "ubcid": 19283746,
+      "division": "Physics",
+      "courses": ["PHYS 105", "PHYS 206"],
+      "courseName":["Test", "test"],
+      "courseid": [151, 152],
+      "email": "oscar.brown@example.com"
+    },
+    {
+      "instructor": "Patricia Smith",
+      "ubcid": 10384756,
+      "division": "Mathematics",
+      "courses": ["MATH 107", "MATH 208"],
+      "courseName":["Test", "test"],
+      "courseid": [161, 162],
+      "email": "patricia.smith@example.com"
+    },
+    {
+      "instructor": "Quincy Lee",
+      "ubcid": 19283756,
+      "division": "Computer Science",
+      "courses": ["COSC 107", "COSC 208"],
+      "courseName":["Test", "test"],
+      "courseid": [171, 172],
+      "email": "quincy.lee@example.com"
+    },
+    {
+      "instructor": "Rebecca Kim",
+      "ubcid": 29485730,
+      "division": "Statistics",
+      "courses": ["STAT 105", "STAT 206"],
+      "courseName":["Test", "test"],
+      "courseid": [181, 182],
+      "email": "rebecca.kim@example.com"
+    },
+    {
+      "instructor": "Samuel Johnson",
+      "ubcid": 39485720,
+      "division": "Physics",
+      "courses": ["PHYS 107", "PHYS 208"],
+      "courseName":["Test", "test"],
+      "courseid": [191, 192],
+      "email": "samuel.johnson@example.com"
+    },
+    {
+      "instructor": "Teresa Williams",
+      "ubcid": 58392047,
+      "division": "Computer Science",
+      "courses": ["COSC 109", "COSC 210"],
+      "courseName":["Test", "test"],
+      "courseid": [201, 202],
+      "email": "teresa.williams@example.com"
+    },
+    {
+      "instructor": "John Doe",
+      "ubcid": 12312312,
+      "division": "Computer Science",
+      "courses": ["COSC 111", "COSC 235"],
+      "courseName":["Test", "test"],
+      "courseid": [201, 202],
+      "email": "john.doe@ubc.ca"
+    }
+  ]
+}

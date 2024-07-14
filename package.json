@@ -29,14 +29,17 @@
     "dotenv": "^16.0.3",
     "express": "^4.19.2",
     "faker": "^5.5.3",
-    "pg": "^8.8.0",
-    "sinon": "^12.0.1",
     "jest-environment-jsdom": "^29.7.0",
     "jest-transform-stub": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
+    "lucide-react": "^0.408.0",
+    "pg": "^8.8.0",
     "react-apexcharts": "^1.4.1",
     "react-icons": "^5.2.1",
     "react-paginate": "^8.2.0",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "sinon": "^12.0.1"
   }
 }
