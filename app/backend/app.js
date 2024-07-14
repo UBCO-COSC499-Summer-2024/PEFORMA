@@ -34,6 +34,7 @@ const allInstructors = require('./routes/allInstructorsRoutes');
 const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const userProfileRoutes = require('./routes/userProfileRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
@@ -86,6 +87,8 @@ app.use('/api/profile', (req, res, next) => {
     console.log('Profile route hit:', req.url);
     next();
   }, userProfileRoutes);
+  
+app.use('/api', userRoutes);
 
 app.use('/api/courseHistory',courseHistoryRouter);
 
