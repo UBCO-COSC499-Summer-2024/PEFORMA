@@ -41,6 +41,7 @@ const teachingAssignment = require('./routes/teachingAssignment.js');
 
 const resetPasswordRouter = require('./routes/resetPassword');
 //const updatePasswordRouter = require('./routes/updatePassword.js')
+const updateRoleInfo = require('./routes/updateRoleInfo.js');
 
 const app = express();
 
@@ -108,6 +109,8 @@ app.post('/enter', async (req, res) => {
     }
 });
 
+
+
 //app.use('/api',saveDataToDatabase);
 
 /*
@@ -152,6 +155,7 @@ console.log('after');
 
 app.use('/api',instructorFetch);
 
+app.use('/api',updateRoleInfo);
 
 const port = 3001;
 app.listen(port, () => {

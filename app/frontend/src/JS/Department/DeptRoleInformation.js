@@ -1,254 +1,353 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import axios from 'axios';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import ReactPaginate from 'react-paginate';
-import '../../CSS/Department/DeptRoleInformation.css';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-
 import { useAuth } from '../common/AuthContext.js';
+import { fillEmptyItems, handlePageClick, currentItems, pageCount, checkAccess } from '../common/utils.js';
+
+import '../../CSS/Department/DeptRoleInformation.css';
 
 function RoleInformation() {
-	const { authToken, accountLogInType } = useAuth();
-	const navigate = useNavigate();
+  const { authToken, accountLogInType } = useAuth();
+  const navigate = useNavigate();
 
-	const [roleData, setRoleData] = useState({
-		assignees: [{}],
-		assigneeCount: 0,
-		perPage: 5,
-		currentPage: 1,
-	});
-	const [search, setSearch] = useState('');
+  const [roleData, setRoleData] = useState({
+    assignees: [{}],
+    assigneeCount: 0,
+    perPage: 5,
+    currentPage: 1,
+    roleName: '',
+    roleDescription: '',
+    department: '',
+  });
 
-	const [instructorData, setInstructorData] = useState({
-		instructors: [{}],
-		instructorCount: 0,
-		perPage: 8,
-		currentPage: 1,
-	});
-	const [showInstructorModal, setShowInstructorModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    roleName: '',
+    roleDescription: '',
+    department: '',
+  });
 
-	const params = new URLSearchParams(window.location.search);
-	const serviceRoleId = params.get('roleid');
+  const [search, setSearch] = useState('');
+  const [instructorData, setInstructorData] = useState({
+    instructors: [{}],
+    instructorCount: 0,
+    perPage: 8,
+    currentPage: 1,
+  });
 
-	useEffect(() => {
-		const fetchData = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
-			const numericAccountType = Number(accountLogInType);
-			if (numericAccountType !== 1 && numericAccountType !== 2) {
-				alert('No Access, Redirecting to instructor view');
-				navigate('/Dashboard');
-			}
-			const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
-				params: { serviceRoleId: serviceRoleId },
-				headers: { Authorization: `Bearer ${authToken.token}` },
-			});
-			const data = res.data;
-			const filledAssignees = fillEmptyAssignees(data.assignees, data.perPage);
-			setRoleData({ ...data, assignees: filledAssignees });
+  const [showInstructorModal, setShowInstructorModal] = useState(false);
+  const [showDeactivate, setShowDeactivate] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
-			const url2 = 'http://localhost:3000/assignInstructors.json'; // Gets from temporary JSON file. Should be replaced with backend.
-			const res2 = await axios.get(url2);
-			const data2 = res2.data;
-			const filledInstructors = fillEmptyAssignees(data2.instructors, data2.perPage);
-			setInstructorData({ ...data2, instructors: filledInstructors });
-		};
-		fetchData();
-	}, []);
+  const params = new URLSearchParams(window.location.search);
+  const serviceRoleId = params.get('roleid');
 
-	const fillEmptyAssignees = (assignees, perPage) => {
-		const filledAssignees = [...assignees];
-		const currentCount = assignees.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledAssignees.push({});
-			}
-		}
-		return filledAssignees;
-	};
+  useEffect(() => {
+    const fetchData = async () => {
+      checkAccess(accountLogInType, navigate, 'department');
+      try {
+        const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
+          params: { serviceRoleId },
+          headers: { Authorization: `Bearer ${authToken.token}` },
+        });
+        const roleData = roleRes.data;
+        setRoleData((prevData) => ({ ...prevData, ...roleData }));
+        setEditData({
+          roleName: roleData.roleName,
+          roleDescription: roleData.roleDescription,
+          department: roleData.department,
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-	function showAssignees(assigneeData, offset) {
-		if (assigneeData.assigneeCount > roleData.perPage) {
-			return assigneeData.assignees.slice(offset, offset + assigneeData.perPage);
-		}
-		return assigneeData.assignees;
-	}
+    fetchData();
+  }, [authToken, serviceRoleId]);
 
-	const handlePageClick = (data) => {
-		setRoleData((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setShowDeactivate(true);
+  };
 
-	const prevInstructors = useRef({});
+  const handleSaveClick = async () => {
+    setIsEditing(false);
+    setShowDeactivate(false);
 
-	const handleShowInstructorModal = () => {
-		prevInstructors.current = JSON.stringify(instructorData);
-		setShowInstructorModal(true);
-	};
+    const updatedRoleData = { ...roleData, ...editData, isActive };
+    setRoleData(updatedRoleData);
 
-	const handleCloseInstructorModal = (save) => {
-		if (!save) {
-			if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
-				setInstructorData(JSON.parse(prevInstructors.current));
-			} else {
-				return;
-			}
-		} else {
-			roleData.assignees = [];
-			console.log(roleData);
-			for (let i = 0; i < instructorData.instructors.length; i++) {
-				if (instructorData.instructors[i].assigned) {
-					roleData.assignees.push({
-						instructorID: instructorData.instructors[i].id,
-						name: instructorData.instructors[i].name,
-					});
-				}
-			}
+    try {
+      await axios.post('http://localhost:3001/api/updateRoleInfo', updatedRoleData, {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      console.log('Update successful');
+    } catch (error) {
+      console.error('Error updating role info', error);
+    }
+  };
 
-			updateAssignees();
-		}
-		setShowInstructorModal(false);
-	};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    adjustInputSize(e, name, value);
+  };
 
-	const updateAssignees = async () => {
-		let assignedInstructors = [];
-		for (let i = 0; i < instructorData.instructors.length; i++) {
-			if (instructorData.instructors[i].assigned === true) {
-				assignedInstructors.push(instructorData.instructors[i].id);
-			}
-		}
+  const adjustInputSize = (e, name, value) => {
+    if (name === 'roleName') {
+      e.target.style.width = `${Math.max(value.length + 1, 20)}ch`;
+    } else if (name === 'roleDescription') {
+      e.target.style.height = 'auto';
+      e.target.style.height = `${e.target.scrollHeight}px`;
+    }
+  };
 
-		// Submitting new data goes here:
-	};
+  const handleSwitchChange = () => {
+    setIsActive(!isActive);
+  };
 
-	const onSearch = (newSearch) => {
-		console.log('Searched:', newSearch);
-		setSearch(newSearch);
-		setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
-	};
+  const prevInstructors = useRef({});
 
-	const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
-	const offset = (roleData.currentPage - 1) * roleData.perPage;
+  const handleShowInstructorModal = async () => {
+    prevInstructors.current = JSON.stringify(instructorData);
+    setShowInstructorModal(true);
 
-	const filteredAssignees = roleData.assignees.filter(
-		(assignee) =>
-			(assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())
-	);
+    try {
+      const res = await axios.get('http://localhost:3001/api/instructors', {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      const professors = res.data.instructors;
+      if (Array.isArray(professors)) {
+        setInstructorData((prevData) => ({
+          ...prevData,
+          instructors: professors,
+          instructorCount: professors.length,
+        }));
+      } else {
+        throw new Error('Expected an array but got: ' + professors);
+      }
+    } catch (error) {
+      console.error('Error fetching professors:', error);
+      setInstructorData((prevData) => ({
+        ...prevData,
+        instructors: [],
+        instructorCount: 0,
+      }));
+    }
+  };
 
-	const currentAssignees = filteredAssignees.slice(
-		(roleData.currentPage - 1) * roleData.perPage,
-		roleData.currentPage * roleData.perPage
-	);
-	let i = 0;
-	return (
-		<div className="dashboard">
-			<CreateSideBar sideBarType="Department" />
-			<div className="container">
-				<CreateTopBar />
+  const handleSaveAssignedInstructors = (assignedInstructors) => {
+    const newAssignees = assignedInstructors.map(instr => ({
+      instructorID: instr.id,
+      name: instr.name
+    }));
+    setRoleData(prevData => ({
+      ...prevData,
+      assignees: newAssignees,
+      assigneeCount: newAssignees.length
+    }));
+    updateAssignees(newAssignees);
+  };
 
-				<div className="ri-main">
-					<h1 className="roleName">{roleData.roleName}</h1>
-					<div className="description">{roleData.roleDescription}</div>
-					<p>
-						Department:{' '}
-						<span className="bold" role="contentinfo">
-							{roleData.department}
-						</span>
-					</p>
-					<p>
-						Benchmark:{' '}
-						<span className="bold" role="contentinfo">
-							{roleData.benchmark} hours/month
-						</span>
-					</p>
-					<div className="buttons">
-						<button role="button" id="edit">
-							Edit Role
-						</button>
-						<button role="button" id="deactivate">
-							Deactivate
-						</button>
-					</div>
+  const handleCloseInstructorModal = (save) => {
+    if (!save && !window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
+      return;
+    }
+    setShowInstructorModal(false);
+  };
 
-					<h1 className="roleName">Assignee's</h1>
-					<button
-						type="button"
-						data-testid="assign-button"
-						className="assign-button"
-						onClick={handleShowInstructorModal}>
-						<span className="plus">+</span> Assign Professors(s)
-					</button>
-					<p>Current Assignee's</p>
-					<input
-						type="text"
-						id="search"
-						placeholder="Search for people assigned to this role."
-						onChange={(e) => onSearch(e.target.value)}
-					/>
-					<div className="assigneeTable">
-						<table>
-							<tbody>
-								{currentAssignees.map((assignee) => {
-									i++;
-									if (assignee.instructorID == '' || assignee.instructorID == null) {
-										return (
-											<tr key={i}>
-												<td></td>
-											</tr>
-										);
-									} else {
-										return (
-											<tr key={assignee.instructorID}>
-												<td>
-													<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-														{assignee.name} ID:{assignee.instructorID}
-													</Link>
-												</td>
-											</tr>
-										);
-									}
-								})}
-							</tbody>
-							<tfoot>
-								<tr>
-									<td>
-										<ReactPaginate
-											previousLabel={'<'}
-											nextLabel={'>'}
-											breakLabel={'...'}
-											pageCount={pageCount}
-											marginPagesDisplayed={3}
-											pageRangeDisplayed={0}
-											onPageChange={handlePageClick}
-											containerClassName={'pagination'}
-											activeClassName={'active'}
-										/>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-					{showInstructorModal && (
-						<AssignInstructorsModal
-							instructorData={instructorData}
-							setInstructorData={setInstructorData}
-							handleCloseInstructorModal={handleCloseInstructorModal}
-						/>
-					)}
-				</div>
-			</div>
-		</div>
-	);
+  const updateAssignees = async (newAssignees) => {
+    const assignedInstructors = newAssignees.map(instr => instr.instructorID);
+    console.log("Assigned profs are:", assignedInstructors, "And the assigned service Role Id is", serviceRoleId);
+
+    const div = getDivision(roleData.department);
+
+    for (const id of assignedInstructors) {
+      const newAssigneeList = {
+        profileId: id,
+        serviceRole: roleData.roleName,
+        year: new Date().getFullYear(),
+        division: div,
+      };
+
+      try {
+        await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
+          headers: { Authorization: `Bearer ${authToken.token}` },
+        });
+      } catch (error) {
+        console.error('Error updating assignees', error);
+      }
+    }
+    window.location.reload();
+  };
+
+  const getDivision = (department) => {
+    switch (department) {
+      case "Computer Science": return 1;
+      case "Mathematics": return 2;
+      case "Physics": return 3;
+      case "Statistics": return 4;
+      default: return 0;
+    }
+  };
+
+  const onSearch = (newSearch) => {
+    setSearch(newSearch);
+    setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
+  };
+
+  const filteredAssignees = roleData.assignees.filter(
+    (assignee) =>
+      (assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())
+  );
+
+  const currentAssignees = currentItems(filteredAssignees, roleData.currentPage, roleData.perPage);
+  
+  return (
+    <div className="dashboard">
+      <CreateSideBar sideBarType="Department" />
+      <div className="container">
+        <CreateTopBar />
+        <div className="ri-main">
+          <h1 className="roleName">
+            {isEditing ? (
+              <input
+                type="text"
+                name="roleName"
+                value={editData.roleName}
+                onChange={handleChange}
+                className="editable-input"
+                style={{ minWidth: '200px', width: `${Math.max(editData.roleName.length + 1, 20)}ch`, height: 'auto' }}
+              />
+            ) : (
+              roleData.roleName
+            )}
+          </h1>
+          <div className="description" style={{ whiteSpace: isEditing ? 'pre-wrap' : '' }}>
+            {isEditing ? (
+              <textarea
+                name="roleDescription"
+                value={editData.roleDescription}
+                onChange={handleChange}
+                className="editable-textarea"
+                style={{ minHeight: '80px', height: 'auto', overflow: 'hidden' }}
+              />
+            ) : (
+              <p style={{ whiteSpace: 'pre-wrap' }}>{roleData.roleDescription}</p>
+            )}
+          </div>
+          <p>
+            Department:{' '}
+            {isEditing ? (
+              <select
+                name="department"
+                value={editData.department}
+                onChange={handleChange}
+                className="editable-select"
+                style={{ height: 'auto' }}
+              >
+                <option value="Computer Science">Computer Science (COSC)</option>
+                <option value="Mathematics">Mathematics (MATH)</option>
+                <option value="Physics">Physics (PHYS)</option>
+                <option value="Statistics">Statistics (STAT)</option>
+              </select>
+            ) : (
+              <span className="bold" role="contentinfo">
+                {roleData.department}
+              </span>
+            )}
+          </p>
+          <div className="buttons">
+            {isEditing ? (
+              <button role="button" onClick={handleSaveClick}>
+                Save
+              </button>
+            ) : (
+              <button role="button" id="edit" onClick={handleEditClick}>
+                Edit Role
+              </button>
+            )}
+            {showDeactivate && (
+              <label className="switch">
+                <input type="checkbox" checked={isActive} onChange={handleSwitchChange} />
+                <span className="slider round"></span>
+                {isActive ? 'Active' : 'De-active'}
+              </label>
+            )}
+          </div>
+          <h1 className="roleName">Assignee's</h1>
+          <button
+            type="button"
+            data-testid="assign-button"
+            className="assign-button"
+            onClick={handleShowInstructorModal}
+          >
+            <span className="plus">+</span> Assign Professors (s)
+          </button>
+          <p>Current Assignee's</p>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search for people assigned to this role."
+            onChange={(e) => onSearch(e.target.value)}
+          />
+          <div className="assigneeTable">
+            <table>
+              <tbody>
+                {currentAssignees.map((assignee, index) => (
+                  <tr key={index}>
+                    {assignee.instructorID ? (
+                      <td>
+                        <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+                          {assignee.name} ID:{assignee.instructorID}
+                        </Link>
+                      </td>
+                    ) : (
+                      <td></td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>
+                    <ReactPaginate
+                      previousLabel={'<'}
+                      nextLabel={'>'}
+                      breakLabel={'...'}
+                      pageCount={pageCount(roleData.assigneeCount, roleData.perPage)}
+                      marginPagesDisplayed={3}
+                      pageRangeDisplayed={0}
+                      onPageChange={(data) => handlePageClick(data, setRoleData)}
+                      containerClassName={'pagination'}
+                      activeClassName={'active'}
+                    />
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          {showInstructorModal && (
+            <AssignInstructorsModal
+              instructorData={instructorData}
+              setInstructorData={setInstructorData}
+              handleCloseInstructorModal={handleCloseInstructorModal}
+              handleSaveAssignedInstructors={handleSaveAssignedInstructors}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default RoleInformation;
