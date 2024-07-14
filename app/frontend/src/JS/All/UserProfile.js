@@ -135,18 +135,24 @@ const ProfilePage = () => {
     };
 
     const renderNewlineSeparatedText = (text) => {
-        if (typeof text === 'string') {
+        if (typeof text === 'string' && text.trim() !== '') {
             return text.split('\n').map((item, index) => (
                 <p key={index} className="text-item">{item}</p>
             ));
-        } else if (Array.isArray(text)) {
+        } else if (Array.isArray(text) && text.length > 0) {
             return text.map((item, index) => (
                 <p key={index} className="text-item">{item}</p>
             ));
         } else {
-            console.error('Expected string or array, received:', typeof text, text);
             return <p className="text-item">No data available</p>;
         }
+    };
+
+    const renderFieldContent = (content) => {
+        if (content === null || content === undefined || content === '' || content === 0) {
+            return <p>No data available</p>;
+        }
+        return <p>{content}</p>;
     };
 
     if (!profileData) {
@@ -162,10 +168,12 @@ const ProfilePage = () => {
                     <div className="user-profilecard">
                         <div className="card-header">
                             <h2>My Profile</h2>
-                            <div className="performance-score">
-                                <div>Performance Score</div>
-                                <div>{profileData.performance_score}</div>
-                            </div>
+                            {isInstructor && (
+                                <div className="performance-score">
+                                    <div>Performance Score</div>
+                                    <div>{profileData.performance_score || 'No data available'}</div>
+                                </div>
+                            )}
                         </div>
                         <div className="card-content">
                             <div className="user-profileheader">
@@ -204,7 +212,7 @@ const ProfilePage = () => {
                                                 className="edit-input name-input"
                                             />
                                         ) : (
-                                            <h3>{profileData.name}</h3>
+                                            <h3>{profileData.name || 'No data available'}</h3>
                                         )}
                                         {isEditing ? (
                                             <input
@@ -214,9 +222,11 @@ const ProfilePage = () => {
                                                 className="edit-input email-input"
                                             />
                                         ) : (
-                                            <p className="email">{profileData.email}</p>
+                                            <p className="email">{profileData.email || 'No data available'}</p>
                                         )}
-                                        <p className="ubc-id">UBC ID: {profileData.UBCId}</p>
+                                        {profileData.UBCId !== 0 && profileData.UBCId !== null && (
+                                            <p className="ubc-id">UBC ID: {profileData.UBCId}</p>
+                                        )}
                                     </div>
                                 </div>
                                 {isEditing ? (
@@ -235,11 +245,11 @@ const ProfilePage = () => {
                                 )}
                             </div>
 
-                            <div className="user-profiledetails">
+                            <div className={isInstructor ? "user-profiledetails-grid" : ""}>
                                 <div className="personal-info">
                                     <h4>Personal Information</h4>
                                     <hr />
-                                    <div className="info-grid">
+                                    <div className={isInstructor ? "info-grid" : "info-row"}>
                                         <div>
                                             <h4>Office Location</h4>
                                             {isEditing ? (
@@ -249,9 +259,7 @@ const ProfilePage = () => {
                                                     onChange={handleInputChange}
                                                     className="edit-input"
                                                 />
-                                            ) : (
-                                                <p>{profileData.office_location}</p>
-                                            )}
+                                            ) : renderFieldContent(profileData.office_location)}
                                         </div>
                                         <div>
                                             <h4>Phone Number</h4>
@@ -262,14 +270,14 @@ const ProfilePage = () => {
                                                     onChange={handleInputChange}
                                                     className="edit-input"
                                                 />
-                                            ) : (
-                                                <p>{profileData.phone_number}</p>
-                                            )}
+                                            ) : renderFieldContent(profileData.phone_number)}
                                         </div>
-                                        <div>
-                                            <h4>Division</h4>
-                                            <p>{profileData.division}</p>
-                                        </div>
+                                        {(profileData.division !== 0 && profileData.division !== null) && (
+                                            <div>
+                                                <h4>Division</h4>
+                                                {renderFieldContent(profileData.division)}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 {isInstructor && (
@@ -294,7 +302,11 @@ const ProfilePage = () => {
                                                 </div>
                                                 <div>
                                                     <h4>Hours Completed</h4>
-                                                    <p>{profileData.working_hours} / {profileData.benchmark} Hours</p>
+                                                    <p>
+                                                        {profileData.working_hours !== 0 || profileData.benchmark !== 0
+                                                            ? `${profileData.working_hours} / ${profileData.benchmark} Hours`
+                                                            : 'No data available'}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>

@@ -22,6 +22,13 @@ CREATE TABLE "Division" (
   "dname"       varchar(100)
 );
 
+-- -- Create images
+CREATE TABLE "Image" (
+  "imageId"     SERIAL PRIMARY KEY,
+  "file_type"   varchar(4),
+  "image_data"  BYTEA
+);
+
 -- Create profiles
 CREATE TABLE "Profile" (
   "profileId"             SERIAL PRIMARY KEY,
@@ -37,15 +44,8 @@ CREATE TABLE "Profile" (
   "UBCId"                 varchar(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  "imageId"               integer,
+  "imageId"               integer REFERENCES "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
   UNIQUE ("profileId", "email")
-);
-
--- -- Create images
-CREATE TABLE "Image" (
-  "imageId"     SERIAL PRIMARY KEY,
-  "file_type"   char(3),
-  "image_data"  BYTEA
 );
 
 -- Create accounts
