@@ -1,6 +1,7 @@
 const pool = require('../db/index.js');
 
 exports.getUserProfileById = async (profileId) => {
+    console.log('Service handler for profile GET reached. ProfileId:', profileId);
     const query = `
     SELECT 
       p."profileId",
@@ -32,7 +33,7 @@ exports.getUserProfileById = async (profileId) => {
         WHERE stp."profileId" = p."profileId"), 1
       ) AS performance_score
     FROM "Profile" p
-    JOIN "Division" d ON p."divisionId" = d."divisionId"
+    LEFT JOIN "Division" d ON p."divisionId" = d."divisionId"
     LEFT JOIN "Image" i ON p."imageId" = i."imageId"
     WHERE p."profileId" = $1
   `;

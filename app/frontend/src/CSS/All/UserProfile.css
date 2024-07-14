@@ -169,7 +169,7 @@
     gap: 0.5rem;
   }
   
-  .edit-button, .user-profile-save-button, .cancel-button {
+  .user-profile-edit-button, .user-profile-save-button, .cancel-button {
     height: 2.82rem;
     font-size: 1.125rem;
     padding: 0.75rem 1.5rem;
@@ -177,12 +177,12 @@
     transition: background-color 0.15s ease-in-out;
   }
   
-  .edit-button, .user-profile-save-button {
+  .user-profile-edit-button, .user-profile-save-button {
     background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
   }
   
-  .edit-button:hover, .user-profile-save-button:hover {
+  .user-profile-edit-button:hover, .user-profile-save-button:hover {
     background-color: hsl(var(--primary) / 0.9);
   }
   
