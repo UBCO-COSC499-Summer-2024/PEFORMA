@@ -31,6 +31,7 @@ const ProfilePage = () => {
     const [tempImage, setTempImage] = useState(null);
 
     const isInstructor = accountType.includes(3);
+    const MAX_FILE_SIZE = 600 * 1024; // 600 KB
 
     useEffect(() => {
         fetchUserProfileData();
@@ -72,32 +73,63 @@ const ProfilePage = () => {
         setTempImage(null);
     };
 
-    const handleSave = async () => {
-        try {
-            const formData = new FormData();
-            Object.keys(editedData).forEach(key => {
-                formData.append(key, editedData[key]);
-            });
-            if (tempImage) {
-                formData.append('image', tempImage);
-            }
-            const res = await axios.put(
-                `http://localhost:3001/api/profile/${profileId}`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${authToken.token}`,
-                        'Content-Type': 'multipart/form-data'
-                    },
-                }
-            );
-            setProfileData({ ...res.data });
-            setIsEditing(false);
-            setTempImage(null);
-        } catch (error) {
-            console.error('Error updating profile:', error);
+    const validateName = (name) => {
+        if (!name.trim().includes(' ')) {
+            alert("Please enter both first and last name separated by a space.");
+            return false;
         }
+        return true;
     };
+
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+        return true;
+    };
+
+    const validatePhoneNumber = (phoneNumber) => {
+        const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+        if (!phoneRegex.test(phoneNumber)) {
+            alert("Please enter a valid phone number in the format xxx-xxx-xxxx.");
+            return false;
+        }
+        return true;
+    };
+
+    const handleSave = async () => {
+		if (!validateName(editedData.name) || 
+			!validateEmail(editedData.email) || 
+			!validatePhoneNumber(editedData.phone_number)) {
+			return;
+		}
+	
+		try {
+			const formData = new FormData();
+			Object.keys(editedData).forEach(key => {
+				formData.append(key, editedData[key]);
+			});
+			if (tempImage) {
+				formData.append('image', tempImage);
+			}
+			await axios.put(
+				`http://localhost:3001/api/profile/${profileId}`,
+				formData,
+				{
+					headers: {
+						Authorization: `Bearer ${authToken.token}`,
+						'Content-Type': 'multipart/form-data'
+					},
+				}
+			);
+			window.location.reload(); // Full page refresh
+		} catch (error) {
+			console.error('Error updating profile:', error);
+			alert("An error occurred while updating the profile. Please try again.");
+		}
+	};
 
     const handleCancel = () => {
         setIsEditing(false);
@@ -119,7 +151,14 @@ const ProfilePage = () => {
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+
+            if (file.size > MAX_FILE_SIZE) {
+                alert(`Image file is too large. Please choose an image smaller than 600 KB.`);
+                return;
+            }
+
             setTempImage(file);
+
             const reader = new FileReader();
             reader.onloadend = () => {
                 const result = reader.result;
@@ -210,6 +249,7 @@ const ProfilePage = () => {
                                                 value={editedData.name}
                                                 onChange={handleInputChange}
                                                 className="edit-input name-input"
+                                                placeholder="First Last"
                                             />
                                         ) : (
                                             <h3>{profileData.name || 'No data available'}</h3>
@@ -220,6 +260,7 @@ const ProfilePage = () => {
                                                 value={editedData.email}
                                                 onChange={handleInputChange}
                                                 className="edit-input email-input"
+                                                placeholder="email@example.com"
                                             />
                                         ) : (
                                             <p className="email">{profileData.email || 'No data available'}</p>
@@ -269,6 +310,7 @@ const ProfilePage = () => {
                                                     value={editedData.phone_number}
                                                     onChange={handleInputChange}
                                                     className="edit-input"
+                                                    placeholder="xxx-xxx-xxxx"
                                                 />
                                             ) : renderFieldContent(profileData.phone_number)}
                                         </div>
