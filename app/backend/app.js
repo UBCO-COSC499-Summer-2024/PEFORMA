@@ -28,7 +28,7 @@ const allCoursesRoutes = require('./routes/allCoursesRoutes.js');
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
-
+const assignRole = require('./routes/assignRoleRoutes.js');
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
 const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
@@ -57,7 +57,7 @@ app.use('/',queryAccountRouter);//serach account in db
 app.use('/', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/',AccountTypeRouter);//check account type
-
+app.use('/api/assignRole',assignRole);
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
 app.use('/api/create-account', createAccount);
@@ -114,22 +114,7 @@ app.post('/enter', async (req, res) => {
 //app.use('/api',saveDataToDatabase);
 
 /*
-app.post('/create-account', async (req, res) => {
-    console.log('Received data:', req.body);  // 打印接收到的数据
-    //res.send('Data received successfully');  // 响应前端
 
-
-//Profile BE
-app.use('/api/workingHoursRoutes',workingHoursRoutes);
-app.use('/api/deptPerformance',DeptPerformanceRouter);
-app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
-app.use('/api/progressRoutes',progressRoutes);
-
-
-//Performance BE
-//app.use('/api/instructorPerformance',performanceRoutes);
-// Service role retrieval process
-app.use('/api/service-roles', serviceRoleRoutes);
 
 
 
