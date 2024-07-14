@@ -20,20 +20,18 @@ function AdminStatusChangeMember() {
   const [search, setSearch] = useState('');
 
 	useEffect(() => {
-		checkAccess(accountLogInType, navigate, 'admin');		
+		// checkAccess(accountLogInType, navigate, 'admin', authToken); 		
+		checkAccess(accountLogInType, navigate, 'admin');
 		if (location.state.memberData) {
-			const filledMembers = fillEmptyItems(
-				location.state.memberData.members,
-				location.state.memberData.perPage
-			);
-			setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
+				const filledMembers = fillEmptyItems(location.state.memberData.members, location.state.memberData.perPage);
+				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
 		}
-	}, [location.state]);
+	}, [accountLogInType, navigate, location.state.memberData]);
+	
 
 	const toggleStatus = async (member, newStatus) => {
 		const updatedMember = { ...member, status: newStatus };
 		const updatedMembers = memberData.members.map((m) => (m.ubcid === member.ubcid ? updatedMember : m));
-		console.log("request\n",  { memberUbcId: member.ubcid, newStatus })
 		try {
 			const response = await axios.post(
 				`http://localhost:3001/api/adminStatusChangeMembers`, 
