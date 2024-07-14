@@ -74,7 +74,8 @@ exports.getUserProfile = async (req, res) => {
             return res.status(404).json({ message: 'Course assignments not found' });
         }
         //const courses = result.rows;
-        const teachingRoles = result.rows.map(row => ({ assign: row.DivisionAndCourse, courseId:row.courseId }));  // Mapping ctitle to roles
+        const teachingRoles = result.rows.map(row => ({ courseid:row.courseId, assign: row.DivisionAndCourse }));  // Mapping ctitle to roles
+
         // Build the profile data object
         const profileData = {
             name: name,
@@ -87,6 +88,7 @@ exports.getUserProfile = async (req, res) => {
             teachingAssignments:teachingRoles
         };    
         // Send response
+        console.log("profile data: ", profileData);
         res.json(profileData);
     } catch (error) {
         console.error('Database query error:', error);
