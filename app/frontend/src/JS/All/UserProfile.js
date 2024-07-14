@@ -7,7 +7,7 @@ import axios from 'axios';
 import '../../CSS/All/UserProfile.css';
 
 const ProfilePage = () => {
-    const { accountType, profileId, authToken } = useAuth();
+    const { accountType, accountLogInType, profileId, authToken } = useAuth();
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const [profileData, setProfileData] = useState({
@@ -194,13 +194,24 @@ const ProfilePage = () => {
         return <p>{content}</p>;
     };
 
+	// Function to determine sideBarType based on accountLogInType
+    const getSideBarType = () => {
+        if (accountLogInType === 1 || accountLogInType === 2) {
+            return "Department";
+        } else if (accountLogInType === 3) {
+            return "Instructor";
+        } else if (accountLogInType === 4) {
+            return "Admin";
+        }
+    };
+
     if (!profileData) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Department" />
+            <CreateSideBar sideBarType={getSideBarType()} />
             <div className="container">
                 <CreateTopBar />
                 <div className="user-profilepage">
