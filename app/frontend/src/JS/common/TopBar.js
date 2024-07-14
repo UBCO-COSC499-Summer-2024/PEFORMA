@@ -133,41 +133,48 @@ function TopBar({ searchListType, onSearch }) {
 	}
 
 	const renderAccountSwitcher = () => {
-		return (
-			<div className="account-switcher">
-				{renderProfileImage()}
-				{showDropdown && (
-					<ul className="dropdown-menu">
-						{activeMenu === 'main' ? (
-							<>
-								<li onClick={() => navigate('/UserProfile')}>My profile</li>
-								<li onClick={() => navigate('/ChangePassword')}>My account</li>
-								{accountType.length > 1 && (
-									<li onClick={() => setActiveMenu('switch')}>Switch account</li>
-								)}
-							</>
-						) : (
-							<>
-								<li onClick={() => setActiveMenu('main')} style={{ fontWeight: 'bold' }}>
-									← Back
-								</li>
-								{accountType.map((type) => (
-									<li key={type} onClick={() => handleSwitchAccount(type)}>
-										{getAccountTypeLabel(type)}
-									</li>
-								))}
-							</>
-						)}
-					</ul>
-				)}
-			</div>
-		);
-	};
+        return (
+            <div className="account-switcher">
+                {renderProfileImage()}
+                {showDropdown && (
+                    <ul className="dropdown-menu">
+                        {activeMenu === 'main' ? (
+                            <>
+                                <li onClick={() => navigate('/UserProfile')}>My profile</li>
+                                <li onClick={() => setActiveMenu('account')}>My account</li>
+                                {accountType.length > 1 && (
+                                    <li onClick={() => setActiveMenu('switch')}>Switch account</li>
+                                )}
+                            </>
+                        ) : activeMenu === 'switch' ? (
+                            <>
+                                <li onClick={() => setActiveMenu('main')} style={{ fontWeight: 'bold' }}>
+                                    ← Back
+                                </li>
+                                {accountType.map((type) => (
+                                    <li key={type} onClick={() => handleSwitchAccount(type)}>
+                                        {getAccountTypeLabel(type)}
+                                    </li>
+                                ))}
+                            </>
+                        ) : activeMenu === 'account' ? (
+                            <>
+                                <li onClick={() => setActiveMenu('main')} style={{ fontWeight: 'bold' }}>
+                                    ← Back
+                                </li>
+                                <li onClick={() => navigate('/ChangePassword')}>Change password</li>
+                            </>
+                        ) : null}
+                    </ul>
+                )}
+            </div>
+        );
+    };
 
-	const toggleDropdown = () => {
-		setShowDropdown(!showDropdown);
-		setActiveMenu('main');
-	};
+    const toggleDropdown = () => {
+        setShowDropdown(!showDropdown);
+        setActiveMenu('main');
+    };
 
 	let placeHolderText = '';
 	switch (searchListType) {
