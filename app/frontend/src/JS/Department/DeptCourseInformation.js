@@ -18,7 +18,6 @@ function CourseInformation() {
 		entryCount: 0,
 		perPage: 10,
 		currentPage: 1,
-		currentInstructor: "Willem Dafoe"
 	});
 
 	useEffect(() => {
@@ -87,13 +86,11 @@ function CourseInformation() {
 				<CreateTopBar />
 
 				<div className="courseinfo-main">
-					<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
+					<Link to="/DeptCourseList">&lt; Back to All Courses</Link>
 					<h1 className="courseName" role="contentinfo">
 						{historyData.courseCode}: {historyData.courseName}
 					</h1>
 					<p role="contentinfo">{historyData.courseDescription}</p>
-					<br/>
-					<p id="current-instructor">Current Instructor: {historyData.currentInstructor}</p>
 					<div className="bold score">
 						Average Performance Score: <span role="contentinfo">{historyData.avgScore}</span>
 					</div>

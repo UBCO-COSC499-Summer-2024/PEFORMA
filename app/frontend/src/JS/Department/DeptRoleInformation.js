@@ -1,3 +1,5 @@
+
+/*
 import React, { useState, useEffect, useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
@@ -12,19 +14,29 @@ import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function RoleInformation() {
-	const { authToken, accountLogInType } = useAuth();
+	const { authToken, accountType } = useAuth();
 	const navigate = useNavigate();
 
 	const [roleData, setRoleData] = useState({
-		assignees: [{}],
+		assignees: [],
 		assigneeCount: 0,
 		perPage: 5,
 		currentPage: 1,
+		roleName: '',
+		roleDescription: '',
+		department: '',
+
+	});
+	const [isEditing, setIsEditing] = useState(false);
+	const [editData, setEditData] = useState({
+		roleName: '',
+		roleDescription: '',
+
 	});
 	const [search, setSearch] = useState('');
 
 	const [instructorData, setInstructorData] = useState({
-		instructors: [{}],
+		instructors: [], // Initialize as an empty array
 		instructorCount: 0,
 		perPage: 8,
 		currentPage: 1,
@@ -40,27 +52,30 @@ function RoleInformation() {
 				navigate('/Login');
 				return;
 			}
-			const numericAccountType = Number(accountLogInType);
+			const numericAccountType = Number(accountType);
 			if (numericAccountType !== 1 && numericAccountType !== 2) {
 				alert('No Access, Redirecting to instructor view');
 				navigate('/Dashboard');
 			}
-			const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
-				params: { serviceRoleId: serviceRoleId },
-				headers: { Authorization: `Bearer ${authToken.token}` },
-			});
-			const data = res.data;
-			const filledAssignees = fillEmptyAssignees(data.assignees, data.perPage);
-			setRoleData({ ...data, assignees: filledAssignees });
-
-			const url2 = 'http://localhost:3000/assignInstructors.json'; // Gets from temporary JSON file. Should be replaced with backend.
-			const res2 = await axios.get(url2);
-			const data2 = res2.data;
-			const filledInstructors = fillEmptyAssignees(data2.instructors, data2.perPage);
-			setInstructorData({ ...data2, instructors: filledInstructors });
+			try {
+				// Fetch role data
+				const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
+					params: { serviceRoleId: serviceRoleId },
+					headers: { Authorization: `Bearer ${authToken.token}` },
+				});
+				const roleData = roleRes.data;
+				setRoleData(prevData => ({ ...prevData, ...roleData }));
+				setEditData({
+					roleName: roleData.roleName,
+					roleDescription: roleData.roleDescription,
+				});
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
 		};
+
 		fetchData();
-	}, []);
+	}, [authToken, accountType, navigate, serviceRoleId]);
 
 	const fillEmptyAssignees = (assignees, perPage) => {
 		const filledAssignees = [...assignees];
@@ -72,6 +87,58 @@ function RoleInformation() {
 			}
 		}
 		return filledAssignees;
+	};
+
+	const handleEditClick = () => {
+		setIsEditing(true);
+	};
+
+	const handleSaveClick = async () => {
+		setIsEditing(false);
+		const assignedInstructors = instructorData.instructors
+			.filter(instructor => instructor.assigned)
+			.map(instructor => ({
+				instructorID: instructor.id,
+				name: instructor.name,
+			}));
+
+		const updatedRoleData = {
+			roleName: editData.roleName,
+			roleDescription: editData.roleDescription,
+			assignees: assignedInstructors,
+			serviceRoleId: serviceRoleId
+		};
+
+		setRoleData(prevData => ({
+			...prevData,
+			...updatedRoleData,
+		}));
+
+		console.log('Updated Role Data:', JSON.stringify(updatedRoleData));
+
+		try {
+			const res = await axios.post('http://localhost:3001/api/updateRoleInfo'
+				,updatedRoleData
+				//, {headers: { Authorization: `Bearer ${authToken.token}` },}
+		);
+			console.log('Update successful', res.data);
+		} catch (error) {
+			console.error('Error updating role info', error);
+		}
+	};
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setEditData((prevData) => ({
+			...prevData,
+			[name]: value,
+		}));
+		if (name === "roleName") {
+			e.target.style.width = ((value.length + 1) * 8) + "px";
+		} else if (name === "roleDescription") {
+			e.target.style.height = "auto";
+			e.target.style.height = (e.target.scrollHeight) + "px";
+		}
 	};
 
 	function showAssignees(assigneeData, offset) {
@@ -90,9 +157,40 @@ function RoleInformation() {
 
 	const prevInstructors = useRef({});
 
-	const handleShowInstructorModal = () => {
+	const handleShowInstructorModal = async () => {
 		prevInstructors.current = JSON.stringify(instructorData);
 		setShowInstructorModal(true);
+
+		try {
+			console.log("serviceroleId:",serviceRoleId);
+			const res = await axios.get('http://localhost:3001/api/instructors',
+				{
+				headers: { Authorization: `Bearer ${authToken.token}`},
+				}
+			);
+			const professors = res.data.instructors;
+			if (Array.isArray(professors)) {
+				setInstructorData(prevData => ({
+					...prevData,
+					instructors: professors,
+					instructorCount: professors.length,
+				}));
+			} else {
+				setInstructorData(prevData => ({
+					...prevData,
+					instructors: [],
+					instructorCount: 0,
+				}));
+				console.error('Expected an array but got:', professors);
+			}
+		} catch (error) {
+			console.error('Error fetching professors:', error);
+			setInstructorData(prevData => ({
+				...prevData,
+				instructors: [],
+				instructorCount: 0,
+			}));
+		}
 	};
 
 	const handleCloseInstructorModal = (save) => {
@@ -104,7 +202,6 @@ function RoleInformation() {
 			}
 		} else {
 			roleData.assignees = [];
-			console.log(roleData);
 			for (let i = 0; i < instructorData.instructors.length; i++) {
 				if (instructorData.instructors[i].assigned) {
 					roleData.assignees.push({
@@ -113,7 +210,6 @@ function RoleInformation() {
 					});
 				}
 			}
-
 			updateAssignees();
 		}
 		setShowInstructorModal(false);
@@ -127,7 +223,10 @@ function RoleInformation() {
 			}
 		}
 
-		// Submitting new data goes here:
+		const newAssigneeData = {
+			roleId: serviceRoleId,
+			assignees: assignedInstructors,
+		};
 	};
 
 	const onSearch = (newSearch) => {
@@ -157,24 +256,49 @@ function RoleInformation() {
 				<CreateTopBar />
 
 				<div className="ri-main">
-					<h1 className="roleName">{roleData.roleName}</h1>
-					<div className="description">{roleData.roleDescription}</div>
+					<h1 className="roleName">
+						{isEditing ? (
+							<input
+								type="text"
+								name="roleName"
+								value={editData.roleName}
+								onChange={handleChange}
+								className="editable-input"
+								style={{ minWidth: "200px", width: `${Math.max(editData.roleName.length + 1, 20)}ch`,height:"auto" }}
+							/>
+						) : (
+							roleData.roleName
+						)}
+					</h1>
+					<div className="description" style={{ whiteSpace: isEditing ? "pre-wrap" : "" }}>
+						{isEditing ? (
+							<textarea
+								name="roleDescription"
+								value={editData.roleDescription}
+								onChange={handleChange}
+								className="editable-textarea"
+								style={{ minHeight: "80px", height: "auto", overflow: "hidden" }}
+							/>
+						) : (
+							<p style={{ whiteSpace: "pre-wrap" }}>{roleData.roleDescription}</p>
+						)}
+					</div>
 					<p>
 						Department:{' '}
 						<span className="bold" role="contentinfo">
 							{roleData.department}
 						</span>
 					</p>
-					<p>
-						Benchmark:{' '}
-						<span className="bold" role="contentinfo">
-							{roleData.benchmark} hours/month
-						</span>
-					</p>
 					<div className="buttons">
-						<button role="button" id="edit">
-							Edit Role
-						</button>
+						{isEditing ? (
+							<button role="button" onClick={handleSaveClick}>
+								Save
+							</button>
+						) : (
+							<button role="button" id="edit" onClick={handleEditClick}>
+								Edit Role
+							</button>
+						)}
 						<button role="button" id="deactivate">
 							Deactivate
 						</button>
@@ -249,6 +373,425 @@ function RoleInformation() {
 			</div>
 		</div>
 	);
+}
+
+export default RoleInformation;
+*/
+import React, { useState, useEffect, useRef } from 'react';
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
+import ReactPaginate from 'react-paginate';
+import '../../CSS/Department/DeptRoleInformation.css';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../common/AuthContext.js';
+import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
+
+function RoleInformation() {
+  const { authToken, accountType } = useAuth();
+  const navigate = useNavigate();
+
+  const [roleData, setRoleData] = useState({
+    assignees: [{}],
+    assigneeCount: 0,
+    perPage: 5,
+    currentPage: 1,
+    roleName: '',
+    roleDescription: '',
+    department: '',
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    roleName: '',
+    roleDescription: '',
+    department: '',
+  });
+  const [search, setSearch] = useState('');
+  const [instructorData, setInstructorData] = useState({
+    instructors: [{}],
+    instructorCount: 0,
+    perPage: 8,
+    currentPage: 1,
+  });
+  const [showInstructorModal, setShowInstructorModal] = useState(false);
+  const [showDeactivate, setShowDeactivate] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+
+  const params = new URLSearchParams(window.location.search);
+  const serviceRoleId = params.get('roleid');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!authToken) {
+        navigate('/Login');
+        return;
+      }
+      const numericAccountType = Number(accountType);
+      if (numericAccountType !== 1 && numericAccountType !== 2) {
+        alert('No Access, Redirecting to instructor view');
+        navigate('/Dashboard');
+      }
+      try {
+        // Fetch role data
+        const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
+          params: { serviceRoleId: serviceRoleId },
+          headers: { Authorization: `Bearer ${authToken.token}` },
+        });
+        const roleData = roleRes.data;
+        setRoleData((prevData) => ({ ...prevData, ...roleData }));
+        setEditData({
+          roleName: roleData.roleName,
+          roleDescription: roleData.roleDescription,
+          department: roleData.department,
+        });
+
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [authToken, accountType, navigate, serviceRoleId]);
+
+  const fillEmptyAssignees = (assignees, perPage) => {
+    const filledAssignees = [...assignees];
+    const currentCount = assignees.length;
+    const fillCount = perPage - (currentCount % perPage);
+    if (fillCount < perPage) {
+      for (let i = 0; i < fillCount; i++) {
+        filledAssignees.push({});
+      }
+    }
+    return filledAssignees;
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setShowDeactivate(true); // Show deactivate button when editing
+  };
+
+  const handleSaveClick = async () => {
+    setIsEditing(false);
+    setShowDeactivate(false); // Hide deactivate button after saving
+    const updatedRoleData = { ...roleData, ...editData, isActive };
+    setRoleData(updatedRoleData);
+    console.log('Updated data:\n', JSON.stringify(updatedRoleData));
+    // Here, you would send the updatedRoleData to your backend to save the changes
+    try {
+      const res = await axios.post('http://localhost:3001/api/updateRoleInfo', updatedRoleData, {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      console.log('Update successful', res.data);
+    } catch (error) {
+      console.error('Error updating role info', error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    if (name === 'roleName') {
+      e.target.style.width = (value.length + 1) * 8 + 'px';
+    } else if (name === 'roleDescription') {
+      e.target.style.height = 'auto';
+      e.target.style.height = e.target.scrollHeight + 'px';
+    }
+  };
+
+  const handleSwitchChange = () => {
+    setIsActive(!isActive);
+  };
+
+  function showAssignees(assigneeData, offset) {
+    if (assigneeData.assigneeCount > roleData.perPage) {
+      return assigneeData.assignees.slice(offset, offset + assigneeData.perPage);
+    }
+    return assigneeData.assignees;
+  }
+
+  const handlePageClick = (data) => {
+    setRoleData((prevState) => ({
+      ...prevState,
+      currentPage: data.selected + 1,
+    }));
+  };
+
+  const prevInstructors = useRef({});
+
+  const handleShowInstructorModal = async () => {
+    prevInstructors.current = JSON.stringify(instructorData);
+    setShowInstructorModal(true);
+
+    try {
+      const res = await axios.get('http://localhost:3001/api/instructors', {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      const professors = res.data.instructors;
+      console.log("received:\n",professors);
+      if (Array.isArray(professors)) {
+        setInstructorData((prevData) => ({
+          ...prevData,
+          instructors: professors,
+          instructorCount: professors.length,
+        }));
+      } else {
+        setInstructorData((prevData) => ({
+          ...prevData,
+          instructors: [],
+          instructorCount: 0,
+        }));
+        console.error('Expected an array but got:', professors);
+      }
+    } catch (error) {
+      console.error('Error fetching professors:', error);
+      setInstructorData((prevData) => ({
+        ...prevData,
+        instructors: [],
+        instructorCount: 0,
+      }));
+    }
+  };
+
+  const handleCloseInstructorModal = (save) => {
+    if (!save) {
+      if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
+        setInstructorData(JSON.parse(prevInstructors.current));
+      } else {
+        return;
+      }
+    } else {
+      roleData.assignees = [];
+      console.log(roleData);
+      for (let i = 0; i < instructorData.instructors.length; i++) {
+        if (instructorData.instructors[i].assigned) {
+          roleData.assignees.push({
+            instructorID: instructorData.instructors[i].id,
+            name: instructorData.instructors[i].name,
+          });
+        }
+      }
+
+      updateAssignees();
+    }
+    setShowInstructorModal(false);
+  };
+
+  const updateAssignees = async () => {
+    let assignedInstructors = [];
+    for (let i = 0; i < instructorData.instructors.length; i++) {
+      if (instructorData.instructors[i].assigned === true) {
+        assignedInstructors.push(instructorData.instructors[i].id);
+      }
+    }
+
+    // Submitting new data goes here:
+    console.log("Assigned profs are:\n",assignedInstructors,"\nAnd the assigned service Role Id is ",serviceRoleId);
+    var div = 0;
+    switch(roleData.department){
+      case "Computer Science": div=1;break;
+      case "Mathematics":div=2;break;
+      case "Physics":div=3;break;
+      case "Statistics":div=4;break;
+      default: div=0;
+    }
+    const newAssigneeData = {
+      profileId: assignedInstructors, // Assuming profileId corresponds to assignedInstructors
+      serviceRole: roleData.roleName, // Assuming serviceRole corresponds to roleName
+      year: new Date().getFullYear(), // Example: Current year
+      division: div // Assuming division corresponds to department
+    };
+
+    console.log("Assigned profs are:", assignedInstructors, "\nAnd the assigned service Role Id is", serviceRoleId);
+
+    for(let i=0; i<assignedInstructors.length;i++){
+      var newAssigneeList = {
+        profileId: assignedInstructors[i],
+        serviceRole: roleData.roleName,
+        year: new Date().getFullYear(),
+        division: div
+      };
+    try {
+      console.log("Assigning prof ",i," in list, id ",newAssigneeList.profileId);
+      const res = await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
+          headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      console.log('Assignee update successful', res.data);
+    } catch (error) {
+      console.error('Error updating assignees', error);
+    }
+  }
+  window.location.reload();
+  };
+
+  const onSearch = (newSearch) => {
+    console.log('Searched:', newSearch);
+    setSearch(newSearch);
+    setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
+  };
+
+  const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
+  const offset = (roleData.currentPage - 1) * roleData.perPage;
+
+  const filteredAssignees = roleData.assignees.filter(
+    (assignee) =>
+      (assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())
+  );
+
+  const currentAssignees = filteredAssignees.slice(
+    (roleData.currentPage - 1) * roleData.perPage,
+    roleData.currentPage * roleData.perPage
+  );
+  let i = 0;
+  return (
+    <div className="dashboard">
+      <CreateSideBar sideBarType="Department" />
+      <div className="container">
+        <CreateTopBar />
+
+        <div className="ri-main">
+          <h1 className="roleName">
+            {isEditing ? (
+              <input
+                type="text"
+                name="roleName"
+                value={editData.roleName}
+                onChange={handleChange}
+                className="editable-input"
+                style={{ minWidth: '200px', width: `${Math.max(editData.roleName.length + 1, 20)}ch`, height: 'auto' }}
+              />
+            ) : (
+              roleData.roleName
+            )}
+          </h1>
+          <div className="description" style={{ whiteSpace: isEditing ? 'pre-wrap' : '' }}>
+            {isEditing ? (
+              <textarea
+                name="roleDescription"
+                value={editData.roleDescription}
+                onChange={handleChange}
+                className="editable-textarea"
+                style={{ minHeight: '80px', height: 'auto', overflow: 'hidden' }}
+              />
+            ) : (
+              <p style={{ whiteSpace: 'pre-wrap' }}>{roleData.roleDescription}</p>
+            )}
+          </div>
+          <p>
+            Department:{' '}
+            {isEditing ? (
+              <select
+                name="department"
+                value={editData.department}
+                onChange={handleChange}
+                className="editable-select"
+                style={{ height: 'auto' }}
+              >
+                <option value="Computer Science">Computer Science (COSC)</option>
+                <option value="Mathematics">Mathematics (MATH)</option>
+                <option value="Physics">Physics (PHYS)</option>
+				        <option value="Statistics">Statistics (STAT)</option>
+              </select>
+            ) : (
+              <span className="bold" role="contentinfo">
+                {roleData.department}
+              </span>
+            )}
+          </p>
+          <div className="buttons">
+            {isEditing ? (
+              <button role="button" onClick={handleSaveClick}>
+                Save
+              </button>
+            ) : (
+              <button role="button" id="edit" onClick={handleEditClick}>
+                Edit Role
+              </button>
+            )}
+            {showDeactivate && (
+              <label className="switch">
+                <input type="checkbox" checked={isActive} onChange={handleSwitchChange} />
+                <span className="slider round"></span>
+                {isActive ? 'Active' : 'De-active'}
+              </label>
+            )}
+          </div>
+
+          <h1 className="roleName">Assignee's</h1>
+          <button
+            type="button"
+            data-testid="assign-button"
+            className="assign-button"
+            onClick={handleShowInstructorModal}
+          >
+            <span className="plus">+</span> Assign Professors (s)
+          </button>
+          <p>Current Assignee's</p>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search for people assigned to this role."
+            onChange={(e) => onSearch(e.target.value)}
+          />
+          <div className="assigneeTable">
+            <table>
+              <tbody>
+                {currentAssignees.map((assignee) => {
+                  i++;
+                  if (assignee.instructorID == '' || assignee.instructorID == null) {
+                    return (
+                      <tr key={i}>
+                        <td></td>
+                      </tr>
+                    );
+                  } else {
+                    return (
+                      <tr key={assignee.instructorID}>
+                        <td>
+                          <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+                            {assignee.name} ID:{assignee.instructorID}
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>
+                    <ReactPaginate
+                      previousLabel={'<'}
+                      nextLabel={'>'}
+                      breakLabel={'...'}
+                      pageCount={pageCount}
+                      marginPagesDisplayed={3}
+                      pageRangeDisplayed={0}
+                      onPageChange={handlePageClick}
+                      containerClassName={'pagination'}
+                      activeClassName={'active'}
+                    />
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          {showInstructorModal && (
+            <AssignInstructorsModal
+              instructorData={instructorData}
+              setInstructorData={setInstructorData}
+              handleCloseInstructorModal={handleCloseInstructorModal}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default RoleInformation;

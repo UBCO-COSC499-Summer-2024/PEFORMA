@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DeptDataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { useAuth } from '../common/AuthContext.js';
-import { FaFileUpload } from "react-icons/fa";
 
 function DataEntryComponent() {
 	const navigate = useNavigate();
@@ -33,15 +32,12 @@ function DataEntryComponent() {
 	const [courseCode, setCourseCode] = useState('');
 	const [courseDescription, setCourseDescription] = useState('');
 	const [courseYear, setCourseYear] = useState('');
-	const [sessionTerm, setSessionTerm] = useState(1);
-	const [courseSession, setCourseSession] = useState('W');
+	const [courseTerm, setCourseTerm] = useState('');
 	const [serviceRoleTitle, setServiceRoleTitle] = useState('');
 	const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
 	const [serviceRoleDescription, setServiceRoleDescription] = useState('');
 	const [selectedInstructors, setSelectedInstructors] = useState([]);
 	const [serviceRoleYear, setServiceRoleYear] = useState('');
-	const [, forceUpdate] = useReducer(x => x + 1, 0);
-	const [monthlyHours, setMonthlyHours] = useState({january:0, february:0, march:0, april:0, may:0, june:0, july:0, august:0, september:0, october:0, november:0, december:0});
 
 	const handleChange = (event) => {
 		setSelection(event.target.value);
@@ -104,20 +100,8 @@ function DataEntryComponent() {
 			var selected = instructorData.instructors.filter((instructor) => instructor.assigned);
 			setSelectedInstructors(selected);
 		}
-		instructorData.currentPage = 1;
 		setShowInstructorModal(false);
 	};
-
-const removeInstructor = (id, index) => {
-	selectedInstructors.splice(index, 1);
-	for (let i = 0; i < instructorData.instructors.length; i++) {
-		if (id === instructorData.instructors[i].id) {
-			instructorData.instructors[i].assigned = false;
-			break;
-		}
-	}
-	forceUpdate();
-}
 
 	function checkLength(input, limit, section, valid) {
 		if (!valid) {
@@ -171,20 +155,6 @@ const removeInstructor = (id, index) => {
 				assignedInstructors.push(instructorData.instructors[i].id);
 			}
 		}
-		let courseTerm = 1;
-		if (courseSession == "S") {
-			if (sessionTerm == 1) {
-				courseTerm = 3;
-			} else {
-				courseTerm = 4;
-			}
-		} else {
-			if (sessionTerm == 1) {
-				courseTerm = 1;
-			} else {
-				courseTerm = 2;
-			}
-		}
 
 		const formData = {
 			selection,
@@ -199,7 +169,6 @@ const removeInstructor = (id, index) => {
 			serviceRoleDescription,
 			assignedInstructors, // Array of instructor ID's that will be added to the newly created course/service role
 			serviceRoleYear,
-			monthlyHours
 		};
 
 		console.log(
@@ -230,10 +199,6 @@ const removeInstructor = (id, index) => {
 				`${serviceRoleYear}\n\t` +
 				''
 		);
-		// Show monthly hours is working
-		for (let i = 0; i<Object.keys(monthlyHours).length;i++) {
-			console.log(Object.keys(monthlyHours)[i]+": "+Object.values(monthlyHours)[i]);
-		}
 
 		let valid = false;
 		let confirmMessage = '';
@@ -285,8 +250,6 @@ const removeInstructor = (id, index) => {
 								Course
 							</option>
 						</select>
-						<span>OR</span>
-						<Link to={'/FileUpload'} id="import">Import Data <FaFileUpload className='upload-icon'/></Link>
 					</div>
 					{selection === 'Course' && (
 						<div className="form-container">
@@ -316,13 +279,11 @@ const removeInstructor = (id, index) => {
 										required>
 										<option disabled="disabled">Select a division</option>
 										{divisions.map((division) => {
-											if (division.code != "ALL") {
 											return (
 												<option key={division.code} value={division.code}>
 													{division.label}
 												</option>
 											);
-										}
 										})}
 									</select>
 									<div className="coursecodeInput formInput">
@@ -340,10 +301,8 @@ const removeInstructor = (id, index) => {
 									<div className="courseYear formInput">
 										<label htmlFor="courseYear">Session Year:</label>
 										<input
-											type="number"
-											max="9999"
-											min="1900"
-											placeholder=""
+											type="text"
+											placeholder="e.g. 2024"
 											id="courseYear"
 											name="courseYear"
 											onChange={(e) => {
@@ -351,23 +310,19 @@ const removeInstructor = (id, index) => {
 											}}
 											required
 										/>
-										<div className='courseSession formInput'>
-										<select id="courseSession" name="courseSession" onChange={(e) => {
-											setCourseSession(e.target.value);
-										}} required>
-											<option>W</option><option>S</option>
-										</select>
 									</div>
-									</div>
-									
 									<div className="courseTerm formInput">
 										<label htmlFor="courseTerm">Session Term:</label>
-										<select id="courseTerm" name="courseTerm" onChange={(e) => {
-												setSessionTerm(e.target.value);
+										<input
+											type="text"
+											placeholder="1,2,3 or 4"
+											id="courseTerm"
+											name="courseTerm"
+											onChange={(e) => {
+												setCourseTerm(e.target.value);
 											}}
-											required>
-											<option>1</option><option>2</option>
-										</select>
+											required
+										/>
 									</div>
 								</div>
 
@@ -392,21 +347,16 @@ const removeInstructor = (id, index) => {
 										<div className="selected-instructors">
 											<h3>Selected Instructors</h3>
 											<ul>
-												{selectedInstructors.map((instructor, index) => (
+												{selectedInstructors.map((instructor) => (
 													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id})<button type="button" className='remove-instructor' onClick={(e)=>{removeInstructor(instructor.id, index)}}>X</button>
+														{instructor.name} (ID: {instructor.id})
 													</li>
 												))}
 											</ul>
 										</div>
 									)}
 								</div>
-								<input type="submit" id="service-role-submit" className="hidden" />
-								<input type="hidden" name="formType" value="Service Role" />
 							</form>
-							<label className="finish-button" htmlFor="service-role-submit">
-								Finish
-							</label>
 						</div>
 					)}
 
@@ -445,11 +395,9 @@ const removeInstructor = (id, index) => {
 									</select>
 								</div>
 								<div className="serviceroleYear formInput">
-									<label htmlFor="serviceroleYear">Active year:</label>
+									<label htmlFor="serviceroleYear">Assigned Service Role to year:</label>
 									<input
-										type="number"
-										min="1900"
-										max="9999"
+										type="text"
 										id="serviceroleYear"
 										name="serviceroleYear"
 										onChange={(e) => {
@@ -457,63 +405,6 @@ const removeInstructor = (id, index) => {
 										}}
 										required
 									/>
-								</div>
-								<label>Estimated hours per month:</label>
-								<div className="monthlyHours">
-									<div className='monthlyHoursRow formInput'>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.january = e.target.value}} required/>
-											<div>January</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.february = e.target.value}}required/>
-											<div>February</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.march = e.target.value}}required/> 
-											<div>March</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.april = e.target.value}}required/> 
-											<div>April</div>
-										</span>
-									</div>
-									<div className='monthlyHoursRow formInput'>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.may = e.target.value}}required/>
-											<div>May</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.june = e.target.value}}required/>
-											<div>June</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.july = e.target.value}}required/> 
-											<div>July</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.august = e.target.value}}required/> 
-											<div>August</div>
-										</span>
-									</div>
-									<div className='monthlyHoursRow formInput'>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.september = e.target.value}}required/>
-											<div>September</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.october = e.target.value}}required/>
-											<div>October</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.november = e.target.value}}required/> 
-											<div>November</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.december = e.target.value}}required/> 
-											<div>December</div>
-										</span>
-									</div>
 								</div>
 								<label htmlFor="service-role-description">Service Role Description:</label>
 								<textarea
@@ -535,9 +426,9 @@ const removeInstructor = (id, index) => {
 										<div className="selected-instructors">
 											<h3>Selected Instructors</h3>
 											<ul>
-												{selectedInstructors.map((instructor, index) => (
+												{selectedInstructors.map((instructor) => (
 													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id}) <button type="button" className='remove-instructor' onClick={(e)=>{removeInstructor(instructor.id, index)}}>X</button>
+														{instructor.name} (ID: {instructor.id})
 													</li>
 												))}
 											</ul>
