@@ -57,8 +57,8 @@ function TopBar({ searchListType, onSearch }) {
 					className="profile-initials"
 					style={{
 						backgroundColor: bgColor,
-						width: '30px',
-						height: '30px',
+						width: '40px',
+						height: '40px',
 						borderRadius: '50%',
 						display: 'flex',
 						justifyContent: 'center',
@@ -78,7 +78,7 @@ function TopBar({ searchListType, onSearch }) {
 					src={`http://localhost:3001/api/image/${profileId}`}
 					alt="Profile"
 					onClick={toggleDropdown}
-					style={{ cursor: 'pointer', width: '30px', height: '30px', borderRadius: '50%' }}
+					style={{ cursor: 'pointer', width: '40px', height: '40px', borderRadius: '50%' }}
 					onError={handleImageError}
 				/>
 			);
