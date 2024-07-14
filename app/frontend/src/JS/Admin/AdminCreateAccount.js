@@ -78,7 +78,7 @@ function CreateAccount() {
             <CreateSideBar sideBarType="Admin" />
             <div className='container'>
                 <CreateTopBar />
-                <div className='create-account-form'>
+                <div className='create-account-form' id='admin-create-account-test-content'>
                     <h1>Create Account</h1>
                     <form onSubmit={handleSubmit}>
                         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
