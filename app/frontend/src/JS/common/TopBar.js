@@ -6,6 +6,7 @@ import '../../CSS/common.css';
 function TopBar({ searchListType, onSearch }) {
 	const navigate = useNavigate();
 	const [showDropdown, setShowDropdown] = useState(false);
+	const [activeMenu, setActiveMenu] = useState('main'); // 'main' or 'switch'
 	const { accountType, accountLogInType, setAccountLogInType, profileId } = useAuth();
 	const [imageError, setImageError] = useState(false);
 	const [initials, setInitials] = useState('');
@@ -56,8 +57,8 @@ function TopBar({ searchListType, onSearch }) {
 					className="profile-initials"
 					style={{
 						backgroundColor: bgColor,
-						width: '40px',
-						height: '40px',
+						width: '30px',
+						height: '30px',
 						borderRadius: '50%',
 						display: 'flex',
 						justifyContent: 'center',
@@ -77,7 +78,7 @@ function TopBar({ searchListType, onSearch }) {
 					src={`http://localhost:3001/api/image/${profileId}`}
 					alt="Profile"
 					onClick={toggleDropdown}
-					style={{ cursor: 'pointer', width: '40px', height: '40px', borderRadius: '50%' }}
+					style={{ cursor: 'pointer', width: '30px', height: '30px', borderRadius: '50%' }}
 					onError={handleImageError}
 				/>
 			);
@@ -100,10 +101,9 @@ function TopBar({ searchListType, onSearch }) {
 		localStorage.setItem('accountLogInType', JSON.stringify(type));
 		alert(`Switching to ${type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'} account`);
 		setShowDropdown(false);
+		setActiveMenu('main');
 		switch (type) {
 			case 1:
-				navigate('/DeptPerformancePage');
-				break;
 			case 2:
 				navigate('/DeptPerformancePage');
 				break;
@@ -121,7 +121,6 @@ function TopBar({ searchListType, onSearch }) {
 	const getAccountTypeLabel = (type) => {
 		switch (type) {
 			case 1:
-				return 'Department';
 			case 2:
 				return 'Department';
 			case 3:
@@ -137,13 +136,28 @@ function TopBar({ searchListType, onSearch }) {
 		return (
 			<div className="account-switcher">
 				{renderProfileImage()}
-				{showDropdown && accountType.length > 1 && (
+				{showDropdown && (
 					<ul className="dropdown-menu">
-						{accountType.map((type) => (
-							<li key={type} onClick={() => handleSwitchAccount(type)}>
-								{type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'}
-							</li>
-						))}
+						{activeMenu === 'main' ? (
+							<>
+								<li onClick={() => navigate('/userProfile')}>My profile</li>
+								<li onClick={() => navigate('/account')}>My account</li>
+								{accountType.length > 1 && (
+									<li onClick={() => setActiveMenu('switch')}>Switch account</li>
+								)}
+							</>
+						) : (
+							<>
+								<li onClick={() => setActiveMenu('main')} style={{ fontWeight: 'bold' }}>
+									← Back
+								</li>
+								{accountType.map((type) => (
+									<li key={type} onClick={() => handleSwitchAccount(type)}>
+										{getAccountTypeLabel(type)}
+									</li>
+								))}
+							</>
+						)}
 					</ul>
 				)}
 			</div>
@@ -152,6 +166,7 @@ function TopBar({ searchListType, onSearch }) {
 
 	const toggleDropdown = () => {
 		setShowDropdown(!showDropdown);
+		setActiveMenu('main');
 	};
 
 	let placeHolderText = '';

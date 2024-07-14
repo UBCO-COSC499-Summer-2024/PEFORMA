@@ -68,7 +68,7 @@ function App() {
 					<Route path="/DeptServiceRoleList" element={<DeptServiceRoleList />} />
 
 					<Route path="/DeptMemberList" element={<DeptMemberList />} />
-          <Route path="/DeptProfilePage" element={<DeptProfilePage />} />
+          			<Route path="/DeptProfilePage" element={<DeptProfilePage />} />
 
 
 					<Route path="/AdminCreateAccount" element={<AdminCreateAccount />} />
