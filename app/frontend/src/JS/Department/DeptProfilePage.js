@@ -10,9 +10,10 @@ function DeptProfilePage() {
 	const navigate = useNavigate();
 	const params = new URLSearchParams(window.location.search);
 	const ubcid = params.get('ubcid');
-	const { authToken, accountType } = useAuth();
+	const { authToken, accountLogInType } = useAuth();
 	const initProfile = { roles: [], teachingAssignments: [] };
 	const [profile, setProfile] = useState(initProfile);
+	const [editState, setEditState] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -21,7 +22,7 @@ function DeptProfilePage() {
 					navigate('/Login');
 					return;
 				}
-				const numericAccountType = Number(accountType);
+				const numericAccountType = Number(accountLogInType);
 				if (numericAccountType !== 1 && numericAccountType !== 2) {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/Dashboard');
@@ -48,11 +49,6 @@ function DeptProfilePage() {
 	}, [authToken, ubcid, navigate]);
 	// const profile = {"name":"Billy Guy", "id":"18592831", "benchmark":"1300", "roles":["Role1", "Role2"], "email":"billyGuy@instructor.ubc.ca", "phone":"778-333-2222", "office":"SCI 300", "teachingAssignments":[{"assign":"COSC 211","link":"abc.com"},{"assign":"COSC 304","link":"def.com"}]};
 
-	const getProfileId = async() => {
-		console.log(ubcid);
-		return ubcid;
-	}
-
 	return (
 		<div className="deptProfile-container">
 			<CreateSideBar sideBarType="Department" />
@@ -60,15 +56,22 @@ function DeptProfilePage() {
 				
 				<CreateTopBar />
 				<div className='outside'>
-					<Link to="/DeptMemberList">&lt; Back to All People</Link>
+				<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
 					<h1>{profile.name}'s Profile</h1>
 				</div>
 				<div className="main-content" id="text-content">
         
 					<section className="information">
-						
+						<button className='edit-button' onClick={() => setEditState(true)}>Edit Profile</button>
 						<p>
-							<strong>Name:</strong> {profile.name}
+							<strong>Name:</strong>
+							{editState && (
+								<input className='formInput' type="text" />
+							)}
+							{!editState && (
+								<span>{profile.name}</span>
+							)}
+							 
 						</p>
 						<p>
 							<strong>UBC ID:</strong> {profile.ubcid}
