@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { getCurrentInstructor } from '../common/utils.js';
 
 function CourseInformation() {
 	const { authToken, accountLogInType } = useAuth();
@@ -19,6 +20,8 @@ function CourseInformation() {
 		perPage: 10,
 		currentPage: 1,
 	});
+	const [currentInstructor, setCurrentInstructor] = useState([]);
+	const [numInstructors, setNumInstructors] = useState(0);
 
 	useEffect(() => {
 		console.log('Use effect executing');
@@ -41,6 +44,9 @@ function CourseInformation() {
 			const data = res.data;
 			const filledEntries = fillEmptyEntries(data.history, data.perPage);
 			setHistoryData({ ...data, history: filledEntries });
+			setCurrentInstructor(getCurrentInstructor(data));
+			setNumInstructors(data.history.length);
+			
 		};
 		fetchData();
 	}, []);
@@ -57,12 +63,6 @@ function CourseInformation() {
 		return filledEntries;
 	};
 
-	function showHistory(historyData, offset) {
-		if (historyData.assigneeCount > historyData.perPage) {
-			return historyData.history.slice(offset, offset + historyData.perPage);
-		}
-		return historyData.assignees;
-	}
 
 	const handlePageClick = (data) => {
 		setHistoryData((prevState) => ({
@@ -79,6 +79,7 @@ function CourseInformation() {
 		historyData.currentPage * historyData.perPage
 	);
 	let i = 0;
+	
 	return (
 		<div className="dashboard coursehistory">
 			<CreateSideBar sideBarType="Department" />
@@ -94,6 +95,25 @@ function CourseInformation() {
 					<div className="bold score">
 						Average Performance Score: <span role="contentinfo">{historyData.avgScore}</span>
 					</div>
+					<div className="current-instructor">
+						<p>Current Instructor(s): {currentInstructor.length === 0 && (
+							<strong>N/A</strong>
+						)}
+						{currentInstructor.length !== 0 && (
+							currentInstructor.map((instructor, index) => {
+								return (
+								<span>
+								<Link to={"/DeptProfilePage?ubcid="+instructor.instructorID}><strong>{instructor.instructorName}</strong></Link>
+								{index !== currentInstructor.length - 1 && (
+									<span>, </span>
+								)}
+								</span>
+								);
+								
+							})
+						)}
+							</p>
+					</div>
 					<div className="buttons">
 						<button id="edit" role="button" name="edit">
 							Edit Course
@@ -103,7 +123,7 @@ function CourseInformation() {
 						</button>
 					</div>
 					<div id="history">
-						<p className="bold">Course History</p>
+						<p className="bold">Course History ({numInstructors} Entries)</p>
 
 						<table id="historyTable">
 							<thead>

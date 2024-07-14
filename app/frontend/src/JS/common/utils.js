@@ -58,3 +58,33 @@ export const getDivisionName = (division) => {
   };
   return divisionNames[division] || '';
 };
+
+export const getCurrentInstructor = (historyData) => {
+    let history = historyData.history;
+		let currentInstructor = [];
+    console.log(history);
+		if (history[0].instructorID !== "") {
+		for (let i = 0; i < history.length; i++) {
+      
+      let term = "1";
+      if (history[i].session.slice(4,5) === "S") {
+        if (history[i].term === "1") {
+          term = "3";
+        } else {
+          term = "4";
+        }
+      } else {
+        if (history[i].term === "1") {
+          term = "1";
+        } else {
+          term = "2";
+        }
+      }
+      
+			if (parseInt(history[i].session.slice(0,4)+term) === historyData.latestTerm) {
+				currentInstructor.push(history[i]);
+			}
+		}
+  }
+		return currentInstructor;
+}
