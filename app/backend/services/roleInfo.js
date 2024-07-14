@@ -1,13 +1,16 @@
 const pool = require('../db/index.js');
+const { getLatestYear } = require('./latestYear.js');
+
 
 async function getServiceInfo(req){
 
     const serviceRoleId = req.query.serviceRoleId;
     try {
+        const latestYear = await getLatestYear();
         // let query = `SELECT "year" FROM "ServiceRoleAssignment" ORDER BY "year" DESC LIMIT 1;`;
         // let result = await pool.query(query);
         let query = `
-            SELECT sr."stitle", sr."description", d."dname", p."UBCId",
+            SELECT sr."stitle", sr."description", d."dname", p."UBCId", sra."year",
             TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name
             FROM "ServiceRole" sr
             JOIN "Division" d ON d."divisionId" = sr."divisionId"
@@ -21,7 +24,8 @@ async function getServiceInfo(req){
         const assigneeCount = result.rows.length;
         const assignees = result.rows.map(row => ({
             instructorID: row.UBCId || '',
-            name: row.full_name || ''
+            name: row.full_name || '',
+            year: row.year
         }));
 
         const output = {
@@ -33,8 +37,10 @@ async function getServiceInfo(req){
             roleDescription: description || "",
             department: dname || "",
             benchmark:0,
-            assignees: assignees
+            assignees: assignees,
+            latestYear: latestYear
         };
+        console.log("Output ", output);
         return output;
     } catch (error) {
         console.error('Database query error:', error);
