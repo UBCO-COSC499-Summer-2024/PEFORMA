@@ -23,7 +23,7 @@ async function getCourseHistory(req) {
         LEFT JOIN
         "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
         LEFT JOIN
-        "SingleTeachingPerformance" stp ON stp."courseId" = ita."courseId" AND stp."term" = ita."term"
+        "SingleTeachingPerformance" stp ON stp."courseId" = ita."courseId" AND stp."term" = ita."term" AND stp."profileId" = ita."profileId"
         LEFT JOIN
         "Profile" p ON p."profileId" = ita."profileId"
         LEFT JOIN 
@@ -31,27 +31,9 @@ async function getCourseHistory(req) {
         WHERE 
         c."courseId" = $1
         ORDER BY 
-            ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", stp."score" DESC;  -- Adjusted to match DISTINCT ON and specify score ordering
+        ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", stp."score" DESC;
         `;
         let result = await pool.query(query,[courseId]);
-        console.log("Executing query:", query);
-        console.log("With parameters:", [courseId]);
-
-        //Calculate average score in single teaching performance
-        query = `SELECT AVG("score") AS "avgScore" FROM "SingleTeachingPerformance"
-                 WHERE "courseId" = $1 GROUP BY "courseId";`;
-        let result1 = await pool.query(query, [courseId]);
-        console.log("Average score: ", result1);
-        
-        //Retrieve score in single teaching performance
-        query = `SELECT "score" FROM "SingleTeachingPerformance"
-        WHERE "courseId" = $1 ORDER BY "term" DESC;`;
-        const result2 = await pool.query(query, [courseId]);
-        console.log("Average score: ", result2);
- 
-    
-        //Retrieve avgscore
-        const avgScore = result1.rows.length > 0 ? Math.round(result1.rows[0].avgScore) : 0;
 
         //Retrieve score for each course
         const perPage = 10;
@@ -90,14 +72,20 @@ async function getCourseHistory(req) {
             }            
             // Return the formatted object
             return {
-                instructorID: row.profileId || '', // Default to '' if NULL
-                instructorName: row.full_name || '', // Default to '' if NULL
+                instructorID: row.profileId || '',
+                instructorName: row.full_name || '', 
                 session: session,
                 term: sessionSuffix,
                 score: row.score ? Number(row.score.toFixed(2)) : "",
                 term_num: row.term
             };
-        });           
+        });   
+
+        //Calculate average score in single teaching performance
+        query = `SELECT AVG("score") AS "avgScore" FROM "SingleTeachingPerformance"
+                 WHERE "courseId" = $1 GROUP BY "courseId";`;
+        result = await pool.query(query, [courseId]);
+        const avgScore = result.rows.length > 0 ? Math.round(result.rows[0].avgScore) : 0;        
                                           
         const output = {
             currentPage,
