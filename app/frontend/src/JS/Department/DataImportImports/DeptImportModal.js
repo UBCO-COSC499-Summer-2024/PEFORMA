@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { FaFileUpload, FaFile, FaRegTrashAlt, FaTimes } from "react-icons/fa";
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import { useAuth } from '../common/AuthContext.js';
+import { useAuth } from '../../common/AuthContext.js';
 
 import '../../../CSS/Department/DataImportImports/DeptImportModal.css';
 
