@@ -34,7 +34,6 @@ function DeptStatusChangeCourse() {
 	const toggleStatus = async (course, newStatus) => {
 		const updatedCourse = { ...course, status: newStatus };
 		const updatedCourses = deptCourseList.courses.map((c) => (course.id === c.id ? updatedCourse : c));
-		console.log("request\n",  { courseid : course.id, newStatus })
 		try {
 			const response = await axios.post(
 				`http://localhost:3001/api/DeptStatusChangeCourse`,
