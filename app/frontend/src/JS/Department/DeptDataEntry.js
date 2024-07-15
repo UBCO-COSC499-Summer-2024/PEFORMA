@@ -538,7 +538,6 @@ function DataEntryComponent() {
 					<ImportModal
 						isOpen={showFileUploadModal}
 						onClose={() => setShowFileUploadModal(false)}
-						authToken={authToken.token}
 					/>
 				</div>
 			</div>
