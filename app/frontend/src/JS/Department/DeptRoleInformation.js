@@ -50,6 +50,7 @@ function RoleInformation() {
 				headers: { Authorization: `Bearer ${authToken.token}` },
 			});
 			const data = res.data;
+			data.perPage -=1;
 			const filledAssignees = fillEmptyAssignees(data.assignees, data.perPage);
 			setRoleData({ ...data, assignees: filledAssignees });
 
@@ -198,12 +199,13 @@ function RoleInformation() {
 					<div className="assigneeTable">
 						<table>
 							<tbody>
+								<tr><th>Instructor</th><th>UBC ID</th></tr>
 								{currentAssignees.map((assignee) => {
 									i++;
 									if (assignee.instructorID == '' || assignee.instructorID == null) {
 										return (
 											<tr key={i}>
-												<td></td>
+												<td></td><td></td>
 											</tr>
 										);
 									} else {
@@ -211,9 +213,10 @@ function RoleInformation() {
 											<tr key={assignee.instructorID}>
 												<td>
 													<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-														{assignee.name} ID:{assignee.instructorID}
+														{assignee.name}
 													</Link>
 												</td>
+												<td>{assignee.instructorID}</td>
 											</tr>
 										);
 									}
@@ -221,7 +224,7 @@ function RoleInformation() {
 							</tbody>
 							<tfoot>
 								<tr>
-									<td>
+									<td colSpan="2">
 										<ReactPaginate
 											previousLabel={'<'}
 											nextLabel={'>'}
