@@ -2,7 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'your_secret_key';  // Replace with a strong, environment-specific secret key
-const TOKEN_EXPIRY_SECONDS = 100*60;  // 2 minutes in seconds
+const TOKEN_EXPIRY_SECONDS = 2*60;  // 2 minutes in seconds
 
 function generateToken(user) {
     const payload = { id: user.id, username: user.username, acctype: user.acctype, profileId: user.profileId };
