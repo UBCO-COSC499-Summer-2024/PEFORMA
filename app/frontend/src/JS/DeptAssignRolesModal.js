@@ -12,7 +12,8 @@ const AssignRolesModal = (props, roleData) => {
         props.setRoleData(prevState => ({ ...prevState, currentPage: 1 }));
       };
       const filteredRoles = props.roleData.roles.filter(role =>
-        (role.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
+        (role.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
+        (role.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
       );
       const currentRoles = filteredRoles.slice(
         (props.roleData.currentPage - 1) * props.roleData.perPage,
@@ -56,13 +57,13 @@ const AssignRolesModal = (props, roleData) => {
                         i++;
                         if (role.id == null) {
                             return (<tr key={i} className="instructor-item">
-                                <td></td>
+                                <td></td><td></td>
                                 <td></td>
                             </tr>);
                         }
                         return (
                         <tr key={i} className="instructor-item">
-                            <td className='bold'>{role.name}</td>
+                            <td className='bold'>{role.name}</td><td>{role.department}</td>
                             <td>
                                 <button id={role.id} className={"bold "+(role.assigned?"remove":"add")} onClick={() => toggleRoleAssigned(role.id, role.assigned)}>
                                     {role.assigned ? 'Remove' : 'Add'}
@@ -75,7 +76,7 @@ const AssignRolesModal = (props, roleData) => {
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colSpan="2">
+                        <td colSpan="3">
                             <ReactPaginate
                                 previousLabel={'<'}
                                 nextLabel={'>'}
