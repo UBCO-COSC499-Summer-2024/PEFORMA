@@ -1,0 +1,33 @@
+{
+  "courses":[
+    {"courseId": 1, "courseCode": "MATH 101"},
+    {"courseId": 2, "courseCode": "STAT 111"},
+    {"courseId": 3, "courseCode": "COSC 122"},
+    {"courseId": 4, "courseCode": "PHYS 304"},
+    {"courseId": 5, "courseCode": "MATH 499"},
+    {"courseId": 6, "courseCode": "STAT 201"},
+    {"courseId": 7, "courseCode": "COSC 210"},
+    {"courseId": 8, "courseCode": "PHYS 220"},
+    {"courseId": 9, "courseCode": "MATH 310"},
+    {"courseId": 10, "courseCode": "STAT 315"},
+    {"courseId": 11, "courseCode": "COSC 320"},
+    {"courseId": 12, "courseCode": "PHYS 330"},
+    {"courseId": 13, "courseCode": "MATH 401"},
+    {"courseId": 14, "courseCode": "STAT 402"},
+    {"courseId": 15, "courseCode": "COSC 403"},
+    {"courseId": 16, "courseCode": "PHYS 404"},
+    {"courseId": 17, "courseCode": "MATH 405"},
+    {"courseId": 18, "courseCode": "STAT 406"},
+    {"courseId": 19, "courseCode": "COSC 407"},
+    {"courseId": 20, "courseCode": "PHYS 408"},
+    {"courseId": 21, "courseCode": "MATH 409"},
+    {"courseId": 22, "courseCode": "STAT 410"},
+    {"courseId": 23, "courseCode": "COSC 411"},
+    {"courseId": 24, "courseCode": "PHYS 412"},
+    {"courseId": 25, "courseCode": "MATH 413"},
+    {"courseId": 26, "courseCode": "STAT 414"},
+    {"courseId": 27, "courseCode": "COSC 415"},
+    {"courseId": 28, "courseCode": "PHYS 416"}
+  ]
+}
+
