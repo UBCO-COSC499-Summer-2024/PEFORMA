@@ -112,7 +112,7 @@ function DeptSEIPage() {
       <CreateSideBar sideBarType="Department" />
       <div className='container'>
         <CreateTopBar />
-        <div className='SEI-form'>
+        <div className='SEI-form' id='SEI-test-content'>
           <h1>SEI Data Entry</h1>
           <form onSubmit={handleSubmit}>
             <label>
