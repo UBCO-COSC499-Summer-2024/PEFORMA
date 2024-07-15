@@ -1,5 +1,5 @@
 import { FaHome, FaChartLine } from 'react-icons/fa';
-import { FaUser, FaSuitcase, FaPaperclip, FaBook } from 'react-icons/fa';
+import { FaUser, FaSuitcase, FaPaperclip, FaBook, FaMap, FaDatabase } from 'react-icons/fa';
 import { useAuth } from './AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -62,7 +62,12 @@ function SideBar({ sideBarType }) {
 					</li>
 					<li>
 						<Link to={`/DeptTeachingAssignment`}>
-							<FaChartLine className="icon" size={30} /> Teaching Assignment
+							<FaMap className="icon" size={30} /> Teaching Assignment
+						</Link>
+					</li>
+          <li>
+						<Link to={`/DeptTeachingAssignment`}>
+							<FaDatabase className="icon" size={30} /> SEI Data Entry
 						</Link>
 					</li>
         </ul>
