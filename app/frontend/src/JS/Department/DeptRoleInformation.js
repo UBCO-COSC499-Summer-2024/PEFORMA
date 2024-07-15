@@ -1,31 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
-import '../../CSS/Department/DeptCourseInformation.css';
+import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../common/AuthContext.js';
+import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 
-function CourseInformation() {
-  const { authToken, accountLogInType } = useAuth();
+function RoleInformation() {
+  const { authToken, accountType } = useAuth();
   const navigate = useNavigate();
-  const params = new URLSearchParams(window.location.search);
-  const courseId = params.get('courseid');
-  const [isEditing, setIsEditing] = useState(false);
-  const [editDescription, setEditDescription] = useState('');
-  const [courseData, setCourseData] = useState({
-    history: [{}],
-    entryCount: 0,
-    perPage: 10,
+
+  const [roleData, setRoleData] = useState({
+    assignees: [{}],
+    assigneeCount: 0,
+    perPage: 5,
     currentPage: 1,
-    courseCode: '',
-    courseName: '',
-    courseDescription: '',
-    avgScore: '',
-    currentInstructor: 'Willem Dafoe'
+    roleName: '',
+    roleDescription: '',
+    department: '',
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    roleName: '',
+    roleDescription: '',
+    department: '',
+  });
+  const [search, setSearch] = useState('');
+  const [instructorData, setInstructorData] = useState({
+    instructors: [{}],
+    instructorCount: 0,
+    perPage: 8,
+    currentPage: 1,
+  });
+  const [showInstructorModal, setShowInstructorModal] = useState(false);
+  const [showDeactivate, setShowDeactivate] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+
+  const params = new URLSearchParams(window.location.search);
+  const serviceRoleId = params.get('roleid');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,146 +48,354 @@ function CourseInformation() {
         navigate('/Login');
         return;
       }
-      const numericAccountType = Number(accountLogInType);
+      const numericAccountType = Number(accountType);
       if (numericAccountType !== 1 && numericAccountType !== 2) {
         alert('No Access, Redirecting to instructor view');
         navigate('/Dashboard');
       }
       try {
-        const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
-          params: { courseId: courseId },
+        // Fetch role data
+        const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
+          params: { serviceRoleId: serviceRoleId },
           headers: { Authorization: `Bearer ${authToken.token}` },
         });
-        const data = res.data;
-        const filledEntries = fillEmptyEntries(data.history, data.perPage);
-        setCourseData({ ...data, history: filledEntries });
-        setEditDescription(data.courseDescription);
+        const roleData = roleRes.data;
+        setRoleData((prevData) => ({ ...prevData, ...roleData }));
+        setEditData({
+          roleName: roleData.roleName,
+          roleDescription: roleData.roleDescription,
+          department: roleData.department,
+        });
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, [authToken, accountLogInType, navigate, courseId]);
+  }, [authToken, accountType, navigate, serviceRoleId]);
 
-  const fillEmptyEntries = (history, perPage) => {
-    const filledEntries = [...history];
-    const currentCount = history.length;
+  const fillEmptyAssignees = (assignees, perPage) => {
+    const filledAssignees = [...assignees];
+    const currentCount = assignees.length;
     const fillCount = perPage - (currentCount % perPage);
     if (fillCount < perPage) {
       for (let i = 0; i < fillCount; i++) {
-        filledEntries.push({});
+        filledAssignees.push({});
       }
     }
-    return filledEntries;
+    return filledAssignees;
   };
 
   const handleEditClick = () => {
     setIsEditing(true);
+    setShowDeactivate(true); // Show deactivate button when editing
   };
 
   const handleSaveClick = async () => {
     setIsEditing(false);
-    const updatedCourseData = { courseId, courseDescription: editDescription };
+    setShowDeactivate(false); // Hide deactivate button after saving
+    const updatedRoleData = { ...roleData, ...editData, isActive };
+    setRoleData(updatedRoleData);
+    console.log('Updated data:\n', JSON.stringify(updatedRoleData));
+    // Here, you would send the updatedRoleData to your backend to save the changes
     try {
-      const res = await axios.post('http://localhost:3001/api/updateCourseInfo', updatedCourseData, {
+      const res = await axios.post('http://localhost:3001/api/updateRoleInfo', updatedRoleData, {
         headers: { Authorization: `Bearer ${authToken.token}` },
       });
       console.log('Update successful', res.data);
-      window.location.reload(); // Refresh the page after successful save
     } catch (error) {
-      console.error('Error updating course info', error);
+      console.error('Error updating role info', error);
     }
   };
 
   const handleChange = (e) => {
-    const { value } = e.target;
-    setEditDescription(value);
-    e.target.style.height = 'auto';
-    e.target.style.height = e.target.scrollHeight + 'px';
+    const { name, value } = e.target;
+    setEditData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    if (name === 'roleName') {
+      e.target.style.width = (value.length + 1) * 8 + 'px';
+    } else if (name === 'roleDescription') {
+      e.target.style.height = 'auto';
+      e.target.style.height = e.target.scrollHeight + 'px';
+    }
   };
 
+  const handleSwitchChange = () => {
+    setIsActive(!isActive);
+  };
+
+  function showAssignees(assigneeData, offset) {
+    if (assigneeData.assigneeCount > roleData.perPage) {
+      return assigneeData.assignees.slice(offset, offset + assigneeData.perPage);
+    }
+    return assigneeData.assignees;
+  }
+
   const handlePageClick = (data) => {
-    setCourseData((prevState) => ({
+    setRoleData((prevState) => ({
       ...prevState,
       currentPage: data.selected + 1,
     }));
   };
 
-  const pageCount = Math.ceil(courseData.entryCount / courseData.perPage);
-  const offset = (courseData.currentPage - 1) * courseData.perPage;
+  const prevInstructors = useRef({});
 
-  const currentEntries = courseData.history.slice(
-    (courseData.currentPage - 1) * courseData.perPage,
-    courseData.currentPage * courseData.perPage
+  const handleShowInstructorModal = async () => {
+    prevInstructors.current = JSON.stringify(instructorData);
+    setShowInstructorModal(true);
+
+    try {
+      const res = await axios.get('http://localhost:3001/api/instructors', {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      const professors = res.data.instructors;
+      console.log("received:\n", professors);
+      if (Array.isArray(professors)) {
+        setInstructorData((prevData) => ({
+          ...prevData,
+          instructors: professors,
+          instructorCount: professors.length,
+        }));
+      } else {
+        setInstructorData((prevData) => ({
+          ...prevData,
+          instructors: [],
+          instructorCount: 0,
+        }));
+        console.error('Expected an array but got:', professors);
+      }
+    } catch (error) {
+      console.error('Error fetching professors:', error);
+      setInstructorData((prevData) => ({
+        ...prevData,
+        instructors: [],
+        instructorCount: 0,
+      }));
+    }
+  };
+
+  const handleCloseInstructorModal = (save) => {
+    if (!save) {
+      if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
+        setInstructorData(JSON.parse(prevInstructors.current));
+      } else {
+        return;
+      }
+    } else {
+      roleData.assignees = [];
+      console.log(roleData);
+      for (let i = 0; i < instructorData.instructors.length; i++) {
+        if (instructorData.instructors[i].assigned) {
+          roleData.assignees.push({
+            instructorID: instructorData.instructors[i].id,
+            name: instructorData.instructors[i].name,
+          });
+        }
+      }
+
+      updateAssignees();
+    }
+    setShowInstructorModal(false);
+  };
+
+  const updateAssignees = async () => {
+    let assignedInstructors = [];
+    for (let i = 0; i < instructorData.instructors.length; i++) {
+      if (instructorData.instructors[i].assigned === true) {
+        assignedInstructors.push(instructorData.instructors[i].id);
+      }
+    }
+
+    // Submitting new data goes here:
+    console.log("Assigned profs are:\n", assignedInstructors, "\nAnd the assigned service Role Id is ", serviceRoleId);
+    var div = 0;
+    switch (roleData.department) {
+      case "Computer Science": div = 1; break;
+      case "Mathematics": div = 2; break;
+      case "Physics": div = 3; break;
+      case "Statistics": div = 4; break;
+      default: div = 0;
+    }
+    const newAssigneeData = {
+      profileId: assignedInstructors, // Assuming profileId corresponds to assignedInstructors
+      serviceRole: roleData.roleName, // Assuming serviceRole corresponds to roleName
+      year: new Date().getFullYear(), // Example: Current year
+      division: div // Assuming division corresponds to department
+    };
+
+    console.log("Assigned profs are:", assignedInstructors, "\nAnd the assigned service Role Id is", serviceRoleId);
+
+    for (let i = 0; i < assignedInstructors.length; i++) {
+      var newAssigneeList = {
+        profileId: assignedInstructors[i],
+        serviceRole: roleData.roleName,
+        year: new Date().getFullYear(),
+        division: div
+      };
+      try {
+        console.log("Assigning prof ", i, " in list, id ", newAssigneeList.profileId);
+        const res = await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
+          headers: { Authorization: `Bearer ${authToken.token}` },
+        });
+        console.log('Assignee update successful', res.data);
+      } catch (error) {
+        console.error('Error updating assignees', error);
+      }
+    }
+    window.location.reload();
+  };
+
+  const onSearch = (newSearch) => {
+    console.log('Searched:', newSearch);
+    setSearch(newSearch);
+    setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
+  };
+
+  const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
+  const offset = (roleData.currentPage - 1) * roleData.perPage;
+
+  const filteredAssignees = roleData.assignees.filter(
+    (assignee) =>
+      (assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())
   );
 
+  const currentAssignees = filteredAssignees.slice(
+    (roleData.currentPage - 1) * roleData.perPage,
+    roleData.currentPage * roleData.perPage
+  );
+  let i = 0;
   return (
-    <div className="dashboard coursehistory">
+    <div className="dashboard">
       <CreateSideBar sideBarType="Department" />
       <div className="container">
         <CreateTopBar />
-        <div className="courseinfo-main">
-          <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
-          <h1 className="courseName" role="contentinfo">
-            {courseData.courseCode}: {courseData.courseName}
+
+        <div className="ri-main">
+          <h1 className="roleName">
+            {isEditing ? (
+              <input
+                type="text"
+                name="roleName"
+                value={editData.roleName}
+                onChange={handleChange}
+                className="editable-input"
+                style={{ minWidth: '200px', width: `${Math.max(editData.roleName.length + 1, 20)}ch`, height: 'auto' }}
+              />
+            ) : (
+              roleData.roleName
+            )}
           </h1>
           <div className="description" style={{ whiteSpace: isEditing ? 'pre-wrap' : '' }}>
             {isEditing ? (
               <textarea
-                name="courseDescription"
-                value={editDescription}
+                name="roleDescription"
+                value={editData.roleDescription}
                 onChange={handleChange}
                 className="editable-textarea"
                 style={{ minHeight: '80px', height: 'auto', overflow: 'hidden' }}
               />
             ) : (
-              <p style={{ whiteSpace: 'pre-wrap' }}>{courseData.courseDescription}</p>
+              <p style={{ whiteSpace: 'pre-wrap' }}>{roleData.roleDescription}</p>
             )}
           </div>
-          <p id="current-instructor">Current Instructor: {courseData.currentInstructor}</p>
-          <div className="bold score">
-            Average Performance Score: <span role="contentinfo">{courseData.avgScore}</span>
-          </div>
+          <p>
+            Department:{' '}
+            {isEditing ? (
+              <select
+                name="department"
+                value={editData.department}
+                onChange={handleChange}
+                className="editable-select"
+                style={{ height: 'auto' }}
+              >
+                <option value="Computer Science">Computer Science (COSC)</option>
+                <option value="Mathematics">Mathematics (MATH)</option>
+                <option value="Physics">Physics (PHYS)</option>
+				        <option value="Statistics">Statistics (STAT)</option>
+              </select>
+            ) : (
+              <span className="bold" role="contentinfo">
+                {roleData.department}
+              </span>
+            )}
+            {isEditing ? null : (
+              <span style={{ marginLeft: '10px', color: isActive ? 'green' : 'red' }}>
+                ({isActive ? 'Active' : 'De-active'})
+              </span>
+            )}
+          </p>
           <div className="buttons">
             {isEditing ? (
               <button role="button" onClick={handleSaveClick}>
                 Save
               </button>
             ) : (
-              <button id="edit" role="button" onClick={handleEditClick}>
-                Edit Course
+              <button role="button" id="edit" onClick={handleEditClick}>
+                Edit Role
               </button>
             )}
+            {showDeactivate && (
+              <label className="switch">
+                <input type="checkbox" checked={isActive} onChange={handleSwitchChange} />
+                <span className="slider round"></span>
+                {isActive ? 'Active' : 'De-active'}
+              </label>
+            )}
           </div>
-          <div id="history">
-            <p className="bold">Course History</p>
-            <table id="historyTable">
-              <thead>
-                <tr>
-                  <th>Instructor</th>
-                  <th>Session</th>
-                  <th>Term</th>
-                  <th>Performance Score</th>
-                </tr>
-              </thead>
+
+          {showInstructorModal ? (
+            <AssignInstructorsModal
+              instructorData={instructorData}
+              setInstructorData={setInstructorData}
+              handleCloseInstructorModal={handleCloseInstructorModal}
+            />
+          ) : (
+            <button
+              type="button"
+              data-testid="assign-button"
+              className="assign-button"
+              onClick={handleShowInstructorModal}
+            >
+              <span className="plus">+</span> Assign Professors (s)
+            </button>
+          )}
+          <p>Current Assignee's</p>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search for people assigned to this role."
+            onChange={(e) => onSearch(e.target.value)}
+          />
+          <div className="assigneeTable">
+            <table>
               <tbody>
-                {currentEntries.map((entry, index) => (
-                  <tr key={index}>
-                    <td>
-                      <Link to={`/DeptProfilePage?ubcid=${entry.instructorID}`}>
-                        {entry.instructorName}
-                      </Link>
-                    </td>
-                    <td>{entry.session}</td>
-                    <td>{entry.term}</td>
-                    <td>{entry.score}</td>
-                  </tr>
-                ))}
+                {currentAssignees.map((assignee) => {
+                  i++;
+                  if (assignee.instructorID == '' || assignee.instructorID == null) {
+                    return (
+                      <tr key={i}>
+                        <td></td>
+                      </tr>
+                    );
+                  } else {
+                    return (
+                      <tr key={assignee.instructorID}>
+                        <td>
+                          <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+                            {assignee.name} ID:{assignee.instructorID}
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan={4}>
+                  <td>
                     <ReactPaginate
                       previousLabel={'<'}
                       nextLabel={'>'}
@@ -195,172 +418,428 @@ function CourseInformation() {
   );
 }
 
-export default CourseInformation;
-
-
+export default RoleInformation;
 
 /*
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
-import '../../CSS/Department/DeptCourseInformation.css';
+import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../common/AuthContext.js';
+import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 
-function CourseInformation() {
-	const { authToken, accountLogInType } = useAuth();
-	const navigate = useNavigate();
-	const params = new URLSearchParams(window.location.search);
-	const courseId = params.get('courseid');
-	const [historyData, setHistoryData] = useState({
-		history: [{}],
-		entryCount: 0,
-		perPage: 10,
-		currentPage: 1,
-		currentInstructor: "Willem Dafoe"
-	});
+function RoleInformation() {
+  const { authToken, accountType } = useAuth();
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		console.log('Use effect executing');
-		const fetchData = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
-			const numericAccountType = Number(accountLogInType);
-			if (numericAccountType !== 1 && numericAccountType !== 2) {
-				alert('No Access, Redirecting to instructor view');
-				navigate('/Dashboard');
-			}
-			console.log('Before fetch');
-			const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
-				params: { courseId: courseId },
-				headers: { Authorization: `Bearer ${authToken.token}` },
-			});
-			console.log('After res');
-			const data = res.data;
-			const filledEntries = fillEmptyEntries(data.history, data.perPage);
-			setHistoryData({ ...data, history: filledEntries });
-		};
-		fetchData();
-	}, []);
+  const [roleData, setRoleData] = useState({
+    assignees: [{}],
+    assigneeCount: 0,
+    perPage: 5,
+    currentPage: 1,
+    roleName: '',
+    roleDescription: '',
+    department: '',
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    roleName: '',
+    roleDescription: '',
+    department: '',
+  });
+  const [search, setSearch] = useState('');
+  const [instructorData, setInstructorData] = useState({
+    instructors: [{}],
+    instructorCount: 0,
+    perPage: 8,
+    currentPage: 1,
+  });
+  const [showInstructorModal, setShowInstructorModal] = useState(false);
+  const [showDeactivate, setShowDeactivate] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
-	const fillEmptyEntries = (history, perPage) => {
-		const filledEntries = [...history];
-		const currentCount = history.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledEntries.push({});
-			}
-		}
-		return filledEntries;
-	};
+  const params = new URLSearchParams(window.location.search);
+  const serviceRoleId = params.get('roleid');
 
-	function showHistory(historyData, offset) {
-		if (historyData.assigneeCount > historyData.perPage) {
-			return historyData.history.slice(offset, offset + historyData.perPage);
-		}
-		return historyData.assignees;
-	}
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!authToken) {
+        navigate('/Login');
+        return;
+      }
+      const numericAccountType = Number(accountType);
+      if (numericAccountType !== 1 && numericAccountType !== 2) {
+        alert('No Access, Redirecting to instructor view');
+        navigate('/Dashboard');
+      }
+      try {
+        // Fetch role data
+        const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
+          params: { serviceRoleId: serviceRoleId },
+          headers: { Authorization: `Bearer ${authToken.token}` },
+        });
+        const roleData = roleRes.data;
+        setRoleData((prevData) => ({ ...prevData, ...roleData }));
+        setEditData({
+          roleName: roleData.roleName,
+          roleDescription: roleData.roleDescription,
+          department: roleData.department,
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-	const handlePageClick = (data) => {
-		setHistoryData((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
+    fetchData();
+  }, [authToken, accountType, navigate, serviceRoleId]);
 
-	const pageCount = Math.ceil(historyData.entryCount / historyData.perPage);
-	const offset = (historyData.currentPage - 1) * historyData.perPage;
+  const fillEmptyAssignees = (assignees, perPage) => {
+    const filledAssignees = [...assignees];
+    const currentCount = assignees.length;
+    const fillCount = perPage - (currentCount % perPage);
+    if (fillCount < perPage) {
+      for (let i = 0; i < fillCount; i++) {
+        filledAssignees.push({});
+      }
+    }
+    return filledAssignees;
+  };
 
-	const currentEntries = historyData.history.slice(
-		(historyData.currentPage - 1) * historyData.perPage,
-		historyData.currentPage * historyData.perPage
-	);
-	let i = 0;
-	return (
-		<div className="dashboard coursehistory">
-			<CreateSideBar sideBarType="Department" />
-			<div className="container">
-				<CreateTopBar />
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setShowDeactivate(true); // Show deactivate button when editing
+  };
 
-				<div className="courseinfo-main">
-					<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
-					<h1 className="courseName" role="contentinfo">
-						{historyData.courseCode}: {historyData.courseName}
-					</h1>
-					<p role="contentinfo">{historyData.courseDescription}</p>
-					<br/>
-					<p id="current-instructor">Current Instructor: {historyData.currentInstructor}</p>
-					<div className="bold score">
-						Average Performance Score: <span role="contentinfo">{historyData.avgScore}</span>
-					</div>
-					<div className="buttons">
-						<button id="edit" role="button" name="edit">
-							Edit Course
-						</button>
-						<button id="deactivate" role="button" name="deactivate">
-							Deactivate
-						</button>
-					</div>
-					<div id="history">
-						<p className="bold">Course History</p>
+  const handleSaveClick = async () => {
+    setIsEditing(false);
+    setShowDeactivate(false); // Hide deactivate button after saving
+    const updatedRoleData = { ...roleData, ...editData, isActive };
+    setRoleData(updatedRoleData);
+    console.log('Updated data:\n', JSON.stringify(updatedRoleData));
+    // Here, you would send the updatedRoleData to your backend to save the changes
+    try {
+      const res = await axios.post('http://localhost:3001/api/updateRoleInfo', updatedRoleData, {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      console.log('Update successful', res.data);
+    } catch (error) {
+      console.error('Error updating role info', error);
+    }
+  };
 
-						<table id="historyTable">
-							<thead>
-								<tr>
-									<th>Instructor</th>
-									<th>Session</th>
-									<th>Term</th>
-									<th>Performance Score</th>
-								</tr>
-							</thead>
-							<tbody>
-								{currentEntries.map((entry) => {
-									i++;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    if (name === 'roleName') {
+      e.target.style.width = (value.length + 1) * 8 + 'px';
+    } else if (name === 'roleDescription') {
+      e.target.style.height = 'auto';
+      e.target.style.height = e.target.scrollHeight + 'px';
+    }
+  };
 
-									return (
-										<tr key={i}>
-											<td>
-												<Link to={`/DeptProfilePage?ubcid=${entry.instructorID}`}>
-													{entry.instructorName}
-												</Link>
-											</td>
-											<td>{entry.session}</td>
-											<td>{entry.term}</td>
-											<td>{entry.score}</td>
-										</tr>
-									);
-								})}
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colSpan={4}>
-										<ReactPaginate
-											previousLabel={'<'}
-											nextLabel={'>'}
-											breakLabel={'...'}
-											pageCount={pageCount}
-											marginPagesDisplayed={3}
-											pageRangeDisplayed={0}
-											onPageChange={handlePageClick}
-											containerClassName={'pagination'}
-											activeClassName={'active'}
-										/>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+  const handleSwitchChange = () => {
+    setIsActive(!isActive);
+  };
+
+  function showAssignees(assigneeData, offset) {
+    if (assigneeData.assigneeCount > roleData.perPage) {
+      return assigneeData.assignees.slice(offset, offset + assigneeData.perPage);
+    }
+    return assigneeData.assignees;
+  }
+
+  const handlePageClick = (data) => {
+    setRoleData((prevState) => ({
+      ...prevState,
+      currentPage: data.selected + 1,
+    }));
+  };
+
+  const prevInstructors = useRef({});
+
+  const handleShowInstructorModal = async () => {
+    prevInstructors.current = JSON.stringify(instructorData);
+    setShowInstructorModal(true);
+
+    try {
+      const res = await axios.get('http://localhost:3001/api/instructors', {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      const professors = res.data.instructors;
+      console.log("received:\n", professors);
+      if (Array.isArray(professors)) {
+        setInstructorData((prevData) => ({
+          ...prevData,
+          instructors: professors,
+          instructorCount: professors.length,
+        }));
+      } else {
+        setInstructorData((prevData) => ({
+          ...prevData,
+          instructors: [],
+          instructorCount: 0,
+        }));
+        console.error('Expected an array but got:', professors);
+      }
+    } catch (error) {
+      console.error('Error fetching professors:', error);
+      setInstructorData((prevData) => ({
+        ...prevData,
+        instructors: [],
+        instructorCount: 0,
+      }));
+    }
+  };
+
+  const handleCloseInstructorModal = (save) => {
+    if (!save) {
+      if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
+        setInstructorData(JSON.parse(prevInstructors.current));
+      } else {
+        return;
+      }
+    } else {
+      roleData.assignees = [];
+      console.log(roleData);
+      for (let i = 0; i < instructorData.instructors.length; i++) {
+        if (instructorData.instructors[i].assigned) {
+          roleData.assignees.push({
+            instructorID: instructorData.instructors[i].id,
+            name: instructorData.instructors[i].name,
+          });
+        }
+      }
+
+      updateAssignees();
+    }
+    setShowInstructorModal(false);
+  };
+
+  const updateAssignees = async () => {
+    let assignedInstructors = [];
+    for (let i = 0; i < instructorData.instructors.length; i++) {
+      if (instructorData.instructors[i].assigned === true) {
+        assignedInstructors.push(instructorData.instructors[i].id);
+      }
+    }
+
+    // Submitting new data goes here:
+    console.log("Assigned profs are:\n", assignedInstructors, "\nAnd the assigned service Role Id is ", serviceRoleId);
+    var div = 0;
+    switch (roleData.department) {
+      case "Computer Science": div = 1; break;
+      case "Mathematics": div = 2; break;
+      case "Physics": div = 3; break;
+      case "Statistics": div = 4; break;
+      default: div = 0;
+    }
+    const newAssigneeData = {
+      profileId: assignedInstructors, // Assuming profileId corresponds to assignedInstructors
+      serviceRole: roleData.roleName, // Assuming serviceRole corresponds to roleName
+      year: new Date().getFullYear(), // Example: Current year
+      division: div // Assuming division corresponds to department
+    };
+
+    console.log("Assigned profs are:", assignedInstructors, "\nAnd the assigned service Role Id is", serviceRoleId);
+
+    for (let i = 0; i < assignedInstructors.length; i++) {
+      var newAssigneeList = {
+        profileId: assignedInstructors[i],
+        serviceRole: roleData.roleName,
+        year: new Date().getFullYear(),
+        division: div
+      };
+      try {
+        console.log("Assigning prof ", i, " in list, id ", newAssigneeList.profileId);
+        const res = await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
+          headers: { Authorization: `Bearer ${authToken.token}` },
+        });
+        console.log('Assignee update successful', res.data);
+      } catch (error) {
+        console.error('Error updating assignees', error);
+      }
+    }
+    window.location.reload();
+  };
+
+  const onSearch = (newSearch) => {
+    console.log('Searched:', newSearch);
+    setSearch(newSearch);
+    setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
+  };
+
+  const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
+  const offset = (roleData.currentPage - 1) * roleData.perPage;
+
+  const filteredAssignees = roleData.assignees.filter(
+    (assignee) =>
+      (assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())
+  );
+
+  const currentAssignees = filteredAssignees.slice(
+    (roleData.currentPage - 1) * roleData.perPage,
+    roleData.currentPage * roleData.perPage
+  );
+  let i = 0;
+  return (
+    <div className="dashboard">
+      <CreateSideBar sideBarType="Department" />
+      <div className="container">
+        <CreateTopBar />
+
+        <div className="ri-main">
+          <h1 className="roleName">
+            {isEditing ? (
+              <input
+                type="text"
+                name="roleName"
+                value={editData.roleName}
+                onChange={handleChange}
+                className="editable-input"
+                style={{ minWidth: '200px', width: `${Math.max(editData.roleName.length + 1, 20)}ch`, height: 'auto' }}
+              />
+            ) : (
+              roleData.roleName
+            )}
+          </h1>
+          <div className="description" style={{ whiteSpace: isEditing ? 'pre-wrap' : '' }}>
+            {isEditing ? (
+              <textarea
+                name="roleDescription"
+                value={editData.roleDescription}
+                onChange={handleChange}
+                className="editable-textarea"
+                style={{ minHeight: '80px', height: 'auto', overflow: 'hidden' }}
+              />
+            ) : (
+              <p style={{ whiteSpace: 'pre-wrap' }}>{roleData.roleDescription}</p>
+            )}
+          </div>
+          <p>
+            Department:{' '}
+            {isEditing ? (
+              <select
+                name="department"
+                value={editData.department}
+                onChange={handleChange}
+                className="editable-select"
+                style={{ height: 'auto' }}
+              >
+                <option value="Computer Science">Computer Science (COSC)</option>
+                <option value="Mathematics">Mathematics (MATH)</option>
+                <option value="Physics">Physics (PHYS)</option>
+				        <option value="Statistics">Statistics (STAT)</option>
+              </select>
+            ) : (
+              <span className="bold" role="contentinfo">
+                {roleData.department}
+              </span>
+            )}
+            {isEditing ? null : (
+              <span style={{ marginLeft: '10px', color: isActive ? 'green' : 'red' }}>
+                ({isActive ? 'Active' : 'De-active'})
+              </span>
+            )}
+          </p>
+          <div className="buttons">
+            {isEditing ? (
+              <button role="button" onClick={handleSaveClick}>
+                Save
+              </button>
+            ) : (
+              <button role="button" id="edit" onClick={handleEditClick}>
+                Edit Role
+              </button>
+            )}
+            {showDeactivate && (
+              <label className="switch">
+                <input type="checkbox" checked={isActive} onChange={handleSwitchChange} />
+                <span className="slider round"></span>
+                {isActive ? 'Active' : 'De-active'}
+              </label>
+            )}
+          </div>
+
+          <h1 className="roleName">Assignee's</h1>
+          <button
+            type="button"
+            data-testid="assign-button"
+            className="assign-button"
+            onClick={handleShowInstructorModal}
+          >
+            <span className="plus">+</span> Assign Professors (s)
+          </button>
+          <p>Current Assignee's</p>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search for people assigned to this role."
+            onChange={(e) => onSearch(e.target.value)}
+          />
+          <div className="assigneeTable">
+            <table>
+              <tbody>
+                {currentAssignees.map((assignee) => {
+                  i++;
+                  if (assignee.instructorID == '' || assignee.instructorID == null) {
+                    return (
+                      <tr key={i}>
+                        <td></td>
+                      </tr>
+                    );
+                  } else {
+                    return (
+                      <tr key={assignee.instructorID}>
+                        <td>
+                          <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+                            {assignee.name} ID:{assignee.instructorID}
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>
+                    <ReactPaginate
+                      previousLabel={'<'}
+                      nextLabel={'>'}
+                      breakLabel={'...'}
+                      pageCount={pageCount}
+                      marginPagesDisplayed={3}
+                      pageRangeDisplayed={0}
+                      onPageChange={handlePageClick}
+                      containerClassName={'pagination'}
+                      activeClassName={'active'}
+                    />
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          {showInstructorModal && (
+            <AssignInstructorsModal
+              instructorData={instructorData}
+              setInstructorData={setInstructorData}
+              handleCloseInstructorModal={handleCloseInstructorModal}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default CourseInformation;
+export default RoleInformation;
 */
