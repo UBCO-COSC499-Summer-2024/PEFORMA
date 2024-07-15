@@ -38,7 +38,7 @@ const roleInfoRoutes = require('./routes/roleInfoRoutes');
 
 const deptStatusChangeCourseRoutes = require('./routes/deptStatusChangeCourseRouters.js')
 const teachingAssignment = require('./routes/teachingAssignment.js');
-
+const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
 const resetPasswordRouter = require('./routes/resetPassword');
 //const updatePasswordRouter = require('./routes/updatePassword.js')
 
@@ -95,6 +95,9 @@ app.use('/api', resetPasswordRouter);
 //app.use('/api', updatePasswordRouter);
 
 app.use('/api/roleInfo', roleInfoRoutes);
+
+//Course Evaluation
+app.use('/api/courseEvaluation',courseEvaluation);
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
