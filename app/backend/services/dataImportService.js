@@ -1,11 +1,10 @@
-// dataImportService.js
 const xlsx = require('xlsx');
 const csv = require('fast-csv');
 const fs = require('fs');
 const Joi = require('joi');
 const pool = require('../db/index.js');
 
-// --- Validation Schemas --- (These should be filled in based on your actual database schema)
+// --- Validation Schemas --- 
 
 const profileSchema = Joi.object({
 	firstName: Joi.string().required(),
