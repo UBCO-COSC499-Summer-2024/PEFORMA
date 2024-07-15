@@ -31,8 +31,6 @@ import DeptStatusChangeServiceRole from './JS/Department/DeptStatusChangeService
 import DeptTeachingAssignment from './JS/Department/DeptTeachingAssignment';
 import DeptTeachingAssignmentDetail from './JS/Department/DeptTeachingAssignmentDetail';
 import DeptStatusChangeCourse from './JS/Department/DeptStatusChangeCourse';
-import FileUpload from "./JS/Department/DataImportPage";
-
 
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
@@ -69,8 +67,6 @@ function App() {
 
 					<Route path="/DeptMemberList" element={<DeptMemberList />} />
           <Route path="/DeptProfilePage" element={<DeptProfilePage />} />
-		  <Route path="/FileUpload" element={<FileUpload />} />
-
 
 
 					<Route path="/AdminCreateAccount" element={<AdminCreateAccount />} />
@@ -80,7 +76,6 @@ function App() {
 
 					<Route path="/DeptServiceRoleManagement" element={<DeptServiceRoleManagement />} />
 					<Route path="/DeptRoleInformation" element={<DeptRoleInformation />} />
-        
 
 					<Route path="/DeptCourseList" element={<DeptCourseList />} />
 					<Route path="/DeptCourseInformation" element={<DeptCourseInformation />} />
@@ -88,7 +83,7 @@ function App() {
 					<Route path="/DeptStatusChangeServiceRole" element={<DeptStatusChangeServiceRole />} />
 					<Route path="/DeptStatusChangeCourse" element={<DeptStatusChangeCourse />} />
 
-			
+					
 
 					<Route path="/AdminMemberList" element={<AdminMemberList />} />
 					<Route path="/AdminStatusChangeMember" element={<AdminStatusChangeMember />} />
