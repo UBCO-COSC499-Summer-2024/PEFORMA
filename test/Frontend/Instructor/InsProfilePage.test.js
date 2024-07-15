@@ -32,13 +32,15 @@ describe('InsProfilePage', () => {
 					name: 'Billy Guy',
 					ubcid: '18592831',
 					benchmark: '1300',
-					roles: ['Role1', 'Role2'],
+					roles: [
+						{roleTitle:'Role1',roleId:1}, 
+						{roleTitle:'Role2',roleId:2}],
 					email: 'billyGuy@instructor.ubc.ca',
 					phone: '778-333-2222',
 					office: 'SCI 300',
 					teachingAssignments: [
-						{ assign: 'COSC 211', link: 'abc.com' },
-						{ assign: 'COSC 304', link: 'def.com' },
+						{ assign: 'COSC 211', courseId: 1 },
+						{ assign: 'COSC 304', courseId: 2},
 					],
 				},
 			})
