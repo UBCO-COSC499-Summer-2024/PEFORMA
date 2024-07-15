@@ -95,7 +95,7 @@ function DeptSEIPage() {
         }
       );
       console.log('Server response:', response.data);
-      alert('Account created successfully.');
+      alert('SEI data submitted successfully.');
       setFormData(initialFormData); 
     } catch (error) {
       console.error('Error sending data to the server:', error);
