@@ -82,6 +82,7 @@
     list-style: none;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .assign-button {
@@ -115,7 +116,7 @@
 }
 
 .assigneeTable tfoot {
-    display: flex;
+    
     padding: 0.5em;
     list-style: none;
     align-items: center;
@@ -150,6 +151,13 @@
 .ri-main table tfoot td {
     border: 0;
     width: 100%;
+    text-align: center;
+    align-items: center;
+}
+
+.ri-main table tbody th {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
 }
 
   .ri-main table tbody tr td {
