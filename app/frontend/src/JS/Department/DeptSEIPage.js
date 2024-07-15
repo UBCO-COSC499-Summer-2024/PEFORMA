@@ -15,6 +15,8 @@ function DeptSEIPage() {
   const initialFormData = {
     courseId: '',
     course: '',
+    instructorId: '',
+    instructor: '',
     Q1: '',
     Q2: '',
     Q3: '',
@@ -25,9 +27,9 @@ function DeptSEIPage() {
     enrollmentRate: '',
     failedPercentage: ''
   };
-
   const [formData, setFormData] = useState(initialFormData);
   const [courseOptions, setCourseOptions] = useState([]); 
+  const [instructorOptions, setInstructorOptions] = useState([]);
 
   const extractCourseNumber = (courseCode) => {
     const match = courseCode.match(/\d+/);
@@ -44,16 +46,18 @@ function DeptSEIPage() {
         });
         const options = sortedCourses.map(course => ({
           value: course.courseId,
-          label: course.courseCode
+          label: course.courseCode,
+          instructors: course.instructor
         }));
         setCourseOptions(options);
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
     };
-
+  
     fetchCourses();
-  }, [accountLogInType, navigate]); 
+  }, [accountLogInType, navigate]);
+  
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -67,41 +71,59 @@ function DeptSEIPage() {
     setFormData(prevState => ({
       ...prevState,
       courseId: selectedOption ? selectedOption.value : '',
-      course: selectedOption ? selectedOption.label : '' 
+      course: selectedOption ? selectedOption.label : '',
+      instructorId: '', 
+      instructor: ''   
+    }));
+  
+    const instructors = selectedOption && selectedOption.instructors ? selectedOption.instructors : [];
+    const instructorOptions = instructors.map(instructor => ({
+      value: instructor.ubcid,
+      label: instructor.name
+    }));
+    setInstructorOptions(instructorOptions);
+  };
+  
+
+  const handleInstructorChange = (selectedOption) => {
+    setFormData(prevState => ({
+      ...prevState,
+      instructorId: selectedOption ? selectedOption.value : '',
+      instructor: selectedOption ? selectedOption.label : ''
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+  
     const postData = {
-        courseId: formData.courseId,
-        Q1: formData.Q1,
-        Q2: formData.Q2,
-        Q3: formData.Q3,
-        Q4: formData.Q4,
-        Q5: formData.Q5,
-        retentionRate: formData.retentionRate,
-        averageGrade: formData.averageGrade,
-        enrollmentRate: formData.enrollmentRate,
-        failedPercentage: formData.failedPercentage
+      courseId: formData.courseId,
+      instructorId: formData.instructorId,
+      Q1: formData.Q1,
+      Q2: formData.Q2,
+      Q3: formData.Q3,
+      Q4: formData.Q4,
+      Q5: formData.Q5,
+      retentionRate: formData.retentionRate,
+      averageGrade: formData.averageGrade,
+      enrollmentRate: formData.enrollmentRate,
+      failedPercentage: formData.failedPercentage
     };
-
+  
     try {
-      console.log("alskdjashd", postData)
-      const response = await axios.post('http://localhost:3001/api', postData, //change
-        {
-          headers: { Authorization: `Bearer ${authToken.token}` },
-        }
-      );
+      console.log("Submitting data:", postData);
+      const response = await axios.post('http://localhost:3001/api', postData, {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
       console.log('Server response:', response.data);
       alert('SEI data submitted successfully.');
-      setFormData(initialFormData); 
+      setFormData(initialFormData);
     } catch (error) {
       console.error('Error sending data to the server:', error);
       alert('Error submitting SEI form: ' + error.message);
     }
   };
+  
 
   const handleCancel = () => {
     setFormData(initialFormData);
@@ -120,6 +142,12 @@ function DeptSEIPage() {
               <Select name="course" options={courseOptions} onChange={handleCourseChange} isClearable placeholder="Select course"/>
             </label>
             {formData.courseId && (
+            <label>
+              Select Instructor:
+              <Select name="instructor" options={instructorOptions} onChange={handleInstructorChange} isClearable placeholder="Select instructor"/>
+            </label>
+          )}
+            {formData.instructorId && (
               <>
                 <label><input type="number" name="Q1" placeholder='Q1 Average Score' value={formData.Q1} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
                 <label><input type="number" name="Q2" placeholder='Q2 Average Score' value={formData.Q2} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
