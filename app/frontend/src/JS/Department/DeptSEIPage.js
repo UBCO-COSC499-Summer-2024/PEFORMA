@@ -13,6 +13,7 @@ function DeptSEIPage() {
   const navigate = useNavigate();
 
   const initialFormData = {
+    courseId: '',
     course: '',
     Q1: '',
     Q2: '',
@@ -26,7 +27,7 @@ function DeptSEIPage() {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-  const [courseOptions, setCourseOptions] = useState([]); // 상태 추가
+  const [courseOptions, setCourseOptions] = useState([]); 
 
   const extractCourseNumber = (courseCode) => {
     const match = courseCode.match(/\d+/);
@@ -42,7 +43,7 @@ function DeptSEIPage() {
           return extractCourseNumber(a.courseCode) - extractCourseNumber(b.courseCode);
         });
         const options = sortedCourses.map(course => ({
-          value: course.courseCode,
+          value: course.courseId,
           label: course.courseCode
         }));
         setCourseOptions(options);
@@ -65,7 +66,8 @@ function DeptSEIPage() {
   const handleCourseChange = (selectedOption) => {
     setFormData(prevState => ({
       ...prevState,
-      course: selectedOption ? selectedOption.value : ''
+      courseId: selectedOption ? selectedOption.value : '',
+      course: selectedOption ? selectedOption.label : '' 
     }));
   };
 
@@ -73,7 +75,7 @@ function DeptSEIPage() {
     event.preventDefault();
     
     const postData = {
-        course: formData.course,
+        courseId: formData.courseId,
         Q1: formData.Q1,
         Q2: formData.Q2,
         Q3: formData.Q3,
@@ -86,6 +88,7 @@ function DeptSEIPage() {
     };
 
     try {
+      console.log("alskdjashd", postData)
       const response = await axios.post('http://localhost:3001/api', postData, //change
         {
           headers: { Authorization: `Bearer ${authToken.token}` },
@@ -116,14 +119,13 @@ function DeptSEIPage() {
               Select Course:
               <Select name="course" options={courseOptions} onChange={handleCourseChange} isClearable placeholder="Select course"/>
             </label>
-
-            {formData.course && (
+            {formData.courseId && (
               <>
-                <label><input type="number" name="Q1" placeholder={`Q1 Average Score`} value={formData.Q1} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q2" placeholder={`Q2 Average Score`} value={formData.Q2} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q3" placeholder={`Q3 Average Score`} value={formData.Q3} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q4" placeholder={`Q4 Average Score`} value={formData.Q4} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q5" placeholder={`Q5 Average Score`} value={formData.Q5} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label><input type="number" name="Q1" placeholder='Q1 Average Score' value={formData.Q1} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label><input type="number" name="Q2" placeholder='Q2 Average Score' value={formData.Q2} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label><input type="number" name="Q3" placeholder='Q3 Average Score' value={formData.Q3} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label><input type="number" name="Q4" placeholder='Q4 Average Score' value={formData.Q4} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label><input type="number" name="Q5" placeholder='Q5 Average Score' value={formData.Q5} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
                 <label><input type="number" name="retentionRate" placeholder={`Retention Rate of ${formData.course}`} value={formData.retentionRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
                 <label><input type="number" name="averageGrade" placeholder={`Average Grade of ${formData.course}`} value={formData.averageGrade} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
                 <label><input type="number" name="enrollmentRate" placeholder={`Enrollment Rate of ${formData.course}`} value={formData.enrollmentRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
