@@ -113,7 +113,8 @@ CREATE TABLE "Course" (
   "ctitle"        varchar(100) UNIQUE NOT NULL,
   "description"   TEXT,
   "divisionId"    integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "courseNum"     integer
+  "courseNum"     integer,
+  "isActive"      boolean
 );
 ALTER SEQUENCE "Course_courseId_seq" RESTART WITH 1;
 

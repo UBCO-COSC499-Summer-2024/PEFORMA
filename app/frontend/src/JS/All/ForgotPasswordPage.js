@@ -14,16 +14,14 @@ function ForgotPasswordPage() {
   return (
     <div className="forgot-container">
       <header className="forgot-header">
-        <div className="logo">PEFORMA</div>
+        <h2 className="logo">PEFORMA</h2>
         <nav>
-          <a href="#support">Support</a>
           <button href="#login">Login</button>
         </nav>
       </header>
       <div className="forgot-form-container">
         <form onSubmit={handleSubmit}>
           <h1>Forgot Email/Password?</h1>
-          <p>Your Email is University Instructor Email</p>
           <p>We will send you an email with instructions on how to reset your password.</p>
           <input
             type="email"

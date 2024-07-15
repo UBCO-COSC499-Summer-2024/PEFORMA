@@ -3,18 +3,17 @@ const pool = require('../db/index.js');
 async function getAllServiceRoles() {
   try {
     const countResult = await pool.query(`SELECT COUNT(*) 
-                                          FROM public."ServiceRole"
-                                          WHERE "isActive" = true`);
+                                          FROM public."ServiceRole"`);
     const rolesCount = parseInt(countResult.rows[0].count);
 
     const result = await pool.query(`
         SELECT "serviceRoleId" as id,
                "stitle" as name, 
                "description", 
-               "dname" as department 
+               "dname" as department,
+               s."isActive" 
         FROM public."ServiceRole" s
         JOIN public."Division" d ON s."divisionId" = d."divisionId"
-        WHERE s."isActive" = true  
         ORDER BY d."divisionId" ASC, s."stitle" ASC;
       `);
 
@@ -28,12 +27,12 @@ async function getAllServiceRoles() {
                 id: row.id,
                 name: row.name,
                 department: row.department,
-                description: row.description
+                description: row.description,
+                status: row.isActive
             };
         })
     };
 
-    console.log(formattedData);
 
     return formattedData;
   } catch (error) {

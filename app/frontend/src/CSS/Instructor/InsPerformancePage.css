@@ -1,0 +1,202 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+  
+.greeting {
+  margin-left: 2em;
+  font-size: 1em;
+  width: auto;
+  padding-right: 2em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.greeting h2 {
+  font-size: 1.5em;
+}
+
+.edit-button {
+  background-color: #bebebe; 
+  color: rgb(0, 0, 0); 
+  border: none;
+  border-radius: 10px; 
+  font-size: 14px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.edit-button:hover {
+  background-color: #57a8ff;
+}
+  
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+  
+.profile-details {
+  display: flex;
+  justify-content: space-between;
+  padding: 2em;
+}
+
+.profile-info {
+  width: 60%;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+}
+
+.compare {
+  margin-right: 10px;
+  color: green;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.graph{
+  max-width: 90%;
+  align-items: center;
+}
+  
+
+.info-table {
+  display: flex; 
+  justify-content: space-between;
+  width: auto;
+  padding: 2em;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.info-section {
+  width: 40%;
+  margin-right: 10px;
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-table .graph-section {
+  width: 60%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  padding: 10px;
+  background-color: #ffffff;
+
+}
+
+.teaching-margin {
+  margin-top: 10px;
+}
+
+.teaching-assignments {
+  margin-top: 0px;
+  padding-left: 1em;
+  overflow-y: auto;
+}
+
+.info-section .teaching-assignments {
+  list-style: none;
+  padding: 0;
+}
+
+.info-section .teaching-assignments li {
+  background-color: #f4f4f4;
+  margin-bottom: 0.8em;
+  padding: 0.8em 1em;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 70%
+}
+
+.info-section .teaching-assignments a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.info-section .teaching-assignments a:hover {
+  color: #006ee4;
+}
+
+.subTitle {
+  font-size: 1.2em !important;
+  margin-top: 0;
+}
+
+.bottom-section {
+  width: auto;
+  display: flex;
+  padding: 2em;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 0px;
+}
+
+.polarchart-section {
+  padding: 10px;
+  width: 50%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  margin-right: 10px;
+  background-color: #ffffff;
+}
+
+.leaderboard-section {
+  padding: 10px;
+  width: 50%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+
+.assignment-table {
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  padding: 10px;
+  height: 50%;
+  margin-top: 10px;
+  padding-top: 0;
+  background-color: #ffffff;
+}
+
+.info {
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  height: 50%;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.under-bottom-section {
+  width: auto;
+  display: flex;
+  padding: 2em;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 0px;
+}
+
+.progress-section {
+  padding: 10px;
+  width: 50%;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  background-color: #ffffff;
+}
