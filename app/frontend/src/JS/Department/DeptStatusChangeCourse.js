@@ -7,7 +7,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function DeptStatusChangeCourse() {
@@ -21,7 +21,7 @@ function DeptStatusChangeCourse() {
 
 
 	useEffect(() => {
-		// add checkAccess here
+		checkAccess(accountLogInType, navigate, 'department');
 		if (location.state.deptCourseList) {
 				const filledCourses = fillEmptyItems(
 				location.state.deptCourseList.courses,
@@ -37,7 +37,7 @@ function DeptStatusChangeCourse() {
 		console.log("request\n",  { courseid : course.id, newStatus })
 		try {
 			const response = await axios.post(
-				`http://localhost:3001/api/DeptStatusChangeCourse`, // URL 수정됨
+				`http://localhost:3001/api/DeptStatusChangeCourse`,
 				{
 					courseid: course.id,
 					newStatus: newStatus,
@@ -71,12 +71,12 @@ function DeptStatusChangeCourse() {
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
-		<div className="dashboard" id="dept-course-list-test-content">
+		<div className="dashboard">
 			<CreateSideBar sideBarType="Department" />
 			<div className="container">
 				<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
-				<div className="clist-main">
+				<div className="clist-main" id="course-status-controller-test-content">
 					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} in Database)
 						<button className="status-change-button">
 							<Link to={`/DeptCourseList`}>Return</Link>
