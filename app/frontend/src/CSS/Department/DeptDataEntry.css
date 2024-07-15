@@ -252,3 +252,17 @@ flex-direction: column;
 .DataEntry-page .remove-instructor:hover {
     background-color: var(--darkRed);
 }
+
+.modal-overlay {
+    position: fixed;
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    top: 0em;
+    left: 0em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}

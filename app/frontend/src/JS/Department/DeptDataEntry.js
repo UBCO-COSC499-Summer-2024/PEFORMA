@@ -553,7 +553,7 @@ const removeInstructor = (id, index) => {
 							</label>
 						</div>
 					)}
-
+					
 					{showInstructorModal && (
 						<AssignInstructorsModal
 							instructorData={instructorData}
