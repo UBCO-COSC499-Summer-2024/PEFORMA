@@ -16,6 +16,7 @@ import InsEditProfile from './JS/Instructor/InsEditProfile';
 import InsPerformancePage from './JS/Instructor/InsPerformancePage';
 import InsCourseHistory from './JS/Instructor/InsCourseHistory';
 import InsProfilePage from './JS/Instructor/InsProfilePage';
+import InsRoleInformation from './JS/Instructor/InsRoleInformation';
 
 //Department
 import DeptPerformancePage from './JS/Department/DeptPerformancePage';
@@ -63,6 +64,7 @@ function App() {
 					<Route path="/InsPerformancePage" element={<InsPerformancePage />} />
 					<Route path="/InsProfilePage" element={<InsProfilePage />} />
 					<Route path="/InsCourseHistory" element={<InsCourseHistory />} />
+					<Route path="/InsRoleInformation" element={<InsRoleInformation />} />
 					<Route path="/DeptDataEntry" element={<DeptDataEntry />} />
 					<Route path="/DeptServiceRoleList" element={<DeptServiceRoleList />} />
 
