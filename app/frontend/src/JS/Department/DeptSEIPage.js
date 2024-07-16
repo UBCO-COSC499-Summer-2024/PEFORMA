@@ -112,7 +112,7 @@ function DeptSEIPage() {
   
     try {
       console.log("Submitting data:", postData);
-      const response = await axios.post('http://localhost:3001/api', postData, {
+      const response = await axios.post('http://localhost:3001/api/courseEvaluation', postData, {
         headers: { Authorization: `Bearer ${authToken.token}` },
       });
       console.log('Server response:', response.data);
