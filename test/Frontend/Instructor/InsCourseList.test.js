@@ -20,8 +20,8 @@ describe('InsCourseList', () => {
 			Promise.resolve({
 				data: {"division":"MATH", "divisionLabel":"Mathmatics", "currentPage":1, "perPage": 10, "divisionCoursesCount":1,
           "courses":[
-            { "id": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering", "instructor": ["Brandi Floyd"], "ubcid":[32819340], "email": ["brandi@instructor.ubc.ca"] },
-            { "id": "MATH 111", "title": "Testing", "instructor": ["Brandi Floyd", "Leo Ma"], "ubcid":[32819340, 12341234], "email": ["brandi@instructor.ubc.ca", "testing@ubc.ca"] }
+            { "id": 1, "cooursecode": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering", "instructor": ["Brandi Floyd"], "ubcid":[32819340], "email": ["brandi@instructor.ubc.ca"] },
+            { "id": 2, "cooursecode":"MATH 111", "title": "Testing", "instructor": ["Brandi Floyd", "Leo Ma"], "ubcid":[32819340, 12341234], "email": ["brandi@instructor.ubc.ca", "testing@ubc.ca"] }
           ]
         },
 			})
