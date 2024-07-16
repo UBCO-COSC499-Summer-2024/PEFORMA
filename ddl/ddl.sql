@@ -163,3 +163,20 @@ CREATE TABLE "SingleTeachingPerformance" (
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE "CourseEvaluation" (
+  "courseId" integer,
+  "term"     integer,
+  "profileId"integer,
+  "SEIQ1"    double precision,
+  "SEIQ2"    double precision,
+  "SEIQ3"    double precision,
+  "SEIQ4"    double precision,
+  "SEIQ5"    double precision,
+  "retentionRate" double precision,
+  "failRate"   double precision,
+  "enrolRate"double precision,
+  "averageGrade"  double precision,
+  PRIMARY KEY ("profileId", "courseId", "term"),
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
+);
