@@ -1,11 +1,10 @@
 const  pool = require('../db/index.js'); 
-const { getAllServiceRoles } = require('./serviceRoleService.jsserviceRoleService');
+const { getAllServiceRoles } = require('./serviceRoleService');
 
 async function getStatusChangeServiceRole(req) {
     const serviceRoleId = req.body.roleId; 
     const status = req.body.newStatus;
-    console.log("Service Role ID: ",serviceRoleId);
-    console.log("Status: ", status);
+
     try{
         let query = `UPDATE "ServiceRole" SET "isActive" = $1 WHERE "serviceRoleId" = $2 RETURNING *;`;
         let result = await pool.query(query, [status, serviceRoleId]);
