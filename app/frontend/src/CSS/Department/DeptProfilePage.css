@@ -1,12 +1,13 @@
 .deptProfile-container {
     display: flex;
     height: 100vh;
+    overflow: hidden;
 }
 
 .deptProfile-container .main-content {
     flex: 1;
     width: 66%;
-   
+
     margin: 0 0 3em 4em;
     padding: 0.5em 1em 1em 2em;
     background-color: var(--white);
@@ -29,6 +30,10 @@
     margin: 0.3em 0 0em 0;
     text-decoration: underline;
     font-size: 3em;
+}
+
+.deptProfile-container .information {
+    height: auto;
 }
 
 .deptProfile-container .information p {

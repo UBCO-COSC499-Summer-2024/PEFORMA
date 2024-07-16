@@ -28,6 +28,7 @@ const allCoursesRoutes = require('./routes/allCoursesRoutes.js');
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
+const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
@@ -77,6 +78,7 @@ app.use('/api/service-roles', serviceRoleRoutes);
 
 app.use('/api/teachingAssignment',teachingAssignment);
 app.use('/api/courseHistory',courseHistoryRouter);
+app.use('/api/dept-profile', deptProfileRoutes);
 
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
