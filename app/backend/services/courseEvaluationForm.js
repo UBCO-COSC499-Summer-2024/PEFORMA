@@ -27,7 +27,6 @@ async function getCourseInformation() {
         name: row.full_names[index]
       }))
     }));
-    console.log("HE&&&",formattedData);
     const courses = {
         courses:formattedData
     }

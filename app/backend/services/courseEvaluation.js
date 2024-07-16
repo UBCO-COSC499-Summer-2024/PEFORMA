@@ -62,8 +62,8 @@ async function updateTeachingPerformance(courseId, term, profileId, Q1, Q2, Q3, 
 function computeScore(Q1, Q2, Q3, Q4, Q5, retentionRate, averageGrade, enrolRate, failRate) {
     const averageQuestionScore = (parseFloat(Q1)+parseFloat(Q2)+parseFloat(Q3)+parseFloat(Q4)+parseFloat(Q5))/5;
 
-    const baseScore = 0.5 * averageQuestionScore + 0.1 * parseFloat(retentionRate) + 0.1 * parseFloat(averageGrade);
-    const penalty = 0.15 * parseFloat(enrolRate) + 0.15 * parseFloat(failRate);
+    const baseScore = 0.5 * averageQuestionScore + 0.1 * parseFloat(retentionRate) + 0.1 * parseFloat(averageGrade)+0.15*parseFloat(enrolRate);
+    const penalty = 0.15 * parseFloat(failRate);
 
     let finalScore = baseScore - penalty;
 
