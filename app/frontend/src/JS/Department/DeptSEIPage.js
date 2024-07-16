@@ -15,7 +15,7 @@ function DeptSEIPage() {
   const initialFormData = {
     courseId: '',
     course: '',
-    instructorId: '',
+    profileId: '',
     instructor: '',
     Q1: '',
     Q2: '',
@@ -72,13 +72,13 @@ function DeptSEIPage() {
       ...prevState,
       courseId: selectedOption ? selectedOption.value : '',
       course: selectedOption ? selectedOption.label : '',
-      instructorId: '', 
+      profileId: '', 
       instructor: ''   
     }));
   
     const instructors = selectedOption && selectedOption.instructors ? selectedOption.instructors : [];
     const instructorOptions = instructors.map(instructor => ({
-      value: instructor.ubcid,
+      value: instructor.profileId,
       label: instructor.name
     }));
     setInstructorOptions(instructorOptions);
@@ -88,7 +88,7 @@ function DeptSEIPage() {
   const handleInstructorChange = (selectedOption) => {
     setFormData(prevState => ({
       ...prevState,
-      instructorId: selectedOption ? selectedOption.value : '',
+      profileId: selectedOption ? selectedOption.value : '',
       instructor: selectedOption ? selectedOption.label : ''
     }));
   };
@@ -98,7 +98,7 @@ function DeptSEIPage() {
   
     const postData = {
       courseId: formData.courseId,
-      instructorId: formData.instructorId,
+      profileId: formData.profileId,
       Q1: formData.Q1,
       Q2: formData.Q2,
       Q3: formData.Q3,
@@ -147,7 +147,7 @@ function DeptSEIPage() {
               <Select name="instructor" options={instructorOptions} onChange={handleInstructorChange} isClearable placeholder="Select instructor"/>
             </label>
           )}
-            {formData.instructorId && (
+            {formData.profileId && (
               <>
                 <label><input type="number" name="Q1" placeholder='Q1 Average Score' value={formData.Q1} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
                 <label><input type="number" name="Q2" placeholder='Q2 Average Score' value={formData.Q2} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
