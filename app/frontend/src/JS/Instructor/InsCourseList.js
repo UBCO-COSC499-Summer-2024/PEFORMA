@@ -90,7 +90,7 @@ function InsCourseList() {
 
 	const filteredCourses = divisionData.courses.filter(
 		(course) =>
-			(course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+			(course.coursecode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(course.title?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
 			(course.instructor &&
 				Array.isArray(course.instructor) &&
@@ -140,7 +140,7 @@ function InsCourseList() {
 									return (
 										<tr key={course.id}>
 											<td>
-												<Link to={`/InsCourseHistory?courseid=${course.id}`}>{course.id}</Link>
+												<Link to={`/InsCourseHistory?courseid=${course.id}`}>{course.coursecode}</Link>
 											</td>
 											<td>{course.title}</td>
 											<td>
