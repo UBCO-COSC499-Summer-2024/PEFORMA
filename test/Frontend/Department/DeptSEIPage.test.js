@@ -1,7 +1,7 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, waitFor, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptSEIPage from '../../../app/frontend/src/JS/Department/DeptSEIPage';
-import { MemoryRouter, useLocation } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
@@ -9,7 +9,7 @@ jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
 describe('DeptSEIPage', () => {
-	beforeEach(() => {
+  beforeEach(async () => {
     useAuth.mockReturnValue({
       authToken: { token: 'mocked-token' },
       profileId: { profileId: 'mocked-profileId' }
@@ -22,12 +22,16 @@ describe('DeptSEIPage', () => {
         ]
       }
     });
-    render(
-      <MemoryRouter>
-        <DeptSEIPage />
-      </MemoryRouter>
-    );
+
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <DeptSEIPage />
+        </MemoryRouter>
+      );
+    });
   });
+
   test('Testing rendering SEI data entry form after selecting MATH 499 and David', async () => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
 
@@ -36,26 +40,34 @@ describe('DeptSEIPage', () => {
     expect(courseSelect).toBeInTheDocument();
 
     // simulate clicking course select
-    fireEvent.focus(courseSelect);
-    fireEvent.keyDown(courseSelect, { key: 'ArrowDown' });
+    await act(async () => {
+      fireEvent.focus(courseSelect);
+      fireEvent.keyDown(courseSelect, { key: 'ArrowDown' });
+    });
 
     // select MATH 499 option and click
     const courseOption = await screen.findByText('MATH 499');
     expect(courseOption).toBeInTheDocument();
-    fireEvent.click(courseOption);
+    await act(async () => {
+      fireEvent.click(courseOption);
+    });
 
     // find the react-select component for instructor
     const instructorSelect = await screen.findByText('Select instructor');
     expect(instructorSelect).toBeInTheDocument();
 
     // simulate clicking instructor select
-    fireEvent.focus(instructorSelect);
-    fireEvent.keyDown(instructorSelect, { key: 'ArrowDown' });
+    await act(async () => {
+      fireEvent.focus(instructorSelect);
+      fireEvent.keyDown(instructorSelect, { key: 'ArrowDown' });
+    });
 
     // select David option and click
     const insOption = await screen.findByText('David');
     expect(insOption).toBeInTheDocument();
-    fireEvent.click(insOption);
+    await act(async () => {
+      fireEvent.click(insOption);
+    });
 
     const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
     const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
@@ -79,33 +91,40 @@ describe('DeptSEIPage', () => {
   });
   test('Testing submitting form with selecting COSC 101, professor Don', async () => {
     window.alert = jest.fn(); 
-    axios.post.mockResolvedValue({ data: { message: 'Success' } }); // 추가된 부분
 
     // find the react-select component for course
     const courseSelect = screen.getByText('Select course');
     expect(courseSelect).toBeInTheDocument();
 
     // simulate clicking course select
-    fireEvent.focus(courseSelect);
-    fireEvent.keyDown(courseSelect, { key: 'ArrowDown' });
+    await act(async () => {
+      fireEvent.focus(courseSelect);
+      fireEvent.keyDown(courseSelect, { key: 'ArrowDown' });
+    });
 
     // select COSC 101 option and click
     const courseOption = await screen.findByText('COSC 101');
     expect(courseOption).toBeInTheDocument();
-    fireEvent.click(courseOption);
+    await act(async () => {
+      fireEvent.click(courseOption);
+    });
 
     // find the react-select component for instructor
     const instructorSelect = await screen.findByText('Select instructor');
     expect(instructorSelect).toBeInTheDocument();
 
     // simulate clicking instructor select
-    fireEvent.focus(instructorSelect);
-    fireEvent.keyDown(instructorSelect, { key: 'ArrowDown' });
+    await act(async () => {
+      fireEvent.focus(instructorSelect);
+      fireEvent.keyDown(instructorSelect, { key: 'ArrowDown' });
+    });
 
     // select Don option and click
     const insOption = await screen.findByText('Don');
     expect(insOption).toBeInTheDocument();
-    fireEvent.click(insOption);
+    await act(async () => {
+      fireEvent.click(insOption);
+    });
 
     const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
     const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
@@ -117,23 +136,27 @@ describe('DeptSEIPage', () => {
     const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of COSC 101');
     const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of COSC 101');
 
-    // simulate input values
-    fireEvent.change(Q1Input, { target: { value: '95' } });
-    fireEvent.change(Q2Input, { target: { value: '90' } });
-    fireEvent.change(Q3Input, { target: { value: '85' } });
-    fireEvent.change(Q4Input, { target: { value: '75' } });
-    fireEvent.change(Q5Input, { target: { value: '77' } });
-    fireEvent.change(retentionRateInput, { target: { value: '90' } });
-    fireEvent.change(averageGradeInput, { target: { value: '86' } });
-    fireEvent.change(enrollmentRateInput, { target: { value: '92' } });
-    fireEvent.change(failedPercentageInput, { target: { value: '4' } });
+    await act(async () => {
+      fireEvent.change(Q1Input, { target: { value: '95' } });
+      fireEvent.change(Q2Input, { target: { value: '90' } });
+      fireEvent.change(Q3Input, { target: { value: '85' } });
+      fireEvent.change(Q4Input, { target: { value: '75' } });
+      fireEvent.change(Q5Input, { target: { value: '77' } });
+      fireEvent.change(retentionRateInput, { target: { value: '90' } });
+      fireEvent.change(averageGradeInput, { target: { value: '86' } });
+      fireEvent.change(enrollmentRateInput, { target: { value: '92' } });
+      fireEvent.change(failedPercentageInput, { target: { value: '4' } });
+    });
 
     const submitButton = screen.getByText('Submit');
     expect(submitButton).toBeInTheDocument();
-
+    
     // expect axios.post to be called one time = submit button has been clicked
-    await waitFor(() => {
+    await act(async () => {
       fireEvent.click(submitButton);
+    });
+
+    await waitFor(() => {
       expect(axios.post).toHaveBeenCalledTimes(1);
     });
 
@@ -154,42 +177,51 @@ describe('DeptSEIPage', () => {
       },
       { headers: { Authorization: `Bearer mocked-token` } }
     ));
+
     // check alert message if SEI data is successfully submitted
     await waitFor(() => expect(window.alert).toHaveBeenCalledWith('SEI data submitted successfully.'));
 
     // check if it resets after submit
     const Q1InputAfterSubmit = screen.queryByPlaceholderText('Q1 Average Score');
     expect(Q1InputAfterSubmit).toBeNull();
-  });
-  test('Testing if cancel button resets input values', async () => {
+    });
+    test('Testing if cancel button resets input values', async () => {
     window.alert = jest.fn(); 
-  
+
     // find the react-select component for course
     const courseSelect = screen.getByText('Select course');
     expect(courseSelect).toBeInTheDocument();
-  
+
     // simulate clicking course select
-    fireEvent.focus(courseSelect);
-    fireEvent.keyDown(courseSelect, { key: 'ArrowDown' });
-  
+    await act(async () => {
+      fireEvent.focus(courseSelect);
+      fireEvent.keyDown(courseSelect, { key: 'ArrowDown' });
+    });
+
     // select COSC 101 option and click
     const courseOption = await screen.findByText('COSC 101');
     expect(courseOption).toBeInTheDocument();
-    fireEvent.click(courseOption);
-  
+    await act(async () => {
+      fireEvent.click(courseOption);
+    });
+
     // find the react-select component for instructor
     const instructorSelect = await screen.findByText('Select instructor');
     expect(instructorSelect).toBeInTheDocument();
-  
+
+    // simulate clicking instructor select
+    await act(async () => {
+      fireEvent.focus(instructorSelect);
+      fireEvent.keyDown(instructorSelect, { key: 'ArrowDown' });
+    });
+
     // select Don option and click
-    fireEvent.focus(instructorSelect);
-    fireEvent.keyDown(instructorSelect, { key: 'ArrowDown' });
-  
-    // Find and select the Don option
     const insOption = await screen.findByText('Don');
     expect(insOption).toBeInTheDocument();
-    fireEvent.click(insOption);
-  
+    await act(async () => {
+      fireEvent.click(insOption);
+    });
+
     const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
     const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
     const Q3Input = await screen.findByPlaceholderText('Q3 Average Score');
@@ -199,22 +231,27 @@ describe('DeptSEIPage', () => {
     const averageGradeInput = await screen.findByPlaceholderText('Average Grade of COSC 101');
     const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of COSC 101');
     const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of COSC 101');
-  
-    fireEvent.change(Q1Input, { target: { value: '95' } });
-    fireEvent.change(Q2Input, { target: { value: '90' } });
-    fireEvent.change(Q3Input, { target: { value: '85' } });
-    fireEvent.change(Q4Input, { target: { value: '75' } });
-    fireEvent.change(Q5Input, { target: { value: '77' } });
-    fireEvent.change(retentionRateInput, { target: { value: '90' } });
-    fireEvent.change(averageGradeInput, { target: { value: '86' } });
-    fireEvent.change(enrollmentRateInput, { target: { value: '92' } });
-    fireEvent.change(failedPercentageInput, { target: { value: '4' } });
-  
+
+    await act(async () => {
+      fireEvent.change(Q1Input, { target: { value: '95' } });
+      fireEvent.change(Q2Input, { target: { value: '90' } });
+      fireEvent.change(Q3Input, { target: { value: '85' } });
+      fireEvent.change(Q4Input, { target: { value: '75' } });
+      fireEvent.change(Q5Input, { target: { value: '77' } });
+      fireEvent.change(retentionRateInput, { target: { value: '90' } });
+      fireEvent.change(averageGradeInput, { target: { value: '86' } });
+      fireEvent.change(enrollmentRateInput, { target: { value: '92' } });
+      fireEvent.change(failedPercentageInput, { target: { value: '4' } });
+    });
+
     const cancelButton = screen.getByText('Cancel');
     expect(cancelButton).toBeInTheDocument();
-    fireEvent.click(cancelButton);
-  
-    // Check if the form inputs are reset after clicking the cancel button
+    
+    await act(async () => {
+      fireEvent.click(cancelButton);
+    });
+
+    // check if the form resets after clicking cancel button
     await waitFor(() => {
       expect(screen.queryByPlaceholderText('Q1 Average Score')).toBeNull();
       expect(screen.queryByPlaceholderText('Q2 Average Score')).toBeNull();
@@ -227,5 +264,4 @@ describe('DeptSEIPage', () => {
       expect(screen.queryByPlaceholderText('Failed Percentage of COSC 101')).toBeNull();
     });
   });
-  
 });
