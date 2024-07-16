@@ -40,7 +40,7 @@ function DeptSEIPage() {
     const fetchCourses = async () => {
       checkAccess(accountLogInType, navigate, 'department');
       try {
-        const response = await axios.get('http://localhost:3000/SEIData.json');
+        const response = await axios.get('http://localhost:3001/api/courseEvaluationForm');
         const sortedCourses = response.data.courses.sort((a, b) => {
           return extractCourseNumber(a.courseCode) - extractCourseNumber(b.courseCode);
         });

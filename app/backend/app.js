@@ -41,6 +41,7 @@ const teachingAssignment = require('./routes/teachingAssignment.js');
 const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
 const resetPasswordRouter = require('./routes/resetPassword');
 //const updatePasswordRouter = require('./routes/updatePassword.js')
+const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
 
 const app = express();
 
@@ -97,6 +98,7 @@ app.use('/api', resetPasswordRouter);
 app.use('/api/roleInfo', roleInfoRoutes);
 
 //Course Evaluation
+app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
 
 app.post('/enter', async (req, res) => {
