@@ -90,6 +90,7 @@ describe('DeptSEIPage', () => {
     expect(failedPercentageInput).toBeInTheDocument();
   });
   test('Testing submitting form with selecting COSC 101, professor Don', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
     window.alert = jest.fn(); 
 
     // find the react-select component for course
@@ -150,7 +151,7 @@ describe('DeptSEIPage', () => {
 
     const submitButton = screen.getByText('Submit');
     expect(submitButton).toBeInTheDocument();
-    
+
     // expect axios.post to be called one time = submit button has been clicked
     await act(async () => {
       fireEvent.click(submitButton);
@@ -186,6 +187,7 @@ describe('DeptSEIPage', () => {
     expect(Q1InputAfterSubmit).toBeNull();
     });
     test('Testing if cancel button resets input values', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
     window.alert = jest.fn(); 
 
     // find the react-select component for course
@@ -263,5 +265,38 @@ describe('DeptSEIPage', () => {
       expect(screen.queryByPlaceholderText('Enrollment Rate of COSC 101')).toBeNull();
       expect(screen.queryByPlaceholderText('Failed Percentage of COSC 101')).toBeNull();
     });
+  });
+  test('Testing react-select search functionality', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+  
+    // find the react-select component for course
+    const courseSelect = screen.getByText('Select course');
+    expect(courseSelect).toBeInTheDocument();
+  
+    // simulate clicking course select
+    await act(async () => {
+      fireEvent.focus(courseSelect);
+      fireEvent.keyDown(courseSelect, { key: 'ArrowDown' });
+    });
+  
+    // simulate entering MATH to search MATH 499
+    const searchInput = screen.getByRole('combobox');
+    await act(async () => {
+      fireEvent.change(searchInput, { target: { value: 'MATH' } });
+    });
+  
+    // MATH 499 is displayed and COSC 101 is not
+    const courseOptionMath = await screen.findByText('MATH 499');
+    expect(courseOptionMath).toBeInTheDocument();
+    expect(screen.queryByText('COSC 101')).toBeNull();
+  
+    // select MATH 499 option
+    await act(async () => {
+      fireEvent.click(courseOptionMath);
+    });
+  
+    // instructor select is rendered after selecting MATH 499
+    const instructorSelect = await screen.findByText('Select instructor');
+    expect(instructorSelect).toBeInTheDocument();
   });
 });
