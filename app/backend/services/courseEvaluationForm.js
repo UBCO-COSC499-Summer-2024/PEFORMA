@@ -9,7 +9,7 @@ async function getCourseInformation() {
         ita."courseId",
         COALESCE(STRING_AGG(DISTINCT d."dcode" || ' ' || c."courseNum", ', ') FILTER (WHERE c."courseNum" IS NOT NULL), '{}') AS courses,
         COALESCE(ARRAY_AGG(DISTINCT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName")) FILTER (WHERE p."UBCId" IS NOT NULL), '{}') AS full_names,
-        COALESCE(ARRAY_AGG(DISTINCT p."UBCId")) AS ubcids
+        COALESCE(ARRAY_AGG(DISTINCT p."profileId")) AS profileids
       FROM "InstructorTeachingAssignment" ita
       LEFT JOIN "Course" c ON c."courseId" = ita."courseId"
       LEFT JOIN "Profile" p ON p."profileId" = ita."profileId"
@@ -22,8 +22,8 @@ async function getCourseInformation() {
     const formattedData = result.rows.map(row => ({
       courseId: row.courseId,
       courseCode: row.courses,
-      instructor: row.ubcids.map((ubcId, index) => ({
-        ubcid: ubcId,
+      instructor: row.profileids.map((profileId, index) => ({
+        profileId: profileId,
         name: row.full_names[index]
       }))
     }));

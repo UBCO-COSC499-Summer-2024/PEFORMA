@@ -22,8 +22,16 @@ async function getCourseEvaluation(req) {
     }
 
     if (result.rows.length > 0) {
+        query = `SELECT * FROM "SingleTeachingPerformance" WHERE "courseId" = $1 AND "term" = $2 AND "profileId" = $3`;
+        result = await pool.query(query,[courseId, latestTermResult, profileId]);
         const { SEIQ1, SEIQ2, SEIQ3, SEIQ4, SEIQ5 } = result.rows[0];
         const score = computeScore(SEIQ1, SEIQ2, SEIQ3, SEIQ4, SEIQ5, retentionRate, averageGrade, enrollmentRate, failedPercentage);
+
+        if(result.rows.length == 0){
+            query = `INSERT "SingleTeachingPerformance" 
+            VALUES("courseId" = $1, "term" = $2, "profileId" = $3, "score" = $4) `;
+            await pool.query(query,[courseId, latestTermResult, profileId, score]);
+        }
         query = `UPDATE "SingleTeachingPerformance" SET "score" = $1 WHERE "courseId" = $2 AND "term" = $3 AND "profileId" = $4`;
         await pool.query(query, [score, courseId, latestTermResult, profileId]);
     }
