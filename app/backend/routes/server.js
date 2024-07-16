@@ -4,7 +4,6 @@ const router = express.Router();
 const port = process.env.PORT || 3001;  // Default to 3001 if environment variable not set
 
 router.use(express.json());
-
 // Test database connection
 //testDB();
 

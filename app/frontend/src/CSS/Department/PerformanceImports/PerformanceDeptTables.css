@@ -1,0 +1,75 @@
+.division-performance-table {
+  height: 30vh;
+  
+}
+
+.topbottom-table {
+  height: 35vh;
+  
+}
+
+.benchmark-table {
+  height: 35vh;
+}
+
+.divi-table {
+  width: 100%;
+}
+
+.scrollable-body {
+  display: block;
+  height: 25vh;
+  overflow-y: auto;
+}
+
+.divi-table thead, .divi-table tbody tr {
+  display: table;
+  width: 100%; 
+  table-layout: fixed; 
+}
+
+.subTitleD {
+  font-size: 1.2em;
+}
+
+.division-performance-table {
+  max-height: auto; 
+  overflow-y: hidden; 
+  border: solid #ffffff; 
+  background-color: #ffffff; 
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.divi-table th, td {
+  height: 2em;
+  border-radius: 0;
+  text-align: center;
+  padding: 3px; 
+  background-color: #f0f0f0c3;
+}
+
+.divi-table th {
+  background-color: #dededeba; 
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.year-button {
+  background-color: #5ab5ff;
+  color: white;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.year-button:hover {
+  background-color: #0056b3;
+}

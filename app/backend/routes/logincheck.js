@@ -1,6 +1,4 @@
 //import {pool} from '../db/index';
-
-
 const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -39,7 +37,7 @@ async (email, password, done) => {
     console.log(JSON.stringify(user));
     //var user = user_data.find(user => user.username === email);
     if (!user) {
-        return done(null, false, { message: `Incorrect email.Input is ${user.email}` });
+        return done(null, false, { message: `Incorrect email.Input is ${email}` });
     }
     const Match = bcrypt.compareSync(password,user.password);
     const isMatch = (password===user.password);
