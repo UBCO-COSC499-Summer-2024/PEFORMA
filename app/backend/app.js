@@ -42,6 +42,10 @@ const resetPasswordRouter = require('./routes/resetPassword');
 
 const app = express();
 
+const updateRoleInfo = require('./routes/updateRoleInfo.js');
+const updateCourseInfo = require('./routes/updateCourseInfo.js');
+const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
+
 app.use(express.json());
 app.use(cors()); 
 app.use(bodyParser.json());
@@ -152,7 +156,9 @@ console.log('after');
 */
 
 app.use('/api',instructorFetch);
-
+app.use('/api',updateRoleInfo);
+app.use('/api',updateCourseInfo);
+app.use('/api',AssignInstructor);
 
 const port = 3001;
 app.listen(port, () => {

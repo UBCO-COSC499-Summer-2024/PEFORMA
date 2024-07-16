@@ -13,14 +13,7 @@
 }
 
 .coursehistory .description {
-    font-size: larger;
-    border: 1px solid var(--darkestGrey);
-    border-radius: 0.5em;
-    padding: 0.4em;
-    width: 66%;
-    min-height: 8em;
-    background-color: var(--darkerGrey);
-    margin-bottom: 1em;
+  
 }
 
 
@@ -135,6 +128,11 @@
     text-align: center;
     height: 1.5em;
     width: 0em;
+}
+
+.coursehistory th {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
 }
 
 .back-to-prev-button {
