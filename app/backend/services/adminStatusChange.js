@@ -1,5 +1,5 @@
 const  pool = require('../db/index.js'); 
-const { getAllInstructors } = require('../services/allInstructorsService');  // Corrected import to directly destructure the function
+const { getAllInstructors } = require('./allInstructorsService');  // Corrected import to directly destructure the function
 
 async function StatusChangeMembers(req) {
     const ubcId = req.body.memberId; 
@@ -23,7 +23,7 @@ async function StatusChangeMembers(req) {
 
     }
     catch (error) {
-        console.error('Database query error:', error);
+        throw error;
     }
 };
 module.exports = {
