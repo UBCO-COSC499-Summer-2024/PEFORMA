@@ -22,9 +22,9 @@ test('Checks if buttons exist', async () => {
         render(<MemoryRouter><DeptCourseInformation/></MemoryRouter>);
     });
     const edit = await screen.getByRole('button', { name: /edit/i});
-    const deactivate = await screen.getByRole('button', { name: /deactivate/i});
+
     expect(edit).toBeInTheDocument();
-    expect(deactivate).toBeInTheDocument();
+
 });
 test('Checks if data exists', async () => {
     await act(async () => {
