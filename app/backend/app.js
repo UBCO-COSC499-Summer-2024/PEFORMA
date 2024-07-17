@@ -7,6 +7,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
+const dataImportRoutes = require('./routes/dataImportRoutes');
 const { saveDataToDatabase } = require('./routes/DataEntry');
 const { setupDatabase } = require('./insertProfileImages');
 
@@ -131,6 +132,9 @@ app.use('/api/reset-password', resetPasswordRouter);
 //app.use('/api', updatePasswordRouter);
 
 app.use('/api/roleInfo', roleInfoRoutes);
+//app.use('/api',ResetPassword);
+
+app.use('/api/upload', dataImportRoutes);
 
 //Course Evaluation
 app.use('/api/courseEvaluationForm',courseEvaluationForm);
