@@ -33,18 +33,18 @@ describe('DeptCourseList', () => {
 			Promise.resolve({
 				data: {"currentPage":1, "perPage": 10, "coursesCount":12,
           courses:[
-            { "id": 1, "courseCode": "COSC 101", "title": "Digital Citizenship", "description":"description testing"},
-            { "id": 2, "courseCode": "COSC 111", "title": "Computer Programming I", "description":"description testing"},
-            { "id": 3, "courseCode": "COSC 123", "title": "Computer Creativity", "description":"description testing"},
-            { "id": 4, "courseCode": "COSC 304", "title": "Introduction to Database", "description":"Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies." },
-            { "id": 5, "courseCode": "COSC 211", "title": "Machine Architecture", "description":"description testing" },
-            { "id": 6, "courseCode": "COSC 221", "title": "Introduction to Discrete Structures", "description":"description testing"},
-            { "id": 7, "courseCode": "STAT 121", "title": "Elementary Statistics", "description":"description testing"},
-            { "id": 8, "courseCode": "PHYS 205", "title": "Introduction to Mathematical Statistics","description":"description testing"},
-            { "id": 9, "courseCode": "PHYS 400", "title": "Statistical Communication and Consulting", "description":"description testing"},
-            { "id": 10, "courseCode": "COSC 341", "title": "Human computer Interaction","description":"description testing"},
-            { "id": 11, "courseCode": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering","description":"MATH IS MATH"},
-            { "id": 12, "courseCode": "TEST 17", "title": "Testing 123","description":"description testing"},
+            { "id": 1, "courseCode": "COSC 101", "title": "Digital Citizenship", "description":"description testing", "status":false},
+            { "id": 2, "courseCode": "COSC 111", "title": "Computer Programming I", "description":"description testing", "status":true},
+            { "id": 3, "courseCode": "COSC 123", "title": "Computer Creativity", "description":"description testing", "status":false},
+            { "id": 4, "courseCode": "COSC 304", "title": "Introduction to Database", "description":"Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.", "status":false},
+            { "id": 5, "courseCode": "COSC 211", "title": "Machine Architecture", "description":"description testing", "status":true},
+            { "id": 6, "courseCode": "COSC 221", "title": "Introduction to Discrete Structures", "description":"description testing", "status":true},
+            { "id": 7, "courseCode": "STAT 121", "title": "Elementary Statistics", "description":"description testing", "status":true},
+            { "id": 8, "courseCode": "PHYS 205", "title": "Introduction to Mathematical Statistics","description":"description testing", "status":true},
+            { "id": 9, "courseCode": "PHYS 400", "title": "Statistical Communication and Consulting", "description":"description testing", "status":false},
+            { "id": 10, "courseCode": "COSC 341", "title": "Human computer Interaction","description":"description testing", "status":true},
+            { "id": 11, "courseCode": "MATH 100", "title": "Differential Calculus with Applications to Physical Sciences and Engineering","description":"MATH IS MATH", "status":false},
+            { "id": 12, "courseCode": "TEST 17", "title": "Testing 123","description":"description testing", "status":true},
           ]
         }
 			})
@@ -58,8 +58,8 @@ describe('DeptCourseList', () => {
 	});
 
   test('Testing rendering with mock data course list', async () => {
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    expect(element).toHaveTextContent("List of Courses (12 Active in current");
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+    expect(element).toHaveTextContent("List of Courses (7 Active in current)"); // 5 are not active in 12 courses, so 7 active should be expected
     
     expect(element).toHaveTextContent("COSC 111");
     expect(element).toHaveTextContent("STAT 121");
@@ -81,15 +81,18 @@ describe('DeptCourseList', () => {
     expect(element).toHaveTextContent("Databases from a user's perspective: querying with SQL, designing with UML, and using programs to analyze data. Construction of database-driven applications and websites and experience with current database technologies.");
     expect(element).toHaveTextContent("description testing");
 
+    expect(element).toHaveTextContent("Active");
+    expect(element).toHaveTextContent("Inactive");
+
   });
   test('Check if pagination exists', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
 
     const paginationElement = element.querySelector('.pagination'); 
     expect(paginationElement).toBeInTheDocument();
   });
   test('Test next button in pagination', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
 
     const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');
     fireEvent.click(nextPageButton);
@@ -108,7 +111,7 @@ describe('DeptCourseList', () => {
     });
   });
   test('Test prev button in pagination', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(8));
 
     const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a');
     fireEvent.click(prevPageButton);
@@ -127,13 +130,13 @@ describe('DeptCourseList', () => {
     });
   });
   test('Check if search bar exists', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(10));
 
     const searchInput = screen.getByPlaceholderText('Search by Subject and Title'); 
     expect(searchInput).toBeInTheDocument();
   });
   test('Test search functionality', async() => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(12));
 
     const searchInput = screen.getByPlaceholderText('Search by Subject and Title'); 
     fireEvent.change(searchInput, { target: { value: 'Computer' }});

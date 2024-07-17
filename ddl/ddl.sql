@@ -13,13 +13,20 @@ DROP TABLE IF EXISTS "ServiceRoleAssignment" CASCADE;
 DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
--- DROP TABLE IF EXISTS "Image" CASCADE;
+DROP TABLE IF EXISTS "Image" CASCADE;
 
 -- Create divisions
 CREATE TABLE "Division" (
   "divisionId"  SERIAL PRIMARY KEY,
   "dcode"       char(4),
   "dname"       varchar(100)
+);
+
+-- -- Create images
+CREATE TABLE "Image" (
+  "imageId"     SERIAL PRIMARY KEY,
+  "file_type"   varchar(4),
+  "image_data"  BYTEA
 );
 
 -- Create profiles
@@ -37,16 +44,9 @@ CREATE TABLE "Profile" (
   "UBCId"                 varchar(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  -- "imageId"               integer,
+  "imageId"               integer REFERENCES "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
   UNIQUE ("profileId", "email")
 );
-
--- -- Create images
--- CREATE TABLE "Image" (
---   "imageId"     SERIAL PRIMARY KEY,
---   "file_type"   char(3),
---   "image_data"  BYTEA
--- );
 
 -- Create accounts
 CREATE TABLE "Account" (
@@ -107,7 +107,8 @@ CREATE TABLE "Course" (
   "ctitle"        varchar(100),
   "description"   TEXT,
   "divisionId"    integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "courseNum"     integer
+  "courseNum"     integer,
+  "isActive"      boolean
 );
 
 -- Create courses by terms
@@ -159,6 +160,23 @@ CREATE TABLE "SingleTeachingPerformance" (
   "courseId"    integer,
   "term"        integer,
   "score"       double precision,
+  PRIMARY KEY ("profileId", "courseId", "term"),
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE "CourseEvaluation" (
+  "courseId" integer,
+  "term"     integer,
+  "profileId"integer,
+  "SEIQ1"    double precision,
+  "SEIQ2"    double precision,
+  "SEIQ3"    double precision,
+  "SEIQ4"    double precision,
+  "SEIQ5"    double precision,
+  "retentionRate" double precision,
+  "failRate"   double precision,
+  "enrolRate"double precision,
+  "averageGrade"  double precision,
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
