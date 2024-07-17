@@ -13,13 +13,20 @@ DROP TABLE IF EXISTS "ServiceRoleAssignment" CASCADE;
 DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
--- DROP TABLE IF EXISTS "Image" CASCADE;
+DROP TABLE IF EXISTS "Image" CASCADE;
 
 -- Create divisions
 CREATE TABLE "Division" (
   "divisionId"  SERIAL PRIMARY KEY,
   "dcode"       char(4),
   "dname"       varchar(100)
+);
+
+-- -- Create images
+CREATE TABLE "Image" (
+  "imageId"     SERIAL PRIMARY KEY,
+  "file_type"   varchar(4),
+  "image_data"  BYTEA
 );
 
 -- Create profiles
@@ -37,16 +44,9 @@ CREATE TABLE "Profile" (
   "UBCId"                 varchar(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  -- "imageId"               integer,
+  "imageId"               integer REFERENCES "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
   UNIQUE ("profileId", "email")
 );
-
--- -- Create images
--- CREATE TABLE "Image" (
---   "imageId"     SERIAL PRIMARY KEY,
---   "file_type"   char(3),
---   "image_data"  BYTEA
--- );
 
 -- Create accounts
 CREATE TABLE "Account" (

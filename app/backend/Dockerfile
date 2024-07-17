@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Copy profile images
+COPY ./profile_images ./profile_images
+
 # Expose the port the app runs on
 EXPOSE 5000
 
