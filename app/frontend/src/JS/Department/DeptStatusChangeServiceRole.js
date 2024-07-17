@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
@@ -7,17 +7,19 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function DeptStatusChangeServiceRole() {
-	const authToken = useAuth();
+	const { authToken, accountLogInType } = useAuth();
+	const navigate = useNavigate();
 	const location = useLocation();
 	const [roleData, setRoleData] = useState(
 		location.state.roleData || { roles: [], rolesCount: 0, perPage: 10, currentPage: 1 }
 	);
 
 	useEffect(() => {
+		checkAccess(accountLogInType, navigate, 'department')
 		if (location.state.roleData) {
 				const filledRoles = fillEmptyItems(
 				location.state.roleData.roles,
@@ -66,7 +68,7 @@ function DeptStatusChangeServiceRole() {
 			<div className="container">
 				<CreateTopBar />
 
-				<div className="srlist-main" id="dept-service-role-list-test-content">
+				<div className="srlist-main" id="role-status-change-test-content">
 					<div className="subtitle-role">
 						List of Serivce Roles ({roleData.rolesCount} in Database)
 						<button className="status-change-button">

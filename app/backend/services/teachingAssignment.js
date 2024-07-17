@@ -39,6 +39,7 @@ async function getTeachingAssignment() {
             };
         })
     }
+    console.log(formattedData);
     return formattedData;
 
   } catch (error) {
