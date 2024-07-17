@@ -7,7 +7,8 @@ const cors = require('cors');
 const { generateToken, TOKEN_EXPIRY_SECONDS } = require('../Manager/jwtManager');
 const { queryAccount } = require('./queryAccountRouter');
 const pool = require('../db/index');
-var token_save = '';
+const { uncry } = require('./checkpassword');
+const bcrypt = require ('bcrypt');
 
 const router = express.Router();
 
@@ -49,8 +50,13 @@ async (email, password, done) => {
     if (!user) {
         return done(null, false, { message: `Incorrect email.Input is ${email}` });
     }
+
+    const Match = bcrypt.compareSync(password,user.password);
     const isMatch = (password===user.password);
-    if (!isMatch) {
+    const result = (Match | isMatch);
+    console.log(JSON.stringify(Match));
+    if (!result) {
+        console.log('entered|',password,'|--vs--saved|',user.password,'|');
         console.log('|',password,'|--vs--|',user.password,'|');
         return done(null, false, { message: 'Incorrect password.' });
     }

@@ -32,7 +32,7 @@ async function saveDataToDatabase(data) {
             const serviceRoleId = insertResult.rows[0].serviceRoleId;
             //const year = new Date().getUTCFullYear();
             const year = data.serviceRoleYear;
-            for (let instructorId of data.selectedInstructors) {
+            for (let instructorId of data.assignedInstructors) {
                 await pool.query(
                     `INSERT INTO "ServiceRoleAssignment" ("profileId", "serviceRoleId","year")
                      VALUES ($1, $2, $3)`,
@@ -77,7 +77,8 @@ async function saveDataToDatabase(data) {
                 VALUES ($1, $2)`,[courseId,term]
             );
             console.log("CourseByTeerm table updated.");
-            for (let instructorId of data.selectedInstructors) {
+            for (let instructorId of data.assignedInstructors) {
+                console.log("Inserting info:\nInstructor id: ",instructorId,"\nCourseId: ",courseId,"\nTerm: ",term);
                 await pool.query(
                     `INSERT INTO "InstructorTeachingAssignment" ("profileId", "courseId","term")
                      VALUES ($1, $2, $3)`,
