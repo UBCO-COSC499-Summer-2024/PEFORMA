@@ -129,19 +129,19 @@ function CreateAccount() {
                         </select>
                         <div className="checkbox-group">
                             <label>
-                                <input type="checkbox" name="DepartmentHead" onChange={handleChange} />
+                                <input type="checkbox" name="DepartmentHead" checked={formData.accountType.includes(accountTypeMapping.DepartmentHead)} onChange={handleChange} />
                                 Department Head
                             </label>
                             <label>
-                                <input type="checkbox" name="DepartmentStaff" onChange={handleChange} />
+                                <input type="checkbox" name="DepartmentStaff" checked={formData.accountType.includes(accountTypeMapping.DepartmentStaff)} onChange={handleChange} />
                                 Department Staff
                             </label>
                             <label>
-                                <input type="checkbox" name="Instructor" onChange={handleChange} />
+                                <input type="checkbox" name="Instructor" checked={formData.accountType.includes(accountTypeMapping.Instructor)} onChange={handleChange} />
                                 Instructor
                             </label>
                             <label>
-                                <input type="checkbox" name="Admin" onChange={handleChange} />
+                                <input type="checkbox" name="Admin" checked={formData.accountType.includes(accountTypeMapping.Admin)} onChange={handleChange} />
                                 Admin
                             </label>
                         </div>
