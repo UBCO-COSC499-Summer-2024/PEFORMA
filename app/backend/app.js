@@ -29,6 +29,7 @@ const allCoursesRoutes = require('./routes/allCoursesRoutes.js');
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
+const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
 
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
@@ -109,6 +110,7 @@ app.use('/api/profile', (req, res, next) => {
 app.use('/api', userRoutes);
 
 app.use('/api/courseHistory',courseHistoryRouter);
+app.use('/api/dept-profile', deptProfileRoutes);
 
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
