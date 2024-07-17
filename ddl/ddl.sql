@@ -13,13 +13,21 @@ DROP TABLE IF EXISTS "ServiceRoleAssignment" CASCADE;
 DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
--- DROP TABLE IF EXISTS "Image" CASCADE;
+DROP TABLE IF EXISTS "Image" CASCADE;
 
 -- Create divisions
 CREATE TABLE "Division" (
   "divisionId"  SERIAL PRIMARY KEY,
   "dcode"       char(4),
   "dname"       varchar(100)
+);
+ALTER SEQUENCE "Division_divisionId_seq" RESTART WITH 1; 
+
+-- -- Create images
+CREATE TABLE "Image" (
+  "imageId"     SERIAL PRIMARY KEY,
+  "file_type"   varchar(4),
+  "image_data"  BYTEA
 );
 
 -- Create profiles
@@ -28,7 +36,7 @@ CREATE TABLE "Profile" (
   "firstName"             varchar(20),
   "middleName"            varchar(20),
   "lastName"              varchar(20),
-  "email"                 varchar(100),
+  "email"                 varchar(100) UNIQUE NOT NULL,
   "phoneNum"              varchar(20),
   "officeBuilding"        varchar(10),
   "officeNum"             varchar(10),
@@ -37,16 +45,10 @@ CREATE TABLE "Profile" (
   "UBCId"                 varchar(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  -- "imageId"               integer,
+  "imageId"               integer REFERENCES "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
   UNIQUE ("profileId", "email")
 );
-
--- -- Create images
--- CREATE TABLE "Image" (
---   "imageId"     SERIAL PRIMARY KEY,
---   "file_type"   char(3),
---   "image_data"  BYTEA
--- );
+ALTER SEQUENCE "Profile_profileId_seq" RESTART WITH 1; 
 
 -- Create accounts
 CREATE TABLE "Account" (
@@ -57,6 +59,7 @@ CREATE TABLE "Account" (
   "isActive"    boolean,
   FOREIGN KEY ("profileId", "email") REFERENCES "Profile" ("profileId", "email") ON UPDATE CASCADE ON DELETE CASCADE
 );
+ALTER SEQUENCE "Account_accountId_seq" RESTART WITH 1; 
 
 -- Create account types
 CREATE TABLE "AccountType" (
@@ -71,8 +74,10 @@ CREATE TABLE "ServiceRole" (
   "stitle"          varchar(100),
   "description"     varchar(1000),
   "isActive"        boolean,
-  "divisionId"      integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE
+  "divisionId"      integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
+  UNIQUE("stitle", "divisionId")
 );
+ALTER SEQUENCE "ServiceRole_serviceRoleId_seq" RESTART WITH 1;
 
 -- Create service role by year
 CREATE TABLE "ServiceRoleByYear" (
@@ -90,7 +95,8 @@ CREATE TABLE "ServiceRoleByYear" (
   "OCTHour"         double precision,
   "NOVHour"         double precision,
   "DECHour"         double precision,
-  PRIMARY KEY ("serviceRoleId", "year")
+  PRIMARY KEY ("serviceRoleId", "year"),
+  UNIQUE("serviceRoleId", "year")
 );
 
 -- Create service role assignments
@@ -104,12 +110,13 @@ CREATE TABLE "ServiceRoleAssignment" (
 -- Create courses
 CREATE TABLE "Course" (
   "courseId"      SERIAL PRIMARY KEY,
-  "ctitle"        varchar(100),
+  "ctitle"        varchar(100) UNIQUE NOT NULL,
   "description"   TEXT,
   "divisionId"    integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
   "courseNum"     integer,
   "isActive"      boolean
 );
+ALTER SEQUENCE "Course_courseId_seq" RESTART WITH 1;
 
 -- Create courses by terms
 CREATE TABLE "CourseByTerm" (
@@ -132,6 +139,7 @@ CREATE TABLE "SurveyType" (
   "surveyTypeId"  SERIAL PRIMARY KEY,
   "surveyType"    varchar(30)
 );
+ALTER SEQUENCE "SurveyType_surveyTypeId_seq" RESTART WITH 1;
 
 -- Create survey questions
 CREATE TABLE "SurveyQuestion" (
@@ -153,6 +161,7 @@ CREATE TABLE "SurveyQuestionResponse" (
   FOREIGN KEY ("surveyTypeId", "surveyQuestionId") REFERENCES "SurveyQuestion" ("surveyTypeId", "surveyQuestionId") ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
+ALTER SEQUENCE "SurveyQuestionResponse_sQResponseId_seq" RESTART WITH 1;
 
 -- Create single teaching performances
 CREATE TABLE "SingleTeachingPerformance" (
@@ -160,6 +169,23 @@ CREATE TABLE "SingleTeachingPerformance" (
   "courseId"    integer,
   "term"        integer,
   "score"       double precision,
+  PRIMARY KEY ("profileId", "courseId", "term"),
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE "CourseEvaluation" (
+  "courseId" integer,
+  "term"     integer,
+  "profileId"integer,
+  "SEIQ1"    double precision,
+  "SEIQ2"    double precision,
+  "SEIQ3"    double precision,
+  "SEIQ4"    double precision,
+  "SEIQ5"    double precision,
+  "retentionRate" double precision,
+  "failRate"   double precision,
+  "enrolRate"double precision,
+  "averageGrade"  double precision,
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );

@@ -10,6 +10,12 @@ import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 
 function RoleInformation() {
   const { authToken, accountLogInType } = useAuth();
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../common/AuthContext.js';
+import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
+
+function RoleInformation() {
+  const { authToken, accountType } = useAuth();
   const navigate = useNavigate();
 
   const [roleData, setRoleData] = useState({
@@ -47,7 +53,7 @@ function RoleInformation() {
         navigate('/Login');
         return;
       }
-      const numericAccountType = Number(accountLogInType);
+      const numericAccountType = Number(accountType);
       if (numericAccountType !== 1 && numericAccountType !== 2) {
         alert('No Access, Redirecting to instructor view');
         navigate('/Dashboard');
@@ -59,7 +65,6 @@ function RoleInformation() {
           headers: { Authorization: `Bearer ${authToken.token}` },
         });
         const roleData = roleRes.data;
-        roleData.perPage -=1;
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
           roleName: roleData.roleName,
@@ -72,7 +77,19 @@ function RoleInformation() {
     };
 
     fetchData();
-  }, [authToken, accountLogInType, navigate, serviceRoleId]);
+  }, [authToken, accountType, navigate, serviceRoleId]);
+
+  const fillEmptyAssignees = (assignees, perPage) => {
+    const filledAssignees = [...assignees];
+    const currentCount = assignees.length;
+    const fillCount = perPage - (currentCount % perPage);
+    if (fillCount < perPage) {
+      for (let i = 0; i < fillCount; i++) {
+        filledAssignees.push({});
+      }
+    }
+    return filledAssignees;
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -113,6 +130,13 @@ function RoleInformation() {
   const handleSwitchChange = () => {
     setIsActive(!isActive);
   };
+
+  function showAssignees(assigneeData, offset) {
+    if (assigneeData.assigneeCount > roleData.perPage) {
+      return assigneeData.assignees.slice(offset, offset + assigneeData.perPage);
+    }
+    return assigneeData.assignees;
+  }
 
   const handlePageClick = (data) => {
     setRoleData((prevState) => ({
@@ -235,6 +259,7 @@ function RoleInformation() {
   };
 
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
+  const offset = (roleData.currentPage - 1) * roleData.perPage;
 
   const filteredAssignees = roleData.assignees.filter(
     (assignee) =>
@@ -246,7 +271,7 @@ function RoleInformation() {
     (roleData.currentPage - 1) * roleData.perPage,
     roleData.currentPage * roleData.perPage
   );
-  
+  let i = 0;
   return (
     <div className="dashboard">
       <CreateSideBar sideBarType="Department" />
@@ -342,7 +367,7 @@ function RoleInformation() {
               <span className="plus">+</span> Assign Professors (s)
             </button>
           )}
-          <p>Current Assignee's ({roleData.latestYear})</p>
+          <p>Current Assignee's</p>
           <input
             type="text"
             id="search"
@@ -352,104 +377,46 @@ function RoleInformation() {
           <div className="assigneeTable">
             <table>
               <tbody>
-              <tr><th>Instructor</th><th>UBC ID</th></tr>
-                {currentAssignees.map((assignee, index) => {
-
-
-										if (assignee.instructorID == '' || assignee.instructorID == null) {
-											return (
-												<tr key={index}>
-													<td></td><td></td>
-												</tr>
-											);
-										} else {
-                      if (assignee.year == roleData.latestYear) {
-											return (
-												<tr key={assignee.instructorID}>
-													<td>
-														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-															{assignee.name}
-														</Link>
-													</td>
-													<td>{assignee.instructorID}</td>
-												</tr>
-											);
-										}
+                {currentAssignees.map((assignee) => {
+                  i++;
+                  if (assignee.instructorID == '' || assignee.instructorID == null) {
+                    return (
+                      <tr key={i}>
+                        <td></td>
+                      </tr>
+                    );
+                  } else {
+                    return (
+                      <tr key={assignee.instructorID}>
+                        <td>
+                          <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+                            {assignee.name} ID:{assignee.instructorID}
+                          </Link>
+                        </td>
+                      </tr>
+                    );
                   }
-
-
-
-								})}
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colSpan="3">
-										<ReactPaginate
-											previousLabel={'<'}
-											nextLabel={'>'}
-											breakLabel={'...'}
-											pageCount={pageCount}
-											marginPagesDisplayed={3}
-											pageRangeDisplayed={0}
-											onPageChange={handlePageClick}
-											containerClassName={'pagination'}
-											activeClassName={'active'}
-										/>
-									</td>
-								</tr>
-							</tfoot>
+                })}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>
+                    <ReactPaginate
+                      previousLabel={'<'}
+                      nextLabel={'>'}
+                      breakLabel={'...'}
+                      pageCount={pageCount}
+                      marginPagesDisplayed={3}
+                      pageRangeDisplayed={0}
+                      onPageChange={handlePageClick}
+                      containerClassName={'pagination'}
+                      activeClassName={'active'}
+                    />
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
-          <p>Past Assignee's</p>
-					<div className='assigneeTable'>
-					<table>
-							<tbody>
-								<tr>
-									<th>Instructor</th><th>UBC ID</th><th>Year of assignment</th>
-								</tr>
-								{currentAssignees.map((assignee, index) => {
-
-
-										if (assignee.instructorID == '' || assignee.instructorID == null) {
-
-										} else {
-                      if (assignee.year !== roleData.latestYear) {
-											return (
-												<tr key={assignee.instructorID}>
-													<td>
-														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-															{assignee.name}
-														</Link>
-													</td>
-													<td>{assignee.instructorID}</td>
-													<td>{assignee.year}</td>
-												</tr>
-											);
-										}
-
-                  }
-
-								})}
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colSpan="3">
-										<ReactPaginate
-											previousLabel={'<'}
-											nextLabel={'>'}
-											breakLabel={'...'}
-											pageCount={pageCount}
-											marginPagesDisplayed={3}
-											pageRangeDisplayed={0}
-											onPageChange={handlePageClick}
-											containerClassName={'pagination'}
-											activeClassName={'active'}
-										/>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
         </div>
       </div>
     </div>

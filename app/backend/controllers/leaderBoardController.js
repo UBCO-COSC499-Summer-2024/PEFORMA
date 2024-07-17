@@ -25,7 +25,7 @@ exports.getLeaderBoard = async (req, res) => {
         WHERE stp."term" = $1 
         GROUP BY p."profileId"
         ORDER BY average_score DESC
-        LIMIT 3;`;
+        LIMIT 5;`;
         result = await pool.query(query,[latestTerm]);
 
         if (result.rows.length === 0) {

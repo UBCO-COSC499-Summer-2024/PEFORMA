@@ -2,17 +2,18 @@ import React, { useState, useEffect, useRef, useReducer } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DeptDataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { useAuth } from '../common/AuthContext.js';
 import { FaFileUpload } from "react-icons/fa";
+import ImportModal from './DataImportImports/DeptImportModal.js';
 
 function DataEntryComponent() {
 	const navigate = useNavigate();
-	const { accountLogInType } = useAuth();
+	const { accountLogInType, authToken } = useAuth();
 	window.onbeforeunload = function () {
 		return 'Data will be lost if you leave this page. Are you sure?';
 	};
@@ -26,7 +27,7 @@ function DataEntryComponent() {
 	const titleLimit = 100;
 	const descLimit = 1000;
 
-	const [selection, setSelection] = useState(''); // State to hold the dropdown selection
+	const [selection, setSelection] = useState('');
 	const [showInstructorModal, setShowInstructorModal] = useState(false);
 	const [courseTitle, setCourseTitle] = useState('');
 	const [courseDepartment, setCourseDepartment] = useState('COSC');
@@ -41,11 +42,12 @@ function DataEntryComponent() {
 	const [selectedInstructors, setSelectedInstructors] = useState([]);
 	const [serviceRoleYear, setServiceRoleYear] = useState('');
 	const [, forceUpdate] = useReducer(x => x + 1, 0);
-	const [monthlyHours, setMonthlyHours] = useState({january:0, february:0, march:0, april:0, may:0, june:0, july:0, august:0, september:0, october:0, november:0, december:0});
+	const [monthlyHours, setMonthlyHours] = useState({ january: 0, february: 0, march: 0, april: 0, may: 0, june: 0, july: 0, august: 0, september: 0, october: 0, november: 0, december: 0 });
+
+	const [showFileUploadModal, setShowFileUploadModal] = useState(false);
 
 	const handleChange = (event) => {
 		setSelection(event.target.value);
-		// Potentially navigate to different components or render different forms here
 		console.log(`Selected: ${event.target.value}`);
 	};
 
@@ -57,7 +59,7 @@ function DataEntryComponent() {
 					alert('No Access, Redirecting to instructor view');
 					navigate('/Dashboard');
 				}
-				const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN; // 使用本地存储中的令牌或默认令牌
+				const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN;
 				const url = 'http://localhost:3001/api/instructors';
 				const res = await axios.get(url, {
 					headers: {
@@ -108,16 +110,16 @@ function DataEntryComponent() {
 		setShowInstructorModal(false);
 	};
 
-const removeInstructor = (id, index) => {
-	selectedInstructors.splice(index, 1);
-	for (let i = 0; i < instructorData.instructors.length; i++) {
-		if (id === instructorData.instructors[i].id) {
-			instructorData.instructors[i].assigned = false;
-			break;
+	const removeInstructor = (id, index) => {
+		selectedInstructors.splice(index, 1);
+		for (let i = 0; i < instructorData.instructors.length; i++) {
+			if (id === instructorData.instructors[i].id) {
+				instructorData.instructors[i].assigned = false;
+				break;
+			}
 		}
+		forceUpdate();
 	}
-	forceUpdate();
-}
 
 	function checkLength(input, limit, section, valid) {
 		if (!valid) {
@@ -197,43 +199,12 @@ const removeInstructor = (id, index) => {
 			serviceRoleTitle,
 			serviceRoleDepartment,
 			serviceRoleDescription,
-			assignedInstructors, // Array of instructor ID's that will be added to the newly created course/service role
+			assignedInstructors,
 			serviceRoleYear,
 			monthlyHours
 		};
 
-		console.log(
-			'Submitting data:\n\t' +
-				'selection: ' +
-				`${selection}\n\t` +
-				'courseTitle: ' +
-				`${courseTitle}\n\t` +
-				'courseDepartment: ' +
-				`${courseDepartment}\n\t` +
-				'CourseCode: ' +
-				`${courseCode}\n\t` +
-				'courseDescription: ' +
-				`${courseDescription}\n\t` +
-				'courseYear: ' +
-				`${courseYear}\n\t` +
-				'courseTerm: ' +
-				`${courseTerm}\n\t` +
-				'serviceRoleTitle: ' +
-				`${serviceRoleTitle}\n\t` +
-				'serviceRoleDepartment: ' +
-				`${serviceRoleDepartment}\n\t` +
-				'serviceRoleDescription: ' +
-				`${serviceRoleDescription}\n\t` +
-				'assignedInstructors: ' +
-				`${assignedInstructors}\n\t` +
-				'serviceRoleYear: ' +
-				`${serviceRoleYear}\n\t` +
-				''
-		);
-		// Show monthly hours is working
-		for (let i = 0; i<Object.keys(monthlyHours).length;i++) {
-			console.log(Object.keys(monthlyHours)[i]+": "+Object.values(monthlyHours)[i]);
-		}
+		console.log('Submitting data:', formData);
 
 		let valid = false;
 		let confirmMessage = '';
@@ -286,7 +257,9 @@ const removeInstructor = (id, index) => {
 							</option>
 						</select>
 						<span>OR</span>
-						<Link to={'/FileUpload'} id="import">Import Data <FaFileUpload className='upload-icon'/></Link>
+						<button onClick={() => setShowFileUploadModal(true)} id="import">
+							Import Data <FaFileUpload className='upload-icon' />
+						</button>
 					</div>
 					{selection === 'Course' && (
 						<div className="form-container">
@@ -317,12 +290,12 @@ const removeInstructor = (id, index) => {
 										<option disabled="disabled">Select a division</option>
 										{divisions.map((division) => {
 											if (division.code != "ALL") {
-											return (
-												<option key={division.code} value={division.code}>
-													{division.label}
-												</option>
-											);
-										}
+												return (
+													<option key={division.code} value={division.code}>
+														{division.label}
+													</option>
+												);
+											}
 										})}
 									</select>
 									<div className="coursecodeInput formInput">
@@ -352,19 +325,19 @@ const removeInstructor = (id, index) => {
 											required
 										/>
 										<div className='courseSession formInput'>
-										<select id="courseSession" name="courseSession" onChange={(e) => {
-											setCourseSession(e.target.value);
-										}} required>
-											<option>W</option><option>S</option>
-										</select>
+											<select id="courseSession" name="courseSession" onChange={(e) => {
+												setCourseSession(e.target.value);
+											}} required>
+												<option>W</option><option>S</option>
+											</select>
+										</div>
 									</div>
-									</div>
-									
+
 									<div className="courseTerm formInput">
 										<label htmlFor="courseTerm">Session Term:</label>
 										<select id="courseTerm" name="courseTerm" onChange={(e) => {
-												setSessionTerm(e.target.value);
-											}}
+											setSessionTerm(e.target.value);
+										}}
 											required>
 											<option>1</option><option>2</option>
 										</select>
@@ -394,7 +367,7 @@ const removeInstructor = (id, index) => {
 											<ul>
 												{selectedInstructors.map((instructor, index) => (
 													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id})<button type="button" className='remove-instructor' onClick={(e)=>{removeInstructor(instructor.id, index)}}>X</button>
+														{instructor.name} (ID: {instructor.id})<button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.id, index) }}>X</button>
 													</li>
 												))}
 											</ul>
@@ -462,55 +435,55 @@ const removeInstructor = (id, index) => {
 								<div className="monthlyHours">
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.january = e.target.value}} required/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.january = e.target.value }} required />
 											<div>January</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.february = e.target.value}}required/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.february = e.target.value }} required />
 											<div>February</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.march = e.target.value}}required/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.march = e.target.value }} required />
 											<div>March</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.april = e.target.value}}required/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.april = e.target.value }} required />
 											<div>April</div>
 										</span>
 									</div>
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.may = e.target.value}}required/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.may = e.target.value }} required />
 											<div>May</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.june = e.target.value}}required/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.june = e.target.value }} required />
 											<div>June</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.july = e.target.value}}required/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.july = e.target.value }} required />
 											<div>July</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.august = e.target.value}}required/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.august = e.target.value }} required />
 											<div>August</div>
 										</span>
 									</div>
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.september = e.target.value}}required/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.september = e.target.value }} required />
 											<div>September</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.october = e.target.value}}required/>
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.october = e.target.value }} required />
 											<div>October</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.november = e.target.value}}required/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.november = e.target.value }} required />
 											<div>November</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => {monthlyHours.december = e.target.value}}required/> 
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.december = e.target.value }} required />
 											<div>December</div>
 										</span>
 									</div>
@@ -537,7 +510,7 @@ const removeInstructor = (id, index) => {
 											<ul>
 												{selectedInstructors.map((instructor, index) => (
 													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id}) <button type="button" className='remove-instructor' onClick={(e)=>{removeInstructor(instructor.id, index)}}>X</button>
+														{instructor.name} (ID: {instructor.id}) <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.id, index) }}>X</button>
 													</li>
 												))}
 											</ul>
@@ -553,7 +526,7 @@ const removeInstructor = (id, index) => {
 							</label>
 						</div>
 					)}
-
+					
 					{showInstructorModal && (
 						<AssignInstructorsModal
 							instructorData={instructorData}
@@ -561,6 +534,11 @@ const removeInstructor = (id, index) => {
 							handleCloseInstructorModal={handleCloseInstructorModal}
 						/>
 					)}
+
+					<ImportModal
+						isOpen={showFileUploadModal}
+						onClose={() => setShowFileUploadModal(false)}
+					/>
 				</div>
 			</div>
 		</div>

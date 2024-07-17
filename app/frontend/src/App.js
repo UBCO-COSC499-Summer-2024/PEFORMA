@@ -8,6 +8,9 @@ import AdminStatusChangeMember from './JS/Admin/AdminStatusChangeMember';
 import HomePage from './JS/All/HomePage';
 import Login from './JS/All/Login';
 import ForgotPasswordPage from './JS/All/ForgotPasswordPage';
+import NewPassword from './JS/All/NewPassword';
+import UserProfile from './JS/All/UserProfile';
+import ChangePassword from './JS/All/ChangePassword';
 
 //Instructor
 import InsDashboard from './JS/Instructor/InsDashboard';
@@ -16,6 +19,7 @@ import InsEditProfile from './JS/Instructor/InsEditProfile';
 import InsPerformancePage from './JS/Instructor/InsPerformancePage';
 import InsCourseHistory from './JS/Instructor/InsCourseHistory';
 import InsProfilePage from './JS/Instructor/InsProfilePage';
+import InsRoleInformation from './JS/Instructor/InsRoleInformation';
 
 //Department
 import DeptPerformancePage from './JS/Department/DeptPerformancePage';
@@ -31,6 +35,7 @@ import DeptStatusChangeServiceRole from './JS/Department/DeptStatusChangeService
 import DeptTeachingAssignment from './JS/Department/DeptTeachingAssignment';
 import DeptTeachingAssignmentDetail from './JS/Department/DeptTeachingAssignmentDetail';
 import DeptStatusChangeCourse from './JS/Department/DeptStatusChangeCourse';
+import DeptSEIPage from './JS/Department/DeptSEIPage';
 
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
@@ -48,6 +53,9 @@ function App() {
 					<Route path="/HomePage" element={<HomePage />} />
 					<Route path="/Login" element={<Login />} />
 					<Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
+					<Route path="/NewPassword" element={<NewPassword />} />
+					<Route path="/UserProfile" element={<UserProfile />} />
+					<Route path="/ChangePassword" element={<ChangePassword />} />
 
 					<Route
 						path="/InsDashboard"
@@ -62,11 +70,12 @@ function App() {
 					<Route path="/InsPerformancePage" element={<InsPerformancePage />} />
 					<Route path="/InsProfilePage" element={<InsProfilePage />} />
 					<Route path="/InsCourseHistory" element={<InsCourseHistory />} />
+					<Route path="/InsRoleInformation" element={<InsRoleInformation />} />
 					<Route path="/DeptDataEntry" element={<DeptDataEntry />} />
 					<Route path="/DeptServiceRoleList" element={<DeptServiceRoleList />} />
 
 					<Route path="/DeptMemberList" element={<DeptMemberList />} />
-          <Route path="/DeptProfilePage" element={<DeptProfilePage />} />
+          			<Route path="/DeptProfilePage" element={<DeptProfilePage />} />
 
 
 					<Route path="/AdminCreateAccount" element={<AdminCreateAccount />} />
@@ -89,7 +98,7 @@ function App() {
 					<Route path="/AdminStatusChangeMember" element={<AdminStatusChangeMember />} />
 					<Route path="/DeptTeachingAssignment" element={<DeptTeachingAssignment />} />
 					<Route path="/DeptTeachingAssignmentDetail" element={<DeptTeachingAssignmentDetail />} />
-
+					<Route path="/DeptSEIPage" element={<DeptSEIPage />} />
 				</Routes>
 			</AuthProvider>
 		</BrowserRouter>
@@ -97,3 +106,4 @@ function App() {
 }
 
 export default App;
+
