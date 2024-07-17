@@ -1,4 +1,10 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
+const router = express.Router();
+const pool = require('../db/index.js');
+
+
+router.post('/', async (req, res) => {
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const pool = require('../db/index.js');

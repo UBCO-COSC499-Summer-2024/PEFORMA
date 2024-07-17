@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
         console.log(error);
       return res.status(500).json({ message: 'Error sending email' });
     }
-    res.status(200).json({ message: 'Email sent successfully' });
+    res.status(200).json({ message: 'success' });
     console.log(mailOptions.text);
   });
 });

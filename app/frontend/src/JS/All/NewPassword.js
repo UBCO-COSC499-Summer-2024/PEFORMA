@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../../CSS/All/NewPassword.css';
+import axios from 'axios';
 
 const NewPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   
@@ -19,6 +24,10 @@ const NewPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
+      alert("Passwords do not match.")
+      return;
+    }
+    
       setMessage('Passwords do not match!');
       return;
     }
@@ -31,6 +40,21 @@ const NewPassword = () => {
       body: JSON.stringify({ password }),
     });
     const data = await response.json();
+    if (data.message === "success") {
+      setSuccess(true);
+    }
+  };
+
+  return (
+    <div className="forgot-container">
+    <header className="forgot-header">
+    <h2 className="logo"><Link to="/">PEFORMA</Link></h2>
+    </header>
+    <div className="forgot-form-container">
+    
+      {!success && (
+    <form onSubmit={handleSubmit}>    
+    <p>Set new password for <strong>{email}</strong>: </p>
     setMessage(data.message);
     alert(data.message);
   };
@@ -54,6 +78,16 @@ const NewPassword = () => {
       />
       <button type="submit">Update Password</button>
     </form>
+      )}
+      {success && (
+        <form className="success-message">
+          <p>Password reset successfully!</p>
+          <Link to="/Login"><button className="return" type="button">Return to Login</button></Link>
+        </form>
+      )}
+      
+    </div>
+    </div>
   );
 };
 

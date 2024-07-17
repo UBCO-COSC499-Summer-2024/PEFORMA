@@ -8,6 +8,7 @@ import AdminStatusChangeMember from './JS/Admin/AdminStatusChangeMember';
 import HomePage from './JS/All/HomePage';
 import Login from './JS/All/Login';
 import ForgotPasswordPage from './JS/All/ForgotPasswordPage';
+import NewPassword from './JS/All/NewPassword';
 import UserProfile from './JS/All/UserProfile';
 import ChangePassword from './JS/All/ChangePassword';
 
@@ -52,6 +53,7 @@ function App() {
 					<Route path="/HomePage" element={<HomePage />} />
 					<Route path="/Login" element={<Login />} />
 					<Route path="/ForgotPasswordPage" element={<ForgotPasswordPage />} />
+					<Route path="/NewPassword" element={<NewPassword />} />
 					<Route path="/UserProfile" element={<UserProfile />} />
 					<Route path="/ChangePassword" element={<ChangePassword />} />
 
@@ -104,3 +106,4 @@ function App() {
 }
 
 export default App;
+

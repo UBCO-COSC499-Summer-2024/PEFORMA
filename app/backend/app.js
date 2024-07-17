@@ -20,7 +20,7 @@ const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
 const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
 const progressRoutes = require('./routes/progressRoutes');
 const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
-//const ResetPassword = require('./routes/ResetPassword');
+
 //const update = require('./routes/update');
 const instructorFetch = require('./routes/instructorFetch.js');
 const courseRoutes = require('./routes/courses.js');  
@@ -28,6 +28,7 @@ const allCoursesRoutes = require('./routes/allCoursesRoutes.js');
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
+
 
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
@@ -37,10 +38,13 @@ const userProfileRoutes = require('./routes/userProfileRoutes');
 const userRoutes = require('./routes/userRoutes');
 const changePasswordRoutes = require('./routes/changePasswordRoutes');
 
+
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
 
 const resetPasswordRouter = require('./routes/resetPassword');
+
+const updatePasswordRouter = require('./routes/updatePassword');
 const updatePasswordRouter = require('./routes/updatePassword.js')
 const deptStatusChangeCourseRoutes = require('./routes/deptStatusChangeCourseRouters.js')
 const teachingAssignment = require('./routes/teachingAssignment.js');
@@ -107,11 +111,17 @@ app.use('/api/service-roles',serviceRoleRoutes);
 app.use('/api', resetPasswordRouter);
 app.use('/api', updatePasswordRouter);
 
+//reset password
+app.use('/api', resetPasswordRouter);
+app.use('/api/update-password', updatePasswordRouter);
+
+
 app.use('/api/allInstructors',allInstructors);
 app.use('/api/adminStatusChangeMembers',adminStatusChangeMembers);
 
 app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
 app.use('/api/DeptStatusChangeCourse',deptStatusChangeCourseRoutes);
+
 
 
 //reset password
