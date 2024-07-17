@@ -1,4 +1,5 @@
 const pool = require('../db/index');
+const { getLatestTerm } = require('./latestTerm.js');
 
 class DeptProfileService {
     async updateBenchmark(ubcId, benchmark) {
@@ -21,14 +22,16 @@ class DeptProfileService {
 
             for (let role of serviceRoles) {
                 if (role.action === 'remove') {
-                    await client.query('DELETE FROM "ServiceRoleAssignment" WHERE "profileId" = $1 AND "serviceRoleId" = $2', 
-                        [profileId, role.serviceRoleId]);
+                    await client.query('DELETE FROM "ServiceRoleAssignment" WHERE "profileId" = $1 AND "serviceRoleId" = $2 AND "year" = $3', 
+                        [profileId, role.serviceRoleId, role.year]);
                 } else if (role.action === 'add') {
                     // Check if the assignment already exists
-                    const existingAssignment = await client.query('SELECT 1 FROM "ServiceRoleAssignment" WHERE "profileId" = $1 AND "serviceRoleId" = $2',
-                        [profileId, role.serviceRoleId]);
+                    const existingAssignment = await client.query('SELECT 1 FROM "ServiceRoleAssignment" WHERE "profileId" = $1 AND "serviceRoleId" = $2 AND "year" = $3',
+                        [profileId, role.serviceRoleId, role.year]);
                     
                     if (existingAssignment.rows.length === 0) {
+                        await client.query('INSERT INTO "ServiceRoleByYear" ("serviceRoleId", "year") VALUES ($1, $2) ON CONFLICT ("serviceRoleId", "year") DO NOTHING',
+                            [role.serviceRoleId, role.year]);
                         await client.query('INSERT INTO "ServiceRoleAssignment" ("profileId", "serviceRoleId", "year") VALUES ($1, $2, $3)',
                             [profileId, role.serviceRoleId, role.year]);
                     }
@@ -46,6 +49,8 @@ class DeptProfileService {
 
     async updateCourseAssignments(ubcId, courses) {
         const client = await pool.connect();
+        const latestTerm = await getLatestTerm(); 
+
         try {
             await client.query('BEGIN');
     
@@ -57,16 +62,18 @@ class DeptProfileService {
     
             for (let course of courses) {
                 if (course.action === 'remove') {
-                    await client.query('DELETE FROM "InstructorTeachingAssignment" WHERE "profileId" = $1 AND "courseId" = $2', 
-                        [profileId, course.courseId]);
+                    await client.query('DELETE FROM "InstructorTeachingAssignment" WHERE "profileId" = $1 AND "courseId" = $2 AND "term" = $3', 
+                        [profileId, course.courseId, latestTerm]);
                 } else if (course.action === 'add') {
                     // Check if the assignment already exists
-                    const existingAssignment = await client.query('SELECT 1 FROM "InstructorTeachingAssignment" WHERE "profileId" = $1 AND "courseId" = $2',
-                        [profileId, course.courseId]);
+                    const existingAssignment = await client.query('SELECT 1 FROM "InstructorTeachingAssignment" WHERE "profileId" = $1 AND "courseId" = $2 AND "term" = $3',
+                        [profileId, course.courseId, latestTerm]);
                     
                     if (existingAssignment.rows.length === 0) {
-                        await client.query('INSERT INTO "InstructorTeachingAssignment" ("profileId", "courseId") VALUES ($1, $2)',
-                            [profileId, course.courseId]);
+                        await client.query('INSERT INTO "CourseByTerm" ("courseId", "term") VALUES ($1, $2) ON CONFLICT ("courseId", "term") DO NOTHING',
+                            [course.courseId, latestTerm]);
+                        await client.query('INSERT INTO "InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES ($1, $2, $3)',
+                            [profileId, course.courseId, latestTerm]);
                     }
                 }
             }
