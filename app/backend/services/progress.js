@@ -76,7 +76,7 @@ async function getProgress(req) {
             break;
             }
         //Query the monthly benchmark of the instructor
-        query = `SELECT "sRoleBenchmark" FROM "Profile" WHERE "profileId" = $1;`;
+        const query = `SELECT "sRoleBenchmark" FROM "Profile" WHERE "profileId" = $1;`;
         result = await pool.query(query, [profileId]);
         if (result.rows.length === 0) {
             throw new Error("Profile not found");
