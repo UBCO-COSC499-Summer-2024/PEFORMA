@@ -1,5 +1,7 @@
 const  pool = require('../db/index.js'); // Adjust the path as necessary for your db connection
 console.log(pool); // See what pool actually is
+const { getLatestTerm } = require('../services/latestTerm.js');
+const { getLatestYear } = require('../services/latestYear.js');
 
 exports.getUserProfile = async (req, res) => {
 
@@ -47,29 +49,32 @@ exports.getUserProfile = async (req, res) => {
         const email = row.email;
         const phoneNum = row.phoneNum;
         const office = `${row.officeBuilding} ${row.officeNum}`;  // Construct office info
+        const latestYear = await getLatestYear(); 
+
         query = `
             SELECT sr.stitle, sr."serviceRoleId"
             FROM "ServiceRoleAssignment" "sra"
             JOIN "ServiceRole" "sr" ON "sra"."serviceRoleId" = "sr"."serviceRoleId"
-            WHERE "sra"."profileId" = $1;
+            WHERE "sra"."profileId" = $1 AND "sra"."year" = $2;
         `; 
         //result = await pool.query(query, [id]);
-        result = await pool.query(query,[profileId]);
+        result = await pool.query(query,[profileId, latestYear]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
         //const serviceRoles = result.rows;
         const roles = result.rows.map(row => ({roleTitle : row.stitle, roleid : row.serviceRoleId}));
+        const latestTerm = await getLatestTerm(); 
 
         query = `
             SELECT d."dcode"  || ' ' || c."courseNum" AS "DivisionAndCourse", c."courseId"
             FROM "InstructorTeachingAssignment" "ita"
             JOIN "Course" "c" ON "ita"."courseId" = "c"."courseId"
             JOIN "Division" "d" ON "c"."divisionId" = "d"."divisionId"
-            WHERE "ita"."profileId" = $1;
+            WHERE "ita"."profileId" = $1 AND "ita"."term" = $2;
         `; 
         //result = await pool.query(query, [id]);
-        result = await pool.query(query,[profileId]);
+        result = await pool.query(query,[profileId, latestTerm]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'Course assignments not found' });
         }

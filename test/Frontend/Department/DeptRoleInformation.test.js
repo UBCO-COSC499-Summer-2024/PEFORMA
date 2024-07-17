@@ -25,7 +25,7 @@ test('Checks if buttons exist', async () => {
         render(<MemoryRouter><DeptRoleInformation/></MemoryRouter>);
     });
     const buttons = await screen.getAllByRole('button');
-    expect(buttons.length).toBe(5);
+    expect(buttons.length).toBe(6);
 });
 test('Checks if data exists', async () => {
     await act(async () => {

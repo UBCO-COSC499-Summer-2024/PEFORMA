@@ -29,6 +29,7 @@ const allCoursesRoutes = require('./routes/allCoursesRoutes.js');
 const benchmark = require('./routes/benchmark.js');
 const deptLeaderBoard = require('./routes/deptLeaderboard.js');
 const coursePerformance = require('./routes/coursePerformance.js');
+const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
 
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
@@ -43,10 +44,9 @@ const changePasswordRoutes = require('./routes/changePasswordRoutes');
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
 
-const resetPasswordRouter = require('./routes/resetPassword');
 
 const updatePasswordRouter = require('./routes/updatePassword');
-const updatePasswordRouter = require('./routes/updatePassword.js')
+// const updatePasswordRouter = require('./routes/updatePassword.js')
 const deptStatusChangeCourseRoutes = require('./routes/deptStatusChangeCourseRouters.js')
 const teachingAssignment = require('./routes/teachingAssignment.js');
 const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
@@ -106,6 +106,7 @@ app.use('/api/profile', (req, res, next) => {
 app.use('/api', userRoutes);
 
 app.use('/api/courseHistory',courseHistoryRouter);
+app.use('/api/dept-profile', deptProfileRoutes);
 
 app.use('/api/benchmark', benchmark);
 app.use('/api/deptLeaderBoard',deptLeaderBoard);
@@ -113,11 +114,11 @@ app.use('/api/coursePerformance',coursePerformance);
 app.use('/api/service-roles',serviceRoleRoutes);
 
 //reset password
-app.use('/api', resetPasswordRouter);
-app.use('/api', updatePasswordRouter);
+app.use('/api/reset', resetPasswordRouter);
+// app.use('/api', updatePasswordRouter);
 
 //reset password
-app.use('/api', resetPasswordRouter);
+// app.use('/api', resetPasswordRouter);
 app.use('/api/update-password', updatePasswordRouter);
 
 
@@ -200,6 +201,7 @@ console.log('after');
 */
 
 app.use('/api',instructorFetch);
+
 app.use('/api',updateRoleInfo);
 app.use('/api',updateCourseInfo);
 app.use('/api',AssignInstructor);
@@ -228,3 +230,4 @@ startServer().catch(error => {
     console.error('Failed to start server:', error);
     process.exit(1);
 });
+
