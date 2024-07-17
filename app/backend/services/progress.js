@@ -1,25 +1,10 @@
 const  pool = require('../db/index.js'); 
-const {getLatestYear} = require('./latestYear.js');
-
+const {getServiceHour} = require('./serviceHour.js');
 async function getProgress(req) {
     try {
         const profileId = req.query.profileId;
-        const year = await getLatestYear();
-        //Query the monthly service hour of the instructor
-        let query = `
-        SELECT sra."profileId", sra."serviceRoleId", sra."year", sry."JANHour", sry."FEBHour",
-        sry."MARHour", sry."APRHour", sry."MAYHour", sry."JUNHour",sry."JULHour",
-        sry."AUGHour", sry."SEPHour", sry."OCTHour", sry."NOVHour", sry."DECHour"
-        FROM "ServiceRoleAssignment" sra
-        JOIN "ServiceRoleByYear" sry ON sra."serviceRoleId" = sry."serviceRoleId" 
-        AND 
-        sra."year" = sry."year"
-        WHERE sra."profileId" = $1 AND sra."year" = $2;
-    `; 
-        let result = await pool.query(query,[profileId,year]);
-        if (result.rows.length === 0) {
-            throw new Error("Profile not found");
-        }
+        //Query the monthly service hour of the instructor        
+        let result = await getServiceHour(profileId);
         const totals = result.rows.reduce((acc, row) => {
             acc.JANHour += row.JANHour || 0;
             acc.FEBHour += row.FEBHour || 0;
