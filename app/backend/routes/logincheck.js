@@ -55,7 +55,7 @@ async (email, password, done) => {
     const isMatch = (password===user.password);
     const result = (Match | isMatch);
     console.log(JSON.stringify(Match));
-    if (result) {
+    if (!result) {
         console.log('entered|',password,'|--vs--saved|',user.password,'|');
         console.log('|',password,'|--vs--|',user.password,'|');
         return done(null, false, { message: 'Incorrect password.' });

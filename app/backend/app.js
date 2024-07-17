@@ -58,10 +58,6 @@ const updateRoleInfo = require('./routes/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/updateCourseInfo.js');
 const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
 
-const updateRoleInfo = require('./routes/updateRoleInfo.js');
-const updateCourseInfo = require('./routes/updateCourseInfo.js');
-const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
-
 const app = express();
 
 app.use(express.json());

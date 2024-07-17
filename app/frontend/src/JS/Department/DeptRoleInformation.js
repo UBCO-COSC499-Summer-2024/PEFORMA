@@ -5,17 +5,12 @@ import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
-import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-
-function RoleInformation() {
-  const { authToken, accountLogInType } = useAuth();
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 
 function RoleInformation() {
-  const { authToken, accountType } = useAuth();
+  const { authToken, accountLogInType } = useAuth();
   const navigate = useNavigate();
 
   const [roleData, setRoleData] = useState({
@@ -53,7 +48,7 @@ function RoleInformation() {
         navigate('/Login');
         return;
       }
-      const numericAccountType = Number(accountType);
+      const numericAccountType = Number(accountLogInType);
       if (numericAccountType !== 1 && numericAccountType !== 2) {
         alert('No Access, Redirecting to instructor view');
         navigate('/Dashboard');
@@ -77,7 +72,7 @@ function RoleInformation() {
     };
 
     fetchData();
-  }, [authToken, accountType, navigate, serviceRoleId]);
+  }, [authToken, accountLogInType, navigate, serviceRoleId]);
 
   const fillEmptyAssignees = (assignees, perPage) => {
     const filledAssignees = [...assignees];
