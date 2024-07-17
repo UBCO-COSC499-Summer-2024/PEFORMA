@@ -57,6 +57,10 @@ const updateRoleInfo = require('./routes/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/updateCourseInfo.js');
 const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
 
+const updateRoleInfo = require('./routes/updateRoleInfo.js');
+const updateCourseInfo = require('./routes/updateCourseInfo.js');
+const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
+
 const app = express();
 
 app.use(express.json());
@@ -199,6 +203,7 @@ console.log('after');
 */
 
 app.use('/api',instructorFetch);
+
 app.use('/api',updateRoleInfo);
 app.use('/api',updateCourseInfo);
 app.use('/api',AssignInstructor);
@@ -227,3 +232,4 @@ startServer().catch(error => {
     console.error('Failed to start server:', error);
     process.exit(1);
 });
+
