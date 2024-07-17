@@ -8,9 +8,6 @@ const NewPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
-  const [message, setMessage] = useState('');
-  const [email, setEmail] = useState('');
-  
 
   React.useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -28,10 +25,6 @@ const NewPassword = () => {
       return;
     }
     
-      setMessage('Passwords do not match!');
-      return;
-    }
-    console.log("Restting password for email:\n\t"+email+"\n with new password:\n\t"+password);
     const response = await fetch(`http://localhost:3001/api/update-password?email=${email}`, {
       method: 'POST',
       headers: {
@@ -55,13 +48,6 @@ const NewPassword = () => {
       {!success && (
     <form onSubmit={handleSubmit}>    
     <p>Set new password for <strong>{email}</strong>: </p>
-    setMessage(data.message);
-    alert(data.message);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <h2>Set New Password for account {email} </h2>
       <input
         type="password"
         value={password}
