@@ -111,18 +111,14 @@ function AdminMemberList() {
 							<tbody>
 								{currentMembers.map((member, index) => (
 									<tr key={index}>
-										<td>
-											<Link to={`/AdminProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
-										</td>
+										<td>{member.name}</td>
 										<td>{member.ubcid}</td>
 										<td>
 											{member.serviceRole ? (
 												Array.isArray(member.serviceRole) ? (
 													member.serviceRole.map((serviceRole, idx) => (
 														<React.Fragment key={idx}>
-															<Link to={`/AdminRoleInformation?roleid=${member.roleid[idx]}`}>
-																{serviceRole}
-															</Link>
+															{serviceRole}
 															{idx < member.serviceRole.length - 1 && (
 																<>
 																	<br />
@@ -132,9 +128,7 @@ function AdminMemberList() {
 														</React.Fragment>
 													))
 												) : (
-													<Link to={`/AdminRoleInformation?roleid=${member.roleid}`}>
-														{member.serviceRole}
-													</Link>
+													<>{member.serviceRole}</>
 												)
 											) : (
 												''
