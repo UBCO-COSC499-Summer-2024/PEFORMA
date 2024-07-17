@@ -29,7 +29,7 @@ describe('InsPerformancePage', () => {
 				data: {
 					name: 'Billy Guy',
 					ubcid: '18592831',
-					roles: ['Role1', 'Role2'],
+					roles: [{roleTitle:'Role1'}, {roleTitle:'Role2'}],
           benchmark: '1300',
 					email: 'billyGuy@instructor.ubc.ca',
           teachingAssignments: [
@@ -74,8 +74,8 @@ describe('InsPerformancePage', () => {
           benchmark: '1300',
 					email: 'billyGuy@instructor.ubc.ca',
           teachingAssignments: [
-						{ assign: 'COSC 211', link: 'abc.com' },
-						{ assign: 'COSC 304', link: 'def.com' },
+						{ assign: 'COSC 211' },
+						{ assign: 'COSC 304' },
 					],
           data:[
             {"x": "January", "y": 150},
@@ -94,6 +94,6 @@ describe('InsPerformancePage', () => {
 
     const element = document.getElementById('info-test-content');
     
-    expect(element).toHaveTextContent("Teaching Assignments: COSC 211 COSC 304")
+    expect(element).toHaveTextContent("Teaching Assignments:COSC 211COSC 304")
 	})
 });

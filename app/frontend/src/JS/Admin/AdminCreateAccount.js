@@ -1,38 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../CSS/Admin/CreateAccount.css';
 import axios from 'axios';
+import CreateSideBar, { CreateTopBar } from '../common/commonImports.js';
+import { useAuth } from '../common/AuthContext.js';
+import { useNavigate } from 'react-router-dom';
 
 function CreateAccount() {
-    const currentYear = new Date().getFullYear();
-    const [formData, setFormData] = useState({
+    const { authToken } = useAuth();
+    const navigate = useNavigate();
+
+    const initialFormData = {
         email: '',
         firstName: '',
         lastName: '',
         ubcId: '',
-        serviceRole: '',
-        year : '',
         division: '',
         password: '',
         confirmPassword: ''
-    });
-    
-    const [showRoleModal, setShowRoleModal] = useState(false);
-    const [roles, setRoles] = useState([
-        { id : 1, name: 'Undergraduate Advisor', added: false, year: currentYear },
-        { id : 2, name: 'Graduate Admissions', added: false, year: currentYear },
-    ]);
-    const toggleRoleAdded = (roleId) => {
-        const updatedRoles = roles.map(role => 
-            ({ ...role, added: role.id === roleId ? !role.added : false })
-        );
-        setRoles(updatedRoles);
-    
-        const addedRole = updatedRoles.find(role => role.added);
-        setFormData({ 
-            ...formData, 
-            serviceRole: addedRole ? [addedRole.name] : []
-        });
     };
+
+    const [formData, setFormData] = useState(initialFormData);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -46,60 +33,75 @@ function CreateAccount() {
         event.preventDefault();
         console.log('Form data submitted:', formData);
 
+        if (formData.password !== formData.confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
         const postData = {
-            ...formData,
-            serviceRole: formData.serviceRole,  // This is now an array of role IDs
+            email: formData.email,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            ubcId: formData.ubcId,
+            division: formData.division,
+            password: formData.password,
+            confirmPassword: formData.confirmPassword
         };
+
         try {
-            const response = await axios.post('http://localhost:3001/create-account', postData);
+            const response = await axios.post('http://localhost:3001/api/create-account', postData,
+                {
+                    headers: { Authorization: `Bearer ${authToken.token}` },
+                }
+
+            );
+            console.log("checking")
             console.log('Server response:', response.data);
+            alert('Account created successfully.');
+            setFormData(initialFormData); 
         } catch (error) {
             console.error('Error sending data to the server:', error);
+            if (error.response && error.response.status === 400 && error.response.data.message === 'Email already exists') {
+                alert('Error: Email already exists');
+            } else {
+                alert('Error creating account: ' + error.message);
+            }
         }
     };
 
     const handleCancel = () => {
-        console.log('Form cancelled');
+        setFormData(initialFormData);
     };
 
-    const handleAssign = () => setShowRoleModal(true);
-
     return (
-        <div className="create-account-form">
-            <h1>Create Account</h1>
-            <form onSubmit={handleSubmit}>
-                <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
-                <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
-                <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
-                <input type="text" name="ubcId" placeholder="UBC ID" value={formData.ubcId} onChange={handleChange} />
-                <div style={{display:'flex'}}>
-                <input type="text" name="serviceRole" placeholder="Service Role" value={formData.serviceRole} readOnly />
-                <button type="button" onClick={handleAssign}>Assign Role(s)</button>
+        <div className="dashboard">
+            <CreateSideBar sideBarType="Admin" />
+            <div className='container'>
+                <CreateTopBar />
+                <div className='create-account-form' id='admin-create-account-test-content'>
+                    <h1>Create Account</h1>
+                    <form onSubmit={handleSubmit}>
+                        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+                        <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
+                        <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
+                        <input type="text" name="ubcId" placeholder="UBC ID (optional)" value={formData.ubcId} onChange={handleChange} />
+                        <select name="division" value={formData.division} onChange={handleChange} required>
+                            <option value="">Select Department</option>
+                            <option value="1">Computer Science</option>
+                            <option value="2">Mathematics</option>
+                            <option value="3">Physics</option>
+                            <option value="4">Statistics</option>
+                            <option value="">N/A</option>
+                        </select>
+                        <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                        <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
+                        <div className='button-align-div'>
+                            <button type="submit" className="create-button">Create</button>
+                            <button type="button" className="cancel-button" onClick={handleCancel}>Cancel</button>
+                        </div>
+                    </form>
                 </div>
-                <input type='text' name="year" placeholder="Assigned Year" value={formData.year} onChange={handleChange}/>
-                <input type="integer" name="division" placeholder="Division" value={formData.division} onChange={handleChange} />
-                <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} />
-                <button type="submit" className="create-button">Create</button>
-                <button type="button" className="cancel-button" onClick={handleCancel}>Cancel</button>
-            </form>
-
-            {showRoleModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button onClick={() => setShowRoleModal(false)}>Close</button>
-                        {roles.map(role => (
-                            <div key={role.id}>
-                                {role.name}
-                                <button onClick={() => toggleRoleAdded(role.id)}>
-                                    {role.added ? 'Remove' : 'Add'}
-                                </button>
-                            </div>
-                        ))}
-                        <button onClick={() => setShowRoleModal(false)}>Save</button>
-                    </div>
-                </div>
-            )}
+            </div>
         </div>
     );
 }

@@ -8,10 +8,10 @@ const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
 const { saveDataToDatabase } = require('./routes/DataEntry');
-
+const { setupDatabase } = require('./insertProfileImages');
 
 const { upsertProfile } = require('./routes/upsertProfile');
-const { createAccount } = require('./routes/createAccount');
+const createAccount = require('./routes/createAccount');
 const { assignServiceRole } = require ('./routes/assignServiceRole');
 
 const workingHoursRoutes = require('./routes/workingHoursRoutes');
@@ -33,6 +33,10 @@ const coursePerformance = require('./routes/coursePerformance.js');
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
 const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
+const imageRoutes = require('./routes/imageRoutes');
+const userProfileRoutes = require('./routes/userProfileRoutes');
+const userRoutes = require('./routes/userRoutes');
+const changePasswordRoutes = require('./routes/changePasswordRoutes');
 
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
@@ -41,6 +45,13 @@ const roleInfoRoutes = require('./routes/roleInfoRoutes');
 const resetPasswordRouter = require('./routes/resetPassword');
 
 const updatePasswordRouter = require('./routes/updatePassword');
+const updatePasswordRouter = require('./routes/updatePassword.js')
+const deptStatusChangeCourseRoutes = require('./routes/deptStatusChangeCourseRouters.js')
+const teachingAssignment = require('./routes/teachingAssignment.js');
+const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
+const resetPasswordRouter = require('./routes/resetPassword');
+//const updatePasswordRouter = require('./routes/updatePassword.js')
+const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
 
 const app = express();
 
@@ -59,7 +70,7 @@ app.use('/',AccountTypeRouter);//check account type
 
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
-
+app.use('/api/create-account', createAccount);
 
 //Performance BE
 app.use('/api/workingHoursRoutes',workingHoursRoutes);
@@ -75,6 +86,19 @@ app.use('/api/all-courses', allCoursesRoutes);
 // Service role retrieval process
 app.use('/api/service-roles', serviceRoleRoutes);
 
+app.use('/api/teachingAssignment',teachingAssignment);
+// Image retrieval process
+app.use('/api/image', imageRoutes);
+
+app.use('/api/change-password', changePasswordRoutes);
+
+// User profile
+app.use('/api/profile', (req, res, next) => {
+    console.log('Profile route hit:', req.url);
+    next();
+  }, userProfileRoutes);
+  
+app.use('/api', userRoutes);
 
 app.use('/api/courseHistory',courseHistoryRouter);
 
@@ -83,6 +107,9 @@ app.use('/api/deptLeaderBoard',deptLeaderBoard);
 app.use('/api/coursePerformance',coursePerformance);
 app.use('/api/service-roles',serviceRoleRoutes);
 
+//reset password
+app.use('/api', resetPasswordRouter);
+app.use('/api', updatePasswordRouter);
 
 //reset password
 app.use('/api', resetPasswordRouter);
@@ -93,10 +120,21 @@ app.use('/api/allInstructors',allInstructors);
 app.use('/api/adminStatusChangeMembers',adminStatusChangeMembers);
 
 app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
+app.use('/api/DeptStatusChangeCourse',deptStatusChangeCourseRoutes);
 
 
+
+//reset password
+
+app.use('/api/reset-password', resetPasswordRouter);
+
+//app.use('/api', updatePasswordRouter);
 
 app.use('/api/roleInfo', roleInfoRoutes);
+
+//Course Evaluation
+app.use('/api/courseEvaluationForm',courseEvaluationForm);
+app.use('/api/courseEvaluation',courseEvaluation);
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
@@ -112,10 +150,6 @@ app.post('/enter', async (req, res) => {
 
 //app.use('/api',saveDataToDatabase);
 
-app.post('/create-account', async (req, res) => {
-    console.log('Received data:', req.body);  // 打印接收到的数据
-    //res.send('Data received successfully');  // 响应前端
-});
 /*
 app.post('/create-account', async (req, res) => {
     console.log('Received data:', req.body);  // 打印接收到的数据
@@ -160,9 +194,26 @@ app.use('/api',instructorFetch);
 
 
 const port = 3001;
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-    console.log(`Account info page: http://localhost:${port}/Account`);
-    console.log(`Data entrt request: http://localhost:${port}/enter`);
-    console.log(`Instructor lists: http://localhost:${port}/api/instructors`)
+// Wrap server startup in an async function
+const startServer = async () => {
+    app.listen(port, () => {
+        console.log(`Server running on http://localhost:${port}`);
+        console.log(`Account info page: http://localhost:${port}/Account`);
+        console.log(`Data entry request: http://localhost:${port}/enter`);
+        console.log(`Instructor lists: http://localhost:${port}/api/instructors`);
+    });
+
+    try {
+        // Run database setup after server starts
+        await setupDatabase();
+        console.log('Database setup completed successfully');
+    } catch (error) {
+        console.error('Error during database setup:', error);
+    }
+};
+
+// Call the async function to start the server
+startServer().catch(error => {
+    console.error('Failed to start server:', error);
+    process.exit(1);
 });

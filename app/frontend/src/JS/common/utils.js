@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const fillEmptyItems = (items, perPage) => {
   const filledItems = [...items];
   const currentCount = items.length;
@@ -32,7 +34,13 @@ export const handleSearchChange = (setStateFunction) => {
   setStateFunction(prevState => ({ ...prevState, currentPage: 1 }));
 };
 
-export const checkAccess = (accountLogInType, navigate, accessView) => {
+export const checkAccess = (accountLogInType, navigate, accessView, authToken) => {
+  // if (!authToken) {
+  //   alert('No Access, Redirecting to login');
+  //   navigate('/Login');
+  //   return;
+  // }
+
   const numericAccountType = Number(accountLogInType);
 
   // if your accLogInType is 1 or 2 = dept view only and trying to access Instructor? deny access
@@ -47,4 +55,36 @@ export const checkAccess = (accountLogInType, navigate, accessView) => {
     alert('No Access, Redirecting to admin view');
     navigate('/AdminDashboard');
   }
-}
+};
+
+export const getDivisionName = (division) => {
+  const divisionNames = {
+    'computer-science': 'Computer Science',
+    'mathematics': 'Mathematics',
+    'physics': 'Physics',
+    'statistics': 'Statistics',
+  };
+  return divisionNames[division] || '';
+};
+
+//////////////////  testing refactoring with useEffect ///////////////////////////
+export const handleUnauthorizedError = (error, navigate) => {
+  if (error.response && error.response.status === 401) {
+    localStorage.removeItem('authToken');
+    navigate('/Login');
+  } else {
+    console.error('Error:', error);
+  }
+};
+
+export const fetchWithAuth = async (url, authToken, navigate) => {
+  try {
+    const res = await axios.get(url, {
+      headers: { Authorization: `Bearer ${authToken.token}` },
+    });
+    return res.data;
+  } catch (error) {
+    handleUnauthorizedError(error, navigate);
+    throw error; 
+  }
+};

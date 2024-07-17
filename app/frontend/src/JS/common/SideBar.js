@@ -1,5 +1,5 @@
 import { FaHome, FaChartLine } from 'react-icons/fa';
-import { FaUser, FaSuitcase, FaPaperclip, FaBook } from 'react-icons/fa';
+import { FaUser, FaSuitcase, FaPaperclip, FaBook, FaMap, FaDatabase } from 'react-icons/fa';
 import { useAuth } from './AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -62,7 +62,12 @@ function SideBar({ sideBarType }) {
 					</li>
 					<li>
 						<Link to={`/DeptTeachingAssignment`}>
-							<FaChartLine className="icon" size={30} /> Teaching Assignment
+							<FaMap className="icon" size={30} /> Teaching Assignment
+						</Link>
+					</li>
+          <li>
+						<Link to={`/DeptSEIPage`}>
+							<FaDatabase className="icon" size={30} /> SEI Data Entry
 						</Link>
 					</li>
         </ul>
@@ -75,30 +80,15 @@ function SideBar({ sideBarType }) {
         <hr className="divider" />
         <ul className="menu">
           <li>
-            <Link to={`/AdminDashboard`}>
-              <FaHome className="icon" size={30} /> Dashboard
-            </Link>
-          </li>
-          <li>
             <Link to={`/AdminMemberList`}>
               <FaUser className="icon" size={30} /> Account Management
             </Link>
           </li>
-          <li>
-            <Link to={`/AdminServiceRoleList`}>
-              <FaSuitcase className="icon" size={30} /> Service Roles
-            </Link>
-          </li>
-          <li>
-            <Link to={`/AdminCourseList`}>
-              <FaBook className="icon" size={30} /> Course
-            </Link>
-          </li>
 					<li>
-				<Link to={`/AdminCreateAccount`}>
-					<FaChartLine className="icon" size={30} /> Create Account
-				</Link>
-			</li>
+            <Link to={`/AdminCreateAccount`}>
+              <FaChartLine className="icon" size={30} /> Create Account
+            </Link>
+          </li>
         </ul>
       </aside>
     );
