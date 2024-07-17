@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS "ServiceRoleAssignment" CASCADE;
 DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
--- DROP TABLE IF EXISTS "Image" CASCADE;
+DROP TABLE IF EXISTS "Image" CASCADE;
 
 -- Create divisions
 CREATE TABLE "Division" (
@@ -22,6 +22,13 @@ CREATE TABLE "Division" (
   "dname"       varchar(100)
 );
 ALTER SEQUENCE "Division_divisionId_seq" RESTART WITH 1; 
+
+-- -- Create images
+CREATE TABLE "Image" (
+  "imageId"     SERIAL PRIMARY KEY,
+  "file_type"   varchar(4),
+  "image_data"  BYTEA
+);
 
 -- Create profiles
 CREATE TABLE "Profile" (
@@ -38,17 +45,10 @@ CREATE TABLE "Profile" (
   "UBCId"                 varchar(8),
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
-  -- "imageId"               integer,
+  "imageId"               integer REFERENCES "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
   UNIQUE ("profileId", "email")
 );
 ALTER SEQUENCE "Profile_profileId_seq" RESTART WITH 1; 
-
--- -- Create images
--- CREATE TABLE "Image" (
---   "imageId"     SERIAL PRIMARY KEY,
---   "file_type"   char(3),
---   "image_data"  BYTEA
--- );
 
 -- Create accounts
 CREATE TABLE "Account" (
@@ -169,6 +169,23 @@ CREATE TABLE "SingleTeachingPerformance" (
   "courseId"    integer,
   "term"        integer,
   "score"       double precision,
+  PRIMARY KEY ("profileId", "courseId", "term"),
+  FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE "CourseEvaluation" (
+  "courseId" integer,
+  "term"     integer,
+  "profileId"integer,
+  "SEIQ1"    double precision,
+  "SEIQ2"    double precision,
+  "SEIQ3"    double precision,
+  "SEIQ4"    double precision,
+  "SEIQ5"    double precision,
+  "retentionRate" double precision,
+  "failRate"   double precision,
+  "enrolRate"double precision,
+  "averageGrade"  double precision,
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );

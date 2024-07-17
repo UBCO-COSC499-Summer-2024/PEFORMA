@@ -76,7 +76,7 @@ function PerformanceInstructorPage() {
 								<strong>UBC ID:</strong> {profile.ubcid}
 							</p>
 							<p>
-								<strong>Service Roles:</strong> {profile.roles.map((role, index) => <span>{role.roleTitle}
+								<strong>Service Roles:</strong> {profile.roles.map((role, index) => <span><Link to={"/InsRoleInformation?roleid="+role.roleid}>{role.roleTitle}</Link>
               {index < profile.roles.length - 1 && (', ')}
               </span>)}
 							</p>

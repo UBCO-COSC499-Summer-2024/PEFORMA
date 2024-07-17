@@ -1,22 +1,32 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../../CSS/All/ForgotPasswordPage.css';
 
 function ForgotPasswordPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Request to reset password sent for:', email);
-    // logic function (BE) for reset password below
-    // .....
+    console.log(email);
+    setSent(true);
+    axios.post("http://localhost:3001/api/reset-password", {email});
+  };
+
+  const handleLogin = () => {
+    // add login jump-to-page logic here
+    console.log('Login button clicked');
+    navigate('/Login');
   };
 
   return (
     <div className="forgot-container">
       <header className="forgot-header">
-        <h2 className="logo">PEFORMA</h2>
+      <h2 className="logo"><Link to="/">PEFORMA</Link></h2>
         <nav>
-          <button href="#login">Login</button>
+          <button onClick={handleLogin}>Login</button>
         </nav>
       </header>
       <div className="forgot-form-container">
@@ -30,7 +40,12 @@ function ForgotPasswordPage() {
             placeholder="Email Address"
             required
           />
-          <button type="submit">Email Me</button>
+          {sent === false && (
+            <button type="submit" className='send-button'>Email Me</button>
+          )}
+          {sent === true && (
+            <button type="button" className="email-sent-button">Email Sent!</button>
+          )}
         </form>
       </div>
     </div>

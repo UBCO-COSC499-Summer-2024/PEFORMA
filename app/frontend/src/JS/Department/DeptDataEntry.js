@@ -526,7 +526,7 @@ function DataEntryComponent() {
 							</label>
 						</div>
 					)}
-
+					
 					{showInstructorModal && (
 						<AssignInstructorsModal
 							instructorData={instructorData}

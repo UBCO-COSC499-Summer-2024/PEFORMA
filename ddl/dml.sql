@@ -42,9 +42,7 @@ INSERT INTO public."Profile" ("firstName", "middleName", "lastName", "email", "p
     ('Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0);    
 
 -- Image 
--- INSERT INTO Image (imageId, fileType, image_data) VALUES
--- (1, 'jpg', '...'),
--- (2, 'png', '...');
+-- Inserted through backend script
 
 -- Account (remember to hash passwords in a real system!)
 INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "isActive") VALUES

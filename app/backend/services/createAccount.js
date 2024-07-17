@@ -6,6 +6,12 @@ async function createAccount(req) {
     const client = await pool.connect(); 
     try {
         await client.query('BEGIN');
+         // Check if the email already exists
+         const emailCheckQuery = `SELECT "email" FROM "Account" WHERE "email" = $1;`;
+         const emailCheckResult = await client.query(emailCheckQuery, [email]);
+         if (emailCheckResult.rows.length > 0) {
+             throw new Error('Email already exists');
+         }
         const hashedPassword = await bcrypt.hash(password, 12);
         let query = `SELECT setval(pg_get_serial_sequence('"Profile"', 'profileId'), MAX("profileId")) FROM "Profile";`;
         await client.query(query);
