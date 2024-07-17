@@ -13,14 +13,7 @@
 }
 
 .coursehistory .description {
-    font-size: larger;
-    border: 1px solid var(--darkestGrey);
-    border-radius: 0.5em;
-    padding: 0.4em;
-    width: 66%;
-    min-height: 8em;
-    background-color: var(--darkerGrey);
-    margin-bottom: 1em;
+  
 }
 
 
@@ -137,8 +130,13 @@
     width: 0em;
 }
 
+.coursehistory th {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+}
+
 .back-to-prev-button {
-    background-color: #4CAF50; 
+    background-color: var(--blue); 
     border: none; 
     color: white; 
     padding: 10px 20px; 
@@ -150,6 +148,7 @@
     transition: background-color 0.3s ease; 
 }
 
-.back-to-prev-button:hover {
-    background-color: #45a049; 
+
+.current-instructor {
+    width: 100%;
 }
