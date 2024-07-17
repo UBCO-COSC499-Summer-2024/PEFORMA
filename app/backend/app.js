@@ -54,6 +54,10 @@ const resetPasswordRouter = require('./routes/resetPassword');
 //const updatePasswordRouter = require('./routes/updatePassword.js')
 const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
 
+const updateRoleInfo = require('./routes/updateRoleInfo.js');
+const updateCourseInfo = require('./routes/updateCourseInfo.js');
+const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
+
 const app = express();
 
 app.use(express.json());
@@ -140,6 +144,7 @@ app.use('/api/upload', dataImportRoutes);
 app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
 
+
 app.post('/enter', async (req, res) => {
     const data = req.body;
     console.log(data); // 打印接收到的数据，确保格式正确
@@ -195,7 +200,9 @@ console.log('after');
 */
 
 app.use('/api',instructorFetch);
-
+app.use('/api',updateRoleInfo);
+app.use('/api',updateCourseInfo);
+app.use('/api',AssignInstructor);
 
 const port = 3001;
 // Wrap server startup in an async function
