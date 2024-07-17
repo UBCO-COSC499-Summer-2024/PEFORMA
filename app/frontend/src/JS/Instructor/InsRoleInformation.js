@@ -55,12 +55,7 @@ function InsRoleInformation() {
 							{roleData.department}
 						</span>
 					</p>
-					<p>
-						Benchmark:{' '}
-						<span className="bold" role="contentinfo">
-							{roleData.benchmark} hours/month
-						</span>
-					</p>
+
 
 				</div>
 			</div>
