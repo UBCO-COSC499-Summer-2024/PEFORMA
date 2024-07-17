@@ -8,7 +8,7 @@ const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
 const { saveDataToDatabase } = require('./routes/DataEntry');
-
+const { setupDatabase } = require('./insertProfileImages');
 
 const { upsertProfile } = require('./routes/upsertProfile');
 const createAccount = require('./routes/createAccount');
@@ -32,6 +32,10 @@ const coursePerformance = require('./routes/coursePerformance.js');
 const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
 const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
+const imageRoutes = require('./routes/imageRoutes');
+const userProfileRoutes = require('./routes/userProfileRoutes');
+const userRoutes = require('./routes/userRoutes');
+const changePasswordRoutes = require('./routes/changePasswordRoutes');
 
 const courseHistoryRouter = require('./routes/courseHistoryRoutes');
 const roleInfoRoutes = require('./routes/roleInfoRoutes');
@@ -77,6 +81,19 @@ app.use('/api/all-courses', allCoursesRoutes);
 app.use('/api/service-roles', serviceRoleRoutes);
 
 app.use('/api/teachingAssignment',teachingAssignment);
+// Image retrieval process
+app.use('/api/image', imageRoutes);
+
+app.use('/api/change-password', changePasswordRoutes);
+
+// User profile
+app.use('/api/profile', (req, res, next) => {
+    console.log('Profile route hit:', req.url);
+    next();
+  }, userProfileRoutes);
+  
+app.use('/api', userRoutes);
+
 app.use('/api/courseHistory',courseHistoryRouter);
 
 app.use('/api/benchmark', benchmark);
@@ -162,9 +179,26 @@ app.use('/api',instructorFetch);
 
 
 const port = 3001;
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-    console.log(`Account info page: http://localhost:${port}/Account`);
-    console.log(`Data entrt request: http://localhost:${port}/enter`);
-    console.log(`Instructor lists: http://localhost:${port}/api/instructors`)
+// Wrap server startup in an async function
+const startServer = async () => {
+    app.listen(port, () => {
+        console.log(`Server running on http://localhost:${port}`);
+        console.log(`Account info page: http://localhost:${port}/Account`);
+        console.log(`Data entry request: http://localhost:${port}/enter`);
+        console.log(`Instructor lists: http://localhost:${port}/api/instructors`);
+    });
+
+    try {
+        // Run database setup after server starts
+        await setupDatabase();
+        console.log('Database setup completed successfully');
+    } catch (error) {
+        console.error('Error during database setup:', error);
+    }
+};
+
+// Call the async function to start the server
+startServer().catch(error => {
+    console.error('Failed to start server:', error);
+    process.exit(1);
 });
