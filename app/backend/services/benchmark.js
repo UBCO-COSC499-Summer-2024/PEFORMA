@@ -235,7 +235,6 @@ async function getBenchmark(){
         const output = {
             people:serviceList
         }
-        console.log(output);
         return output;        
         
     }
