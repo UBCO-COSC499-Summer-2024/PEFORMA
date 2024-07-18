@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
+import { fillEmptyItems } from '../common/utils.js';
 
 function RoleInformation() {
   const { authToken, accountLogInType } = useAuth();
@@ -20,6 +21,12 @@ function RoleInformation() {
     roleName: '',
     roleDescription: '',
     department: '',
+  });
+  const [pastAssignees, setPastAssignees] = useState({
+    past: [{}],
+    assigneeCount: 0,
+    perPage: 4,
+    currentPage: 1
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
@@ -60,12 +67,14 @@ function RoleInformation() {
         });
         const roleData = roleRes.data;
         roleData.perPage -=1;
+        
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
           roleName: roleData.roleName,
           roleDescription: roleData.roleDescription,
           department: roleData.department,
         });
+        setPastAssignees({...pastAssignees, past:roleData.assignees.filter((assignee) => assignee.year !== roleData.latestYear)});
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -95,7 +104,7 @@ function RoleInformation() {
       console.error('Error updating role info', error);
     }
   };
-
+  console.log(pastAssignees.past);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditData((prevData) => ({
@@ -115,10 +124,21 @@ function RoleInformation() {
   };
 
   const handlePageClick = (data) => {
+   
     setRoleData((prevState) => ({
       ...prevState,
       currentPage: data.selected + 1,
     }));
+  
+  };
+
+  const handlePastPageClick = (data) => {
+   
+    setPastAssignees((prevState) => ({
+      ...prevState,
+      currentPage: data.selected + 1,
+    }));
+  
   };
 
   const prevInstructors = useRef({});
@@ -235,6 +255,7 @@ function RoleInformation() {
   };
 
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
+  const pastPageCount = Math.ceil(pastAssignees.past.length / pastAssignees.perPage);
 
   const filteredAssignees = roleData.assignees.filter(
     (assignee) =>
@@ -246,7 +267,12 @@ function RoleInformation() {
     (roleData.currentPage - 1) * roleData.perPage,
     roleData.currentPage * roleData.perPage
   );
-  
+
+  const currentPastAssignees =  pastAssignees.past.slice(
+    (pastAssignees.currentPage - 1) * pastAssignees.perPage,
+    pastAssignees.currentPage * pastAssignees.perPage
+  );
+
   return (
     <div className="dashboard">
       <CreateSideBar sideBarType="Department" />
@@ -407,7 +433,7 @@ function RoleInformation() {
 								<tr>
 									<th>Instructor</th><th>UBC ID</th><th>Year of assignment</th>
 								</tr>
-								{currentAssignees.map((assignee, index) => {
+								{currentPastAssignees.map((assignee, index) => {
 
 
 										if (assignee.instructorID == '' || assignee.instructorID == null) {
@@ -438,10 +464,10 @@ function RoleInformation() {
 											previousLabel={'<'}
 											nextLabel={'>'}
 											breakLabel={'...'}
-											pageCount={pageCount}
+											pageCount={pastPageCount}
 											marginPagesDisplayed={3}
 											pageRangeDisplayed={0}
-											onPageChange={handlePageClick}
+											onPageChange={handlePastPageClick}
 											containerClassName={'pagination'}
 											activeClassName={'active'}
 										/>
