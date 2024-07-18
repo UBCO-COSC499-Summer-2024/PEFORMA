@@ -379,13 +379,15 @@ function RoleInformation() {
             <table>
               <tbody>
               <tr><th>Instructor</th><th>UBC ID</th></tr>
-                {currentAssignees.map((assignee, index) => {
 
+
+                {currentAssignees.map((assignee, index) => {
+                  
 
 										if (assignee.instructorID == '' || assignee.instructorID == null) {
 											return (
 												<tr key={index}>
-													<td></td><td></td>
+													<td colSpan={3}>There are no currently assigned instructors.</td>
 												</tr>
 											);
 										} else {
@@ -433,11 +435,14 @@ function RoleInformation() {
 								<tr>
 									<th>Instructor</th><th>UBC ID</th><th>Year of assignment</th>
 								</tr>
+                {currentPastAssignees.length === 0 && (
+                  <tr><td colSpan={3}>There are no past instructors for this role.</td></tr>
+                )}
 								{currentPastAssignees.map((assignee, index) => {
 
 
 										if (assignee.instructorID == '' || assignee.instructorID == null) {
-
+                      return (<tr key={index}><td colSpan={3}>There are no past instructors for this role.</td></tr>);
 										} else {
                       if (assignee.year !== roleData.latestYear) {
 											return (
