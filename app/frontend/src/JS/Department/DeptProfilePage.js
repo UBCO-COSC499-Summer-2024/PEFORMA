@@ -51,11 +51,21 @@ function DeptProfilePage() {
                     params: { ubcid: ubcid },
                     headers: { Authorization: `Bearer ${authToken.token}` },
                 });
-
+                if (response.data.benchmark == null) {
+                    response.data.benchmark = "N/A";
+                }
+                if (response.data.phoneNum == "" || response.data.phoneNum == null) {
+                    response.data.phoneNum = "N/A";
+                }
+                if (response.data.office == null+" "+null || response.data.office == null) {
+                    response.data.office = "N/A";
+                }
+                
                 if (response.data) {
                     setProfile(response.data);
                     setBenchmark(response.data.benchmark);
                 }
+                
                 // Set up Course assignments
                 const response2 = await axios.get(`http://localhost:3001/api/all-courses`, {
                     headers: { Authorization: `Bearer ${authToken.token}` },
@@ -280,7 +290,11 @@ function DeptProfilePage() {
                         <p><strong>Name:</strong> {profile.name}</p>
                         <p><strong>UBC ID:</strong> {profile.ubcid}</p>
                         <p>
-                            <strong>Service Role Assignments:</strong> {selectedRoles.map((role, index) => (
+                            <strong>Service Role Assignments: </strong> 
+                            {selectedRoles.length === 0 && (
+                                <span>N/A</span>
+                            )}
+                            {selectedRoles.map((role, index) => (
                                 <span key={role.id}>
                                     <Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link>
                                     {index < selectedRoles.length - 1 && ', '}
@@ -313,6 +327,9 @@ function DeptProfilePage() {
                         <p><strong>Office Location:</strong> {profile.office}</p>
                         <p>
                             <strong>Teaching Assignments: </strong>
+                            {selectedCourses.length == 0 && (
+                                <span>N/A</span>
+                            )}
                             {selectedCourses.map((teachingAssign, index) => (
                                 <span key={teachingAssign.id}>
                                     <Link to={`/DeptCourseInformation?courseid=${teachingAssign.id}`}>
@@ -331,6 +348,7 @@ function DeptProfilePage() {
                                 <span className="plus">+</span> Assign Course(s)
                             </button>
                         )}
+                        
                         <p><strong>Service Hours:</strong></p>
                         <CreateWorkingBarChart profileid={profile.profileId} height={400} width={500} className='performance-chart'/>
                     </section>

@@ -59,9 +59,7 @@ exports.getUserProfile = async (req, res) => {
         `; 
         //result = await pool.query(query, [id]);
         result = await pool.query(query,[profileId, latestYear]);
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+
         //const serviceRoles = result.rows;
         const roles = result.rows.map(row => ({roleTitle : row.stitle, roleid : row.serviceRoleId}));
         const latestTerm = await getLatestTerm(); 
@@ -75,9 +73,7 @@ exports.getUserProfile = async (req, res) => {
         `; 
         //result = await pool.query(query, [id]);
         result = await pool.query(query,[profileId, latestTerm]);
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Course assignments not found' });
-        }
+
         //const courses = result.rows;
         const teachingRoles = result.rows.map(row => ({ courseid:row.courseId, assign: row.DivisionAndCourse }));  // Mapping ctitle to roles
 
