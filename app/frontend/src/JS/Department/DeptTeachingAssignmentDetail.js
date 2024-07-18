@@ -27,7 +27,7 @@ function DeptTeachingAssignmentDetail() {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
-        checkAccess(accountLogInType, navigate, 'department');
+        checkAccess(accountLogInType, navigate, 'department', authToken);
         if (courses && professors) {
             const prefix = currentDivision === 'computer-science' ? 'COSC' : currentDivision.slice(0, 4).toUpperCase();
             const filteredCourses = courses.filter(course => course.courseCode && course.courseCode.startsWith(prefix));
@@ -103,12 +103,12 @@ function DeptTeachingAssignmentDetail() {
     };
 
     return (
-        <div className="dashboard" id="dept-course-list-test-content">
+        <div className="dashboard">
             <CreateSideBar sideBarType="Department" />
             <div className="container">
                 <CreateTopBar searchListType={'DeptTeachingAssignmentDetail'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setCourseList);}} />
 
-                <div className="srlist-main">
+                <div className="srlist-main" id="detail-teaching-assignment-test-content">
                     <div className="subtitle-course">
                         <div className='divison-select-subtitle'>
                             List of Courses 
