@@ -189,5 +189,3 @@ CREATE TABLE "CourseEvaluation" (
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
-ALTER TABLE "Profile"
-ALTER COLUMN "divisionId" DROP NOT NULL;
