@@ -60,7 +60,7 @@ describe('DeptMemberList', () => {
     element = document.getElementById('dept-member-list-test-content');
 	});
 
-  test('Testing rendering with mock data course list', async () => {
+  test('Testing rendering with mock data member list', async () => {
     // call axios.get once at a time
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
 
@@ -79,7 +79,7 @@ describe('DeptMemberList', () => {
     expect(element).not.toHaveTextContent("Min"); 
     expect(element).not.toHaveTextContent("Su"); 
   });
-  test('Test pagination works', async() => {
+  test('Test pagination in deptMemberList', async() => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
 
     const paginationElement = element.querySelector('.pagination'); 
@@ -98,7 +98,7 @@ describe('DeptMemberList', () => {
       expect(element).not.toHaveTextContent("Don");
     });
   });
-  test('Test search bar in member list', async() => {
+  test('Test search bar in department member list', async() => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
     const searchInput = screen.getByPlaceholderText('Search member'); 
