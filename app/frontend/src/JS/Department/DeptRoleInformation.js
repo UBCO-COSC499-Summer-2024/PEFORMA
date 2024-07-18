@@ -190,7 +190,7 @@ function RoleInformation() {
       for (let i = 0; i < instructorData.instructors.length; i++) {
         if (instructorData.instructors[i].assigned) {
           roleData.assignees.push({
-            instructorID: instructorData.instructors[i].id,
+            instructorID: instructorData.instructors[i].profileId,
             name: instructorData.instructors[i].name,
           });
         }
@@ -205,7 +205,8 @@ function RoleInformation() {
     let assignedInstructors = [];
     for (let i = 0; i < instructorData.instructors.length; i++) {
       if (instructorData.instructors[i].assigned === true) {
-        assignedInstructors.push(instructorData.instructors[i].id);
+        assignedInstructors.push(instructorData.instructors[i]);
+        console.log(instructorData.instructors[i]);
       }
     }
 
@@ -230,13 +231,13 @@ function RoleInformation() {
 
     for (let i = 0; i < assignedInstructors.length; i++) {
       var newAssigneeList = {
-        profileId: assignedInstructors[i],
+        profileId: assignedInstructors[i].profileId,
         serviceRole: roleData.roleName,
         year: new Date().getFullYear(),
         division: div
       };
       try {
-        console.log("Assigning prof ", i, " in list, id ", newAssigneeList.profileId);
+        console.log("Assigning prof ", i, " in list, UBCid ", newAssigneeList.profileId);
         const res = await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
           headers: { Authorization: `Bearer ${authToken.token}` },
         });
