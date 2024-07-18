@@ -15,7 +15,9 @@
       "^.+\\.(js|jsx)$": "babel-jest",
       ".+\\.(svg|css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
     },
-    "verbose": true
+    "verbose": true,
+    "setupFiles": ["<rootDir>/setupTests.js"]
+
   },
   "dependencies": {
     "@babel/preset-env": "^7.24.7",
