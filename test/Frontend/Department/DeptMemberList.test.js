@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, waitFor, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptMemberList from '../../../app/frontend/src/JS/Department/DeptMemberList';
 import {MemoryRouter} from "react-router-dom";
@@ -24,7 +24,7 @@ jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
 describe('DeptMemberList', () => {
   let element; 
 
-	beforeEach(() => {
+  beforeEach(async () => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
       profileId: { profileId: 'mocked-profileId'}
@@ -50,13 +50,15 @@ describe('DeptMemberList', () => {
             {"ubcid": 12222123, "name":"Su", "department": "Computer Science", "roleid":[4], "serviceRole":["CR"], "email":"sdtghf@gmail.com",  "status": true}
           ]
         }
-			})
-		);
-    render(
-			<MemoryRouter>
-				<DeptMemberList />
-			</MemoryRouter>
-		);
+      })
+    );
+    await act(async () => {
+      render(
+        <MemoryRouter>
+          <DeptMemberList />
+        </MemoryRouter>
+      );
+    });
     element = document.getElementById('dept-member-list-test-content');
 	});
 
@@ -86,7 +88,9 @@ describe('DeptMemberList', () => {
     expect(paginationElement).toBeInTheDocument();
 
     const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');
-    fireEvent.click(nextPageButton);
+    await act(async () => {
+      fireEvent.click(nextPageButton);
+    });
 
     await waitFor(() => { // now show only page 2 contents
       expect(element).toHaveTextContent("Su") // su is active and in second page
@@ -102,12 +106,14 @@ describe('DeptMemberList', () => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
     const searchInput = screen.getByPlaceholderText('Search member'); 
-    fireEvent.change(searchInput, { target: { value: 'Jest' }});
+    await act(async () => {
+      fireEvent.change(searchInput, { target: { value: 'Jest' }});
+    });
 
     // Search by name Jest, only 1 row, data related jest will show up
     await waitFor(() => {
       const rows = screen.getAllByRole('row');
-      expect(rows).toHaveLength(2); // 2 rows (Jest) + 1 row (<#><Course><Title><Description>) <- top default row
+      expect(rows).toHaveLength(3); // 1 rows (Jest) + 2 row (<#><Course><Title><Description>) <- top default row and tfoot
 
       expect(element).toHaveTextContent('Jest');
       expect(element).toHaveTextContent('35478655');
@@ -125,10 +131,11 @@ describe('DeptMemberList', () => {
     const sortButtons = document.querySelectorAll('.sort-button');
   
     // click for ascending order
-    fireEvent.click(sortButtons[0]);
-  
+    await act(async () => {
+      fireEvent.click(sortButtons[0]);
+    });  
     await waitFor(() => {
-      const rows = screen.getAllByRole('row');
+      const rows = screen.getAllByRole('row').filter(row => row.parentNode.tagName === 'tbody'); // only getting from tbody
       
       // save all ascending names ordered clicked by button
       const names = rows.slice(1).map(row => row.cells[0]?.textContent);
@@ -141,10 +148,12 @@ describe('DeptMemberList', () => {
     });
   
     // click for descending order
-    fireEvent.click(sortButtons[0]);
+    await act(async () => {
+      fireEvent.click(sortButtons[0]);
+    });
   
     await waitFor(() => {
-      const rows = screen.getAllByRole('row');
+      const rows = screen.getAllByRole('row').filter(row => row.parentNode.tagName === 'tbody'); // only getting from tbody
       
       // save all descending names ordered clicked by button
       const names = rows.slice(1).map(row => row.cells[0]?.textContent);

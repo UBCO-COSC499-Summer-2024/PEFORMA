@@ -213,21 +213,24 @@ function DeptMemberList() {
                                     </tr>
                                 ))}
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <ReactPaginate
+                                            previousLabel={'<'}
+                                            nextLabel={'>'}
+                                            breakLabel={'...'}
+                                            pageCount={pageCount(memberData.membersCount, memberData.perPage)}
+                                            marginPagesDisplayed={3}
+                                            pageRangeDisplayed={0}
+                                            onPageChange={(data) => handlePageClick(data, setMemberData)}
+                                            containerClassName={'pagination'}
+                                            activeClassName={'active'}
+                                        />
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
-
-                        <tfoot>
-                            <ReactPaginate
-                                previousLabel={'<'}
-                                nextLabel={'>'}
-                                breakLabel={'...'}
-                                pageCount={pageCount(memberData.membersCount, memberData.perPage)}
-                                marginPagesDisplayed={3}
-                                pageRangeDisplayed={0}
-                                onPageChange={(data) => handlePageClick(data, setMemberData)}
-                                containerClassName={'pagination'}
-                                activeClassName={'active'}
-                            />
-                        </tfoot>
                     </div>
                 </div>
             </div>
