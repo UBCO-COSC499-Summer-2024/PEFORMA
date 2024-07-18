@@ -104,7 +104,7 @@ describe('DeptMemberList', () => {
     const searchInput = screen.getByPlaceholderText('Search member'); 
     fireEvent.change(searchInput, { target: { value: 'Jest' }});
 
-    // Search by name Kevin, only 1 row, data related Kevin will show up
+    // Search by name Jest, only 1 row, data related jest will show up
     await waitFor(() => {
       const rows = screen.getAllByRole('row');
       expect(rows).toHaveLength(2); // 2 rows (Jest) + 1 row (<#><Course><Title><Description>) <- top default row
@@ -114,9 +114,46 @@ describe('DeptMemberList', () => {
       expect(element).toHaveTextContent('Statistics');
       expect(element).toHaveTextContent('Coop');
 
-      // David, DavidRole, David stauts will not be present
+      // woo and computer science are not present
       expect(element).not.toHaveTextContent('Woo');
       expect(element).not.toHaveTextContent('Computer Science');
     });
-  })
+  });
+  test('Testing sort button for name', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+  
+    const sortButtons = document.querySelectorAll('.sort-button');
+  
+    // click for ascending order
+    fireEvent.click(sortButtons[0]);
+  
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row');
+      
+      // save all ascending names ordered clicked by button
+      const names = rows.slice(1).map(row => row.cells[0]?.textContent);
+
+      // using sort function, copy a sorted name rows
+      const sortedNamesAsc = [...names].sort();
+
+      // check if names (button clicked) and sortedNames (used sort function) are equal
+      expect(names).toEqual(sortedNamesAsc);
+    });
+  
+    // click for descending order
+    fireEvent.click(sortButtons[0]);
+  
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row');
+      
+      // save all descending names ordered clicked by button
+      const names = rows.slice(1).map(row => row.cells[0]?.textContent);
+
+      // reverse the name
+      const sortedNamesDesc = [...names].sort().reverse();
+
+      // check if both are equal
+      expect(names).toEqual(sortedNamesDesc);
+    });
+  });
 });
