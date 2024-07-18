@@ -189,7 +189,7 @@ function CourseInformation() {
                 {currentEntries.map((entry, index) => (
                   <tr key={index}>
                     <td>
-                      <Link to={`/DeptProfilePage?ubcid=${entry.instructorID}`}>
+                      <Link to={`/DeptProfilePage?ubcid=${entry.ubcid}`}>
                         {entry.instructorName}
                       </Link>
                     </td>
