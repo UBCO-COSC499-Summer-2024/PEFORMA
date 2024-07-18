@@ -332,7 +332,7 @@ function DeptProfilePage() {
                             </button>
                         )}
                         <p><strong>Service Hours:</strong></p>
-                        <CreateWorkingBarChart profileid={ubcid} height={400} width={500} className='performance-chart'/>
+                        <CreateWorkingBarChart profileid={profile.profileId} height={400} width={500} className='performance-chart'/>
                     </section>
                     {showCoursesModal && (
                         <AssignCoursesModal

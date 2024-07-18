@@ -33,6 +33,7 @@ function WorkHoursBarChart({profileid, height, width}) {
 		const date = new Date();
 		const currentMonth = date.getMonth() + 1;
 		const fetchData = async () => {
+			if (profileId != null) {
 			try {
 				if (!authToken) {
 					navigate('/Login');
@@ -46,7 +47,7 @@ function WorkHoursBarChart({profileid, height, width}) {
 			} catch (error) {
 				console.error('Error fetching data: ', error);
 				return null;
-			}
+			} }
 		};
 		fetchData().then((dataJson) => {
 			if (dataJson) {
@@ -66,7 +67,8 @@ function WorkHoursBarChart({profileid, height, width}) {
 				}));
 			}
 		});
-	}, []);
+		fetchData();
+	}, [profileId]);
 
 	return (
 		<div className="App">

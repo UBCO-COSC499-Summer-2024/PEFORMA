@@ -90,7 +90,8 @@ exports.getUserProfile = async (req, res) => {
             email: email,
             phoneNum: phoneNum,
             office: office,
-            teachingAssignments:teachingRoles
+            teachingAssignments:teachingRoles,
+            profileId:profileId
         };    
         // Send response
         console.log("profile data: ", profileData);
