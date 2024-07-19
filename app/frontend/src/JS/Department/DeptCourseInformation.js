@@ -95,10 +95,14 @@ function CourseInformation() {
     const month = now.getMonth() + 1; // getMonth() returns 0-11
     let term;
 
-    if (month >= 1 && month <= 6) {
-      term = `${year}1`; // Jan - Jun
-    } else {
-      term = `${year}2`; // Jul - Dec
+    if (month >= 9 && month <= 12) {
+      term = `${year}1`; // Sep - Dec, Winter T1 -> T1
+    } else if(month >= 0 && month <= 4){
+      term = `${year}2`; // Jan - Apr, Winter T2 -> T2
+    }else if(month >= 5 && month <= 6){
+      term = `${year}3`; // May - Jun, Summer T1 -> T3
+    }else if (month >=7 && month <= 8){
+      term = `${year}4`; // Jul - Aug, Summer T2 -> T4
     }
 
     return term;
