@@ -8,7 +8,7 @@
 ### Current Tasks
   * #1: Refactoring my codes
 
-### Progress Update (since 7/12/2024)
+### Progress Update (since 7/17/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
