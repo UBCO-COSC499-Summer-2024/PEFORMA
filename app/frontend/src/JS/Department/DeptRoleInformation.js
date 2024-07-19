@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import ReactPaginate from 'react-paginate';
@@ -47,7 +47,7 @@ function RoleInformation() {
 
   const params = new URLSearchParams(window.location.search);
   const serviceRoleId = params.get('roleid');
-
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
   useEffect(() => {
     const fetchData = async () => {
       if (!authToken) {
@@ -104,7 +104,7 @@ function RoleInformation() {
       console.error('Error updating role info', error);
     }
   };
-  console.log(pastAssignees.past);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditData((prevData) => ({
@@ -255,6 +255,21 @@ function RoleInformation() {
     setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
   };
 
+  const removeInstructor = (id, index) => {
+    roleData.assignees.splice(index, 1);
+
+    for (let i = 0; i < instructorData.instructors.length; i++) {
+      if (id === instructorData.instructors[i].id) {
+        instructorData.instructors[i].assigned = false;
+        break;
+      }
+    }
+    forceUpdate();
+    console.log(roleData.assignees);
+    // Backend for removing the instructor goes here:
+    //axios.post, etc.
+  }
+
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
   const pastPageCount = Math.ceil(pastAssignees.past.length / pastAssignees.perPage);
 
@@ -399,6 +414,8 @@ function RoleInformation() {
 														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
 															{assignee.name}
 														</Link>
+                            <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(assignee.instructorID, index) }}>X</button>
+
 													</td>
 													<td>{assignee.instructorID}</td>
 												</tr>
