@@ -64,30 +64,6 @@ function DeptCourseList() {
         fetchAllCourses();
     }, [authToken]);
 
-	useEffect(() => {
-		const fetchAllCourses = async () => {
-			try {
-				checkAccess(accountLogInType, navigate, 'department', authToken);
-				// Fetch course data with Axios, adding token to header
-				const res = await axios.get(`http://localhost:3001/api/all-courses`, {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
-				setActiveCoursesCount(filledCourses.filter(course => course.status).length); 
-				setDeptCourseList({ ...res.data, courses: filledCourses });
-			} catch (error) {
-				// Handle 401 (Unauthorized) error and other errors
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken'); // Clear invalid token
-					navigate('/Login');
-				} else {
-					console.error('Error fetching courses:', error);
-				}
-			}
-		};
-		fetchAllCourses();
-	}, [authToken]);
-
     const sortedCourses = React.useMemo(() => {
         let sortableItems = [...deptCourseList.courses];
         if (sortConfig.key !== null) {

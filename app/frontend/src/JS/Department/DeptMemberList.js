@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
@@ -10,7 +9,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
@@ -30,24 +29,18 @@ function DeptMemberList() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (!authToken) {
-                    navigate('/Login');
-                    return;
-                }
-                checkAccess(accountLogInType, navigate, 'department');
-                const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
-                    headers: { Authorization: `Bearer ${authToken.token}` },
+                checkAccess(accountLogInType, navigate, 'department', authToken);
+                const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
+                const activeMembers = data.members.filter(member => member.status);
+                const filledMembers = fillEmptyItems(activeMembers, data.perPage);
+                setMemberData({
+                    members: filledMembers,
+                    membersCount: activeMembers.length,
+                    perPage: data.perPage,
+                    currentPage: 1,
                 });
-                const activeMembers = res.data.members.filter(member => member.status);
-                const filledMembers = fillEmptyItems(activeMembers, res.data.perPage);
-                setMemberData({ ...res.data, members: filledMembers, membersCount: activeMembers.length });
             } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    localStorage.removeItem('authToken');
-                    navigate('/Login');
-                } else {
-                    console.error('Error fetching members:', error);
-                }
+                console.log('Error fetching members: ', error);
             }
         };
 
@@ -140,7 +133,7 @@ function DeptMemberList() {
         <div className="dashboard">
             <CreateSideBar sideBarType="Department" />
             <div className="container">
-                <CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
+            <CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); }} />
 
                 <div className="member-list-main" id="dept-member-list-test-content">
                     <div className="subtitle-member">
@@ -183,61 +176,61 @@ function DeptMemberList() {
                                     <th>Email</th>
                                 </tr>
                             </thead>
-
                             <tbody>
-                                {currentMembers.map((member) => {
-                                    return (
-                                        <tr key={member.ubcid}>
-                                            <td>
-                                                <Link to={`/DeptProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
-                                            </td>
-                                            <td>{member.ubcid}</td>
-                                            <td>
-                                                {member.serviceRole ? (
-                                                    Array.isArray(member.serviceRole) ? (
-                                                        member.serviceRole.map((serviceRole, index) => (
-                                                            <React.Fragment key={member.ubcid[index]}>
-                                                                <Link to={`/DeptRoleInformation?roleid=${member.roleid[index]}`}>
-                                                                    {serviceRole}
-                                                                </Link>
-                                                                {index < member.serviceRole.length - 1 ? (
-                                                                    <>
-                                                                        <br />
-                                                                        <br />
-                                                                    </>
-                                                                ) : null}
-                                                            </React.Fragment>
-                                                        ))
-                                                    ) : (
-                                                        <Link to={`/DeptRoleInformation?ubcid=${member.roleid}`}>
-                                                            {member.roleid}
-                                                        </Link>
-                                                    )
+                                {currentMembers.map((member, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            <Link to={`/DeptProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
+                                        </td>
+                                        <td>{member.ubcid}</td>
+                                        <td>
+                                            {member.serviceRole ? (
+                                                Array.isArray(member.serviceRole) ? (
+                                                    member.serviceRole.map((serviceRole, idx) => (
+                                                        <React.Fragment key={idx}>
+                                                            <Link to={`/DeptRoleInformation?roleid=${member.roleid[idx]}`}>
+                                                                {serviceRole}
+                                                            </Link>
+                                                            {idx < member.serviceRole.length - 1 && (
+                                                                <>
+                                                                    <br />
+                                                                    <br />
+                                                                </>
+                                                            )}
+                                                        </React.Fragment>
+                                                    ))
                                                 ) : (
-                                                    ''
-                                                )}
-                                            </td>
-                                            <td>{member.department}</td>
-                                            <td>{member.email}</td>
-                                        </tr>
-                                    );
-                                })}
+                                                    <Link to={`/DeptRoleInformation?roleid=${member.roleid}`}>
+                                                        {member.serviceRole}
+                                                    </Link>
+                                                )
+                                            ) : (
+                                                ''
+                                            )}
+                                        </td>
+                                        <td>{member.department}</td>
+                                        <td>{member.email}</td>
+                                    </tr>
+                                ))}
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <ReactPaginate
+                                            previousLabel={'<'}
+                                            nextLabel={'>'}
+                                            breakLabel={'...'}
+                                            pageCount={pageCount(memberData.membersCount, memberData.perPage)}
+                                            marginPagesDisplayed={3}
+                                            pageRangeDisplayed={0}
+                                            onPageChange={(data) => handlePageClick(data, setMemberData)}
+                                            containerClassName={'pagination'}
+                                            activeClassName={'active'}
+                                        />
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
-
-                        <tfoot>
-                            <ReactPaginate
-                                previousLabel={'<'}
-                                nextLabel={'>'}
-                                breakLabel={'...'}
-                                pageCount={pageCount(memberData.membersCount, memberData.perPage)}
-                                marginPagesDisplayed={3}
-                                pageRangeDisplayed={0}
-                                onPageChange={(data) => handlePageClick(data, setMemberData)}
-                                containerClassName={'pagination'}
-                                activeClassName={'active'}
-                            />
-                        </tfoot>
                     </div>
                 </div>
             </div>
