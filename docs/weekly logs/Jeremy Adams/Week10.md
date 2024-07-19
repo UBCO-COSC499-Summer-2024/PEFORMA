@@ -80,3 +80,35 @@ Overall, I'm content with where the project is right now, and I'm happy to get s
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Friday (07/19/2024)
 
+### Timesheet
+![alt text](Clockify/week10-2.png)
+
+### Current Tasks
+  * #1: Begin working on refactoring and thouroughly testing all the FE pages I worked on, starting with the instructor side
+
+### Progress Update (since 07/17/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Make sure all pages are working before the testorama on friday
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+    </tr>
+</table>
+
+### Cycle Goal Review
+This mini-cycle, we realized we needed to make sure all of our pages were working 100% before the testing event on Friday. We suddenly noticed a lot of bugs and things that needed to be fixed,
+and it also didn't help that we were experiencing a lot of GitHub merge problems, losing code and having to put it back in. Because of all this I wasn't able to get started on my previous goal
+of refactoring, but now that we're done all that I'm hoping to get started on that as soon as I can.
+
+### Next Cycle Goals
+  * Make satisfying progress on refactoring and testing all my pages, starting with the instructor side
+
