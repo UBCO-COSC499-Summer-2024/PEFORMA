@@ -39,10 +39,12 @@
 ## Friday (7/19/2024)
 
 ### Timesheet
-![alt text]()
+![alt text](7-18_00.png)
+![alt text](7-18_01.png)
 
 ### Current Tasks
-  * #1:
+  * #1: Fixing edit pages function for assign person
+  * #2: Writing tests for re-factored code
 
 ### Progress Update (since 7/12/2024)
 <table>
@@ -54,18 +56,28 @@
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>
+        <td> Edit page assign instructor modal
         </td>
         <!-- Status -->
-        <td>
+        <td> finish
+          </td>
+    </tr>
+ <tr>
+        <!-- Task/Issue # -->
+        <td> Write tests for re-factor finished BE functions
+        </td>
+        <!-- Status -->
+        <td> finish * 10
           </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
+Work for department page edit information pages are mainly finished. Backend tests for re-factored finished part is also completed.
+
+Team meeting make new request to add a remove function under department course, would probaly finish before weekend and continue writing tests for new re-factored BE code.
 
 ### Next Cycle Goals
-  * Goal 1 
-  * Goal 2 
-  * Goal 3 
+  * Goal 1 Finish all tests for BE re-factored code (if all BE re-refactored then I'll finish all BE tests)
+  * Goal 2 Remove function for edit page.
