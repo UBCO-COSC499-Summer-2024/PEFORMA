@@ -5,9 +5,9 @@ import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../common/AuthContext.js';
+import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
+import { fillEmptyItems } from '../common/utils.js';
 
 function RoleInformation() {
   const { authToken, accountLogInType } = useAuth();
@@ -21,6 +21,12 @@ function RoleInformation() {
     roleName: '',
     roleDescription: '',
     department: '',
+  });
+  const [pastAssignees, setPastAssignees] = useState({
+    past: [{}],
+    assigneeCount: 0,
+    perPage: 4,
+    currentPage: 1
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
@@ -60,12 +66,15 @@ function RoleInformation() {
           headers: { Authorization: `Bearer ${authToken.token}` },
         });
         const roleData = roleRes.data;
+        roleData.perPage -=1;
+        
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
           roleName: roleData.roleName,
           roleDescription: roleData.roleDescription,
           department: roleData.department,
         });
+        setPastAssignees({...pastAssignees, past:roleData.assignees.filter((assignee) => assignee.year !== roleData.latestYear)});
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -73,18 +82,6 @@ function RoleInformation() {
 
     fetchData();
   }, [authToken, accountLogInType, navigate, serviceRoleId]);
-
-  const fillEmptyAssignees = (assignees, perPage) => {
-    const filledAssignees = [...assignees];
-    const currentCount = assignees.length;
-    const fillCount = perPage - (currentCount % perPage);
-    if (fillCount < perPage) {
-      for (let i = 0; i < fillCount; i++) {
-        filledAssignees.push({});
-      }
-    }
-    return filledAssignees;
-  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -107,7 +104,7 @@ function RoleInformation() {
       console.error('Error updating role info', error);
     }
   };
-
+  console.log(pastAssignees.past);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditData((prevData) => ({
@@ -126,18 +123,22 @@ function RoleInformation() {
     setIsActive(!isActive);
   };
 
-  function showAssignees(assigneeData, offset) {
-    if (assigneeData.assigneeCount > roleData.perPage) {
-      return assigneeData.assignees.slice(offset, offset + assigneeData.perPage);
-    }
-    return assigneeData.assignees;
-  }
-
   const handlePageClick = (data) => {
+   
     setRoleData((prevState) => ({
       ...prevState,
       currentPage: data.selected + 1,
     }));
+  
+  };
+
+  const handlePastPageClick = (data) => {
+   
+    setPastAssignees((prevState) => ({
+      ...prevState,
+      currentPage: data.selected + 1,
+    }));
+  
   };
 
   const prevInstructors = useRef({});
@@ -189,7 +190,7 @@ function RoleInformation() {
       for (let i = 0; i < instructorData.instructors.length; i++) {
         if (instructorData.instructors[i].assigned) {
           roleData.assignees.push({
-            instructorID: instructorData.instructors[i].id,
+            instructorID: instructorData.instructors[i].profileId,
             name: instructorData.instructors[i].name,
           });
         }
@@ -204,7 +205,8 @@ function RoleInformation() {
     let assignedInstructors = [];
     for (let i = 0; i < instructorData.instructors.length; i++) {
       if (instructorData.instructors[i].assigned === true) {
-        assignedInstructors.push(instructorData.instructors[i].id);
+        assignedInstructors.push(instructorData.instructors[i]);
+        console.log(instructorData.instructors[i]);
       }
     }
 
@@ -229,13 +231,13 @@ function RoleInformation() {
 
     for (let i = 0; i < assignedInstructors.length; i++) {
       var newAssigneeList = {
-        profileId: assignedInstructors[i],
+        profileId: assignedInstructors[i].profileId,
         serviceRole: roleData.roleName,
         year: new Date().getFullYear(),
         division: div
       };
       try {
-        console.log("Assigning prof ", i, " in list, id ", newAssigneeList.profileId);
+        console.log("Assigning prof ", i, " in list, UBCid ", newAssigneeList.profileId);
         const res = await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
           headers: { Authorization: `Bearer ${authToken.token}` },
         });
@@ -254,7 +256,7 @@ function RoleInformation() {
   };
 
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
-  const offset = (roleData.currentPage - 1) * roleData.perPage;
+  const pastPageCount = Math.ceil(pastAssignees.past.length / pastAssignees.perPage);
 
   const filteredAssignees = roleData.assignees.filter(
     (assignee) =>
@@ -266,7 +268,12 @@ function RoleInformation() {
     (roleData.currentPage - 1) * roleData.perPage,
     roleData.currentPage * roleData.perPage
   );
-  let i = 0;
+
+  const currentPastAssignees =  pastAssignees.past.slice(
+    (pastAssignees.currentPage - 1) * pastAssignees.perPage,
+    pastAssignees.currentPage * pastAssignees.perPage
+  );
+
   return (
     <div className="dashboard">
       <CreateSideBar sideBarType="Department" />
@@ -362,7 +369,7 @@ function RoleInformation() {
               <span className="plus">+</span> Assign Professors (s)
             </button>
           )}
-          <p>Current Assignee's</p>
+          <p>Current Assignee's ({roleData.latestYear})</p>
           <input
             type="text"
             id="search"
@@ -372,46 +379,109 @@ function RoleInformation() {
           <div className="assigneeTable">
             <table>
               <tbody>
-                {currentAssignees.map((assignee) => {
-                  i++;
-                  if (assignee.instructorID == '' || assignee.instructorID == null) {
-                    return (
-                      <tr key={i}>
-                        <td></td>
-                      </tr>
-                    );
-                  } else {
-                    return (
-                      <tr key={assignee.instructorID}>
-                        <td>
-                          <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-                            {assignee.name} ID:{assignee.instructorID}
-                          </Link>
-                        </td>
-                      </tr>
-                    );
+              <tr><th>Instructor</th><th>UBC ID</th></tr>
+
+
+                {currentAssignees.map((assignee, index) => {
+                  
+
+										if (assignee.instructorID == '' || assignee.instructorID == null) {
+											return (
+												<tr key={index}>
+													<td colSpan={3}>There are no currently assigned instructors.</td>
+												</tr>
+											);
+										} else {
+                      if (assignee.year == roleData.latestYear) {
+											return (
+												<tr key={assignee.instructorID}>
+													<td>
+														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+															{assignee.name}
+														</Link>
+													</td>
+													<td>{assignee.instructorID}</td>
+												</tr>
+											);
+										}
                   }
-                })}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td>
-                    <ReactPaginate
-                      previousLabel={'<'}
-                      nextLabel={'>'}
-                      breakLabel={'...'}
-                      pageCount={pageCount}
-                      marginPagesDisplayed={3}
-                      pageRangeDisplayed={0}
-                      onPageChange={handlePageClick}
-                      containerClassName={'pagination'}
-                      activeClassName={'active'}
-                    />
-                  </td>
-                </tr>
-              </tfoot>
+
+
+
+								})}
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colSpan="3">
+										<ReactPaginate
+											previousLabel={'<'}
+											nextLabel={'>'}
+											breakLabel={'...'}
+											pageCount={pageCount}
+											marginPagesDisplayed={3}
+											pageRangeDisplayed={0}
+											onPageChange={handlePageClick}
+											containerClassName={'pagination'}
+											activeClassName={'active'}
+										/>
+									</td>
+								</tr>
+							</tfoot>
             </table>
           </div>
+          <p>Past Assignee's</p>
+					<div className='assigneeTable'>
+					<table>
+							<tbody>
+								<tr>
+									<th>Instructor</th><th>UBC ID</th><th>Year of assignment</th>
+								</tr>
+                {currentPastAssignees.length === 0 && (
+                  <tr><td colSpan={3}>There are no past instructors for this role.</td></tr>
+                )}
+								{currentPastAssignees.map((assignee, index) => {
+
+
+										if (assignee.instructorID == '' || assignee.instructorID == null) {
+                      return (<tr key={index}><td colSpan={3}>There are no past instructors for this role.</td></tr>);
+										} else {
+                      if (assignee.year !== roleData.latestYear) {
+											return (
+												<tr key={assignee.instructorID}>
+													<td>
+														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+															{assignee.name}
+														</Link>
+													</td>
+													<td>{assignee.instructorID}</td>
+													<td>{assignee.year}</td>
+												</tr>
+											);
+										}
+
+                  }
+
+								})}
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colSpan="3">
+										<ReactPaginate
+											previousLabel={'<'}
+											nextLabel={'>'}
+											breakLabel={'...'}
+											pageCount={pastPageCount}
+											marginPagesDisplayed={3}
+											pageRangeDisplayed={0}
+											onPageChange={handlePastPageClick}
+											containerClassName={'pagination'}
+											activeClassName={'active'}
+										/>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
         </div>
       </div>
     </div>

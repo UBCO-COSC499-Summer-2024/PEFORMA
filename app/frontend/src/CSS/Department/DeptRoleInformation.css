@@ -62,11 +62,15 @@
     color: var(--black);
     padding: 0.75em;
     font-size: larger;
-    margin-right: 1em;
+    margin-left: 0em;
     transition: background-color 0.1s;
-    
     margin-top: 1.5em;
+    margin-left: -1em;
+    margin-bottom: 1em;
 }
+
+
+
 
 #edit {
     background-color: var(--darkestGrey);
@@ -168,20 +172,27 @@
     border: 1px var(--black) solid;
   }
 
+  .ri-main table tbody {
+    
+  }
+
 .ri-main table tfoot td {
     border: 0;
     width: 100%;
+   
     text-align: center;
     align-items: center;
 }
 
 .ri-main table tbody th {
-    border-top-left-radius: 0.5em;
-    border-top-right-radius: 0.5em;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    text-align: center;
 }
 
   .ri-main table tbody tr td {
    border-bottom: 1px solid var(--darkestGrey);
+   width: 10em;
    
   }
 
