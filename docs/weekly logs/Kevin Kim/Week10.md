@@ -1,4 +1,97 @@
+## Friday (7/19/2024)
 
+### Timesheet
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.12-7.16/10.2.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.12-7.16/10.2.2.png)
+
+
+### Current Tasks
+  * #1: Refactoring my codes
+
+### Progress Update (since 7/12/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+        <td><strong>NOTES</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#398: Test teaching assignment landing page
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Tested mock data renders well, switch function (to another division)
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#399: Test teaching assignment detail page
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Tested receiving useLocation mock data, sort function, search function, switch function (to another division)
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#450: Fix create account
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fixed to make user to assign what kind types the account would be (Department, Instructor, Admin)
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#456: Fix instructor view
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fixed to instructor profile page, instructor course list, instructor performance page (Link, fetching courseId, remove edit button)
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#455: Fix department member list page
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fix member list page to make search bar and sort function working
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#401: Test department member list page
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Tested search function, sort function, rendering with mock data
+        </td>
+    </tr>
+</table>
+
+### Weekly Goal Review
+  * I have fixed all my parts that were having error, also finished all the testing that I have implemented. I pushed my self a lot to finish earlier because there is always an error that can happen, so trying to prevent from that. Overall, Im happy with the progress that I have made
+
+### Next Cycle Goals
+  * For the next cycle, I will start working on refactoring my codes, and if any error happens on my parts, Im willing to go fix it
+    
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Wednesday (7/17/2024)
 
