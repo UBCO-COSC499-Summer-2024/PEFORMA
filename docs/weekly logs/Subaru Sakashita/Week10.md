@@ -67,11 +67,11 @@ and now my job is to finish the remaining code refactoring after the BE code is 
 ## Friday (7/19/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-10-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W10_C2.png)
 
 ### Current Tasks
-  * #1: 
-  * #2: 
+  * #1: Code refactoring
+  * #2: Fix create-account to disable creating account with existing ubcid
 ### Progress Update (since 7/17/2024)
 <table>
     <tr>
@@ -82,31 +82,31 @@ and now my job is to finish the remaining code refactoring after the BE code is 
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> 
+        <td> Code refactoring
         </td>
         <!-- Status -->
-        <td> 
+        <td> In progress
         </td>
     </tr>
     <tr>
-       <td> 
+       <td> Fix create account to disable account creating with exisiting email
         </td>
         <!-- Status -->
-        <td>
+        <td> Complete
         </td>
     </tr>
      <tr>
-       <td> 
+       <td> Fix dml
         </td>
         <!-- Status -->
-        <td>
+        <td> Complete
         </td>
     </tr>
        <tr>
-       <td> 
+       <td> Fix create account to disable account creating with exisiting ubcid
         </td>
         <!-- Status -->
-        <td> 
+        <td> In progress
         </td>
     </tr>
 
@@ -114,7 +114,8 @@ and now my job is to finish the remaining code refactoring after the BE code is 
 </table>
 
 ### Weekly Goal Review
+This cycle was very chill because all of the implementation was done and we were in the process of merging all the PRs to the development branch. We encountered lots of file changes and conflicts but luckily, there was no conflicts with my PR.
+The code refactoring is still in process because I was waiting for everyone to fix the issues. I will finish the rest of the code refactoring after Friday, and I am thinking it will not be much of a work because I already finished most of it. 
 ### Next Cycle Goals
-  * 
-  * 
-  * 
+  * Code refactoring
+  * Fix create account
