@@ -57,6 +57,7 @@ const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
 const updateRoleInfo = require('./routes/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/updateCourseInfo.js');
 const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
+const assignInstructorCourse = require('./routes/assignInstructorCourse.js');
 
 const app = express();
 
@@ -144,6 +145,7 @@ app.use('/api/upload', dataImportRoutes);
 //Course Evaluation
 app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
+app.use('/api',assignInstructorCourse);
 
 
 app.post('/enter', async (req, res) => {
