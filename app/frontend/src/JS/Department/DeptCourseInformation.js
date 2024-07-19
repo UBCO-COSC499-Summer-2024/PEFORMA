@@ -381,6 +381,7 @@ import axios from 'axios';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
+import { getCurrentInstructor } from '../common/utils.js';
 
 function CourseInformation() {
   const { authToken, accountLogInType } = useAuth();
@@ -398,9 +399,11 @@ function CourseInformation() {
     courseName: '',
     courseDescription: '',
     avgScore: '',
+    currentInstructor: 'Willem Dafoe'
   });
   const [currentTerm, setCurrentTerm] = useState('');
   const [currentInstructors, setCurrentInstructors] = useState([]);
+  const [currentInstructor, setCurrentInstructor] = useState([]);
   const [numInstructors, setNumInstructors] = useState(0);
   const [instructorData, setInstructorData] = useState({
     instructors: [{}],
@@ -430,7 +433,12 @@ function CourseInformation() {
       const filledEntries = fillEmptyEntries(data.history, data.perPage);
       setCourseData({ ...data, history: filledEntries });
       setEditDescription(data.courseDescription);
-
+      setCurrentInstructor(getCurrentInstructor(data));
+      if (data.history[0].instructorID == null || data.history[0].instructorID == "") {
+        setNumInstructors(0);
+      } else {
+        setNumInstructors(data.history.length);
+      }
       // Get current term and instructors for this term
       const term = getCurrentTerm();
       setCurrentTerm(term);
@@ -653,15 +661,15 @@ function CourseInformation() {
             <p>Current Term: {currentTerm}</p>
           </div>
           <div className="current-instructor">
-            <p>Current Instructor(s): {currentInstructors.length === 0 && (
+            <p>Current Instructor(s): {currentInstructor.length === 0 && (
               <strong>N/A</strong>
             )}
-            {currentInstructors.length !== 0 && (
-              currentInstructors.map((instructor, index) => {
+            {currentInstructor.length !== 0 && (
+              currentInstructor.map((instructor, index) => {
                 return (
                   <span key={instructor.instructorID}>
-                    <Link to={`/DeptProfilePage?ubcid=${instructor.instructorID}`}><strong>{instructor.instructorName}</strong></Link>
-                    {index !== currentInstructors.length - 1 && (
+                    <Link to={`/DeptProfilePage?ubcid=${instructor.ubcid}`}><strong>{instructor.instructorName}</strong></Link>
+                    {index !== currentInstructor.length - 1 && (
                       <span>, </span>
                     )}
                   </span>
@@ -713,7 +721,7 @@ function CourseInformation() {
                 {currentEntries.map((entry, index) => (
                   <tr key={index}>
                     <td>
-                      <Link to={`/DeptProfilePage?ubcid=${entry.instructorID}`}>
+                      <Link to={`/DeptProfilePage?ubcid=${entry.ubcid}`}>
                         {entry.instructorName}
                       </Link>
                     </td>
