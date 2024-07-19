@@ -452,13 +452,13 @@ function CourseInformation() {
         }
       });
 
-      const currentInstructors = data.history.filter(entry => entry);
+      
 
       console.log('Current Term:', term);
       console.log('Course History:', data.history);
       console.log('Filtered Current Instructors:', currentInstructors);
-      setCurrentInstructors(currentInstructors);
-      setNumInstructors(currentInstructors.length);
+      
+      
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -597,7 +597,7 @@ function CourseInformation() {
     // Submitting new data goes here:
     console.log("Assigned profs are:\n", assignedInstructors, "\nAnd the assigned course ID is ", courseId);
 
-    const term = getCurrentTerm(); // Get the formatted term
+    const term = courseData.latestTerm; // Get the formatted term
 
     for (let i = 0; i < assignedInstructors.length; i++) {
       var newAssigneeList = {
@@ -612,6 +612,7 @@ function CourseInformation() {
         });
         console.log('Assignee update successful', res.data);
         // Re-fetch data after successful assignment
+        currentInstructor.push(assignedInstructors);
         fetchData();
       } catch (error) {
         if (error.response && error.response.status === 400) {
@@ -658,7 +659,7 @@ function CourseInformation() {
             Average Performance Score: <span role="contentinfo">{courseData.avgScore}</span>
           </div>
           <div className="current-term">
-            <p>Current Term: {currentTerm}</p>
+            <p>Current Term: {courseData.latestTerm}</p>
           </div>
           <div className="current-instructor">
             <p>Current Instructor(s): {currentInstructor.length === 0 && (
@@ -757,4 +758,3 @@ function CourseInformation() {
 }
 
 export default CourseInformation;
-
