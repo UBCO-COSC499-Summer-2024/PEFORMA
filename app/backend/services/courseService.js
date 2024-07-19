@@ -33,6 +33,7 @@ async function getFormattedCourseData(divisionCode) {
                 WHERE ($1 = 0 OR c1."divisionId" = $1) AND a1."term" = $2
                 ) AS unique_courses
             ) AS division_courses_count,
+            c2."courseId" AS course_id,
             c2."courseNum" AS course_number, 
             c2."ctitle" AS course_title,
             ARRAY_AGG(p."firstName" || ' ' || p."lastName") AS instructor,
@@ -44,7 +45,7 @@ async function getFormattedCourseData(divisionCode) {
         JOIN public."InstructorTeachingAssignment" a2 ON c2."courseId" = a2."courseId"
         JOIN public."Profile" p ON p."profileId" = a2."profileId"
         WHERE ($1 = 0 OR c2."divisionId" = $1) AND a2."term" = $2  
-        GROUP BY c2."courseNum", c2."ctitle", c2."divisionId"
+        GROUP BY c2."courseId", c2."courseNum", c2."ctitle", c2."divisionId"
         ORDER BY c2."divisionId" ASC, c2."courseNum" ASC;
     `, [divisionId, currTerm]);
 
@@ -61,6 +62,7 @@ async function getFormattedCourseData(divisionCode) {
             
             return {  
                 id: `${courseDivisionCode} ${row.course_number}`, // Use courseDivisionCode
+                courseId: row.course_id,
                 title: row.course_title,
                 instructor: row.instructor,
                 ubcid: row.ubcid,

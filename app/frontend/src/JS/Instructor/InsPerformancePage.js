@@ -68,7 +68,6 @@ function PerformanceInstructorPage() {
 					<section className="info-section">
 						<div className="info">
 							<h2 className="subTitle">Your Information</h2>
-							<button className='edit-button'><Link to={`/InsEditProfile?ubcid=${profile.ubcid}`}>Edit Profile</Link></button>
 							<p>
 								<strong>Name:</strong> {profile.name}
 							</p>

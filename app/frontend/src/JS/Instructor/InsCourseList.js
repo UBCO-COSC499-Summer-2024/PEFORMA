@@ -134,7 +134,7 @@ function InsCourseList() {
                                 {currentCourses.map((course) => (
                                     <tr key={course.id}>
                                         <td>
-                                            <Link to={`/InsCourseHistory?courseid=${course.id}`}>{course.id}</Link>
+                                            <Link to={`/InsCourseHistory?courseid=${course.courseId}`}>{course.id}</Link>
                                         </td>
                                         <td>{course.title}</td>
                                         <td>
