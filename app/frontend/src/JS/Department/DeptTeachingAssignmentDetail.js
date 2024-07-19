@@ -27,7 +27,7 @@ function DeptTeachingAssignmentDetail() {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
-        checkAccess(accountLogInType, navigate, 'department');
+        checkAccess(accountLogInType, navigate, 'department', authToken);
         if (courses && professors) {
             const prefix = currentDivision === 'computer-science' ? 'COSC' : currentDivision.slice(0, 4).toUpperCase();
             const filteredCourses = courses.filter(course => course.courseCode && course.courseCode.startsWith(prefix));
@@ -103,12 +103,12 @@ function DeptTeachingAssignmentDetail() {
     };
 
     return (
-        <div className="dashboard" id="dept-course-list-test-content">
+        <div className="dashboard">
             <CreateSideBar sideBarType="Department" />
             <div className="container">
                 <CreateTopBar searchListType={'DeptTeachingAssignmentDetail'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setCourseList);}} />
 
-                <div className="srlist-main">
+                <div className="srlist-main" id="detail-teaching-assignment-test-content">
                     <div className="subtitle-course">
                         <div className='divison-select-subtitle'>
                             List of Courses 
@@ -157,8 +157,8 @@ function DeptTeachingAssignmentDetail() {
                             </thead>
 
                             <tbody>
-                                {currentCourses.map((course) => (
-                                    <tr key={course.id}>
+                                {currentCourses.map((course, index) => (
+                                    <tr key={`${course.id}-${index}`}>
                                         <td><Link to={`http://localhost:3000/DeptProfilePage?ubcid=${course.ubcid}`}>{course.instructor}</Link></td>
                                         <td><Link to={`http://localhost:3000/DeptCourseInformation?courseid=${course.id}`}>{course.courseCode}</Link></td>
                                         <td>{course.courseName}</td>
@@ -168,18 +168,22 @@ function DeptTeachingAssignmentDetail() {
                             </tbody>
 
                             <tfoot>
-                                <ReactPaginate
-                                    previousLabel={'<'}
-                                    nextLabel={'>'}
-                                    breakLabel={'...'}
-                                    pageCount={pageCount(courseList.totalCoursesCount, courseList.perPage)}
-                                    marginPagesDisplayed={3}
-                                    pageRangeDisplayed={2}
-                                    onPageChange={(data) => handlePageClick(data, setCourseList)}
-                                    containerClassName={'pagination'}
-                                    activeClassName={'active'}
-                                    forcePage={courseList.currentPage - 1}
-                                />
+                                <tr>
+                                    <td colSpan="4">
+                                        <ReactPaginate
+                                            previousLabel={'<'}
+                                            nextLabel={'>'}
+                                            breakLabel={'...'}
+                                            pageCount={Math.max(1, pageCount(courseList.totalCoursesCount, courseList.perPage))}
+                                            marginPagesDisplayed={3}
+                                            pageRangeDisplayed={2}
+                                            onPageChange={(data) => handlePageClick(data, setCourseList)}
+                                            containerClassName={'pagination'}
+                                            activeClassName={'active'}
+                                            forcePage={Math.min(courseList.currentPage - 1, pageCount(courseList.totalCoursesCount, courseList.perPage) - 1)}
+                                        />
+                                    </td>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
