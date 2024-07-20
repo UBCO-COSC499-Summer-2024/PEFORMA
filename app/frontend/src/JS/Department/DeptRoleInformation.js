@@ -255,19 +255,29 @@ function RoleInformation() {
     setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
   };
 
-  const removeInstructor = (id, index) => {
+  const removeInstructor = async (id, index) => {
     roleData.assignees.splice(index, 1);
-
+    console.log(`Instructor with id: ${id} found and unassigned.`);
     for (let i = 0; i < instructorData.instructors.length; i++) {
       if (id === instructorData.instructors[i].id) {
         instructorData.instructors[i].assigned = false;
+        
         break;
       }
     }
     forceUpdate();
-    console.log(roleData.assignees);
+    console.log("updated info\n",roleData.assignees);
     // Backend for removing the instructor goes here:
-    //axios.post, etc.
+    try {
+      console.log("http://localhost:3001/api/removeInstructorRole");
+      const res = await axios.post('http://localhost:3001/api/removeInstructorRole', {serviceRoleId, id }, {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      console.log('Instructor removal successful', res.data);
+    } catch (error) {
+      window.alert("Delete error:\n",error.message);
+    }
+    
   }
 
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
