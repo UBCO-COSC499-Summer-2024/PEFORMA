@@ -58,6 +58,9 @@ const updateRoleInfo = require('./routes/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/updateCourseInfo.js');
 const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
 const assignInstructorCourse = require('./routes/assignInstructorCourse.js');
+const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
+const latestCourseRouter = require('./routes/latestCourseRoutes.js');
+const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
 
 const app = express();
 
@@ -160,53 +163,16 @@ app.post('/enter', async (req, res) => {
     }
 });
 
-//app.use('/api',saveDataToDatabase);
-
-/*
-app.post('/create-account', async (req, res) => {
-    console.log('Received data:', req.body);  // 打印接收到的数据
-    //res.send('Data received successfully');  // 响应前端
-
-
-//Profile BE
-app.use('/api/workingHoursRoutes',workingHoursRoutes);
-app.use('/api/deptPerformance',DeptPerformanceRouter);
-app.use('/api/leaderBoardRoutes',leaderBoardRoutes);
-app.use('/api/progressRoutes',progressRoutes);
-
-
-//Performance BE
-//app.use('/api/instructorPerformance',performanceRoutes);
-// Service role retrieval process
-app.use('/api/service-roles', serviceRoleRoutes);
-
-
-
-    try {
-        const profileId = await upsertProfile(req.body);
-        const accountId = await createAccount(profileId, req.body.email, req.body.password);
-        console.log(`division=${req.body.division}`)
-        const roleResult = await assignServiceRole(profileId, String(req.body.serviceRole), Number(req.body.year),Number(req.body.division));
-        
-        res.status(200).json({ message: 'Account created successfully', accountId: accountId, roles: roleResult });
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Internal server error', details: error.message });
-    }
-});
-
-
-
-
-console.log('after');
-});
-*/
 
 app.use('/api',instructorFetch);
 
 app.use('/api',updateRoleInfo);
 app.use('/api',updateCourseInfo);
 app.use('/api',AssignInstructor);
+
+app.use('/api',removeInstructorRoleRouter);
+app.use('/api',latestCourseRouter);
+app.use('/api',removeInstructorCourse);
 
 const port = 3001;
 // Wrap server startup in an async function
