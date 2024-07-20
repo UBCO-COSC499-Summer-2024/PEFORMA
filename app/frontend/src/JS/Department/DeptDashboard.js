@@ -13,10 +13,6 @@ function Dashboard() {
 
 	useEffect(() => {
 		const checkAuth = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
 			try {
 				checkAccess(accountLogInType, navigate, 'department');
 
@@ -36,38 +32,6 @@ function Dashboard() {
 				<CreateTopBar />
 
 				<div className="card-container">
-					<Link to={'/DeptMemberList'}>
-						<div className="card" role="gridcell">
-							<div className="cardTitleBox">
-								<div className="cardTitle">View/Edit Profiles</div>
-							</div>
-							<div className="cardDesc">View and edit various instructor profiles.</div>
-						</div>
-					</Link>
-					<Link to={'/DeptServiceRoleList'}>
-						<div className="card" role="gridcell">
-							<div className="cardTitleBox">
-								<div className="cardTitle">View/Edit Service Roles</div>
-							</div>
-							<div className="cardDesc">View and edit service role information.</div>
-						</div>
-					</Link>
-					<Link to={'/DeptDataEntry'}>
-						<div className="card" role="gridcell">
-							<div className="cardTitleBox">
-								<div className="cardTitle">Data Entry</div>
-							</div>
-							<div className="cardDesc">Create a new course or service role.</div>
-						</div>
-					</Link>
-					<Link to={'/DeptCourseList'}>
-						<div className="card" role="gridcell">
-							<div className="cardTitleBox">
-								<div className="cardTitle">View/Edit Courses</div>
-							</div>
-							<div className="cardDesc">View and edit course information.</div>
-						</div>
-					</Link>
 					<Link to={'/DeptPerformancePage'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
@@ -76,6 +40,56 @@ function Dashboard() {
 							<div className="cardDesc">View department performance information.</div>
 						</div>
 					</Link>
+					<Link to={'/DeptTeachingAssignment'}>
+						<div className="card" role="gridcell">
+							<div className="cardTitleBox">
+								<div className="cardTitle">Teaching Assignment</div>
+							</div>
+							<div className="cardDesc">View teaching assignment for current term.</div>
+						</div>
+					</Link>
+					<Link to={'/DeptCourseList'}>
+						<div className="card" role="gridcell">
+							<div className="cardTitleBox">
+								<div className="cardTitle">Manage Courses</div>
+							</div>
+							<div className="cardDesc">View and edit course information.</div>
+						</div>
+					</Link>
+					<Link to={'/DeptServiceRoleList'}>
+						<div className="card" role="gridcell">
+							<div className="cardTitleBox">
+								<div className="cardTitle">Manage Service Roles</div>
+							</div>
+							<div className="cardDesc">View and edit service role information.</div>
+						</div>
+					</Link>
+					<Link to={'/DeptMemberList'}>
+						<div className="card" role="gridcell">
+							<div className="cardTitleBox">
+								<div className="cardTitle">View Members</div>
+							</div>
+							<div className="cardDesc">View and edit various instructor profiles.</div>
+						</div>
+					</Link>
+					<Link to={'/DeptDataEntry'}>
+						<div className="card" role="gridcell">
+							<div className="cardTitleBox">
+								<div className="cardTitle">Creation</div>
+							</div>
+							<div className="cardDesc">Create a new course, service role, import files</div>
+						</div>
+					</Link>
+					<Link to={'/DeptDataEntry'}>
+						<div className="card" role="gridcell">
+							<div className="cardTitleBox">
+								<div className="cardTitle">SEI Data Entry</div>
+							</div>
+							<div className="cardDesc">Evaluate course and instructor.</div>
+						</div>
+					</Link>
+					
+					
 				</div>
 			</div>
 		</div>
