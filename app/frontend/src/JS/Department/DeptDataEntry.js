@@ -505,7 +505,7 @@ function DataEntryComponent() {
 
 								<div>
 									{selectedInstructors.length > 0 && (
-										<div className="selected-instructors">
+										<div className="selected-instructors" data-testid="selected-instructors">
 											<h3>Selected Instructors</h3>
 											<ul>
 												{selectedInstructors.map((instructor, index) => (
