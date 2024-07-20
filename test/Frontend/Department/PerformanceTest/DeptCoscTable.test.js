@@ -53,8 +53,8 @@ describe('DeptCoscTable', () => {
 
 	});
 
-  test('Testing filter courses by clicking year number 1', async () => {
-    const year1Button = screen.getByRole('button', { name: '1' });
+  test('Testing filter courses by clicking year number 100', async () => {
+    const year1Button = screen.getByRole('button', { name: '100' });
     userEvent.click(year1Button);
 
     await waitFor(() => {
@@ -70,8 +70,8 @@ describe('DeptCoscTable', () => {
     expect(element).toHaveTextContent('72');
   })
 
-  test('Testing filter courses by clicking year number 3', async () => {
-    const year3Button = screen.getByRole('button', { name: '3' });
+  test('Testing filter courses by clicking year number 300', async () => {
+    const year3Button = screen.getByRole('button', { name: '300' });
     userEvent.click(year3Button);
 
     await waitFor(() => {
