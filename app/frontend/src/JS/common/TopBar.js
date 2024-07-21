@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import '../../CSS/common.css';
 import Select from 'react-select';
+import axios from 'axios';
 
 function TopBar({ searchListType, onSearch }) {
 	const navigate = useNavigate();
 	const [showDropdown, setShowDropdown] = useState(false);
 	const [activeMenu, setActiveMenu] = useState('main'); // 'main' or 'switch'
-	const { accountType, accountLogInType, setAccountLogInType, profileId } = useAuth();
+	const { authToken, accountType, accountLogInType, setAccountLogInType, profileId } = useAuth();
 	const [imageError, setImageError] = useState(false);
 	const [initials, setInitials] = useState('');
 	const [bgColor, setBgColor] = useState('');
@@ -35,7 +36,8 @@ function TopBar({ searchListType, onSearch }) {
                 throw new Error('Failed to fetch terms');
             }
             const data = await response.json();
-            const termsOptions = data.terms.map(term => ({
+						const sortedTerms = data.terms.sort((a, b) => b - a);
+            const termsOptions = sortedTerms.map(term => ({
                 value: term,
                 label: getTermLabel(term)
             }));
@@ -240,31 +242,49 @@ function TopBar({ searchListType, onSearch }) {
 			placeHolderText = 'Search ...';
 	}
 
+	const sendTermToBackend = async (term) => {
+    console.log(term.value)
+    try {
+        const response = await axios.post(
+            'http://localhost:3001/api/', //fix this
+            { term: term.value },
+            { headers: { Authorization: `Bearer ${authToken.token}` }}
+        );
+        if (response.status === 200) {
+            console.log('Term set successfully');
+        } else {
+            console.error('Error setting current term:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error setting current term:', error);
+    }
+};
+
 	return (
     <div className={searchListType && onSearch ? "topbar-search" : "topbar"}>
-        {searchListType && onSearch ? (
-            <input
-                type="text"
-                placeholder={placeHolderText}
-                onChange={(e) => onSearch(e.target.value)}
-            />
-        ) : (accountLogInType === 1 || accountLogInType === 2) ? (
-            <Select className='term-select'
-                options={terms}
-                value={currentTerm}
-                onChange={(selectedOption) => {
-                    console.log(selectedOption.value);
-                    setCurrentTerm(selectedOption);
-                }}
-            />
-        ) : null}
-        {renderAccountSwitcher()}
-        <div className="account-type">
-            {getAccountTypeLabel(accountLogInType)}
-        </div>
-        <div className="logout" onClick={handleLogOut}>
-            Logout
-        </div>
+			{searchListType && onSearch ? (
+				<input
+					type="text"
+					placeholder={placeHolderText}
+					onChange={(e) => onSearch(e.target.value)}
+				/>
+			) : (accountLogInType === 1 || accountLogInType === 2) ? (
+				<Select className='term-select'
+					options={terms}
+					value={currentTerm}
+					onChange={(selectedOption) => {
+						setCurrentTerm(selectedOption);
+						sendTermToBackend(selectedOption); 
+					}}
+				/>
+			) : null}
+			{renderAccountSwitcher()}
+			<div className="account-type">
+				{getAccountTypeLabel(accountLogInType)}
+			</div>
+			<div className="logout" onClick={handleLogOut}>
+				Logout
+			</div>
     </div>
 	);
 }
