@@ -118,6 +118,15 @@
     border: 0;
 }
 
+.coursehistory .remove-instructor {
+    background-color: var(--red);
+    color: var(--black);
+    margin-left: 0.5em;
+    height: 2.25em;
+    width: 2.25em;
+    transition: background-color 0.1s;
+    border-radius: 40%;
+}
 
 .coursehistory td, .coursehistory th {
     border-bottom: 1px solid var(--darkestGrey);
@@ -129,6 +138,11 @@
 .coursehistory th {
     border-top-left-radius: 1em;
     border-top-right-radius: 1em;
+}
+
+.coursehistory .assign-button {
+    margin-left: 0.5em;
+    width: 12em;
 }
 
 .back-to-prev-button {
