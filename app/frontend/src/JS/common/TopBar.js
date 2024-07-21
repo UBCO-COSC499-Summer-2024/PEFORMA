@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import '../../CSS/common.css';
+import Select from 'react-select';
 
 function TopBar({ searchListType, onSearch }) {
 	const navigate = useNavigate();
@@ -12,6 +13,9 @@ function TopBar({ searchListType, onSearch }) {
 	const [initials, setInitials] = useState('');
 	const [bgColor, setBgColor] = useState('');
 	const [userName, setUserName] = useState('');
+	const [terms, setTerms] = useState([]);
+	const [currentTerm, setCurrentTerm] = useState(null);
+
 
 	useEffect(() => {
 		fetchUserName();
@@ -22,6 +26,31 @@ function TopBar({ searchListType, onSearch }) {
 			generateInitialsAndColor();
 		}
 	}, [userName]);
+
+	useEffect(() => {
+    const fetchTerms = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/terms.json');
+            if (!response.ok) {
+                throw new Error('Failed to fetch terms');
+            }
+            const data = await response.json();
+            const termsOptions = data.terms.map(term => ({
+                value: term,
+                label: getTermLabel(term)
+            }));
+            setTerms(termsOptions);
+            setCurrentTerm({
+                value: data.currentTerm,
+                label: getTermLabel(data.currentTerm)
+            });
+        } catch (error) {
+            console.error('Error fetching terms:', error);
+        }
+    };
+
+    fetchTerms();
+}, []);
 
 	const fetchUserName = async () => {
 		try {
@@ -131,6 +160,23 @@ function TopBar({ searchListType, onSearch }) {
 				return '';
 		}
 	}
+	
+	const getTermLabel = (term) => {
+    const year = term.slice(0, 4);
+    const termCode = term.slice(4);
+    switch (termCode) {
+        case '1':
+            return `${year} Winter Term 1`;
+        case '2':
+            return `${year} Winter Term 2`;
+        case '3':
+            return `${year} Summer Term 1`;
+        case '4':
+            return `${year} Summer Term 2`;
+        default:
+            return term;
+    }
+	}
 
 	const renderAccountSwitcher = () => {
         return (
@@ -195,22 +241,31 @@ function TopBar({ searchListType, onSearch }) {
 	}
 
 	return (
-		<div className={searchListType && onSearch ? "topbar-search" : "topbar"}>
-			{searchListType && onSearch && (
-				<input
-					type="text"
-					placeholder={placeHolderText}
-					onChange={(e) => onSearch(e.target.value)}
-				/>
-			)}
-			{renderAccountSwitcher()}
-			<div className="account-type">
-				{getAccountTypeLabel(accountLogInType)}
-			</div>
-			<div className="logout" onClick={handleLogOut}>
-				Logout
-			</div>
-		</div>
+    <div className={searchListType && onSearch ? "topbar-search" : "topbar"}>
+        {searchListType && onSearch ? (
+            <input
+                type="text"
+                placeholder={placeHolderText}
+                onChange={(e) => onSearch(e.target.value)}
+            />
+        ) : (accountLogInType === 1 || accountLogInType === 2) ? (
+            <Select className='term-select'
+                options={terms}
+                value={currentTerm}
+                onChange={(selectedOption) => {
+                    console.log(selectedOption.value);
+                    setCurrentTerm(selectedOption);
+                }}
+            />
+        ) : null}
+        {renderAccountSwitcher()}
+        <div className="account-type">
+            {getAccountTypeLabel(accountLogInType)}
+        </div>
+        <div className="logout" onClick={handleLogOut}>
+            Logout
+        </div>
+    </div>
 	);
 }
 
