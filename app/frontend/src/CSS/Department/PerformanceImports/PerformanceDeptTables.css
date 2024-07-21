@@ -46,7 +46,7 @@
   border-radius: 0;
   text-align: center;
   padding: 3px; 
-  background-color: #f0f0f0c3;
+  /* background-color: #f0f0f0c3; */
 }
 
 .divi-table th {
@@ -72,4 +72,8 @@
 
 .year-button:hover {
   background-color: #0056b3;
+}
+
+.divi-table tbody tr {
+  border-bottom: 1px solid #ddd;
 }

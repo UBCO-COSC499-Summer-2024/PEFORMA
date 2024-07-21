@@ -36,15 +36,7 @@ function DeptCourseList() {
     useEffect(() => {
         const fetchAllCourses = async () => {
             try {
-                if (!authToken) {
-                    navigate('/Login');
-                    return;
-                }
-                const numericAccountType = Number(accountLogInType);
-                if (numericAccountType !== 1 && numericAccountType !== 2) {
-                    alert('No Access, Redirecting to instructor view');
-                    navigate('/InsDashboard');
-                }
+                checkAccess(accountLogInType, navigate, 'department', authToken)
                 const res = await axios.get(`http://localhost:3001/api/all-courses`, {
                     headers: { Authorization: `Bearer ${authToken.token}` },
                 });

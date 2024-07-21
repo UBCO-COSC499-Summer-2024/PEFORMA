@@ -27,11 +27,11 @@ function StatTable() {
 	}, []);
 
 	const filterCourses = (identifier) => {
-		if (identifier == 'All') {
+		if (identifier === 'All') {
 			setFilteredCourses(courses);
 		} else {
 			const filtered = courses.filter((course) =>
-				course.courseCode.startsWith(`STAT ${identifier}`)
+				course.courseCode.startsWith(`STAT ${identifier[0]}`)
 			);
 			setFilteredCourses(filtered);
 		}
@@ -42,7 +42,7 @@ function StatTable() {
 			<div className="header-container">
 				<h1 className="subTitleD">Statistics</h1>
 				<div>
-					{['All', 1, 2, 3, 4].map((identifier) => (
+					{['All', '100', '200', '300', '400'].map((identifier) => (
 						<button
 							className="year-button"
 							key={identifier}
