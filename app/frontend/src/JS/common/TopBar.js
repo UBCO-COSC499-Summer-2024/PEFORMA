@@ -31,8 +31,10 @@ function TopBar({ searchListType, onSearch }) {
 	useEffect(() => {
     const fetchTerms = async () => {
         try {
-            const response = await fetch('http://localhost:3000/terms.json');
-            if (!response.ok) {
+					const response = await axios.get(`http://localhost:3001/api/terms`, {
+						headers: { Authorization: `Bearer ${authToken.token}` },
+					});            
+					if (!response.ok) {
                 throw new Error('Failed to fetch terms');
             }
             const data = await response.json();
