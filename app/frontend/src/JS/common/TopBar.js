@@ -241,11 +241,11 @@ function TopBar({ searchListType, onSearch }) {
 			placeHolderText = 'Search ...';
 	}
 
-	const sendTermToBackend = async (term) => {
+	const setNewCurTerm = async (term) => {
     console.log(term.value)
     try {
         const response = await axios.post(
-            'http://localhost:3001/api/', //fix this
+            'http://localhost:3001/api/setCurrentTerm',
             { term: term.value },
             { headers: { Authorization: `Bearer ${authToken.token}` }}
         );
@@ -273,7 +273,7 @@ function TopBar({ searchListType, onSearch }) {
 					value={currentTerm}
 					onChange={(selectedOption) => {
 						setCurrentTerm(selectedOption);
-						sendTermToBackend(selectedOption); 
+						setNewCurTerm(selectedOption); 
 					}}
 				/>
 			) : null}

@@ -62,6 +62,7 @@ const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter'
 const latestCourseRouter = require('./routes/latestCourseRoutes.js');
 const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
 const allTerms = require('./routes/allTermsRoutes.js')
+const setTerm = require('./routes/setCurrentTermRoutes.js')
 
 const app = express();
 
@@ -152,6 +153,7 @@ app.use('/api/courseEvaluation',courseEvaluation);
 app.use('/api',assignInstructorCourse);
 
 app.use('/api/terms',allTerms);
+app.use('/api', setTerm)
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
