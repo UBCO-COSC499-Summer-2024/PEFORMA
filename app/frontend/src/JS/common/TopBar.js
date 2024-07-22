@@ -31,30 +31,27 @@ function TopBar({ searchListType, onSearch }) {
 	useEffect(() => {
     const fetchTerms = async () => {
         try {
-					const response = await axios.get(`http://localhost:3001/api/terms`, {
-						headers: { Authorization: `Bearer ${authToken.token}` },
-					});            
-					if (!response.ok) {
-                throw new Error('Failed to fetch terms');
-            }
-            const data = await response.json();
-						const sortedTerms = data.terms.sort((a, b) => b - a);
+            const response = await axios.get(`http://localhost:3001/api/terms`, {
+                headers: { Authorization: `Bearer ${authToken.token}` },
+            });
+            const data = response.data;
+            const sortedTerms = data.terms.sort((a, b) => b - a);
             const termsOptions = sortedTerms.map(term => ({
-                value: term,
-                label: getTermLabel(term)
-            }));
+							value: String(term), 
+							label: getTermLabel(String(term)), 
+					}));
             setTerms(termsOptions);
             setCurrentTerm({
-                value: data.currentTerm,
-                label: getTermLabel(data.currentTerm)
-            });
+							value: String(data.currentTerm), 
+							label: getTermLabel(String(data.currentTerm)), 
+					});
         } catch (error) {
             console.error('Error fetching terms:', error);
         }
     };
 
     fetchTerms();
-}, []);
+}, [authToken]);
 
 	const fetchUserName = async () => {
 		try {
