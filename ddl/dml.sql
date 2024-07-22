@@ -501,3 +501,5 @@ SELECT "profileId", "courseId", "term", (random() * 99 + 1) -- Random score betw
 FROM public."InstructorTeachingAssignment";
 
 UPDATE "Course" SET "isActive" = true;
+
+INSERT INTO "CurrentTerm" ("curTerm") VALUES (20244);

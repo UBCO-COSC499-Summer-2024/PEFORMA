@@ -56,8 +56,8 @@ describe('DeptStatusChangeCourse', () => {
   });
 
   test('Testing rendering with mock data course data', async () => { 
-    // Expect to be 0 times called because it's using location.state to receive data, 0 times of calling axios
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(0));
+    // Expect to be 1 time only called because it's using location.state to receive data, 1 time for topbar
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
     await waitFor(() => {
       expect(element).toHaveTextContent("List of Courses (12 in Database)");
       // Expect only first page courses to be in screen
