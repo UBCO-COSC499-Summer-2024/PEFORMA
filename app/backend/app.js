@@ -6,7 +6,7 @@ const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter');
-const AccountTypeRouter = require('./routes/AccountType');
+const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const { saveDataToDatabase } = require('./routes/DataEntry');
 const { setupDatabase } = require('./insertProfileImages');
