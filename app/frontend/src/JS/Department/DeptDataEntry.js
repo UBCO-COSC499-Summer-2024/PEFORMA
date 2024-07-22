@@ -67,6 +67,7 @@ function DataEntryComponent() {
 					},
 				});
 				const data = res.data;
+				
 				const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
 				setInstructorData({ ...data, instructors: filledInstructors });
 			} catch (error) {

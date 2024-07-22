@@ -1,11 +1,11 @@
 import React, { useState, useReducer } from 'react';
 import ReactPaginate from 'react-paginate';
 import '../CSS/Department/AssignInstructorModal.css';
+import { handlePageClick, currentItems } from './common/utils';
 
 const AssignRolesModal = (props) => {
-    let i = 0;
     const [search, setSearch] = useState('');
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const [, reactUpdate] = useReducer(i => i + 1, 0);
     
     const onSearch = (newSearch) => {
         setSearch(newSearch);
@@ -17,10 +17,7 @@ const AssignRolesModal = (props) => {
         (role.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
     );
 
-    const currentRoles = filteredRoles.slice(
-        (props.roleData.currentPage - 1) * props.roleData.perPage,
-        props.roleData.currentPage * props.roleData.perPage
-    );
+    const currentRoles = currentItems(filteredRoles, props.roleData.currentPage, props.roleData.perPage);
 
     const toggleRoleAssigned = (id) => {
         props.setRoleData(prevData => ({
@@ -29,17 +26,10 @@ const AssignRolesModal = (props) => {
                 role.id === id ? { ...role, assigned: !role.assigned } : role
             )
         }));
-        forceUpdate();
+        reactUpdate();
     };
 
     const pageCount = Math.ceil(props.roleData.rolesCount / props.roleData.perPage);
-    
-    const handlePageClick = (data) => {
-        props.setRoleData(prevState => ({
-            ...prevState,
-            currentPage: data.selected + 1
-        }));
-    };
 
     return (
         <div className="modal-overlay">
@@ -51,18 +41,18 @@ const AssignRolesModal = (props) => {
                 <input type="text" placeholder="Search for roles to assign" onChange={e => onSearch(e.target.value)} />
                 <table>
                     <tbody>
-                        {currentRoles.map(role => {
-                            i++;
+                        {currentRoles.map((role, index) => {
+
                             if (role.id == null) {
                                 return (
-                                    <tr key={i} className="instructor-item">
+                                    <tr key={index} className="instructor-item">
                                         <td></td><td></td>
                                         <td></td>
                                     </tr>
                                 );
                             }
                             return (
-                                <tr key={i} className="instructor-item">
+                                <tr key={index} className="instructor-item">
                                     <td className='bold'>{role.name}</td>
                                     <td>{role.department}</td>
                                     <td>
@@ -88,7 +78,7 @@ const AssignRolesModal = (props) => {
                                     pageCount={pageCount}
                                     marginPagesDisplayed={3}
                                     pageRangeDisplayed={0}
-                                    onPageChange={handlePageClick}
+                                    onPageChange={(data)=>handlePageClick(data, props.setRoleData)}
                                     containerClassName={'pagination'}
                                     activeClassName={'active'}
                                 />

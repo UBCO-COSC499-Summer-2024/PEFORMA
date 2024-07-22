@@ -1,12 +1,11 @@
 import React, { useState, useReducer } from 'react';
 import ReactPaginate from 'react-paginate';
 import '../CSS/Department/AssignInstructorModal.css';
+import { handlePageClick, currentItems } from './common/utils';
 
-
-const AssignInstructorsModal = (props, instructorData) => {
-    let i = 0;
+const AssignInstructorsModal = (props) => {
     const [search, setSearch] = useState('');
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const [, reactUpdate] = useReducer(i => i + 1, 0);
     const onSearch = (newSearch) => {
         setSearch(newSearch);
         props.setInstructorData(prevState => ({ ...prevState, currentPage: 1 }));
@@ -15,35 +14,27 @@ const AssignInstructorsModal = (props, instructorData) => {
         (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
         (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
       );
-      const currentInstructors = filteredInstructors.slice(
-        (props.instructorData.currentPage - 1) * props.instructorData.perPage,
-        props.instructorData.currentPage * props.instructorData.perPage
-      );
+
+      const currentInstructors = currentItems(filteredInstructors, props.instructorData.currentPage, props.instructorData.perPage);
+
       const toggleInstructorAssigned = (id, assign) => {
-        let button = document.getElementById(id);
          for (let i = 0; i<props.instructorData.instructorCount;i++) {
              if (props.instructorData.instructors[i].id === id) {
                  if (!assign) {
                      props.instructorData.instructors[i].assigned = true;
                      setSearch(search);
-                     forceUpdate();
+                     reactUpdate();
                  } else {
                      props.instructorData.instructors[i].assigned = false;
                      setSearch(search);
-                     forceUpdate();
+                     reactUpdate();
                  }
-                 
              }
          }
-         
      };
-     const pageCount = Math.ceil(props.instructorData.instructorCount / props.instructorData.perPage);
-     const handlePageClick = (data) => {
-        props.setInstructorData(prevState => ({
-          ...prevState,
-          currentPage: data.selected + 1
-        }))
-      };
+
+    const pageCount = Math.ceil(props.instructorData.instructorCount / props.instructorData.perPage);
+
     return (<div className="modal-overlay">
         <div className="assignModal" data-testid="assignModal">
             <div className='assignModalTop'>
@@ -53,17 +44,20 @@ const AssignInstructorsModal = (props, instructorData) => {
             <input type="text" placeholder="Search for instructors to assign" onChange={e => onSearch(e.target.value)} />
             <table>
                 <tbody>
-                    {currentInstructors.map(instructor => {
-                        i++;
-                        if (instructor.id == null) {
-                            return (<tr key={i} className="instructor-item">
+                    {currentInstructors.map((instructor, index) => {
+                        if (instructor.profileId == null) {
+                            return (<tr key={index} className="instructor-item">
                                 <td></td><td></td>
                                 <td></td>
                             </tr>);
                         }
                         return (
-                        <tr key={i} className="instructor-item">
-                            <td className='bold'>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
+                        <tr key={index} className="instructor-item">
+                            <td className='bold'>{instructor.name}</td><td>UBC ID: 
+                                {instructor.id == null ? 
+                                    ' N/A'
+                                 : " "+instructor.id}
+                                </td>
                             <td>
                                 <button id={instructor.id} className={"bold "+(instructor.assigned?"remove":"add")} onClick={() => toggleInstructorAssigned(instructor.id, instructor.assigned)}>
                                     {instructor.assigned ? 'Remove' : 'Add'}
@@ -84,7 +78,7 @@ const AssignInstructorsModal = (props, instructorData) => {
                                 pageCount={pageCount}
                                 marginPagesDisplayed={3}
                                 pageRangeDisplayed={0}
-                                onPageChange={handlePageClick}
+                                onPageChange={(data)=>handlePageClick(data, props.setInstructorData)}
                                 containerClassName={'pagination'}
                                 activeClassName={'active'}
                             />
