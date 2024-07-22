@@ -7,7 +7,7 @@ import { CreateTopBar, CreateWorkingBarChart } from '../common/commonImports.js'
 import '../../CSS/Department/DeptProfilePage.css';
 import AssignCoursesModal from '../DeptAssignCoursesModal.js';
 import AssignRolesModal from '../DeptAssignRolesModal.js';
-import { fillEmptyItems } from '../common/utils.js';
+import { fillEmptyItems, checkAccess } from '../common/utils.js';
 
 function DeptProfilePage() {
     const navigate = useNavigate();
@@ -42,11 +42,7 @@ function DeptProfilePage() {
                     navigate('/Login');
                     return;
                 }
-                const numericAccountType = Number(accountLogInType);
-                if (numericAccountType !== 1 && numericAccountType !== 2) {
-                    alert('No Access, Redirecting to instructor view');
-                    navigate('/Dashboard');
-                }
+                checkAccess(accountLogInType, navigate, 'department', authToken);
                 const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
                     params: { ubcid: ubcid },
                     headers: { Authorization: `Bearer ${authToken.token}` },
@@ -265,8 +261,8 @@ function DeptProfilePage() {
     return (
         <div className="deptProfile-container">
             <CreateSideBar sideBarType="Department" />
-            <div className="container">
-                <CreateTopBar />
+            <div className="container" data-testid="main-container">
+                
                 <div className='outside'>
                     {!editState && (
                         <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
@@ -276,7 +272,7 @@ function DeptProfilePage() {
                     )}
                     <h1>{profile.name}'s Profile</h1>
                 </div>
-                <div className="main-content" id="text-content">
+                <div className="main-content" id="text-content"> 
                     <section className="information">
                         {!editState && (
                             <button className='edit-button' onClick={() => handleEditState(true)}>Edit Profile</button>
