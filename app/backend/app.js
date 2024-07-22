@@ -5,7 +5,7 @@ const loginRouter = require('./routes/logincheck'); // 确保路径正确
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
-const queryAccountRouter = require('./routes/queryAccountRouter').router;
+const queryAccountRouter = require('./routes/queryAccountRouter');
 const AccountTypeRouter = require('./routes/AccountType');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const { saveDataToDatabase } = require('./routes/DataEntry');

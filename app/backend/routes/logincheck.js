@@ -5,7 +5,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { generateToken, TOKEN_EXPIRY_SECONDS } = require('../Manager/jwtManager');
-const { queryAccount } = require('./queryAccountRouter');
+const { queryAccount } = require('../services/queryAccount');
 const pool = require('../db/index');
 const { uncry } = require('./checkpassword');
 const bcrypt = require ('bcryptjs');
@@ -26,19 +26,7 @@ const getUsers = async () => {
         return [];
       }
 }
-/*
-const getAccountType = async (accountId) => {
-    try {
-      const client = await pool.connect();
-      const result = await client.query(`SELECT * FROM public."AccountType" WHERE accountId = ${accountId}`);
-      client.release();
-      return result.rows[0].accountType;
-    } catch (err) {
-      console.error('Error fetching account type', err.stack);
-      throw err;
-    }
-  };
-*/
+
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -63,9 +51,7 @@ async (email, password, done) => {
     return done(null, user);
 }));
 
-// 修改后的登录路由
 router.post('/logincheck', (req, res, next) => {
-    //console.log('Received:'+JSON.stringify(req.body));
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err) {
             return res.status(500).json({ success: false, message: 'Internal server error' });
@@ -81,7 +67,6 @@ router.post('/logincheck', (req, res, next) => {
             email: user.email, 
             accountId: user.accountId,
             profileId: user.profileId
-            //acctype: user.acctype 
         });
     })(req, res, next);
 });
