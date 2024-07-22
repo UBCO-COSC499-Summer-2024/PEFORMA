@@ -118,3 +118,7 @@ export const getCurrentInstructor = (historyData) => {
 }
   return currentInstructor;
 }
+
+export const handleCancelForm = (setFormData, initialFormData) => {
+  setFormData(initialFormData);
+};
