@@ -70,7 +70,7 @@ console.log('before:');
 
 //login pprocess
 app.use('/',queryAccountRouter);//serach account in db
-app.use('/', loginRouter);//check for login
+app.use('/logincheck', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/',AccountTypeRouter);//check account type
 
