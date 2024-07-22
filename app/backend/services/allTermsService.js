@@ -1,6 +1,6 @@
 const pool = require('../db/index.js');
 
-const getAllTerms = async () => {
+async function getAllTerms(){
     try {
         const currentTermResult = await pool.query('SELECT "curTerm" FROM "CurrentTerm"');
         const currentTerm = currentTermResult.rows[0].curTerm;

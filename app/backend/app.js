@@ -151,7 +151,7 @@ app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
 app.use('/api',assignInstructorCourse);
 
-app.use('/api',allTerms)
+app.use('/api/terms',allTerms);
 
 app.post('/enter', async (req, res) => {
     const data = req.body;
