@@ -114,10 +114,6 @@ function CreateAccount() {
         }
     };
 
-    const handleCancel = () => {
-        setFormData(initialFormData);
-    };
-
     return (
         <div className="dashboard">
             <CreateSideBar sideBarType="Admin" />
