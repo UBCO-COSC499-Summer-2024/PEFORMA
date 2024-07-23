@@ -36,7 +36,9 @@ function DeptProfilePage() {
     const [showCoursesModal, setShowCoursesModal] = useState(false);
 
     useEffect(() => {
+        
         const fetchData = async () => {
+            
             try {
                 if (!authToken) {
                     navigate('/Login');
@@ -47,9 +49,11 @@ function DeptProfilePage() {
                     params: { ubcid: ubcid },
                     headers: { Authorization: `Bearer ${authToken.token}` },
                 });
+                
                 if (response.data.benchmark == null) {
                     response.data.benchmark = "N/A";
                 }
+                console.log("A");
                 if (response.data.phoneNum == "" || response.data.phoneNum == null) {
                     response.data.phoneNum = "N/A";
                 }
@@ -109,6 +113,7 @@ function DeptProfilePage() {
                 setRoleData({...response3.data, roles:filledRoles});
 
             } catch (error) {
+                
                 if (error.response && error.response.status === 401) {
                     localStorage.removeItem('authToken');
                     navigate('/Login');
@@ -262,7 +267,7 @@ function DeptProfilePage() {
         <div className="deptProfile-container">
             <CreateSideBar sideBarType="Department" />
             <div className="container" data-testid="main-container">
-                
+                <CreateTopBar />
                 <div className='outside'>
                     {!editState && (
                         <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
