@@ -6,7 +6,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, fetchWithAuth } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, fetchWithAuth, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
@@ -53,15 +53,16 @@ function useAdminMemberList() {
 	};
 }
 
-function filterMembers(members, search) {
-	return members.filter((member) =>
-		(member.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
-		(member.name?.toLowerCase().includes(search.toLowerCase()) || false) ||
-		(Array.isArray(member.serviceRole)
-			? member.serviceRole.some(role => role?.toLowerCase().includes(search.toLowerCase()))
-			: (member.serviceRole?.toLowerCase().includes(search.toLowerCase()) || false))
-	);
-}
+// remove after merging
+// function filterMembers(members, search) {
+// 	return members.filter((member) =>
+// 		(member.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
+// 		(member.name?.toLowerCase().includes(search.toLowerCase()) || false) ||
+// 		(Array.isArray(member.serviceRole)
+// 			? member.serviceRole.some(role => role?.toLowerCase().includes(search.toLowerCase()))
+// 			: (member.serviceRole?.toLowerCase().includes(search.toLowerCase()) || false))
+// 	);
+// }
 
 
 function AdminMemberList() {
@@ -72,8 +73,9 @@ function AdminMemberList() {
 		activeMembersCount,
 		search  
 } = useAdminMemberList();
-
-const filteredMembers = filterMembers(memberData.members, search);
+	
+// const filteredMembers = filterMembers(memberData.members, search);
+const filteredMembers = filterItems(memberData.members, 'member', search);
 const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
