@@ -237,7 +237,7 @@ function DataEntryComponent() {
 			<div className="container">
 				<CreateTopBar />
 				<div className="main">
-					<h1>Data Entry</h1>
+					<h1>Create New Course/Role</h1>
 					<div className="create-new">
 						<label htmlFor="create-new-select">Create New:</label>
 						<select
