@@ -6,23 +6,26 @@ async function getCoursePerformance(req){
     
     try {
         const term = await getLatestTerm();
-        query = `SELECT d."dcode"  || ' ' || c."courseNum" AS "DivisionAndCourse",
-        stp."score"
-        FROM "SingleTeachingPerformance" stp
-        JOIN "Course" c ON c."courseId" = stp."courseId"
-        JOIN "Division" d ON d."divisionId" = c."divisionId"
-        WHERE c."divisionId" = $1 AND stp."term" = $2
-        ORDER BY stp."score" DESC;
+        query = `SELECT d."dcode" || ' ' || c."courseNum" AS "DivisionAndCourse",
+                AVG(stp."score") AS "AverageScore"
+                FROM "SingleTeachingPerformance" stp
+                LEFT JOIN "Course" c ON c."courseId" = stp."courseId"
+                LEFT JOIN "Division" d ON d."divisionId" = c."divisionId"
+                WHERE c."divisionId" = $1 AND stp."term" <= $2
+                GROUP BY d."dcode", c."courseNum"
+                ORDER BY  c."courseNum" DESC
         `;
         result = await pool.query(query,[divisionId,term]);
+        console.log(result.rows);
         const data = result.rows.map(row => ({
             courseCode: row.DivisionAndCourse || '',
-            rank:calculateRank(row.score) || '',
-            score: row.score.toFixed(2) || ''
+            rank:calculateRank(row.AverageScore) || '',
+            score: row.AverageScore.toFixed(2) || ''
         }));
         const output = {
             courses:data
         };
+        console.log(output);
         return output;
     } catch (error) {
         throw error;
