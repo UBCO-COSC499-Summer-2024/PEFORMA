@@ -24,7 +24,6 @@ async function getCoursePerformance(req){
         const output = {
             courses:data
         };
-        console.log(output);
         return output;
     } catch (error) {
         throw error;
