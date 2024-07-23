@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 import CreateSideBar from '../common/commonImports.js';
@@ -11,7 +10,7 @@ import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchC
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
-function AdminMemberList() {
+function useAdminMemberList() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [memberData, setMemberData] = useState({
@@ -23,68 +22,59 @@ function AdminMemberList() {
 	const [search, setSearch] = useState('');
 	const [activeMembersCount, setActiveMembersCount] = useState(0);
 
-	// delete this if system works well
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		try {
-  //       checkAccess(accountLogInType, navigate, 'admin', authToken);
-	// 			const res = await axios.get(`http://localhost:3001/api/allInstructors`, {
-	// 				headers: { Authorization: `Bearer ${authToken.token}` },
-	// 			});
-	// 			const filledMembers = fillEmptyItems(res.data.members, res.data.perPage);
-	// 			const activeMembersCount = filledMembers.filter((member) => member.status).length;
-	// 			setActiveMembersCount(activeMembersCount);
-	// 			setMemberData({
-	// 				members: filledMembers,
-	// 				membersCount: res.data.membersCount,
-	// 				perPage: res.data.perPage,
-	// 				currentPage: 1,
-	// 			});
-	// 		} catch (error) {
-	// 			if (error.response && error.response.status === 401) {
-	// 				localStorage.removeItem('authToken');
-	// 				navigate('/Login');
-	// 			} else {
-	// 				console.error('Error fetching members:', error);
-	// 			}
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, [authToken]);
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-        checkAccess(accountLogInType, navigate, 'admin', authToken);
-				const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
-				console.log("asdhasd", data);
+				checkAccess(accountLogInType, navigate, 'admin', authToken);
+				const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken);
 				const filledMembers = fillEmptyItems(data.members, data.perPage);
-				const activeMembersCount = filledMembers.filter((member) => member.status).length;
-				setActiveMembersCount(activeMembersCount);
+				const activeCount = filledMembers.filter((member) => member.status).length;
+				setActiveMembersCount(activeCount);
 				setMemberData({
 					members: filledMembers,
 					membersCount: data.membersCount,
 					perPage: data.perPage,
 					currentPage: 1,
 				});
-			} catch (error) { 
-				console.log('Error fetching members: ', error);
+			} catch (error) {
+					console.error('Error fetching members: ', error);
 			}
 		};
 
 		fetchData();
-	}, [authToken]);
+	}, [authToken, accountLogInType, search]);
 
-	const filteredMembers = memberData.members.filter(
-		(member) =>
-			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(Array.isArray(member.serviceRole)
-				? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
-				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
+	return {
+		memberData,
+		setMemberData,
+		search,
+		setSearch,
+		activeMembersCount
+	};
+}
+
+function filterMembers(members, search) {
+	return members.filter((member) =>
+		(member.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
+		(member.name?.toLowerCase().includes(search.toLowerCase()) || false) ||
+		(Array.isArray(member.serviceRole)
+			? member.serviceRole.some(role => role?.toLowerCase().includes(search.toLowerCase()))
+			: (member.serviceRole?.toLowerCase().includes(search.toLowerCase()) || false))
 	);
-	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
+}
+
+
+function AdminMemberList() {
+	const {
+		memberData,
+		setMemberData,
+		setSearch,
+		activeMembersCount,
+		search  
+} = useAdminMemberList();
+
+const filteredMembers = filterMembers(memberData.members, search);
+const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
 		<div className="dashboard" id="admin-member-list-test-content">
