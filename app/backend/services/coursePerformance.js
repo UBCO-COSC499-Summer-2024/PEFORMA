@@ -16,7 +16,6 @@ async function getCoursePerformance(req){
                 ORDER BY  c."courseNum" DESC
         `;
         result = await pool.query(query,[divisionId,term]);
-        console.log(result.rows);
         const data = result.rows.map(row => ({
             courseCode: row.DivisionAndCourse || '',
             rank:calculateRank(row.AverageScore) || '',
