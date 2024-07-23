@@ -30,11 +30,11 @@ async function getCourseHistory(req) {
         LEFT JOIN 
         "Division" d ON d."divisionId" = c."divisionId"
         WHERE 
-        c."courseId" = $1
+        c."courseId" = $1 AND ita."term" <= $2
         ORDER BY 
         ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", p."UBCId", stp."score" DESC;
         `;
-        let result = await pool.query(query,[courseId]);
+        let result = await pool.query(query,[courseId,latestTermResult]);
 
         //Retrieve score for each course
         const perPage = 10;
