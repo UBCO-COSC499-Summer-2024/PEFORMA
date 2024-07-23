@@ -58,7 +58,6 @@ function AdminMemberList() {
 			try {
         checkAccess(accountLogInType, navigate, 'admin', authToken);
 				const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
-				console.log("asdhasd", data);
 				const filledMembers = fillEmptyItems(data.members, data.perPage);
 				const activeMembersCount = filledMembers.filter((member) => member.status).length;
 				setActiveMembersCount(activeMembersCount);
