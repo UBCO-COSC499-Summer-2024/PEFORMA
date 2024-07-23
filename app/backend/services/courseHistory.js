@@ -6,6 +6,7 @@ async function getCourseHistory(req) {
     const latestTermResult = await getLatestTerm();
     const courseId = req.query.courseId;  
     console.log("Received courseId:", courseId);
+    console.log("Received term", latestTermResult);
     try {
 
         //Join profile, course, instructorassignment, single teaching performance tables
@@ -35,12 +36,15 @@ async function getCourseHistory(req) {
         ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", p."UBCId", stp."score" DESC;
         `;
         let result = await pool.query(query,[courseId,latestTermResult]);
-
+        if (result.rows.length === 0) {
+            // Handle the case where no data is returned
+            console.error('No course found with the given courseId');
+            return;  // or handle as appropriate
+        }
         //Retrieve score for each course
         const perPage = 10;
         const currentPage = 1;
         const entryCount = result.rows.length; 
-        
         // Extract course details from the first result row
         const { ctitle, description, courseCode, dname } = result.rows[0];
         // Map the result to create history entries
