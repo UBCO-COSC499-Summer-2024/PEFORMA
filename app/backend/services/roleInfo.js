@@ -14,10 +14,10 @@ async function getServiceInfo(req){
             JOIN "Division" d ON d."divisionId" = sr."divisionId"
             LEFT JOIN "ServiceRoleAssignment" sra ON sra."serviceRoleId" = sr."serviceRoleId"
             LEFT JOIN "Profile" p ON p."profileId" = sra."profileId"
-            WHERE sr."serviceRoleId" = $1
+            WHERE sr."serviceRoleId" = $1 AND sra."year" <= $2
             ORDER BY sra."year" DESC;
         `;
-        let result = await pool.query(query, [serviceRoleId]);
+        let result = await pool.query(query, [serviceRoleId,latestYear]);
         const { stitle, description, dname } = result.rows[0];
         const assigneeCount = result.rows.length;
         const assignees = result.rows.map(row => ({
