@@ -218,16 +218,28 @@ function DataEntryComponent() {
 		}
 		if (valid) {
 			if (window.confirm(confirmMessage) === true) {
-				axios.post('http://localhost:3001/enter', formData).then(() => {
-					if (selection === 'Course') {
-						alert('data enter success. Navigate to new page: course list.');
-						navigate('/DeptCourseList');
-					} else {
-						alert('data enter success. Navigate to new page: Service Role list.');
-						navigate('/DeptServiceRoleList');
-					}
-				});
+				axios.post('http://localhost:3001/enter', formData)
+					.then(() => {
+						if (selection === 'Course') {
+							alert('Data entry successful. Navigate to new page: Course list.');
+							navigate('/DeptCourseList');
+						} else {
+							alert('Data entry successful. Navigate to new page: Service Role list.');
+							navigate('/DeptServiceRoleList');
+						}
+					})
+					.catch(error => {
+						// Handling errors here
+						if (error.response) {
+							alert(`Failed to enter data. Server responded with status: ${error.response.status}`);
+						} else if (error.request) {
+							alert('Failed to enter data. No response from server.');
+						} else {
+							alert('Error: ' + error.message);
+						}
+					});
 			}
+			
 		}
 	};
 
