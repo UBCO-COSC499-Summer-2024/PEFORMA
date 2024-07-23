@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getProgress } = require('../controllers/progressController'); // Adjust the path as necessary
-router.get('/', getProgress);
+const progressController = require('../controllers/progressController');
+router.get('/', progressController.getProgress);
 
 module.exports = router;
