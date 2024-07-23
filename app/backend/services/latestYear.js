@@ -1,4 +1,3 @@
-const pool = require('../db/index');
 const {getLatestTerm} = require('./latestTerm');
 async function getLatestYear(){
     const latestTerm = await getLatestTerm();
