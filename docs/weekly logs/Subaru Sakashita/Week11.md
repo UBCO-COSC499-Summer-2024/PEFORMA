@@ -6,7 +6,7 @@
 ## Wednesday (7/23/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-11-Cycle1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W11_C1.png)
 ### Current Tasks
   * #1: Code refactoring
 ### Progress Update (since 7/19/2024)
