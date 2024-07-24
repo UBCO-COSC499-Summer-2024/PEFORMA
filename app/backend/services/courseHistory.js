@@ -47,10 +47,8 @@ async function getCourseHistory(req) {
         ita."term", full_name, p."profileId", p."UBCId", stp."score" DESC;
         `;
         result = await pool.query(query,[courseId,latestTermResult]);
-        if (result.rows.length === 0) {
-            // Handle the case where no data is returned
-            console.error('No course found with the given courseId');
-            return;  // or handle as appropriate
+        if(result.length == 0){
+            throw new Error;
         }
         //Retrieve score for each course
         const perPage = 10;
@@ -88,8 +86,8 @@ async function getCourseHistory(req) {
             return {
                 instructorID: row.profileId || '',
                 instructorName: row.full_name || '', 
-                session: session,
-                term: sessionSuffix,
+                session: session ,
+                term: sessionSuffix ,
                 score: row.score ? Number(row.score.toFixed(2)) : "",
                 term_num: row.term,
                 ubcid:row.UBCId
@@ -115,6 +113,7 @@ async function getCourseHistory(req) {
             avgScore: avgScore, 
             history
         };
+        console.log("dlskjflakjf",output);
         return output;
     } catch (error) {
         console.error('Database query error:', error);
