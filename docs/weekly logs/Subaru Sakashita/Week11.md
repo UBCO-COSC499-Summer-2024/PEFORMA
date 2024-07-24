@@ -86,7 +86,7 @@ so that I could start working on tests and that Zhiheng can go all out on the im
   * Finish remaining code refactoring for BE
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-## Friday (7/19/2024)
+## Friday (7/26/2024)
 
 ### Timesheet
 ![Details of hours worked from Clockify]()
@@ -94,7 +94,7 @@ so that I could start working on tests and that Zhiheng can go all out on the im
 ### Current Tasks
   * #1: 
   * #2: 
-### Progress Update (since 7/17/2024)
+### Progress Update (since 7/24/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
