@@ -1,5 +1,5 @@
 const pool = require('../db/index.js');
-
+const {getLatestTerm} = require('./latestTerm.js');
 const divisionMap = {
     'ALL': 0,
     'COSC': 1, 
@@ -20,59 +20,51 @@ async function getFormattedCourseData(divisionCode) {
     
     const divisionId = divisionMap[divisionCode];
     const divisionLabel = divisionLabelMap[divisionId];
-    let result = await pool.query('SELECT MAX("term") AS current_term FROM public."CourseByTerm";');
-    const currTerm = result.rows[0].current_term;
+    const latestTerm = await getLatestTerm();
+    let query = `SELECT d."dcode" || ' ' || c."courseNum" AS "courseCode", c."courseId", c."ctitle", 
+                array_agg(
+                    CASE 
+                        WHEN p."firstName" IS NULL THEN 'Not Assigned'
+                        ELSE TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName")
+                    END
+                ) AS instructor_names,
+                array_agg(COALESCE(p."UBCId", '')) AS ubc_ids,
+                array_agg(COALESCE(p."email", 'No email')) AS email
+                FROM 
+                    "Course" c
+                    LEFT JOIN "CourseByTerm" cbt ON cbt."courseId" = c."courseId"
+                    LEFT JOIN "InstructorTeachingAssignment" ita ON ita."courseId" = cbt."courseId" AND ita."term" = 20244
+                    LEFT JOIN "Profile" p ON p."profileId" = ita."profileId"
+                    LEFT JOIN "Division" d ON d."divisionId" = c."divisionId"
+                WHERE 
+                    cbt."term" = $1 AND ($2 = 0 OR d."divisionId" = $2)
+                GROUP BY 
+                    c."courseId", d."dcode", c."courseNum", c."ctitle"
+                ORDER BY 
+                    c."courseId"`;
+    const result = await pool.query(query,[latestTerm,divisionId]);
+    const courses = result.rows.map(row =>{
+        return{
+            id: row.courseCode,
+            courseId: row.courseId,
+            title: row.ctitle,
+            instructor: row.instructor_names,
+            ubcid: row.ubc_ids,
+            email: row.email
+        }
+    });
 
-    result = await pool.query(`
-        SELECT 
-            (SELECT COUNT(*) 
-            FROM (
-                SELECT DISTINCT c1."courseNum", c1."divisionId" 
-                FROM public."Course" c1
-                JOIN public."InstructorTeachingAssignment" a1 ON c1."courseId" = a1."courseId"
-                WHERE ($1 = 0 OR c1."divisionId" = $1) AND a1."term" = $2
-                ) AS unique_courses
-            ) AS division_courses_count,
-            c2."courseId" AS course_id,
-            c2."courseNum" AS course_number, 
-            c2."ctitle" AS course_title,
-            ARRAY_AGG(p."firstName" || ' ' || p."lastName") AS instructor,
-            ARRAY_AGG(p."UBCId") AS ubcid, 
-            ARRAY_AGG(p."email") AS email,
-            ARRAY_AGG(p."profileId") AS profileid,
-            c2."divisionId" AS division_id
-        FROM public."Course" c2
-        JOIN public."InstructorTeachingAssignment" a2 ON c2."courseId" = a2."courseId"
-        JOIN public."Profile" p ON p."profileId" = a2."profileId"
-        WHERE ($1 = 0 OR c2."divisionId" = $1) AND a2."term" = $2  
-        GROUP BY c2."courseId", c2."courseNum", c2."ctitle", c2."divisionId"
-        ORDER BY c2."divisionId" ASC, c2."courseNum" ASC;
-    `, [divisionId, currTerm]);
-
-    // Reformat the data
     const formattedData = {
-        division: divisionCode, 
-        divisionLabel: divisionLabel, 
+        division: divisionCode,
+        divisionLabel: divisionLabel,
         currentPage: 1,
         perPage: 10,
-        divisionCoursesCount: result.rows.length > 0 ? result.rows[0].division_courses_count : 0,
-        courses: result.rows.map(row => {
-            const courseDivisionId = row.division_id;
-            const courseDivisionCode = Object.keys(divisionMap).find(key => divisionMap[key] === courseDivisionId); // Find the division code from the ID
-            
-            return {  
-                id: `${courseDivisionCode} ${row.course_number}`, // Use courseDivisionCode
-                courseId: row.course_id,
-                title: row.course_title,
-                instructor: row.instructor,
-                ubcid: row.ubcid,
-                email: row.email,
-                profileid: row.profileid
-            };
-        }) 
-    };
+        divisionCoursesCount: result.rows.length,
+        courses: courses
+    }
+   
 
-    // console.log(formattedData);
+    console.log(formattedData);
 
     return formattedData;
 }
