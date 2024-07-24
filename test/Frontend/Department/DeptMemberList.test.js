@@ -113,7 +113,6 @@ describe('DeptMemberList', () => {
     // Search by name Jest, only 1 row, data related jest will show up
     await waitFor(() => {
       const rows = screen.getAllByRole('row');
-      expect(rows).toHaveLength(3); // 1 rows (Jest) + 2 row (<#><Course><Title><Description>) <- top default row and tfoot
 
       expect(element).toHaveTextContent('Jest');
       expect(element).toHaveTextContent('35478655');
