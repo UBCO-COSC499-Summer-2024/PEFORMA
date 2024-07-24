@@ -26,7 +26,7 @@ function useAdminMemberList() {
 		const fetchData = async () => {
 			try {
 				checkAccess(accountLogInType, navigate, 'admin', authToken);
-				const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken);
+				const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
 				const filledMembers = fillEmptyItems(data.members, data.perPage);
 				const activeCount = filledMembers.filter((member) => member.status).length;
 				setActiveMembersCount(activeCount);

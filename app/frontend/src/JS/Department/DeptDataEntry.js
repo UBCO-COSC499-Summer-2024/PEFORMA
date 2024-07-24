@@ -237,7 +237,7 @@ function DataEntryComponent() {
 			<div className="container">
 				<CreateTopBar />
 				<div className="main">
-					<h1>Data Entry</h1>
+					<h1>Create New Course/Role</h1>
 					<div className="create-new">
 						<label htmlFor="create-new-select">Create New:</label>
 						<select
@@ -302,6 +302,7 @@ function DataEntryComponent() {
 										<label htmlFor="course-code">Course Code:</label>
 										<input
 											type="text"
+											placeholder='e.g. 111'
 											id="course-code"
 											name="courseCode"
 											onChange={(e) => {
@@ -310,40 +311,7 @@ function DataEntryComponent() {
 											required
 										/>
 									</div>
-									<div className="courseYear formInput">
-										<label htmlFor="courseYear">Session Year:</label>
-										<input
-											type="number"
-											max="9999"
-											min="1900"
-											placeholder=""
-											id="courseYear"
-											name="courseYear"
-											onChange={(e) => {
-												setCourseYear(e.target.value);
-											}}
-											required
-										/>
-										<div className='courseSession formInput'>
-											<select id="courseSession" name="courseSession" onChange={(e) => {
-												setCourseSession(e.target.value);
-											}} required>
-												<option>W</option><option>S</option>
-											</select>
-										</div>
-									</div>
-
-									<div className="courseTerm formInput">
-										<label htmlFor="courseTerm">Session Term:</label>
-										<select id="courseTerm" name="courseTerm" onChange={(e) => {
-											setSessionTerm(e.target.value);
-										}}
-											required>
-											<option>1</option><option>2</option>
-										</select>
-									</div>
 								</div>
-
 								<label htmlFor="course-description">Course Description:</label>
 								<textarea
 									id="course-description"
@@ -351,29 +319,7 @@ function DataEntryComponent() {
 									placeholder="Describe the course"
 									name="courseDescription"
 									required></textarea>
-
-								<button
-									className="assign-button"
-									data-testid="assign-button"
-									type="button"
-									onClick={handleShowInstructorModal}>
-									<span className="plus">+</span> Assign Professors(s)
-								</button>
-
-								<div>
-									{selectedInstructors.length > 0 && (
-										<div className="selected-instructors">
-											<h3>Selected Instructors</h3>
-											<ul>
-												{selectedInstructors.map((instructor, index) => (
-													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id})<button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.id, index) }}>X</button>
-													</li>
-												))}
-											</ul>
-										</div>
-									)}
-								</div>
+								
 								<input type="submit" id="service-role-submit" className="hidden" />
 								<input type="hidden" name="formType" value="Service Role" />
 							</form>
@@ -417,73 +363,60 @@ function DataEntryComponent() {
 										})}
 									</select>
 								</div>
-								<div className="serviceroleYear formInput">
-									<label htmlFor="serviceroleYear">Active year:</label>
-									<input
-										type="number"
-										min="1900"
-										max="9999"
-										id="serviceroleYear"
-										name="serviceroleYear"
-										onChange={(e) => {
-											setServiceRoleYear(e.target.value);
-										}}
-										required
-									/>
-								</div>
+					
 								<label>Estimated hours per month:</label>
 								<div className="monthlyHours">
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.january = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.january = e.target.value }}/>
 											<div>January</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.february = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.february = e.target.value }}/>
 											<div>February</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.march = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.march = e.target.value }}/>
 											<div>March</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.april = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.april = e.target.value }}/>
 											<div>April</div>
 										</span>
 									</div>
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.may = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.may = e.target.value }}/>
 											<div>May</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.june = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.june = e.target.value }}/>
 											<div>June</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.july = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.july = e.target.value }}/>
 											<div>July</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.august = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.august = e.target.value }}/>
 											<div>August</div>
 										</span>
 									</div>
 									<div className='monthlyHoursRow formInput'>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.september = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.september = e.target.value }}/>
 											<div>September</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.october = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.october = e.target.value }} />
 											<div>October</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.november = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.november = e.target.value }} />
 											<div>November</div>
 										</span>
 										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.december = e.target.value }} required />
+											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.december = e.target.value }} />
 											<div>December</div>
 										</span>
 									</div>
@@ -495,28 +428,6 @@ function DataEntryComponent() {
 									placeholder="Describe the service role"
 									name="serviceRoleDescription"
 									required></textarea>
-								<button
-									type="button"
-									data-testid="assign-button"
-									className="assign-button"
-									onClick={handleShowInstructorModal}>
-									<span className="plus">+</span> Assign Professors(s)
-								</button>
-
-								<div>
-									{selectedInstructors.length > 0 && (
-										<div className="selected-instructors">
-											<h3>Selected Instructors</h3>
-											<ul>
-												{selectedInstructors.map((instructor, index) => (
-													<li key={instructor.profileId}>
-														{instructor.name} (ID: {instructor.id}) <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.id, index) }}>X</button>
-													</li>
-												))}
-											</ul>
-										</div>
-									)}
-								</div>
 
 								<input type="submit" id="service-role-submit" className="hidden" />
 								<input type="hidden" name="formType" value="Service Role" />

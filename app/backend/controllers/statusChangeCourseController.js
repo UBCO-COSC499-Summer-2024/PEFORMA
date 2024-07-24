@@ -1,29 +1,15 @@
-const  pool = require('../db/index.js'); 
-const { getAllCourses } = require('../services/allCoursesService.js');  
-console.log(pool); 
+const statusChangeCourseService = require('../services/statusChangeCourse');
 
-exports.getStatusChangeCourse = async (req, res) => {
-    const courseId = req.body.courseid; 
-    const status = req.body.newStatus;
-    console.log("Course ID: ",courseId);
-    console.log("Status: ", status);
-    try{
-        let query = `UPDATE "Course" SET "isActive" = $1 WHERE "courseId" = $2 RETURNING *;`;
-        let result = await pool.query(query, [status, courseId]);
-        if (result.rows.length === 0) {
-            console.log("No course data found");
-        return res.status(404).json({ message: 'No course found.' });
-        } else {
-            console.log("Update status course complete");
-            const courseData = await getAllCourses();
-            res.json(courseData);
-        }
+async function getStatusChangeCourse(req, res) {
+  try {
+    const statusChange = await statusChangeCourseService.getStatusChangeCourse(req);
+    res.json(statusChange);
+  } catch (error) {
+    console.error('Error updating status courses:', error);
+    res.status(500).json({ error: 'Failed to upload course evaluation' });
+  }
+}
 
-    }
-    catch (error) {
-        console.error('Database query error:', error);
-        res.status(error.status || 500).json({ message: error.message || 'Server error during fetching profile' });
-    }
-    
-
+module.exports = {
+  getStatusChangeCourse
 };
