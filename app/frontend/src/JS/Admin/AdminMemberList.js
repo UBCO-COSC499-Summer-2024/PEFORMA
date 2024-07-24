@@ -44,26 +44,18 @@ function useAdminMemberList() {
 		fetchData();
 	}, [authToken, accountLogInType, search]);
 
+	const filteredMembers = filterItems(memberData.members, 'member', search);
+	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
+
 	return {
 		memberData,
 		setMemberData,
 		search,
 		setSearch,
-		activeMembersCount
+		activeMembersCount,
+		currentMembers
 	};
 }
-
-// remove after merging
-// function filterMembers(members, search) {
-// 	return members.filter((member) =>
-// 		(member.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
-// 		(member.name?.toLowerCase().includes(search.toLowerCase()) || false) ||
-// 		(Array.isArray(member.serviceRole)
-// 			? member.serviceRole.some(role => role?.toLowerCase().includes(search.toLowerCase()))
-// 			: (member.serviceRole?.toLowerCase().includes(search.toLowerCase()) || false))
-// 	);
-// }
-
 
 function AdminMemberList() {
 	const {
@@ -71,13 +63,10 @@ function AdminMemberList() {
 		setMemberData,
 		setSearch,
 		activeMembersCount,
-		search  
+		search,
+		currentMembers
 } = useAdminMemberList();
 	
-// const filteredMembers = filterMembers(memberData.members, search);
-const filteredMembers = filterItems(memberData.members, 'member', search);
-const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
-
 	return (
 		<div className="dashboard" id="admin-member-list-test-content">
 			<CreateSideBar sideBarType="Admin" />
