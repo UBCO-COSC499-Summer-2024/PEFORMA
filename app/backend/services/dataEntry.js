@@ -46,7 +46,7 @@ async function saveDataToDatabase(data) {
         query = `SELECT setval(pg_get_serial_sequence('"Course"', 'courseId'), COALESCE((SELECT MAX("courseId") FROM "Course"), 0) + 1, false);`;
         await pool.query(query);
         const values = [courseTitle, courseDescription, division, courseCode];
-        query = `INSERT INTO public."Course"(ctitle , description , "divisionId" , "courseNum") VALUES($1, $2, $3, $4) RETURNING "courseId";`;
+        query = `INSERT INTO public."Course"(ctitle , description , "divisionId" , "courseNum", "isActive") VALUES($1, $2, $3, $4, true) RETURNING "courseId";`;
         try{
             const data = await pool.query(query,values);
             return data;
