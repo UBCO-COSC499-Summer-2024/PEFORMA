@@ -28,8 +28,10 @@ async function getFormattedCourseData(divisionCode) {
                         ELSE TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName")
                     END
                 ) AS instructor_names,
-                array_agg(COALESCE(p."UBCId", '')) AS ubc_ids,
-                array_agg(COALESCE(p."email", 'No email')) AS email
+                array_agg(COALESCE(p."UBCId", 'No ubcids')) AS ubc_ids,
+                array_agg(COALESCE(p."email", 'No email')) AS email,
+                array_agg(COALESCE(p."profileId", '0')) AS profileid
+
                 FROM 
                     "Course" c
                     LEFT JOIN "CourseByTerm" cbt ON cbt."courseId" = c."courseId"
@@ -50,7 +52,8 @@ async function getFormattedCourseData(divisionCode) {
             title: row.ctitle,
             instructor: row.instructor_names,
             ubcid: row.ubc_ids,
-            email: row.email
+            email: row.email,
+            profileid: row.profileid
         }
     });
 
