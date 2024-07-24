@@ -9,9 +9,50 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth, requestSort, sortItems, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
+
+function exportToPDF(filteredMembers) {
+    const doc = new jsPDF();
+    let yOffset = 10;
+
+    const addTable = (title, data, columns) => {
+        doc.setFontSize(16);
+        doc.text(title, 14, yOffset);
+        
+        const rankedData = data.map((item, index) => ({
+            '#': index + 1,
+            ...item
+        }));
+
+        const readableColumns = columns.map(col => {
+            switch(col) {
+                case 'ubcid': return 'UBC ID';
+                case 'serviceRole': return 'Service Role';
+                default: return col.charAt(0).toUpperCase() + col.slice(1);
+            }
+        });
+
+        doc.autoTable({
+            startY: yOffset + 10,
+            head: [['#', ...readableColumns]],
+            body: rankedData.map(item => 
+                ['#', ...columns].map(col => {
+                    if (col === 'serviceRole' && Array.isArray(item[col])) {
+                        return item[col].join(', ');
+                    }
+                    return item[col];
+                })
+            ),
+        });
+        yOffset = doc.lastAutoTable.finalY + 20;
+    };
+
+    addTable('Department Members', filteredMembers, ['name', 'ubcid', 'serviceRole', 'department', 'email']);
+
+    doc.save('department_members_list.pdf');
+}
 
 function DeptMemberList() {
     const { authToken, accountLogInType } = useAuth();
@@ -47,85 +88,13 @@ function DeptMemberList() {
         fetchData();
     }, [authToken]);
 
-    const sortedMembers = useMemo(() => {
-        let sortableItems = [...memberData.members];
-        if (sortConfig.key !== null) {
-            sortableItems.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key]) {
-                    return sortConfig.direction === 'ascending' ? -1 : 1;
-                }
-                if (a[sortConfig.key] > b[sortConfig.key]) {
-                    return sortConfig.direction === 'ascending' ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-        return sortableItems;
-    }, [memberData.members, sortConfig]);
-
-    const requestSort = (key) => {
-        let direction = 'ascending';
-        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-            direction = 'descending';
-        }
-        setSortConfig({ key, direction });
-    };
-
-    const filteredMembers = sortedMembers.filter(
-        (member) =>
-            (member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
-            (member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-            (Array.isArray(member.serviceRole)
-                ? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
-                : (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
-    );
-
+    const sortedMembers = useMemo(() => sortItems(memberData.members, sortConfig), [memberData.members, sortConfig]);
+    const filteredMembers = filterItems(sortedMembers, 'member', search);
     const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
-
-    const exportToPDF = () => {
-        const doc = new jsPDF();
-        let yOffset = 10;
-
-        const addTable = (title, data, columns) => {
-            doc.setFontSize(16);
-            doc.text(title, 14, yOffset);
-            
-            const rankedData = data.map((item, index) => ({
-                '#': index + 1,
-                ...item
-            }));
-
-            const readableColumns = columns.map(col => {
-                switch(col) {
-                    case 'ubcid': return 'UBC ID';
-                    case 'serviceRole': return 'Service Role';
-                    default: return col.charAt(0).toUpperCase() + col.slice(1);
-                }
-            });
-
-            doc.autoTable({
-                startY: yOffset + 10,
-                head: [['#', ...readableColumns]],
-                body: rankedData.map(item => 
-                    ['#', ...columns].map(col => {
-                        if (col === 'serviceRole' && Array.isArray(item[col])) {
-                            return item[col].join(', ');
-                        }
-                        return item[col];
-                    })
-                ),
-            });
-            yOffset = doc.lastAutoTable.finalY + 20;
-        };
-
-        addTable('Department Members', filteredMembers, ['name', 'ubcid', 'serviceRole', 'department', 'email']);
-
-        doc.save('department_members_list.pdf');
-    };
 
     const handleExport = () => {
         setIsLoading(true);
-        exportToPDF();
+        exportToPDF(filteredMembers);
         setIsLoading(false);
     };
 
@@ -151,7 +120,7 @@ function DeptMemberList() {
                                     <th>
                                         <div className="th-content">
                                             <span className="th-text">Name</span>
-                                            <button className='sort-button' onClick={() => requestSort('name')}>
+                                            <button className='sort-button' onClick={() => requestSort(sortConfig, setSortConfig, 'name')}>
                                                 <ArrowUpDown size={16} color="black" />
                                             </button>
                                         </div>
@@ -159,7 +128,7 @@ function DeptMemberList() {
                                     <th>
                                         <div className="th-content">
                                             <span className="th-text">UBC ID</span>
-                                            <button className='sort-button' onClick={() => requestSort('ubcid')}>
+                                            <button className='sort-button' onClick={() => requestSort(sortConfig, setSortConfig, 'ubcid')}>
                                                 <ArrowUpDown size={16} color="black" />
                                             </button>
                                         </div>
@@ -168,7 +137,7 @@ function DeptMemberList() {
                                     <th>
                                         <div className="th-content">
                                             <span className="th-text">Department</span>
-                                            <button className='sort-button' onClick={() => requestSort('department')}>
+                                            <button className='sort-button' onClick={() => requestSort(sortConfig, setSortConfig, 'department')}>
                                                 <ArrowUpDown size={16} color="black" />
                                             </button>
                                         </div>
