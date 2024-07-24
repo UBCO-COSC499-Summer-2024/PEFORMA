@@ -8,16 +8,27 @@ async function getCourseHistory(req) {
     console.log("Received courseId:", courseId);
     console.log("Received term", latestTermResult);
     try {
-
+        let query = `
+        SELECT 
+            c."ctitle", 
+            c."description", 
+            d."dcode" || ' ' || c."courseNum" AS "courseCode", 
+            d."dname"
+        FROM 
+            "Course" c 
+        LEFT JOIN 
+            "Division" d ON d."divisionId" = c."divisionId"
+        WHERE 
+            c."courseId" = $1
+`;
+        let result = await pool.query(query,[courseId]);
+        // Extract course details from the first result row
+        const { ctitle, description, courseCode, dname } = result.rows[0];
         //Join profile, course, instructorassignment, single teaching performance tables
-        let query = `SELECT DISTINCT ON (ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", p."UBCId")
+        query = `SELECT DISTINCT ON (ita."term", full_name, p."profileId", p."UBCId")
         ita."term",
         TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
-        c."ctitle",
-        c."description",
-        d."dcode" || ' ' || c."courseNum" AS "courseCode",
         stp."score",
-        d."dname",
         p."profileId",
         p."UBCId"
         FROM
@@ -33,9 +44,9 @@ async function getCourseHistory(req) {
         WHERE 
         c."courseId" = $1 AND ita."term" <= $2
         ORDER BY 
-        ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", p."UBCId", stp."score" DESC;
+        ita."term", full_name, p."profileId", p."UBCId", stp."score" DESC;
         `;
-        let result = await pool.query(query,[courseId,latestTermResult]);
+        result = await pool.query(query,[courseId,latestTermResult]);
         if (result.rows.length === 0) {
             // Handle the case where no data is returned
             console.error('No course found with the given courseId');
@@ -45,8 +56,6 @@ async function getCourseHistory(req) {
         const perPage = 10;
         const currentPage = 1;
         const entryCount = result.rows.length; 
-        // Extract course details from the first result row
-        const { ctitle, description, courseCode, dname } = result.rows[0];
         // Map the result to create history entries
         const history = result.rows.map(row => {
             // Extract the year and term code from row.term
