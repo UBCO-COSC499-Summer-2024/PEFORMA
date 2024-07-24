@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
@@ -18,6 +18,7 @@ function DeptProfilePage() {
     const [profile, setProfile] = useState(initProfile);
     const [editState, setEditState] = useState(false);
     const [benchmark, setBenchmark] = useState(0);
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [courseData, setCourseData] = useState({
         courses: [{}],
         courseCount: 0,
@@ -147,7 +148,7 @@ function DeptProfilePage() {
 						action: role.assigned ? 'add' : 'remove'
 					}));
 				
-				console.log('Sending role changes:', roleChanges); // Log the data being sent
+			//	console.log('Sending role changes:', roleChanges); // Log the data being sent
 				
 				const roleResponse = await axios.put('http://localhost:3001/api/dept-profile/service-roles', {
 					ubcId: ubcid,
@@ -156,7 +157,7 @@ function DeptProfilePage() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				
-				console.log('Server response for roles:', roleResponse.data); // Log the server's response
+				//console.log('Server response for roles:', roleResponse.data); // Log the server's response
 	
 				// Update course assignments
 				const courseChanges = courseData.courses
@@ -167,7 +168,7 @@ function DeptProfilePage() {
 						action: course.assigned ? 'add' : 'remove'
 					}));
 				
-				console.log('Sending course changes:', courseChanges); // Log the data being sent
+			//	console.log('Sending course changes:', courseChanges); // Log the data being sent
 				
 				const courseResponse = await axios.put('http://localhost:3001/api/dept-profile/course-assignments', {
 					ubcId: ubcid,
@@ -176,7 +177,7 @@ function DeptProfilePage() {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
 				
-				console.log('Server response for courses:', courseResponse.data); // Log the server's response
+				//console.log('Server response for courses:', courseResponse.data); // Log the server's response
 	
 				setEditState(false);
 				// Update the local state to reflect the changes
@@ -190,7 +191,7 @@ function DeptProfilePage() {
 				}));
 				setSelectedRoles(roleData.roles.filter(role => role.assigned));
 				setSelectedCourses(courseData.courses.filter(course => course.assigned));
-				
+				profile.benchmark = benchmark;
 				alert('Profile updated successfully!');
 			} catch (error) {
 				console.error('Error updating profile:', error.response?.data || error.message);
@@ -198,10 +199,13 @@ function DeptProfilePage() {
 			}
 		}
 	}
-	
+    const prevRoles = useRef({});
+    const prevCourses = useRef({});
     const handleEditState = (edit) => {
         if (edit) {
             setEditState(true);
+            prevRoles.current = JSON.stringify(selectedRoles);
+            prevCourses.current = JSON.stringify(selectedCourses); 
         }
     }
 
@@ -214,6 +218,8 @@ function DeptProfilePage() {
                 ...prevData,
                 roles: prevData.roles.map(role => ({ ...role, assigned: role.originallyAssigned }))
             }));
+            setSelectedRoles(JSON.parse(prevRoles.current));
+            setSelectedCourses(JSON.parse(prevCourses.current));
             setCourseData(prevData => ({
                 ...prevData,
                 courses: prevData.courses.map(course => ({ ...course, assigned: course.originallyAssigned }))
@@ -262,7 +268,28 @@ function DeptProfilePage() {
         setRoleData(prevData => ({...prevData, currentPage: 1}));
         setShowRolesModal(false);
     };
+    const removeCourse = async (id, index) => {
+        selectedCourses.splice(index, 1);
+        for (let i = 0; i < courseData.courses.length; i++) {
+          if (id === courseData.courses[i].id) {
+            courseData.courses[i].assigned = false;
+            break;
+          }
+        }
+        forceUpdate();
+      }
 
+      const removeRole = async (id, index) => {
+        selectedRoles.splice(index, 1);
+        for (let i = 0; i < roleData.roles.length; i++) {
+          if (id === roleData.roles[i].id) {
+            roleData.roles[i].assigned = false;
+            break;
+          }
+        }
+        forceUpdate();
+      }
+    
     return (
         <div className="deptProfile-container">
             <CreateSideBar sideBarType="Department" />
@@ -280,32 +307,34 @@ function DeptProfilePage() {
                 <div className="main-content" id="text-content"> 
                     <section className="information">
                         {!editState && (
-                            <button className='edit-button' onClick={() => handleEditState(true)}>Edit Profile</button>
+                            <button className='edit-button' data-testid="edit-button" onClick={() => handleEditState(true)}>Edit Profile</button>
                         )}
                         {editState && (
                             <>
-                                <button className='save-button' onClick={submitChanges}>Save Changes</button>
-                                <button className='cancel-button' onClick={() => cancelChanges()}>Cancel Changes</button>
+                                <button className='save-button' data-testid="save-button" onClick={submitChanges}>Save Changes</button>
+                                <button className='cancel-button' data-testid="cancel-button" onClick={() => cancelChanges()}>Cancel Changes</button>
                             </>
                         )}
                         <p><strong>Name:</strong> {profile.name}</p>
                         <p><strong>UBC ID:</strong> {profile.ubcid}</p>
-                        <p>
+                        <p data-testid="selected-roles">
                             <strong>Service Role Assignments: </strong> 
                             {selectedRoles.length === 0 && (
                                 <span>N/A</span>
                             )}
                             {selectedRoles.map((role, index) => (
-                                <span key={role.id}>
-                                    <Link to={`/DeptRoleInformation?roleid=${role.id}`}>{role.name}</Link>
-                                    {index < selectedRoles.length - 1 && ', '}
-                                </span>
+                                <div key={role.id}>
+                                    <Link to={`/DeptRoleInformation?roleid=${role.id}`}>- {role.name}</Link>
+                                    {editState && (
+                                        <button type="button" className='remove-instructor' onClick={(e) => { removeRole(role.id, index) }}>X</button>
+                                    )}
+                                </div>
                             ))}
                         </p>
                         {editState && (
                             <button
                                 className="assign-button"
-                                data-testid="assign-button"
+                                data-testid="assign-roles"
                                 type="button"
                                 onClick={handleShowRolesModal}>
                                 <span className="plus">+</span> Assign Service Role(s)
@@ -318,6 +347,7 @@ function DeptProfilePage() {
                                     value={benchmark} 
                                     onChange={(e) => setBenchmark(e.target.value)} 
                                     type="number"
+                                    data-testid="benchmark"
                                 />
                             ) : (
                                 ` ${profile.benchmark}`
@@ -332,26 +362,31 @@ function DeptProfilePage() {
                                 <span>N/A</span>
                             )}
                             {selectedCourses.map((teachingAssign, index) => (
-                                <span key={teachingAssign.id}>
+                                <div key={teachingAssign.id}>
                                     <Link to={`/DeptCourseInformation?courseid=${teachingAssign.id}`}>
-                                        {teachingAssign.courseCode}
+                                        - {teachingAssign.courseCode}
                                     </Link>
-                                    {index < selectedCourses.length - 1 && ', '}
-                                </span>
+                                    {editState && (
+                                        <button type="button" className='remove-instructor' onClick={(e) => { removeCourse(teachingAssign.id, index) }}>X</button>
+                                    )}
+                                </div>
                             ))}
                         </p>
                         {editState && (
                             <button
                                 className="assign-button"
-                                data-testid="assign-button"
+                                data-testid="assign-courses"
                                 type="button"
                                 onClick={handleShowCoursesModal}>
                                 <span className="plus">+</span> Assign Course(s)
                             </button>
                         )}
-                        
+                        {!editState && (
+                            <div>
                         <p><strong>Service Hours:</strong></p>
                         <CreateWorkingBarChart profileid={profile.profileId} height={400} width={500} className='performance-chart'/>
+                            </div>
+                        )}
                     </section>
                     {showCoursesModal && (
                         <AssignCoursesModal

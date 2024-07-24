@@ -22,6 +22,16 @@
     height: 10em;
 }
 
+.deptProfile-container .remove-instructor {
+    background-color: var(--red);
+    color: var(--black);
+    margin-left: 0.5em;
+    height: 2.25em;
+    width: 2.25em;
+    transition: background-color 0.1s;
+    border-radius: 40%;
+}
+
 .deptProfile-container .outside {
     margin: 2em;
 }

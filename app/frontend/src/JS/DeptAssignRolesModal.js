@@ -46,7 +46,7 @@ const AssignRolesModal = (props) => {
             <div className="assignModal" data-testid="assignModal">
                 <div className='assignModalTop'>
                     <div className="modalTitle">Assign <span className='bold'>Role(s)</span></div>
-                    <button className="close-button" onClick={() => props.handleCloseRolesModal(false)}>X</button>
+                    <button className="close-button" data-testid="close-button" onClick={() => props.handleCloseRolesModal(false)}>X</button>
                 </div>
                 <input type="text" placeholder="Search for roles to assign" onChange={e => onSearch(e.target.value)} />
                 <table>
@@ -96,7 +96,7 @@ const AssignRolesModal = (props) => {
                         </tr>
                     </tfoot>
                 </table>
-                <button className="save-button" onClick={() => props.handleCloseRolesModal(true)}>Save</button>
+                <button className="save-button" data-testid="modalsave-button" onClick={() => props.handleCloseRolesModal(true)}>Save</button>
             </div>
         </div>
     );
