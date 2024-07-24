@@ -62,7 +62,7 @@ function SideBar({ sideBarType }) {
           </li>
 					<li>
 						<Link to={`/DeptDataEntry`}>
-							<FaPaperclip className="icon" size={30} /> Creation
+							<FaPaperclip className="icon" size={30} /> Create New Course/Role
 						</Link>
 					</li>
 					<li>
