@@ -118,3 +118,22 @@ export const getCurrentInstructor = (historyData) => {
 }
   return currentInstructor;
 }
+
+export function filterItems(items, itemType, search) {
+  if (itemType === 'member') {
+    return items.filter((item) =>
+      (item.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
+      (item.name?.toLowerCase().includes(search.toLowerCase()) || false) ||
+      (Array.isArray(item.serviceRole)
+        ? item.serviceRole.some(role => role?.toLowerCase().includes(search.toLowerCase()))
+        : (item.serviceRole?.toLowerCase().includes(search.toLowerCase()) || false))
+    );
+  } else if (itemType === 'course') {
+    return items.filter((item) =>
+      (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (item.title?.toLowerCase() ?? '').includes(search.toLowerCase())
+    );
+  } else {
+    return items;
+  }
+}

@@ -7,7 +7,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems} from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function AdminStatusChangeMember() {
@@ -20,8 +20,7 @@ function AdminStatusChangeMember() {
   const [search, setSearch] = useState('');
 
 	useEffect(() => {
-		// checkAccess(accountLogInType, navigate, 'admin', authToken); 		
-		checkAccess(accountLogInType, navigate, 'admin');
+		checkAccess(accountLogInType, navigate, 'admin', authToken); 		
 		if (location.state.memberData) {
 				const filledMembers = fillEmptyItems(location.state.memberData.members, location.state.memberData.perPage);
 				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
@@ -59,15 +58,7 @@ function AdminStatusChangeMember() {
 		}
 	};
 
-  const filteredMembers = memberData.members.filter(
-		(member) =>
-			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(Array.isArray(member.serviceRole)
-				? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
-				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
-	);
-
+	const filteredMembers = filterItems(memberData.members, 'member', search);
   const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (

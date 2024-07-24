@@ -10,7 +10,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptCourseList.css';
 
@@ -80,12 +80,7 @@ function DeptCourseList() {
         setSortConfig({ key, direction });
     };
 
-    const filteredCourses = sortedCourses.filter(
-        (course) =>
-            (course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-            (course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
-    );
-
+    const filteredCourses = filterItems(deptCourseList.courses, 'course', search);
     const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
     const exportToPDF = () => {
