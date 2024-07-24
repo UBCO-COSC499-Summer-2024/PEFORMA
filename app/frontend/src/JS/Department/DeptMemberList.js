@@ -9,52 +9,11 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth, requestSort, sortItems, filterItems } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth, requestSort, sortItems, filterItems, getTermString } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
-function exportToPDF(filteredMembers) {
-    const doc = new jsPDF();
-    let yOffset = 10;
-
-    const addTable = (title, data, columns) => {
-        doc.setFontSize(16);
-        doc.text(title, 14, yOffset);
-        
-        const rankedData = data.map((item, index) => ({
-            '#': index + 1,
-            ...item
-        }));
-
-        const readableColumns = columns.map(col => {
-            switch(col) {
-                case 'ubcid': return 'UBC ID';
-                case 'serviceRole': return 'Service Role';
-                default: return col.charAt(0).toUpperCase() + col.slice(1);
-            }
-        });
-
-        doc.autoTable({
-            startY: yOffset + 10,
-            head: [['#', ...readableColumns]],
-            body: rankedData.map(item => 
-                ['#', ...columns].map(col => {
-                    if (col === 'serviceRole' && Array.isArray(item[col])) {
-                        return item[col].join(', ');
-                    }
-                    return item[col];
-                })
-            ),
-        });
-        yOffset = doc.lastAutoTable.finalY + 20;
-    };
-
-    addTable('Department Members', filteredMembers, ['name', 'ubcid', 'serviceRole', 'department', 'email']);
-
-    doc.save('department_members_list.pdf');
-}
-
-function DeptMemberList() {
+function useDeptMemberList() {
     const { authToken, accountLogInType } = useAuth();
     const navigate = useNavigate();
     const [memberData, setMemberData] = useState({
@@ -63,8 +22,10 @@ function DeptMemberList() {
         perPage: 10,
         currentPage: 1,
     });
+    const [allMemberData, setAllMemberData] = useState({ //only for export
+        members: [{}]
+    })
     const [search, setSearch] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
@@ -72,6 +33,7 @@ function DeptMemberList() {
             try {
                 checkAccess(accountLogInType, navigate, 'department', authToken);
                 const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
+                setAllMemberData({ ...data, members: data.members})
                 const activeMembers = data.members.filter(member => member.status);
                 const filledMembers = fillEmptyItems(activeMembers, data.perPage);
                 setMemberData({
@@ -86,17 +48,60 @@ function DeptMemberList() {
         };
 
         fetchData();
-    }, [authToken]);
+    }, [authToken, accountLogInType, navigate]);
 
     const sortedMembers = useMemo(() => sortItems(memberData.members, sortConfig), [memberData.members, sortConfig]);
     const filteredMembers = filterItems(sortedMembers, 'member', search);
-    const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
+    const filledFilteredMembers = fillEmptyItems(filteredMembers, memberData.perPage);
+    const currentMembers = currentItems(filledFilteredMembers, memberData.currentPage, memberData.perPage);
 
-    const handleExport = () => {
-        setIsLoading(true);
-        exportToPDF(filteredMembers);
-        setIsLoading(false);
-    };
+    return {
+        memberData,
+        setMemberData,
+        allMemberData,
+        setSearch,
+        sortConfig,
+        setSortConfig,
+        currentMembers
+    }
+}
+
+function exportToPDF(members, term) {
+    const filteredMembers = members.members.filter(member => member.name); 
+    const doc = new jsPDF();
+    const termString = getTermString(term);
+
+    doc.setFontSize(18);
+    doc.text(`List of Active Members (${termString})`, 14, 22);
+    doc.autoTable({
+        startY: 28,
+        head: [['#', 'Name', 'UBC ID', 'Service Role', 'Department', 'Email', 'Status']],
+        body: filteredMembers.map((member, index) => [
+            index + 1,
+            member.name,
+            member.ubcid,
+            Array.isArray(member.serviceRole) ? member.serviceRole.join(',\n') : member.serviceRole,
+            member.department,
+            member.email,
+            { content: member.status ? 'Active' : 'Inactive', styles: { textColor: member.status ? [0, 128, 0] : [255, 0, 0] } }
+        ]),
+    });
+    doc.save("department_active_member_list.pdf");
+}
+
+
+
+function DeptMemberList() {
+    const {
+        memberData,
+        setMemberData,
+        allMemberData,
+        setSearch,
+        sortConfig,
+        setSortConfig,
+        currentMembers
+    } = useDeptMemberList();
+    const term = 20244 //will remove later when query fixed
 
     return (
         <div className="dashboard">
@@ -107,9 +112,8 @@ function DeptMemberList() {
                 <div className="member-list-main" id="dept-member-list-test-content">
                     <div className="subtitle-member">
                         List of Members ({memberData.membersCount} Active)
-                        <button className='icon-button' onClick={handleExport} disabled={isLoading}>
+                        <button className='icon-button' onClick={() => exportToPDF(allMemberData, term)}>
                             <Download size={20} color="black" />
-                            {isLoading ? 'Loading...' : ''}
                         </button>
                     </div>
 
@@ -206,5 +210,6 @@ function DeptMemberList() {
         </div>
     );
 }
+
 
 export default DeptMemberList;

@@ -9,7 +9,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, requestSort, sortItems, fetchWithAuth } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, requestSort, sortItems, fetchWithAuth, getTermString } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptCourseList.css';
 
@@ -17,12 +17,6 @@ function useDeptCourseList() {
     const { authToken, accountLogInType } = useAuth();
     const navigate = useNavigate();
     const [deptCourseList, setDeptCourseList] = useState({
-        courses: [{}],
-        coursesCount: 0,
-        perPage: 10,
-        currentPage: 1,
-    });
-    const [exportData, setExportData] = useState({
         courses: [{}],
         coursesCount: 0,
         perPage: 10,
@@ -40,7 +34,6 @@ function useDeptCourseList() {
                 const filledCourses = fillEmptyItems(data.courses, data.perPage);
                 setActiveCoursesCount(filledCourses.filter(course => course.status).length);
                 setDeptCourseList({ ...data, courses: filledCourses });
-                setExportData({ ...data });
             } catch (error) {
                 console.error('Error fetching courses:', error);
             }
@@ -55,7 +48,6 @@ function useDeptCourseList() {
     return {
         deptCourseList,
         setDeptCourseList,
-        exportData,
         setSearch,
         activeCoursesCount,
         sortConfig,
@@ -64,11 +56,18 @@ function useDeptCourseList() {
     };
 }
 
-function exportToPDF(courses) {
+function exportToPDF(courses, term) {
+    const filteredCourses = courses.filter(course => course.courseCode); // 실제 멤버만 필터링
     const doc = new jsPDF();
+    const termString = getTermString(term);
+
+    doc.setFontSize(18);
+    doc.text(`List of Courses (${termString})`, 14, 22);
     doc.autoTable({
-        head: [['Course', 'Title', 'Description', 'Status']],
-        body: courses.map(course => [
+        startY: 28,
+        head: [['#', 'Course', 'Title', 'Description', 'Status']],
+        body: filteredCourses.map((course, index) => [
+            index + 1,
             course.courseCode,
             course.title,
             course.description,
@@ -82,13 +81,13 @@ function DeptCourseList() {
     const {
         deptCourseList,
         setDeptCourseList,
-        exportData,
         setSearch,
         activeCoursesCount,
         sortConfig,
         setSortConfig,
         currentCourses
     } = useDeptCourseList();
+    const term = 20244;
 
     return (
         <div className="dashboard" id="dept-course-list-test-content">
@@ -105,7 +104,7 @@ function DeptCourseList() {
                                     <Edit size={20} color="black" />
                                 </button>
                             </Link>
-                            <button className='icon-button' onClick={() => exportToPDF(exportData.courses)}>
+                            <button className='icon-button' onClick={() => exportToPDF(deptCourseList.courses, term)}>
                                 <Download size={20} color="black" />
                             </button>
                         </div>

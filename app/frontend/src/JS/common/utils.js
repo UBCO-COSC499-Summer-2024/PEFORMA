@@ -161,3 +161,18 @@ export const requestSort = (sortConfig, setSortConfig, key) => {
   }
   setSortConfig({ key, direction });
 };
+
+export const getTermString = (term) => {
+  const termStr = term.toString();
+  const year = termStr.slice(0, -1);
+  const termCode = termStr.slice(-1);
+
+  const termMap = {
+      1: 'Winter Term 1',
+      2: 'Winter Term 2',
+      3: 'Summer Term 1',
+      4: 'Summer Term 2',
+  };
+
+  return `${year} ${termMap[termCode] || ''}`;
+};

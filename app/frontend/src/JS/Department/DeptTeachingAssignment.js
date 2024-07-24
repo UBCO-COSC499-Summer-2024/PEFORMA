@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import { fillEmptyItems, currentItems, checkAccess, getDivisionName } from '../common/utils.js';
+import { fillEmptyItems, currentItems, checkAccess, getDivisionName, getTermString } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptTeachingAssignment.css';
 
@@ -22,25 +22,6 @@ function DeptTeachingAssignment() {
 
 	const handleItemClick = (type, id) => {
 		navigate(`/${type === 'course' ? 'DeptCourseInformation' : 'DeptProfilePage'}?${type === 'course' ? 'courseid' : 'ubcid'}=${id}`);
-	};
-
-	const getTermString = (term) => {
-		const termStr = term.toString();
-		const year = termStr.slice(0, -1);
-		const termCode = termStr.slice(-1);
-	
-		const termMap = {
-			1: 'Winter Term 1',
-			2: 'Winter Term 2',
-			3: 'Summer Term 1',
-			4: 'Summer Term 2',
-		};
-	
-		if (termStr.length === 4) { // edge case
-			return `${termStr} Winter Term 1`;
-		}
-	
-		return `${year} ${termMap[termCode] || ''}`;
 	};
 
 	useEffect(() => {
