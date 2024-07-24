@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
@@ -10,11 +9,11 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, requestSort, sortItems, fetchWithAuth } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptCourseList.css';
 
-function DeptCourseList() {
+function useDeptCourseList() {
     const { authToken, accountLogInType } = useAuth();
     const navigate = useNavigate();
     const [deptCourseList, setDeptCourseList] = useState({
@@ -34,68 +33,64 @@ function DeptCourseList() {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
-        const fetchAllCourses = async () => {
+        async function fetchAllCourses() {
             try {
-                checkAccess(accountLogInType, navigate, 'department', authToken)
-                const res = await axios.get(`http://localhost:3001/api/all-courses`, {
-                    headers: { Authorization: `Bearer ${authToken.token}` },
-                });
-                const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
-                setActiveCoursesCount(filledCourses.filter(course => course.status).length); 
-                setDeptCourseList({ ...res.data, courses: filledCourses });
-                setExportData({ ...res.data });
+                checkAccess(accountLogInType, navigate, 'department', authToken);
+                const data = await fetchWithAuth(`http://localhost:3001/api/all-courses`, authToken, navigate);
+                const filledCourses = fillEmptyItems(data.courses, data.perPage);
+                setActiveCoursesCount(filledCourses.filter(course => course.status).length);
+                setDeptCourseList({ ...data, courses: filledCourses });
+                setExportData({ ...data });
             } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    localStorage.removeItem('authToken');
-                    navigate('/Login');
-                } else {
-                    console.error('Error fetching courses:', error);
-                }
+                console.error('Error fetching courses:', error);
             }
         };
         fetchAllCourses();
-    }, [authToken]);
+    }, [authToken, accountLogInType, navigate]);
 
-    const sortedCourses = React.useMemo(() => {
-        let sortableItems = [...deptCourseList.courses];
-        if (sortConfig.key !== null) {
-            sortableItems.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key]) {
-                    return sortConfig.direction === 'ascending' ? -1 : 1;
-                }
-                if (a[sortConfig.key] > b[sortConfig.key]) {
-                    return sortConfig.direction === 'ascending' ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-        return sortableItems;
-    }, [deptCourseList.courses, sortConfig]);
-
-    const requestSort = (key) => {
-        let direction = 'ascending';
-        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-            direction = 'descending';
-        }
-        setSortConfig({ key, direction });
-    };
-
-    const filteredCourses = filterItems(deptCourseList.courses, 'course', search);
+    const sortedCourses = useMemo(() => sortItems(deptCourseList.courses, sortConfig), [deptCourseList.courses, sortConfig]);
+    const filteredCourses = filterItems(sortedCourses, 'course', search);
     const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
-    const exportToPDF = () => {
-        const doc = new jsPDF();
-        doc.autoTable({
-            head: [['Course', 'Title', 'Description', 'Status']],
-            body: exportData.courses.map(course => [
-                course.courseCode,
-                course.title,
-                course.description,
-                { content: course.status ? 'Active' : 'Inactive', styles: { textColor: course.status ? [0, 128, 0] : [255, 0, 0] } }
-            ]),
-        });
-        doc.save("course_list.pdf");
+    return {
+        deptCourseList,
+        setDeptCourseList,
+        exportData,
+        search,
+        setSearch,
+        activeCoursesCount,
+        sortConfig,
+        setSortConfig,
+        currentCourses
     };
+}
+
+function exportToPDF(courses) {
+    const doc = new jsPDF();
+    doc.autoTable({
+        head: [['Course', 'Title', 'Description', 'Status']],
+        body: courses.map(course => [
+            course.courseCode,
+            course.title,
+            course.description,
+            { content: course.status ? 'Active' : 'Inactive', styles: { textColor: course.status ? [0, 128, 0] : [255, 0, 0] } }
+        ]),
+    });
+    doc.save("course_list.pdf");
+}
+
+function DeptCourseList() {
+    const {
+        deptCourseList,
+        setDeptCourseList,
+        exportData,
+        search,
+        setSearch,
+        activeCoursesCount,
+        sortConfig,
+        setSortConfig,
+        currentCourses
+    } = useDeptCourseList();
 
     return (
         <div className="dashboard" id="dept-course-list-test-content">
@@ -112,7 +107,7 @@ function DeptCourseList() {
                                     <Edit size={20} color="black" />
                                 </button>
                             </Link>
-                            <button className='icon-button' onClick={exportToPDF}>
+                            <button className='icon-button' onClick={() => exportToPDF(exportData.courses)}>
                                 <Download size={20} color="black" />
                             </button>
                         </div>
@@ -125,7 +120,7 @@ function DeptCourseList() {
                                     <th>
                                         <div className="th-content">
                                             <span className="th-text">Course</span>
-                                            <button className='sort-button' onClick={() => requestSort('courseCode')}>
+                                            <button className='sort-button' onClick={() => requestSort(sortConfig, setSortConfig, 'courseCode')}>
                                                 <ArrowUpDown size={16} color="black" />
                                             </button>
                                         </div>
@@ -133,7 +128,7 @@ function DeptCourseList() {
                                     <th>
                                         <div className="th-content">
                                             <span className="th-text">Title</span>
-                                            <button className='sort-button' onClick={() => requestSort('title')}>
+                                            <button className='sort-button' onClick={() => requestSort(sortConfig, setSortConfig, 'title')}>
                                                 <ArrowUpDown size={16} color="black" />
                                             </button>
                                         </div>
@@ -142,7 +137,7 @@ function DeptCourseList() {
                                     <th>
                                         <div className="th-content">
                                             <span className="th-text">Status</span>
-                                            <button className='sort-button' onClick={() => requestSort('status')}>
+                                            <button className='sort-button' onClick={() => requestSort(sortConfig, setSortConfig, 'status')}>
                                                 <ArrowUpDown size={16} color="black" />
                                             </button>
                                         </div>
