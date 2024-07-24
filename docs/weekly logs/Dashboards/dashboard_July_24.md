@@ -5,15 +5,24 @@
 
 ## Task Breakdown
 
-![Task Breakdown](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/task%20breakdown/task_breakdown_July_24.png)
+![Task Breakdown](./task%20breakdown/task_breakdown_July_24.png)
 
 
 ## Burnup Chart (Velocity)
 
-![Burnup Chart](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/burn%20up%20charts/burnup_July_24.png)
+![Burnup Chart](./burn%20up%20charts/burnup_July_24.png)
 
 ## Time Tracking
 
-![Clockify Summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/Clockify%20images/Clokify_July_24_1.jpg)
-![Clockify Summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/Clockify%20images/Clokify_July_24_2.jpg)
-![Clockify Summary](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/dashboard/docs/weekly%20logs/Dashboards/Clockify%20images/Clokify_July_24_3.jpg)
+![Clockify Summary](./Clockify%20images/Clockify_July_24_1.png)
+![Clockify Summary](./Clockify%20images/Clockify_July_24_2.png)
+![Clockify Summary](./Clockify%20images/Clockify_July_24_3.png)
+
+## Test Results
+
+![Test Results](../../test_result_7_19/test_result_1.png)
+![Test Results](../../test_result_7_19/test_result_2.png)
+![Test Results](../../test_result_7_19/test_result_3.png)
+![Test Results](../../test_result_7_19/test_result_4.png)
+![Test Results](../../test_result_7_19/test_result_5.png)
+![Test Results](../../test_result_7_19/test_result_6.png)
