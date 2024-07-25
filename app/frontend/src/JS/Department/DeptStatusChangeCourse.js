@@ -9,6 +9,10 @@ import '../common/AuthContext.js';
 import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, toggleStatus } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
+function handleStatusChange(authToken, course, newStatus, courseData, setCourseData) {
+	toggleStatus(authToken, course, newStatus, courseData, setCourseData, 'DeptStatusChangeCourse');
+};
+
 function DeptStatusChangeCourse() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
@@ -29,10 +33,6 @@ function DeptStatusChangeCourse() {
 			setDeptCourseList({ ...location.state.deptCourseList, courses: filledCourses, currentPage: 1 });
 		}
 	}, [accountLogInType, navigate, location.state]);
-
-	const handleStatusChange = (course, newStatus) => {
-		toggleStatus(authToken, course, newStatus, deptCourseList.courses, setDeptCourseList, 'DeptStatusChangeCourse');
-	};
 
 	const filteredCourses = filterItems(deptCourseList.courses, 'course', search);
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
@@ -77,14 +77,16 @@ function DeptStatusChangeCourse() {
 															className={`${
 																course.status ? 'active-button' : 'default-button'
 															} button`}
-															onClick={() => handleStatusChange(course, true)} disabled={course.status}>
+															onClick={() => handleStatusChange(authToken, course, true, deptCourseList.courses, setDeptCourseList)} 
+															disabled={course.status}>
 															Active
 														</button>
 														<button
 															className={`${
 																course.status === false ? 'inactive-button' : 'default-button'
 															} button`}
-															onClick={() => handleStatusChange(course, false)} disabled={!course.status}>
+															onClick={() => handleStatusChange(authToken, course, false, deptCourseList.courses, setDeptCourseList)} 
+															disabled={!course.status}>
 															Inactive
 														</button>
 													</>

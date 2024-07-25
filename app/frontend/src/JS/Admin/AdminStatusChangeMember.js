@@ -9,6 +9,10 @@ import '../common/AuthContext.js';
 import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, toggleStatus} from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
+function handleStatusChange(authToken, member, newStatus, memberData, setMemberData) {
+  toggleStatus(authToken, member, newStatus, memberData, setMemberData, 'adminStatusChangeMembers');
+};
+
 function AdminStatusChangeMember() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
@@ -25,11 +29,7 @@ function AdminStatusChangeMember() {
 				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
 		}
 	}, [accountLogInType, navigate, location.state.memberData]);
-	
-	const handleStatusChange = (member, newStatus) => {
-		toggleStatus(authToken, member, newStatus, memberData.members, setMemberData, 'adminStatusChangeMembers');
-	};
-	
+
 	const filteredMembers = filterItems(memberData.members, 'member', search);
   const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
@@ -82,13 +82,13 @@ function AdminStatusChangeMember() {
 												<>
 													<button
 														className={`${member.status ? 'active-button' : 'default-button'} button`}
-														onClick={() => handleStatusChange(member, true)}
+														onClick={() => handleStatusChange(authToken, member, true, memberData.members, setMemberData)}
 														disabled={member.status}>
 														Active
 													</button>
 													<button
 														className={`${!member.status ? 'inactive-button' : 'default-button'} button`}
-														onClick={() => handleStatusChange(member, false)}
+														onClick={() => handleStatusChange(authToken, member, false, memberData.members, setMemberData)}
 														disabled={!member.status}>
 														Inactive
 													</button>

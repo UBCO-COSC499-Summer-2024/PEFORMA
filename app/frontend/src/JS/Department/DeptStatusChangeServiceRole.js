@@ -9,6 +9,10 @@ import '../common/AuthContext.js';
 import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, toggleStatus } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
+function handleStatusChange(authToken, role, newStatus, roleData, setRoleData) {
+	toggleStatus(authToken, role, newStatus, roleData, setRoleData, 'DeptStatusChangeServiceRole');
+};
+
 function DeptStatusChangeServiceRole() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
@@ -28,10 +32,6 @@ function DeptStatusChangeServiceRole() {
 		}
 	}, [accountLogInType, navigate, location.state]);
 
-	const handleStatusChange = (role, newStatus) => {
-		toggleStatus(authToken, role, newStatus, roleData.roles, setRoleData, 'DeptStatusChangeServiceRole');
-	};
-	
 	const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
 
 	return (
@@ -75,14 +75,16 @@ function DeptStatusChangeServiceRole() {
 															className={`${
 																role.status ? 'active-button' : 'default-button'
 															} button`}
-															onClick={() => handleStatusChange(role, true)} disabled={role.status}>
+															onClick={() => handleStatusChange(authToken, role, true, roleData.roles, setRoleData)} 
+															disabled={role.status}>
 															Active
 														</button>
 														<button
 															className={`${
 																role.status === false ? 'inactive-button' : 'default-button'
 															} button`}
-															onClick={() => handleStatusChange(role, false)} disabled={!role.status}>
+															onClick={() => handleStatusChange(authToken, role, false, roleData.roles, setRoleData)} 
+															disabled={!role.status}>
 															Inactive
 														</button>
 													</>
