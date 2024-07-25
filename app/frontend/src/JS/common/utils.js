@@ -133,6 +133,16 @@ export const filterItems = (items, itemType, search) => {
       (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
       (item.title?.toLowerCase() ?? '').includes(search.toLowerCase())
     );
+  } else if (itemType === 'insCourse') {
+    return items.filter((course) =>
+      (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (course.title?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (course.instructor &&
+       Array.isArray(course.instructor) &&
+       course.instructor.some(instructor =>
+         instructor.toLowerCase().includes(search.toLowerCase())
+       ))
+    );
   } else {
     return items;
   }
