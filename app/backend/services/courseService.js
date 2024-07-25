@@ -35,7 +35,7 @@ async function getFormattedCourseData(divisionCode) {
                 FROM 
                     "Course" c
                     LEFT JOIN "CourseByTerm" cbt ON cbt."courseId" = c."courseId"
-                    LEFT JOIN "InstructorTeachingAssignment" ita ON ita."courseId" = cbt."courseId" AND ita."term" = 20244
+                    LEFT JOIN "InstructorTeachingAssignment" ita ON ita."courseId" = cbt."courseId" AND ita."term" = cbt."term"
                     LEFT JOIN "Profile" p ON p."profileId" = ita."profileId"
                     LEFT JOIN "Division" d ON d."divisionId" = c."divisionId"
                 WHERE 

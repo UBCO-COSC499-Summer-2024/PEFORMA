@@ -11,7 +11,7 @@ async function getCoursePerformance(req){
                 FROM "SingleTeachingPerformance" stp
                 LEFT JOIN "Course" c ON c."courseId" = stp."courseId"
                 LEFT JOIN "Division" d ON d."divisionId" = c."divisionId"
-                WHERE c."divisionId" = $1 AND stp."term" <= $2
+                WHERE c."divisionId" = $1 AND stp."term" <= $2 AND c."isActive" = true
                 GROUP BY d."dcode", c."courseNum"
                 ORDER BY  c."courseNum" DESC
         `;
