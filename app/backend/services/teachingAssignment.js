@@ -1,9 +1,8 @@
 const pool = require('../db/index.js');
-
+const {getLatestTerm} = require('./latestTerm.js');
 async function getTeachingAssignment() {
   try {
-    let result = await pool.query('SELECT MAX("term") AS current_term FROM public."CourseByTerm";');
-    const currTerm = result.rows[0].current_term;
+    const currTerm = await getLatestTerm();
     result = await pool.query(`
     SELECT 
     TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
@@ -21,7 +20,6 @@ async function getTeachingAssignment() {
     WHERE ita."term" = $1
     GROUP BY p."firstName", p."middleName", p."lastName", p."email", p."UBCId", d."dname"
     `, [currTerm]);
-      console.log(result);
     // Reformat the data
     const formattedData = {
         currentTerm: currTerm,
