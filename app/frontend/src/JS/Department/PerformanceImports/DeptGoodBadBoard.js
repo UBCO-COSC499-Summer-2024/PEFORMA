@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 
+function displayInstructors(identifier, leaderboard) {
+	if (identifier === 'Top') {
+		return leaderboard.top;
+	} else if (identifier === 'Bottom') {
+		return leaderboard.bottom;
+	}
+	return [];
+}
+
 function GoodBadBoard({ leaderboard }) {
 	const [instructors, setInstructors] = useState(leaderboard.top);
 
 	useEffect(() => {
 		setInstructors(leaderboard.top);
 	}, [leaderboard]);
-
-	const displayInstructors = (identifier) => {
-		if (identifier === 'Top') {
-			setInstructors(leaderboard.top);
-		} else if (identifier === 'Bottom') {
-			setInstructors(leaderboard.bottom);
-		}
-	};
 
 	return (
 		<div className="topbottom-table" id="goodbad-test-content">
@@ -25,7 +26,7 @@ function GoodBadBoard({ leaderboard }) {
 						<button
 							className="year-button"
 							key={identifier}
-							onClick={() => displayInstructors(identifier)}>
+							onClick={() => setInstructors(displayInstructors(identifier, leaderboard))}>
 							{identifier}
 						</button>
 					))}
@@ -41,7 +42,7 @@ function GoodBadBoard({ leaderboard }) {
 					</tr>
 				</thead>
 
-				<tbody>
+				<tbody >
 					{instructors.map((instructor, index) => (
 						<tr key={index}>
 							<td>{index + 1}</td>

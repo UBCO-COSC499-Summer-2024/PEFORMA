@@ -119,7 +119,7 @@ export const getCurrentInstructor = (historyData) => {
   return currentInstructor;
 }
 
-export function filterItems(items, itemType, search) {
+export const filterItems = (items, itemType, search) => {
   if (itemType === 'member') {
     return items.filter((item) =>
       (item.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
@@ -136,7 +136,7 @@ export function filterItems(items, itemType, search) {
   } else {
     return items;
   }
-}
+};
 
 export const sortItems = (items, sortConfig) => {
   let sortableItems = [...items];
@@ -185,4 +185,22 @@ export const filterYearLevelCourses = (courses, identifier, prefix) => {
           course.courseCode.startsWith(`${prefix} ${identifier[0]}`)
       );
   }
+};
+
+export const getCurrentMonthName = () => {
+	const monthNames = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
+	return monthNames[new Date().getMonth()];
 };

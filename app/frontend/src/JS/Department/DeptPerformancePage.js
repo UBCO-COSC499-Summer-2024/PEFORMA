@@ -3,13 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import DeptCoscTable from './PerformanceImports/DeptCoscTable.js';
-import DeptMathTable from './PerformanceImports/DeptMathTable.js';
-import DeptPhysTable from './PerformanceImports/DeptPhysTable.js';
-import DeptStatTable from './PerformanceImports/DeptStatTable.js';
+import DeptDivisionTable from './PerformanceImports/DeptDivisionTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
-import { checkAccess } from '../common/utils.js';
+import { checkAccess, getCurrentMonthName } from '../common/utils.js';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import axios from 'axios';
@@ -70,9 +67,8 @@ function exportAllToPDF(data) {
     yOffset = addTable(doc, 'Physics Courses', data.phys, ['courseCode', 'rank', 'score'], yOffset);
     yOffset = addTable(doc, 'Statistics Courses', data.stat, ['courseCode', 'rank', 'score'], yOffset);
     
-    // Sort benchmark data by shortage in descending order
-    const sortedBenchmark = [...data.benchmark].sort((a, b) => b.shortage - a.shortage);
-    yOffset = addTable(doc, 'Benchmark', sortedBenchmark, ['name', 'shortage'], yOffset, { shortage: formatTime });
+    const currentMonth = getCurrentMonthName();
+    yOffset = addTable(doc, `Benchmark - ${currentMonth}`, data.benchmark, ['name', 'shortage'], yOffset, { shortage: formatTime });
     
     doc.addPage();
     yOffset = 10;
@@ -93,8 +89,6 @@ function PerformanceDepartmentPage() {
         benchmark: [],
         leaderboard: { top: [], bottom: [] }
     });
-    const [isLoading, setIsLoading] = useState(false);
-
 
     useEffect(() => {
         const fetchAllData = async () => {
@@ -109,12 +103,13 @@ function PerformanceDepartmentPage() {
                     axios.get(`http://localhost:3001/api/deptLeaderBoard`, { headers: { Authorization: `Bearer ${authToken.token}` } })
                 ]);
 
+                const sortedBenchmark = benchmark.data.people.sort((a, b) => b.shortage - a.shortage);
                 const newData = {
                     cosc: cosc.data.courses,
                     math: math.data.courses,
                     phys: phys.data.courses,
                     stat: stat.data.courses,
-                    benchmark: benchmark.data.people,
+                    benchmark: sortedBenchmark,
                     leaderboard: leaderboard.data
                 };
 
@@ -137,28 +132,27 @@ function PerformanceDepartmentPage() {
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
                         <button className='icon-button' onClick={() => exportAllToPDF(allData)}>
-                        <Download size={20} color="black" />
-                            {isLoading ? 'Loading...' : ''}
+                            <Download size={20} color="black" />
                         </button>
                     </div>
 
                     <div className="division-top-table">
                         <div className="division">
-                            <DeptCoscTable courses={allData.cosc} />
+                            <DeptDivisionTable departmentName="Computer Science" courses={allData.cosc} prefix="COSC" />
                         </div>
 
                         <div className="division">
-                            <DeptMathTable courses={allData.math} />
+                            <DeptDivisionTable departmentName="Mathematics" courses={allData.math} prefix="MATH" />
                         </div>
                     </div>
 
                     <div className="division-mid-table">
                         <div className="division">
-                            <DeptPhysTable courses={allData.phys} />
+                            <DeptDivisionTable departmentName="Physics" courses={allData.phys} prefix="PHYS" />
                         </div>
 
                         <div className="division">
-                            <DeptStatTable courses={allData.stat} />
+                            <DeptDivisionTable departmentName="Statistics" courses={allData.stat} prefix="STAT" />
                         </div>
                     </div>
 

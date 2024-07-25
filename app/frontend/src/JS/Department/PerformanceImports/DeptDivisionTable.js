@@ -2,27 +2,27 @@ import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 import { filterYearLevelCourses } from '../../common/utils';
 
-function CoscTable({ courses }) {
-	const [coscCourses, setCoscCourses] = useState(courses);
+function filterCourses(courses, identifier, prefix) {
+	return filterYearLevelCourses(courses, identifier, prefix);
+}
+
+function DeptDivisionTable({ departmentName, courses, prefix }) {
+	const [courseTable, setCourseTable] = useState(courses);
 
 	useEffect(() => {
-		setCoscCourses(courses);
-	}, [courses])
-
-	const filterCourses = (identifier) => {
-		setCoscCourses(filterYearLevelCourses(courses, identifier, 'COSC'));
-	};
+		setCourseTable(courses);
+	}, [courses]);
 
 	return (
-		<div className="division-performance-table" id="cosc-test-content">
+		<div className="division-performance-table" id="division-table-test-content">
 			<div className="header-container">
-				<h1 className="subTitleD">Computer Science</h1>
+				<h1 className="subTitleD">{departmentName}</h1>
 				<div>
 					{['All', '100', '200', '300', '400'].map((identifier) => (
 						<button
 							className="year-button"
 							key={identifier}
-							onClick={() => filterCourses(identifier)}>
+							onClick={() => setCourseTable(filterCourses(courses, identifier, prefix))}>
 							{identifier}
 						</button>
 					))}
@@ -38,9 +38,8 @@ function CoscTable({ courses }) {
 						<th>Score</th>
 					</tr>
 				</thead>
-				<div className="scrollable-body">
-					<tbody>
-						{coscCourses.map((course, index) => (
+					<tbody className="scrollable-body">
+						{courseTable.map((course, index) => (
 							<tr key={index}>
 								<td>{index + 1}</td>
 								<td>{course.courseCode}</td>
@@ -49,10 +48,9 @@ function CoscTable({ courses }) {
 							</tr>
 						))}
 					</tbody>
-				</div>
 			</table>
 		</div>
 	);
 }
 
-export default CoscTable;
+export default DeptDivisionTable;
