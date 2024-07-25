@@ -8,7 +8,7 @@ const authenticateRouter = require('./Manager/authenticate');
 const queryAccountRouter = require('./routes/queryAccountRouter').router;
 const AccountTypeRouter = require('./routes/AccountType');
 const dataImportRoutes = require('./routes/dataImportRoutes');
-const { saveDataToDatabase } = require('./routes/DataEntry');
+const saveDataToDatabase = require('./routes/DataEntry');
 const { setupDatabase } = require('./insertProfileImages');
 
 const { upsertProfile } = require('./routes/upsertProfile');
@@ -155,17 +155,7 @@ app.use('/api',assignInstructorCourse);
 app.use('/api/terms',allTerms);
 app.use('/api', setTerm)
 
-app.post('/enter', async (req, res) => {
-    const data = req.body;
-    console.log(data); // 打印接收到的数据，确保格式正确
-    try {
-        // 调用函数将数据存入数据库
-        await saveDataToDatabase(data);
-        res.status(200).send('Data successfully saved');
-    } catch (error) {
-        res.status(500).send(`Failed to save data.Error Message:${error.message}`);
-    }
-});
+app.use('/enter',saveDataToDatabase);
 
 
 app.use('/api',instructorFetch);
