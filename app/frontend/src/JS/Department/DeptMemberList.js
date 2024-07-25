@@ -66,10 +66,10 @@ function useDeptMemberList() {
     }
 }
 
-function exportToPDF(members, term) {
+function exportToPDF(members) {
     const filteredMembers = members.members.filter(member => member.name); 
     const doc = new jsPDF();
-    const termString = getTermString(term);
+    const termString = getTermString(20244); // members.currentTerm
 
     doc.setFontSize(18);
     doc.text(`List of Active Members (${termString})`, 14, 22);
@@ -86,10 +86,8 @@ function exportToPDF(members, term) {
             { content: member.status ? 'Active' : 'Inactive', styles: { textColor: member.status ? [0, 128, 0] : [255, 0, 0] } }
         ]),
     });
-    doc.save("department_active_member_list.pdf");
+    doc.save(`${termString} Department Member List.pdf`);
 }
-
-
 
 function DeptMemberList() {
     const {
@@ -101,7 +99,6 @@ function DeptMemberList() {
         setSortConfig,
         currentMembers
     } = useDeptMemberList();
-    const term = 20244 //will remove later when query fixed
 
     return (
         <div className="dashboard">
@@ -112,7 +109,7 @@ function DeptMemberList() {
                 <div className="member-list-main" id="dept-member-list-test-content">
                     <div className="subtitle-member">
                         List of Members ({memberData.membersCount} Active)
-                        <button className='icon-button' onClick={() => exportToPDF(allMemberData, term)}>
+                        <button className='icon-button' onClick={() => exportToPDF(allMemberData)}>
                             <Download size={20} color="black" />
                         </button>
                     </div>

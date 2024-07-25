@@ -56,10 +56,10 @@ function useDeptCourseList() {
     };
 }
 
-function exportToPDF(courses, term) {
-    const filteredCourses = courses.filter(course => course.courseCode); // 실제 멤버만 필터링
+function exportToPDF(courses) {
+    const filteredCourses = courses.filter(course => course.courseCode);
     const doc = new jsPDF();
-    const termString = getTermString(term);
+    const termString = getTermString(20244); //courses.currentTerm
 
     doc.setFontSize(18);
     doc.text(`List of Courses (${termString})`, 14, 22);
@@ -74,7 +74,7 @@ function exportToPDF(courses, term) {
             { content: course.status ? 'Active' : 'Inactive', styles: { textColor: course.status ? [0, 128, 0] : [255, 0, 0] } }
         ]),
     });
-    doc.save("course_list.pdf");
+    doc.save(`${termString} Course List.pdf`);
 }
 
 function DeptCourseList() {
@@ -87,7 +87,6 @@ function DeptCourseList() {
         setSortConfig,
         currentCourses
     } = useDeptCourseList();
-    const term = 20244;
 
     return (
         <div className="dashboard" id="dept-course-list-test-content">
@@ -104,7 +103,7 @@ function DeptCourseList() {
                                     <Edit size={20} color="black" />
                                 </button>
                             </Link>
-                            <button className='icon-button' onClick={() => exportToPDF(deptCourseList.courses, term)}>
+                            <button className='icon-button' onClick={() => exportToPDF(deptCourseList.courses)}>
                                 <Download size={20} color="black" />
                             </button>
                         </div>
