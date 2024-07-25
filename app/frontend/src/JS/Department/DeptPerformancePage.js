@@ -6,7 +6,7 @@ import { CreateTopBar } from '../common/commonImports.js';
 import DeptDivisionTable from './PerformanceImports/DeptDivisionTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
-import { checkAccess, getCurrentMonthName } from '../common/utils.js';
+import { checkAccess, getCurrentMonthName, fetchWithAuth } from '../common/utils.js';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import axios from 'axios';
@@ -78,7 +78,8 @@ function exportAllToPDF(data) {
     doc.save('department_performance_overview.pdf');
 }
 
-function PerformanceDepartmentPage() {
+
+function usePerformanceDepartmentData() {
     const navigate = useNavigate();
     const { authToken, accountLogInType } = useAuth();
     const [allData, setAllData] = useState({
@@ -93,24 +94,24 @@ function PerformanceDepartmentPage() {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                checkAccess(accountLogInType, navigate, 'department', authToken)
+                checkAccess(accountLogInType, navigate, 'department', authToken);
                 const [cosc, math, phys, stat, benchmark, leaderboard] = await Promise.all([
-                    axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 1 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                    axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 2 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                    axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 3 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                    axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 4 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                    axios.get(`http://localhost:3001/api/benchmark`, { params: { currMonth: new Date().getMonth() + 1 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                    axios.get(`http://localhost:3001/api/deptLeaderBoard`, { headers: { Authorization: `Bearer ${authToken.token}` } })
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=1`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=2`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=3`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=4`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/benchmark?currMonth=${new Date().getMonth() + 1}`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/deptLeaderBoard`, authToken, navigate),
                 ]);
 
-                const sortedBenchmark = benchmark.data.people.sort((a, b) => b.shortage - a.shortage);
+                const sortedBenchmark = benchmark.people.sort((a, b) => b.shortage - a.shortage);
                 const newData = {
-                    cosc: cosc.data.courses,
-                    math: math.data.courses,
-                    phys: phys.data.courses,
-                    stat: stat.data.courses,
+                    cosc: cosc.courses,
+                    math: math.courses,
+                    phys: phys.courses,
+                    stat: stat.courses,
                     benchmark: sortedBenchmark,
-                    leaderboard: leaderboard.data
+                    leaderboard: leaderboard
                 };
 
                 setAllData(newData);
@@ -121,6 +122,12 @@ function PerformanceDepartmentPage() {
 
         fetchAllData();
     }, [authToken, accountLogInType, navigate]);
+
+    return allData;
+}
+
+function PerformanceDepartmentPage() {
+    const allData = usePerformanceDepartmentData();
 
     return (
         <div className="dp-container">
