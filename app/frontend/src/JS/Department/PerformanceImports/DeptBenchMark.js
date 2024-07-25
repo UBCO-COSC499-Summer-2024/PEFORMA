@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
-import axios from 'axios';
-import { useAuth } from '../../common/AuthContext';
 
-function BenchMark() {
-	const { authToken } = useAuth();
-	const [data, setData] = useState([]);
-	const [currentMonth, setCurrentMonth] = useState('');
+function DeptBenchMark({ benchmark }) {
 	const monthNames = [
 		'January',
 		'February',
@@ -22,25 +17,7 @@ function BenchMark() {
 		'December',
 	];
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const date = new Date();
-			const currMonth = date.getMonth() + 1;
-			setCurrentMonth(monthNames[currMonth - 1]);
-
-			try {
-				const res = await axios.get(`http://localhost:3001/api/benchmark`, {
-					params: { currMonth: currMonth },
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const sortedData = res.data.people.sort((a, b) => b.shortage - a.shortage);
-				setData(sortedData);
-			} catch (error) {
-				console.log('Error fetching data: ', error);
-			}
-		};
-		fetchData();
-	}, []);
+	const currentMonth = monthNames[new Date().getMonth()];
 
 	const formatTime = (minutes) => {
 		const totalMinutes = Math.round(minutes);
@@ -64,7 +41,6 @@ function BenchMark() {
 			<div className="header-container">
 				<h1 className="subTitleD">Benchmark</h1>
 				<h1 className="subTitleD">Current Month: {currentMonth}</h1>
-				<div></div>
 			</div>
 
 			<table className="divi-table">
@@ -77,7 +53,7 @@ function BenchMark() {
 				</thead>
 				<div className="scrollable-body">
 					<tbody>
-						{data.map((item, index) => (
+						{benchmark.map((item, index) => (
 							<tr key={index}>
 								<td>{index + 1}</td>
 								<td>{item.name}</td>
@@ -91,4 +67,4 @@ function BenchMark() {
 	);
 }
 
-export default BenchMark;
+export default DeptBenchMark;

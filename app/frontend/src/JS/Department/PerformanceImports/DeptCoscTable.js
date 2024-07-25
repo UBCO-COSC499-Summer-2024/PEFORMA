@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
+import { filterYearLevelCourses } from '../../common/utils';
 
 function CoscTable({ courses }) {
 	const [coscCourses, setCoscCourses] = useState(courses);
@@ -9,14 +10,7 @@ function CoscTable({ courses }) {
 	}, [courses])
 
 	const filterCourses = (identifier) => {
-		if (identifier === 'All') {
-			setCoscCourses(courses);
-		} else {
-			const filtered = courses.filter((course) =>
-				course.courseCode.startsWith(`COSC ${identifier[0]}`)
-			);
-			setCoscCourses(filtered);
-		}
+		setCoscCourses(filterYearLevelCourses(courses, identifier, 'COSC'));
 	};
 
 	return (

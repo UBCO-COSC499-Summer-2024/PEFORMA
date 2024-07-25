@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
+import { filterYearLevelCourses } from '../../common/utils';
 
 function PhysTable({ courses }) {
 
@@ -10,14 +11,7 @@ function PhysTable({ courses }) {
 	}, [courses]);
 
 	const filterCourses = (identifier) => {
-		if (identifier === 'All') {
-			setPhysCourses(courses);
-		} else {
-			const filtered = courses.filter((course) =>
-				course.courseCode.startsWith(`PHYS ${identifier[0]}`)
-			);
-			setPhysCourses(filtered);
-		}
+		setPhysCourses(filterYearLevelCourses(courses, identifier, 'PHYS'));
 	};
 
 	return (

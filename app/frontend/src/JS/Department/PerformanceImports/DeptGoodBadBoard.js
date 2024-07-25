@@ -1,37 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
-import axios from 'axios';
-import { useAuth } from '../../common/AuthContext';
 
-function GoodBadBoard() {
-	const { authToken } = useAuth();
-	const [topInstructors, setTopInstructors] = useState([]);
-	const [bottomInstructors, setBottomInstructors] = useState([]);
-	const [instructors, setInstructors] = useState([]);
+function GoodBadBoard({ leaderboard }) {
+	const [instructors, setInstructors] = useState(leaderboard.top);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await axios.get(`http://localhost:3001/api/deptLeaderBoard`, {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const sortedTop = res.data.top.sort((a, b) => b.score - a.score);
-				const sortedBottom = res.data.bottom.sort((a, b) => a.score - b.score);
-				setTopInstructors(sortedTop);
-				setBottomInstructors(sortedBottom);
-				setInstructors(sortedTop);
-			} catch (error) {
-				console.log('Error fetching data: ', error);
-			}
-		};
-		fetchData();
-	}, []);
+		setInstructors(leaderboard.top);
+	}, [leaderboard]);
 
 	const displayInstructors = (identifier) => {
-		if (identifier == 'Top') {
-			setInstructors(topInstructors);
-		} else if (identifier == 'Bottom') {
-			setInstructors(bottomInstructors);
+		if (identifier === 'Top') {
+			setInstructors(leaderboard.top);
+		} else if (identifier === 'Bottom') {
+			setInstructors(leaderboard.bottom);
 		}
 	};
 

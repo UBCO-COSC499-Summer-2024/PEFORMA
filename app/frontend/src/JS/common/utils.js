@@ -176,3 +176,13 @@ export const getTermString = (term) => {
 
   return `${year} ${termMap[termCode] || ''}`;
 };
+
+export const filterYearLevelCourses = (courses, identifier, prefix) => {
+  if (identifier === 'All') {
+      return courses;
+  } else {
+      return courses.filter((course) =>
+          course.courseCode.startsWith(`${prefix} ${identifier[0]}`)
+      );
+  }
+};
