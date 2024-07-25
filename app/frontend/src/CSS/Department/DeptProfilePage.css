@@ -15,11 +15,7 @@
     flex-direction: column;
     border-radius: 1em;
     box-shadow: 1em 1em 1em var(--darkestGrey);
-    min-height: 50em;
-}
-
-.deptProfile-container .performance-chart {
-    height: 10em;
+    
 }
 
 .deptProfile-container .remove-instructor {
@@ -43,7 +39,7 @@
 }
 
 .deptProfile-container .information {
-    height: auto;
+    
 }
 
 .deptProfile-container .information p {
