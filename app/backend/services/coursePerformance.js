@@ -7,7 +7,7 @@ async function getCoursePerformance(req){
     try {
         const term = await getLatestTerm();
         query = `SELECT d."dcode" || ' ' || c."courseNum" AS "DivisionAndCourse",
-                AVG(stp."score") AS "AverageScore"
+                COALESCE(AVG(stp."score"), 0) AS "AverageScore"
                 FROM "SingleTeachingPerformance" stp
                 LEFT JOIN "Course" c ON c."courseId" = stp."courseId"
                 LEFT JOIN "Division" d ON d."divisionId" = c."divisionId"
@@ -24,6 +24,7 @@ async function getCoursePerformance(req){
         const output = {
             courses:data
         };
+        console.log("output",output);
         return output;
     } catch (error) {
         throw error;
