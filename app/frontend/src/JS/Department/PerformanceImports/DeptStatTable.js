@@ -1,39 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
-import axios from 'axios';
-import { useAuth } from '../../common/AuthContext';
 
-function StatTable() {
-	const { authToken } = useAuth();
-
-	const [courses, setCourses] = useState([]);
-	const [filteredCourses, setFilteredCourses] = useState([]);
+function StatTable({ courses }) {
+	const [statCourses, setStatCourses] = useState([]);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await axios.get(`http://localhost:3001/api/coursePerformance`, {
-					params: { divisionId: 4 },
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const sortedCourses = res.data.courses.sort((a, b) => b.score - a.score);
-				setCourses(sortedCourses);
-				setFilteredCourses(sortedCourses);
-			} catch (error) {
-				console.log('Error fetching data: ', error);
-			}
-		};
-		fetchData();
-	}, []);
+		setStatCourses(courses);
+	}, [courses]);
 
 	const filterCourses = (identifier) => {
 		if (identifier === 'All') {
-			setFilteredCourses(courses);
+			setStatCourses(courses);
 		} else {
 			const filtered = courses.filter((course) =>
 				course.courseCode.startsWith(`STAT ${identifier[0]}`)
 			);
-			setFilteredCourses(filtered);
+			setStatCourses(filtered);
 		}
 	};
 
@@ -64,7 +46,7 @@ function StatTable() {
 				</thead>
 				<div className="scrollable-body">
 					<tbody>
-						{filteredCourses.map((course, index) => (
+						{statCourses.map((course, index) => (
 							<tr key={index}>
 								<td>{index + 1}</td>
 								<td>{course.courseCode}</td>
