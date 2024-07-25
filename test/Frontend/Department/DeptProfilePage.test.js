@@ -105,6 +105,7 @@ useAuth.mockReturnValue({
 beforeEach(async() => {
   mockData();
   global.confirm = () => true;
+  global.alert = jest.fn();
 });
 
 test('Checks profile data is rendered properly', async () => {
