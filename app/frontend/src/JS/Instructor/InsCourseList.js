@@ -10,7 +10,7 @@ import '../common/AuthContext.js';
 import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems } from '../common/utils.js';import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Instructor/InsCourseList.css';
 
-function InsCourseList() {
+function useInsCourseList() {
     const { authToken, accountLogInType } = useAuth();
     const params = new URLSearchParams(window.location.search);
     const divisionCode = params.get('division') || 'COSC';
@@ -44,6 +44,26 @@ function InsCourseList() {
 
     const filteredCourses = filterItems(divisionData.courses, 'insCourse', search);
     const currentCourses = currentItems(filteredCourses, divisionData.currentPage, divisionData.perPage);
+
+    return {
+        divisionCode,
+        divisionHandler,
+        divisionData,
+        setDivisionData,
+        setSearch,
+        currentCourses
+    }
+}
+
+function InsCourseList() {
+    const {
+        divisionCode,
+        divisionHandler,
+        divisionData,
+        setDivisionData,
+        setSearch,
+        currentCourses
+    } = useInsCourseList();
 
     return (
         <div className="dashboard">
