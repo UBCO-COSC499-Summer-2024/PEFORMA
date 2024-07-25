@@ -35,6 +35,8 @@ const NewPassword = () => {
     const data = await response.json();
     if (data.message === "success") {
       setSuccess(true);
+    } else {
+      alert("Error: Email is not associated with an account.");
     }
   };
 
@@ -62,13 +64,13 @@ const NewPassword = () => {
         placeholder="Confirm new password"
         required
       />
-      <button type="submit">Update Password</button>
+      <button className="send-button" type="submit">Update Password</button>
     </form>
       )}
       {success && (
         <form className="success-message">
           <p>Password reset successfully!</p>
-          <Link to="/Login"><button className="return" type="button">Return to Login</button></Link>
+          <Link to="/Login"><button className="send-button" type="button">Return to Login</button></Link>
         </form>
       )}
       

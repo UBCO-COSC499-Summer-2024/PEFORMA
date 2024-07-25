@@ -7,7 +7,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems} from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
 function AdminStatusChangeMember() {
@@ -20,20 +20,17 @@ function AdminStatusChangeMember() {
   const [search, setSearch] = useState('');
 
 	useEffect(() => {
-		checkAccess(accountLogInType, navigate, 'admin');		
+		checkAccess(accountLogInType, navigate, 'admin', authToken); 		
 		if (location.state.memberData) {
-			const filledMembers = fillEmptyItems(
-				location.state.memberData.members,
-				location.state.memberData.perPage
-			);
-			setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
+				const filledMembers = fillEmptyItems(location.state.memberData.members, location.state.memberData.perPage);
+				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
 		}
-	}, [location.state]);
+	}, [accountLogInType, navigate, location.state.memberData]);
+	
 
 	const toggleStatus = async (member, newStatus) => {
 		const updatedMember = { ...member, status: newStatus };
 		const updatedMembers = memberData.members.map((m) => (m.ubcid === member.ubcid ? updatedMember : m));
-		console.log("request\n",  { memberUbcId: member.ubcid, newStatus })
 		try {
 			const response = await axios.post(
 				`http://localhost:3001/api/adminStatusChangeMembers`, 
@@ -61,15 +58,7 @@ function AdminStatusChangeMember() {
 		}
 	};
 
-  const filteredMembers = memberData.members.filter(
-		(member) =>
-			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(Array.isArray(member.serviceRole)
-				? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
-				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
-	);
-
+	const filteredMembers = filterItems(memberData.members, 'member', search);
   const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
@@ -78,7 +67,7 @@ function AdminStatusChangeMember() {
 			<div className="container">
 				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); handleSearchChange(setMemberData); }} />
 
-				<div className="srlist-main" id="dept-member-list-test-content">
+				<div className="srlist-main" id="admin-status-controller-test-content">
 					<div className="subtitle-member">
 						List of Members ({memberData.membersCount} in Database)
 						<button className="status-change-button">

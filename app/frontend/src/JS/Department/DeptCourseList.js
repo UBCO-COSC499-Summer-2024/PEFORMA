@@ -10,7 +10,7 @@ import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptCourseList.css';
 
@@ -36,15 +36,7 @@ function DeptCourseList() {
     useEffect(() => {
         const fetchAllCourses = async () => {
             try {
-                if (!authToken) {
-                    navigate('/Login');
-                    return;
-                }
-                const numericAccountType = Number(accountLogInType);
-                if (numericAccountType !== 1 && numericAccountType !== 2) {
-                    alert('No Access, Redirecting to instructor view');
-                    navigate('/InsDashboard');
-                }
+                checkAccess(accountLogInType, navigate, 'department', authToken)
                 const res = await axios.get(`http://localhost:3001/api/all-courses`, {
                     headers: { Authorization: `Bearer ${authToken.token}` },
                 });
@@ -63,30 +55,6 @@ function DeptCourseList() {
         };
         fetchAllCourses();
     }, [authToken]);
-
-	useEffect(() => {
-		const fetchAllCourses = async () => {
-			try {
-				checkAccess(accountLogInType, navigate, 'department', authToken);
-				// Fetch course data with Axios, adding token to header
-				const res = await axios.get(`http://localhost:3001/api/all-courses`, {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				const filledCourses = fillEmptyItems(res.data.courses, res.data.perPage);
-				setActiveCoursesCount(filledCourses.filter(course => course.status).length); 
-				setDeptCourseList({ ...res.data, courses: filledCourses });
-			} catch (error) {
-				// Handle 401 (Unauthorized) error and other errors
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken'); // Clear invalid token
-					navigate('/Login');
-				} else {
-					console.error('Error fetching courses:', error);
-				}
-			}
-		};
-		fetchAllCourses();
-	}, [authToken]);
 
     const sortedCourses = React.useMemo(() => {
         let sortableItems = [...deptCourseList.courses];
@@ -112,12 +80,7 @@ function DeptCourseList() {
         setSortConfig({ key, direction });
     };
 
-    const filteredCourses = sortedCourses.filter(
-        (course) =>
-            (course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-            (course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
-    );
-
+    const filteredCourses = filterItems(deptCourseList.courses, 'course', search);
     const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
     const exportToPDF = () => {

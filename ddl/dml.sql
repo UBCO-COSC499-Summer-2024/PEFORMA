@@ -21,15 +21,15 @@ INSERT INTO public."Profile" ("firstName", "middleName", "lastName", "email", "p
     -- PHYS
     ('Daniel', NULL, 'Taylor', 'daniel.taylor@ubc.ca', '250-555-1122', 'SCI', '124', 'Lecturer', 1, 11111119, 3, 50),
     ('Sophia', 'Anne', 'Wilson', 'sophia.wilson@ubc.ca', '250-555-3344', 'ART', '235', 'Sessional Lecturer', 3, 11111110, 3, 10),
-    ('William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 11111111, 3, 45),
-    ('Aiden', NULL, 'Moore', 'adien.moore@ubc.ca', '236-555-8765', 'ASC', '213', 'Professor', 3, 11111112, 34, 80),
+    ('William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 12012124, 3, 45),
+    ('Aiden', NULL, 'Moore', 'adien.moore@ubc.ca', '236-555-8765', 'ASC', '213', 'Professor', 3, 34567890, 34, 80),
     -- STAT
-    ('Ava', NULL, 'Martinez', 'ava.martinez1@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 11111113, 0, 0),       -- <-- People w/ the same name
-    ('Ava', NULL, 'Martinez', 'ava.martinez2@ubc.ca', '236-478-1590', 'SCI', '111', 'Asssitant Professor', 4, 11111114, 60, 120),   -- <--
-    ('Ethan', NULL, 'Anderson', 'ethan.anderson@ubc.ca', '236-555-9876', 'EME', '414', 'Asssitant Professor', 4, 11111115, 12, 95), 
+    ('Ava', NULL, 'Martinez', 'ava.martinez1@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 58738923, 0, 0),       -- <-- People w/ the same name
+    ('Ava', NULL, 'Martinez', 'ava.martinez2@ubc.ca', '236-478-1590', 'SCI', '111', 'Asssitant Professor', 4, 34038452, 60, 120),   -- <--
+    ('Ethan', NULL, 'Anderson', 'ethan.anderson@ubc.ca', '236-555-9876', 'EME', '414', 'Asssitant Professor', 4, 23454245, 12, 95), 
 -- Department Staff
-('Alice', NULL, 'Johnson', 'alice.johnson@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 11111116, 0, 0),  
-('Bob', NULL, 'Lee', 'bob.lee@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 11111117, 0, 0),
+('Alice', NULL, 'Johnson', 'alice.johnson@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 67814325, 0, 0),  
+('Bob', NULL, 'Lee', 'bob.lee@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 76548087, 0, 0),
 -- Admin
     -- UBC admins
     ('Kevin', NULL, 'Kim', 'kkim9901@student.ubc.ca', '250-666-6661', NULL, NULL, NULL, NULL, 66666661, 0, 0),                              
@@ -501,3 +501,5 @@ SELECT "profileId", "courseId", "term", (random() * 99 + 1) -- Random score betw
 FROM public."InstructorTeachingAssignment";
 
 UPDATE "Course" SET "isActive" = true;
+
+INSERT INTO "CurrentTerm" ("curTerm") VALUES (20244);

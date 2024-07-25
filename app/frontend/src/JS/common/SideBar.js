@@ -36,8 +36,18 @@ function SideBar({ sideBarType }) {
             </Link>
           </li>
           <li>
-            <Link to={`/DeptMemberList`}>
-              <FaUser className="icon" size={30} /> Member
+						<Link to={`/DeptPerformancePage`}>
+							<FaChartLine className="icon" size={30} /> Performance
+						</Link>
+					</li>
+          <li>
+						<Link to={`/DeptTeachingAssignment`}>
+							<FaMap className="icon" size={30} /> Teaching Assignment
+						</Link>
+					</li>
+          <li>
+            <Link to={`/DeptCourseList`}>
+              <FaBook className="icon" size={30} /> Course
             </Link>
           </li>
           <li>
@@ -46,30 +56,22 @@ function SideBar({ sideBarType }) {
             </Link>
           </li>
           <li>
-            <Link to={`/DeptCourseList`}>
-              <FaBook className="icon" size={30} /> Course
+            <Link to={`/DeptMemberList`}>
+              <FaUser className="icon" size={30} /> Member
             </Link>
           </li>
 					<li>
 						<Link to={`/DeptDataEntry`}>
-							<FaPaperclip className="icon" size={30} /> Data Entry
+							<FaPaperclip className="icon" size={30} /> Create New Course/Role
 						</Link>
 					</li>
 					<li>
-						<Link to={`/DeptPerformancePage`}>
-							<FaChartLine className="icon" size={30} /> Performance
-						</Link>
-					</li>
-					<li>
-						<Link to={`/DeptTeachingAssignment`}>
-							<FaMap className="icon" size={30} /> Teaching Assignment
-						</Link>
-					</li>
-          <li>
 						<Link to={`/DeptSEIPage`}>
 							<FaDatabase className="icon" size={30} /> SEI Data Entry
 						</Link>
 					</li>
+					
+          
         </ul>
       </aside>
     );

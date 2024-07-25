@@ -1,10 +1,13 @@
 async function createAccount(req) {
     const bcrypt = require('bcryptjs');
     const pool = require('../db/index');
-    const { email, password, firstName, lastName, ubcId, division } = req.body;
-
+    let { email, password, firstName, lastName, ubcId, division, accountType } = req.body;
     const client = await pool.connect(); 
     try {
+
+        if (division === '5' || division === 5) {
+            division = null;
+        }
         await client.query('BEGIN');
          // Check if the email already exists
          const emailCheckQuery = `SELECT "email" FROM "Account" WHERE "email" = $1;`;
@@ -20,9 +23,8 @@ async function createAccount(req) {
             VALUES ($1, $2, $3, $4, $5)
             RETURNING "profileId";
         `;
-        let result = await client.query(query, [firstName, lastName, ubcId, parseInt(division), email]);
+        let result = await client.query(query, [firstName, lastName, ubcId, division, email]);
         const profileId = result.rows[0].profileId;
-        console.log("Profile ID: ", profileId);
         query = `SELECT setval(pg_get_serial_sequence('"Account"', 'accountId'), MAX("accountId")) FROM "Account";`;
         await client.query(query);
         query = `
@@ -32,8 +34,14 @@ async function createAccount(req) {
         `;
         result = await client.query(query, [profileId, email, hashedPassword, true]);
         await client.query('COMMIT');
-        console.log("Account and Profile created with IDs:", profileId, result.rows[0].accountId);
-        return result.rows[0]; 
+        const accountId = result.rows[0].accountId;
+
+        for(let i = 0; i<accountType.length; i++){
+            query = `INSERT INTO "AccountType" ("accountId", "accountType")
+                    VALUES ($1,$2)`;
+            result = await client.query(query, [accountId, accountType[i]]);
+        }
+        return true; 
     } catch (error) {
         await client.query('ROLLBACK');
         console.error("Error creating account: ", error);

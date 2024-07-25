@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { getCurrentInstructor } from '../common/utils.js';
 
 function CourseHistory() {
 	const [historyData, setHistoryData] = useState({
@@ -17,6 +18,10 @@ function CourseHistory() {
 	});
 	const navigate = useNavigate();
 	const { authToken, accountLogInType } = useAuth();
+	const params = new URLSearchParams(window.location.search);
+	const courseId = params.get('courseid');
+	const [currentInstructor, setCurrentInstructor] = useState([]);
+	const [numInstructors, setNumInstructors] = useState(0);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -29,11 +34,15 @@ function CourseHistory() {
 				alert('No Access, Redirecting to department view');
 				navigate('/DeptDashboard');
 			}
-			const url = 'http://localhost:3000/courseHistory.json';
-			const res = await axios.get(url);
+			const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
+				params: { courseId: courseId },
+				headers: { Authorization: `Bearer ${authToken.token}` },
+			});
 			const data = res.data;
 			const filledEntries = fillEmptyEntries(data.history, data.perPage);
 			setHistoryData({ ...data, history: filledEntries });
+			setCurrentInstructor(getCurrentInstructor(data));
+			setNumInstructors(data.history.length);
 		};
 		fetchData();
 	}, []);
@@ -50,12 +59,6 @@ function CourseHistory() {
 		return filledEntries;
 	};
 
-	function showHistory(historyData, offset) {
-		if (historyData.assigneeCount > historyData.perPage) {
-			return historyData.history.slice(offset, offset + historyData.perPage);
-		}
-		return historyData.assignees;
-	}
 
 	const handlePageClick = (data) => {
 		setHistoryData((prevState) => ({
@@ -65,7 +68,6 @@ function CourseHistory() {
 	};
 
 	const pageCount = Math.ceil(historyData.entryCount / historyData.perPage);
-	const offset = (historyData.currentPage - 1) * historyData.perPage;
 
 	const currentEntries = historyData.history.slice(
 		(historyData.currentPage - 1) * historyData.perPage,
@@ -78,15 +80,33 @@ function CourseHistory() {
 			<div className="container">
 				<CreateTopBar />
 
-				<div className="main">
-					<Link to="/InsCourseList">&lt; Back to All Courses</Link>
+				<div className="courseinfo-main">
+				<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
 					<h1 className="courseName" role="contentinfo">
 						{historyData.courseCode}: {historyData.courseName}
 					</h1>
 					<p role="contentinfo">{historyData.courseDescription}</p>
-
+					<div className="current-instructor">
+						<p>Current Instructor(s): {currentInstructor.length === 0 && (
+							<strong>N/A</strong>
+						)}
+						{currentInstructor.length !== 0 && (
+							currentInstructor.map((instructor, index) => {
+								return (
+								<span>
+								<Link to={"/InsProfilePage?ubcid="+instructor.ubcid}><strong>{instructor.instructorName}</strong></Link>
+								{index !== currentInstructor.length - 1 && (
+									<span>, </span>
+								)}
+								</span>
+								);
+								
+							})
+						)}
+							</p>
+					</div>
 					<div id="history">
-						<p className="bold">Course History</p>
+						<p className="bold">Course History ({numInstructors} Entries)</p>
 
 						<table id="historyTable">
 							<thead>
@@ -103,7 +123,7 @@ function CourseHistory() {
 									return (
 										<tr key={i}>
 											<td>
-												<Link to={`/InsProfilePage?ubcid=${entry.instructorID}`}>
+												<Link to={`/InsProfilePage?ubcid=${entry.ubcid}`}>
 													{entry.instructorName}
 												</Link>
 											</td>

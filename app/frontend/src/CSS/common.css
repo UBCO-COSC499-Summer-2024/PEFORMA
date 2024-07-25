@@ -180,3 +180,10 @@ h2 {
   border-radius: 10px;
   color: #333;
 }
+
+.term-select {
+  font-size: 1em;
+  width: 70%;
+  padding: 1em 0.5em 0.5em 0.5em;
+  border-radius: 0.5em;
+}

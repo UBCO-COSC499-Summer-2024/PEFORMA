@@ -189,3 +189,7 @@ CREATE TABLE "CourseEvaluation" (
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE "CurrentTerm" (
+  "curTerm" integer PRIMARY KEY
+);

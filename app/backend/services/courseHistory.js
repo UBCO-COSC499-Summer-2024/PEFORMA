@@ -9,7 +9,7 @@ async function getCourseHistory(req) {
     try {
 
         //Join profile, course, instructorassignment, single teaching performance tables
-        let query = `SELECT DISTINCT ON (ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId")
+        let query = `SELECT DISTINCT ON (ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", p."UBCId")
         ita."term",
         TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
         c."ctitle",
@@ -17,7 +17,8 @@ async function getCourseHistory(req) {
         d."dcode" || ' ' || c."courseNum" AS "courseCode",
         stp."score",
         d."dname",
-        p."profileId"
+        p."profileId",
+        p."UBCId"
         FROM
         "Course" c
         LEFT JOIN
@@ -31,7 +32,7 @@ async function getCourseHistory(req) {
         WHERE 
         c."courseId" = $1
         ORDER BY 
-        ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", stp."score" DESC;
+        ita."term", full_name, c."ctitle", "courseCode", d."dname", p."profileId", p."UBCId", stp."score" DESC;
         `;
         let result = await pool.query(query,[courseId]);
 
@@ -77,7 +78,8 @@ async function getCourseHistory(req) {
                 session: session,
                 term: sessionSuffix,
                 score: row.score ? Number(row.score.toFixed(2)) : "",
-                term_num: row.term
+                term_num: row.term,
+                ubcid:row.UBCId
             };
         });   
 

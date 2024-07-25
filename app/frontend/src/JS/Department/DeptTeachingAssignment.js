@@ -132,15 +132,16 @@ function DeptTeachingAssignment() {
 
 	const filteredCourses = deptCourseList.courses.filter((course) => {
 		const divisionPrefix = divisionMap[selectedDivision];
-		return course.courseCode.startsWith(divisionPrefix);
+		return course.courseCode && course.courseCode.startsWith(divisionPrefix);
 	});
+	
 
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
 		<div className="dashboard-container">
 			<CreateSideBar sideBarType="Department" />
-			<div className="container" id="info-test-content">
+			<div className="container" id='teaching-assignment-test-content'>
 				<CreateTopBar />
 				<div className="teaching-assignment-subtitle">
 					<h1>Teaching assignment ({currentTerm})</h1>

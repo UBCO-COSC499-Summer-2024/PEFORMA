@@ -68,7 +68,7 @@ describe('saveDataToDatabase', function() {
         await saveDataToDatabase(data);
 
         console.log('queryStub.callCount:', queryStub.callCount);
-        expect(queryStub.callCount).to.equal(4);
+        expect(queryStub.callCount).to.equal(3);
     });
 
     it('should handle errors during Service Role insertion', async function() {

@@ -52,7 +52,7 @@ describe('InsProfilePage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
     const element = document.getElementById('text-content');
 

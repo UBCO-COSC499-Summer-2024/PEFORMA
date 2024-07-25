@@ -35,11 +35,11 @@ function CoscTable() {
 	}, []);
 
 	const filterCourses = (identifier) => {
-		if (identifier == 'All') {
+		if (identifier === 'All') {
 			setFilteredCourses(courses);
 		} else {
 			const filtered = courses.filter((course) =>
-				course.courseCode.startsWith(`COSC ${identifier}`)
+				course.courseCode.startsWith(`COSC ${identifier[0]}`)
 			);
 			setFilteredCourses(filtered);
 		}
@@ -50,7 +50,7 @@ function CoscTable() {
 			<div className="header-container">
 				<h1 className="subTitleD">Computer Science</h1>
 				<div>
-					{['All', 1, 2, 3, 4].map((identifier) => (
+					{['All', '100', '200', '300', '400'].map((identifier) => (
 						<button
 							className="year-button"
 							key={identifier}
