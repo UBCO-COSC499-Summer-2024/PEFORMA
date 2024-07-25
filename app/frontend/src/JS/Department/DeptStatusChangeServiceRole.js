@@ -30,7 +30,7 @@ function DeptStatusChangeServiceRole() {
 			);
 			setRoleData({ ...location.state.roleData, roles: filledRoles, currentPage: 1 });
 		}
-	}, [accountLogInType, navigate, location.state]);
+	}, [accountLogInType, navigate, location.state, authToken]);
 
 	const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
 

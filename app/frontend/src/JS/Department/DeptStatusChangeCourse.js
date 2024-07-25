@@ -32,7 +32,7 @@ function DeptStatusChangeCourse() {
 			);
 			setDeptCourseList({ ...location.state.deptCourseList, courses: filledCourses, currentPage: 1 });
 		}
-	}, [accountLogInType, navigate, location.state]);
+	}, [accountLogInType, navigate, location.state, authToken]);
 
 	const filteredCourses = filterItems(deptCourseList.courses, 'course', search);
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);

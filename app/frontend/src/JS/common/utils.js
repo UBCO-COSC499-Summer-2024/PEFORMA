@@ -77,11 +77,15 @@ export const handleUnauthorizedError = (error, navigate) => {
   }
 };
 
-export const fetchWithAuth = async (url, authToken, navigate) => {
+export const fetchWithAuth = async (url, authToken, navigate, params = null) => {
+  const config = {
+    headers: { Authorization: `Bearer ${authToken.token}` },
+  };
+  if (params) {
+    config.params = params;
+  }
   try {
-    const res = await axios.get(url, {
-      headers: { Authorization: `Bearer ${authToken.token}` },
-    });
+    const res = await axios.get(url, config);
     return res.data;
   } catch (error) {
     handleUnauthorizedError(error, navigate);

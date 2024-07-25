@@ -7,7 +7,8 @@ import { CreateTopBar } from '../common/commonImports.js';
 import divisions from '../common/divisions.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems } from '../common/utils.js';import { useAuth } from '../common/AuthContext.js';
+import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems } from '../common/utils.js';
+import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Instructor/InsCourseList.css';
 
 function useInsCourseList() {
@@ -171,6 +172,7 @@ function InsCourseList() {
                                             onPageChange={(data) => handlePageClick(data, setDivisionData)}
                                             containerClassName={'pagination'}
                                             activeClassName={'active'}
+                                            forcePage={divisionData.currentPage - 1}
                                         />
                                     </td>
                                 </tr>
