@@ -7,14 +7,15 @@ async function getCoursePerformance(req){
     try {
         const term = await getLatestTerm();
         query = `SELECT d."dcode" || ' ' || c."courseNum" AS "DivisionAndCourse",
-                COALESCE(AVG(stp."score"), 0) AS "AverageScore"
-                FROM "SingleTeachingPerformance" stp
-                LEFT JOIN "Course" c ON c."courseId" = stp."courseId"
+                    COALESCE(AVG(stp."score"), 0) AS "AverageScore"
+                FROM "Course" c
+                LEFT JOIN "CourseByTerm" cbt ON cbt."courseId" = c."courseId"
+                LEFT JOIN "SingleTeachingPerformance" stp ON stp."courseId" = cbt."courseId" AND stp."term" = cbt."term"
                 LEFT JOIN "Division" d ON d."divisionId" = c."divisionId"
-                WHERE c."divisionId" = $1 AND stp."term" <= $2 AND c."isActive" = true
+                WHERE c."divisionId" = $1 AND c."isActive" = true
+                AND (stp."term" IS NULL OR stp."term" <= $2)
                 GROUP BY d."dcode", c."courseNum"
-                ORDER BY  c."courseNum" DESC
-        `;
+                ORDER BY c."courseNum" DESC;`;
         result = await pool.query(query,[divisionId,term]);
         const data = result.rows.map(row => ({
             courseCode: row.DivisionAndCourse || '',
@@ -38,8 +39,11 @@ async function getCoursePerformance(req){
             return 'C';
         } else if (score >= 60) {
             return 'D';
-        } else {
+        } else if (score < 60 && score != 0){
             return 'F';
+        }
+        else{
+            return 'N/A';
         }
     }
 };
