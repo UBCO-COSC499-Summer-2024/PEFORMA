@@ -204,3 +204,58 @@ export const getCurrentMonthName = () => {
 	];
 	return monthNames[new Date().getMonth()];
 };
+
+export const toggleStatus = async (authToken, item, newStatus, itemList, setItemList, endpoint) => {
+  const updatedItem = { ...item, status: newStatus };
+  const updatedItems = itemList.map((i) => (endpoint.includes('Member') ? item.ubcid === i.ubcid : item.id === i.id) ? updatedItem : i);
+
+  let itemIdKey;
+  let listKey;
+  let itemIdValue;
+
+  switch (true) {
+    case endpoint.includes('Course'):
+      itemIdKey = 'courseid';
+      listKey = 'courses';
+      itemIdValue = item.id;
+      break;
+    case endpoint.includes('Member'):
+      itemIdKey = 'memberId';
+      listKey = 'members';
+      itemIdValue = item.ubcid;
+      break;
+    case endpoint.includes('Role'):
+      itemIdKey = 'roleId';
+      listKey = 'roles';
+      itemIdValue = item.id;
+      break;
+    default:
+      throw new Error('Unknown endpoint type');
+  }
+
+  try {
+    const response = await axios.post(
+      `http://localhost:3001/api/${endpoint}`,
+      {
+        [itemIdKey]: itemIdValue,
+        newStatus: newStatus,
+      },
+      {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      }
+    );
+    if (response.status === 200) {
+      setItemList((prevState) => {
+        const filledItems = fillEmptyItems(updatedItems, prevState.perPage);
+        return {
+          ...prevState,
+          [listKey]: filledItems,
+        };
+      });
+    } else {
+      console.error('Error updating item status:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error updating item status:', error);
+  }
+};

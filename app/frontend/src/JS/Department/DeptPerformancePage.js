@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
+import { Download } from 'lucide-react';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import DeptDivisionTable from './PerformanceImports/DeptDivisionTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
 import { checkAccess, getCurrentMonthName, fetchWithAuth } from '../common/utils.js';
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
-import axios from 'axios';
-import { Download } from 'lucide-react';
-
 import '../../CSS/Department/DeptPerformancePage.css';
 
 function formatTime(minutes) {
