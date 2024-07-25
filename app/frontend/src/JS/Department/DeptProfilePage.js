@@ -301,6 +301,7 @@ function DeptProfilePage() {
               break;
             }
           }
+          
           if (type == "course") {
             courseData.courses = dataList;
           } else {
@@ -315,20 +316,23 @@ function DeptProfilePage() {
             <div className="container" data-testid="main-container">
                 <CreateTopBar />
                 <div className='outside'>
-                    {!editState && (
+                    {!editState ? (
                         <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
-                    )}
-                    {editState && (
+                    ) : (
                         <div className='space'></div>
                     )}
-                    <h1>{profile.name}'s Profile</h1>
+                    <h1>
+                        {editState && (
+                            <span>Edit </span>
+                        )}
+                        {profile.name}'s Profile
+                    </h1>
                 </div>
                 <div className="main-content" id="text-content"> 
                     <section className="information">
-                        {!editState && (
+                        {!editState ? (
                             <button className='edit-button' data-testid="edit-button" onClick={() => handleEditState(true)}>Edit Profile</button>
-                        )}
-                        {editState && (
+                        ) : (
                             <>
                                 <button className='save-button' data-testid="save-button" onClick={submitChanges}>Save Changes</button>
                                 <button className='cancel-button' data-testid="cancel-button" onClick={() => cancelChanges()}>Cancel Changes</button>
@@ -343,7 +347,11 @@ function DeptProfilePage() {
                             )}
                             {selectedRoles.map((role, index) => (
                                 <div key={role.id}>
-                                    <Link to={`/DeptRoleInformation?roleid=${role.id}`}>- {role.name}</Link>
+                                    {!editState ? (
+                                        <Link to={`/DeptRoleInformation?roleid=${role.id}`}>- {role.name}</Link>
+                                    ) : (
+                                        <span>- {role.name}</span>
+                                    )}
                                     {editState && (
                                         <button type="button" className='remove-instructor' onClick={(e) => { unassign(role.id, index, "role") }}>X</button>
                                     )}
@@ -382,16 +390,20 @@ function DeptProfilePage() {
                             )}
                             {selectedCourses.map((teachingAssign, index) => (
                                 <div key={teachingAssign.id}>
-                                    <Link to={`/DeptCourseInformation?courseid=${teachingAssign.id}`}>
+                                    {!editState ? (
+                                        <Link to={`/DeptCourseInformation?courseid=${teachingAssign.id}`}>
                                         - {teachingAssign.courseCode}
-                                    </Link>
+                                        </Link>
+                                    ) : (
+                                        <span>- {teachingAssign.courseCode}</span>
+                                    )}
                                     {editState && (
                                         <button type="button" className='remove-instructor' onClick={(e) => { unassign(teachingAssign.id, index, "course") }}>X</button>
                                     )}
                                 </div>
                             ))}
                         </p>
-                        {editState && (
+                        {editState ? (
                             <button
                                 className="assign-button"
                                 data-testid="assign-courses"
@@ -399,8 +411,7 @@ function DeptProfilePage() {
                                 onClick={handleShowCoursesModal}>
                                 <span className="plus">+</span> Assign Course(s)
                             </button>
-                        )}
-                        {!editState && (
+                        ) : (
                         <div>
                         <p className='chart'><strong>Service Hours:</strong></p>
                         <CreateWorkingBarChart profileid={profile.profileId} height={400} width={500} className='performance-chart'/>

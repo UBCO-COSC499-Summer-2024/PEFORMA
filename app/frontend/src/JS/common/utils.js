@@ -88,3 +88,57 @@ export const fetchWithAuth = async (url, authToken, navigate) => {
     throw error; 
   }
 };
+
+export const getCurrentInstructor = (historyData) => {
+  let history = historyData.history;
+  let currentInstructor = [];
+  console.log(history);
+  if (history[0].instructorID !== "") {
+  for (let i = 0; i < history.length; i++) {
+
+    let term = "1";
+    if (history[i].session.slice(4,5) === "S") {
+      if (history[i].term === "1") {
+        term = "3";
+      } else {
+        term = "4";
+      }
+    } else {
+      if (history[i].term === "1") {
+        term = "1";
+      } else {
+        term = "2";
+      }
+    }
+
+    if (parseInt(history[i].session.slice(0,4)+term) === historyData.latestTerm) {
+      currentInstructor.push(history[i]);
+    }
+  }
+}
+  return currentInstructor;
+}
+
+export function filterItems(items, itemType, search) {
+  if (itemType === 'member') {
+    return items.filter((item) =>
+      (item.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
+      (item.name?.toLowerCase().includes(search.toLowerCase()) || false) ||
+      (Array.isArray(item.serviceRole)
+        ? item.serviceRole.some(role => role?.toLowerCase().includes(search.toLowerCase()))
+        : (item.serviceRole?.toLowerCase().includes(search.toLowerCase()) || false))
+    );
+  } else if (itemType === 'course') {
+    return items.filter((item) =>
+      (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (item.title?.toLowerCase() ?? '').includes(search.toLowerCase())
+    );
+  } else if (itemType === 'role') {
+    return items.filter((item)=>
+      (item.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
+      (item.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
+    );
+  } else {
+    return items;
+  }
+}
