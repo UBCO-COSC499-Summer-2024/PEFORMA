@@ -5,10 +5,10 @@ const loginRouter = require('./routes/logincheck'); // 确保路径正确
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
-const queryAccountRouter = require('./routes/queryAccountRouter').router;
-const AccountTypeRouter = require('./routes/AccountType');
+const queryAccountRouter = require('./routes/queryAccountRouter');
+const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
-const { saveDataToDatabase } = require('./routes/DataEntry');
+const saveDataToDatabase = require('./routes/DataEntry');
 const { setupDatabase } = require('./insertProfileImages');
 
 const { upsertProfile } = require('./routes/upsertProfile');
@@ -75,9 +75,9 @@ console.log('before:');
 
 //login pprocess
 app.use('/',queryAccountRouter);//serach account in db
-app.use('/', loginRouter);//check for login
+app.use('/logincheck', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
-app.use('/',AccountTypeRouter);//check account type
+app.use('/accountType',AccountTypeRouter);//check account type
 
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);
@@ -155,17 +155,7 @@ app.use('/api',assignInstructorCourse);
 app.use('/api/terms',allTerms);
 app.use('/api', setTerm)
 
-app.post('/enter', async (req, res) => {
-    const data = req.body;
-    console.log(data); // 打印接收到的数据，确保格式正确
-    try {
-        // 调用函数将数据存入数据库
-        await saveDataToDatabase(data);
-        res.status(200).send('Data successfully saved');
-    } catch (error) {
-        res.status(500).send(`Failed to save data.Error Message:${error.message}`);
-    }
-});
+app.use('/enter',saveDataToDatabase);
 
 
 app.use('/api',instructorFetch);

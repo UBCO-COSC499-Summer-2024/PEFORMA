@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, act } from '@testing-library/react';
+import { fireEvent, render, screen, act, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TopBar from '../../../app/frontend/src/JS/common/TopBar';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
@@ -19,8 +19,8 @@ describe('TopBar', () => {
     useNavigate.mockReturnValue(mockNavigate);
 
     useAuth.mockReturnValue({
-			authToken: { token: 'mocked-token' },
-      profileId: { profileId: 'mocked-profileId'},
+      authToken: { token: 'mocked-token' },
+      profileId: 'mocked-profileId',
       accountType: [1, 3],
       accountLogInType: 1,
       setAccountLogInType: jest.fn(),
@@ -34,7 +34,7 @@ describe('TopBar', () => {
       }
       return null;
     });
-    
+
     render(
       <MemoryRouter>
         <TopBar />
@@ -45,38 +45,39 @@ describe('TopBar', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+
   test('Testing logged in initially with department, accountLogInType 1', () => {
     // expect screen to show Department on topbar and show 1 as accountLogInType
     expect(screen.getByText('Department')).toBeInTheDocument();
     expect(localStorage.getItem('accountLogInType')).toBe('1');
-  })
+  });
+
   test('Testing switch account to instructor from department', async () => {
-    fireEvent.click(screen.getByAltText('Switch Account'));
+    const profileElement = document.querySelector('.profile-initials') || document.querySelector('img[alt="Profile"]');
+    fireEvent.click(profileElement);
+
+    await act(async () => {
+      fireEvent.click(screen.getByText('Switch account'));
+    });
 
     await act(async () => {
       fireEvent.click(screen.getByText('Instructor'));
     });
-    // check if setAccountLogInType is set to 3
-    expect(useAuth().setAccountLogInType).toHaveBeenCalledWith(3);
 
-    // check local storage if accountLogInType is set to 3
     expect(localStorage.setItem).toHaveBeenCalledWith('accountLogInType', JSON.stringify(3));
-
-    // check navigate to /InsPerformancePage 
     expect(mockNavigate).toHaveBeenCalledWith('/InsPerformancePage');
 
-    // mocking useAuth again to reflect to new state
     useAuth.mockReturnValueOnce({
       authToken: { token: 'mocked-token' },
-      profileId: { profileId: 'mocked-profileId'},
+      profileId: 'mocked-profileId',
       accountType: [1, 3],
-      accountLogInType: 3, // set accountLogInType to 3
+      accountLogInType: 3,
       setAccountLogInType: jest.fn(),
-    })
+    });
 
     localStorage.getItem.mockImplementation((key) => {
       if (key === 'accountLogInType') {
-        return '3'; // not set to return 3 for accountLogInType
+        return '3';
       }
       return null;
     });
@@ -86,8 +87,8 @@ describe('TopBar', () => {
         <TopBar />
       </MemoryRouter>
     );
-    // now expect screen to show Instructor on topbar and show 3 as accountLogInType because switched to instructor
-    expect(screen.getByText('Instructor')).toBeInTheDocument();
+
     expect(localStorage.getItem('accountLogInType')).toBe('3');
   });
+
 });

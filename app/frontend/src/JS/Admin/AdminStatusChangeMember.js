@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, toggleStatus} from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
+
+function handleStatusChange(authToken, member, newStatus, memberData, setMemberData) {
+  toggleStatus(authToken, member, newStatus, memberData, setMemberData, 'adminStatusChangeMembers');
+};
 
 function AdminStatusChangeMember() {
 	const { authToken, accountLogInType } = useAuth();
@@ -20,54 +23,14 @@ function AdminStatusChangeMember() {
   const [search, setSearch] = useState('');
 
 	useEffect(() => {
-		// checkAccess(accountLogInType, navigate, 'admin', authToken); 		
-		checkAccess(accountLogInType, navigate, 'admin');
+		checkAccess(accountLogInType, navigate, 'admin', authToken); 		
 		if (location.state.memberData) {
 				const filledMembers = fillEmptyItems(location.state.memberData.members, location.state.memberData.perPage);
 				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
 		}
 	}, [accountLogInType, navigate, location.state.memberData]);
-	
 
-	const toggleStatus = async (member, newStatus) => {
-		const updatedMember = { ...member, status: newStatus };
-		const updatedMembers = memberData.members.map((m) => (m.ubcid === member.ubcid ? updatedMember : m));
-		try {
-			const response = await axios.post(
-				`http://localhost:3001/api/adminStatusChangeMembers`, 
-				{
-					memberId: member.ubcid,
-					newStatus: newStatus,
-				},
-				{
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				}
-			);
-			if (response.status === 200) {
-				setMemberData((prevState) => {
-					const filledMembers = fillEmptyItems(updatedMembers, memberData.perPage);
-					return {
-						...prevState,
-						members: filledMembers,
-					};
-				});
-			} else {
-				console.error('Error updating member status:', response.statusText);
-			}
-		} catch (error) {
-			console.error('Error updating member status:', error);
-		}
-	};
-
-  const filteredMembers = memberData.members.filter(
-		(member) =>
-			(member.ubcid?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(member.name?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(Array.isArray(member.serviceRole)
-				? member.serviceRole.some((role) => role?.toLowerCase().includes(search.toLowerCase()))
-				: (member.serviceRole?.toLowerCase() ?? '').includes(search.toLowerCase()))
-	);
-
+	const filteredMembers = filterItems(memberData.members, 'member', search);
   const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
@@ -98,25 +61,19 @@ function AdminStatusChangeMember() {
 							<tbody>
 								{currentMembers.map((member, index) => (
 									<tr key={index}>
-										<td>
-											<Link to={`/AdminProfilePage?ubcid=${member.ubcid}`}>{member.name}</Link>
-										</td>
+										<td>{member.name}</td>
 										<td>{member.ubcid}</td>
 										<td>
 											{member.serviceRole ? (
 												Array.isArray(member.serviceRole) ? (
 													member.serviceRole.map((serviceRole, index) => (
 														<React.Fragment key={index}>
-															<Link to={`/AdminRoleInformation?roleid=${member.roleid[index]}`}>
-																{serviceRole}
-															</Link>
+															{serviceRole}
 															{index < member.serviceRole.length - 1 && <><br /><br /></>}
 														</React.Fragment>
 													))
 												) : (
-													<Link to={`/AdminRoleInformation?roleid=${member.roleid}`}>
-														{member.serviceRole}
-													</Link>
+													member.serviceRole
 												)
 											) : ('')}
 										</td>
@@ -125,13 +82,13 @@ function AdminStatusChangeMember() {
 												<>
 													<button
 														className={`${member.status ? 'active-button' : 'default-button'} button`}
-														onClick={() => toggleStatus(member, true)}
+														onClick={() => handleStatusChange(authToken, member, true, memberData.members, setMemberData)}
 														disabled={member.status}>
 														Active
 													</button>
 													<button
 														className={`${!member.status ? 'inactive-button' : 'default-button'} button`}
-														onClick={() => toggleStatus(member, false)}
+														onClick={() => handleStatusChange(authToken, member, false, memberData.members, setMemberData)}
 														disabled={!member.status}>
 														Inactive
 													</button>

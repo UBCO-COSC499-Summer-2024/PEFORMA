@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, toggleStatus } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
+
+function handleStatusChange(authToken, role, newStatus, roleData, setRoleData) {
+	toggleStatus(authToken, role, newStatus, roleData, setRoleData, 'DeptStatusChangeServiceRole');
+};
 
 function DeptStatusChangeServiceRole() {
 	const { authToken, accountLogInType } = useAuth();
@@ -19,7 +22,7 @@ function DeptStatusChangeServiceRole() {
 	);
 
 	useEffect(() => {
-		checkAccess(accountLogInType, navigate, 'department')
+		checkAccess(accountLogInType, navigate, 'department', authToken)
 		if (location.state.roleData) {
 				const filledRoles = fillEmptyItems(
 				location.state.roleData.roles,
@@ -27,40 +30,9 @@ function DeptStatusChangeServiceRole() {
 			);
 			setRoleData({ ...location.state.roleData, roles: filledRoles, currentPage: 1 });
 		}
-	}, [location.state]);
+	}, [accountLogInType, navigate, location.state, authToken]);
 
 	const currentRoles = currentItems(roleData.roles, roleData.currentPage, roleData.perPage);
-
-	const toggleStatus = async (role, newStatus) => {
-		const updatedRole = { ...role, status: newStatus };
-		const updatedRoles = roleData.roles.map((r) => (r.id === role.id ? updatedRole : r));
-
-		try {
-			const response = await axios.post(
-				`http://localhost:3001/api/DeptStatusChangeServiceRole`,
-				{
-					roleId: role.id,
-					newStatus: newStatus,
-				},
-				{
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				}
-			);
-			if (response.status === 200) {
-				setRoleData((prevState) => {
-					const filledRoles = fillEmptyItems(updatedRoles, prevState.perPage);
-					return {
-						...prevState,
-						roles: filledRoles,
-					};
-				});
-			} else {
-				console.error('Error updating role status:', response.statusText);
-			}
-		} catch (error) {
-			console.error('Error updating role status:', error);
-		}
-	};
 
 	return (
 		<div className="dashboard">
@@ -103,14 +75,16 @@ function DeptStatusChangeServiceRole() {
 															className={`${
 																role.status ? 'active-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(role, true)} disabled={role.status}>
+															onClick={() => handleStatusChange(authToken, role, true, roleData.roles, setRoleData)} 
+															disabled={role.status}>
 															Active
 														</button>
 														<button
 															className={`${
 																role.status === false ? 'inactive-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(role, false)} disabled={!role.status}>
+															onClick={() => handleStatusChange(authToken, role, false, roleData.roles, setRoleData)} 
+															disabled={!role.status}>
 															Inactive
 														</button>
 													</>
