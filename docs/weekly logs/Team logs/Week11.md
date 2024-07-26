@@ -46,4 +46,51 @@ we needed to make it more re-usable. So we planned out what we needed to do for 
 ### Next Cycle Goal
 Our goal for the next cycle is to continue making good progress on fully testing and refactoring our entire system.
 
+## Cycle 2
 
+**Date Range:** [07/23/2024] - [07/24/2024]
+
+## Project Cycle Features
+
+| Feature Name        | Owner                                   |
+| -------------------- | --------------------------------------------- |
+|new import for SEI data| Zhiheng |
+|new import for course performance| Zhiheng |
+|fix old import functions to new database| Zhiheng |
+|fix old import functions to new database| Zhiheng |
+|tests (BE) for refactor part 2| Zhiheng|
+| Backend refactoring | Subaru |
+|Refactor deptCourseList | Kevin |
+|Refactor DeptMemberList | Kevin |
+| Refactor DeptPerformancePage| Kevin|
+|Refactor DeptServiceRoleList| Kevin |
+| Refactor DeptStatusChangeCourse| Kevin |
+| Refactor DeptStatusChangeServiceRole| Kevin |
+| Refactor AdminStatusChangeMember| Kevin |
+| Refactor InsCourseList| Kevin |
+| Refactor InsProfilePage | Kevin |
+| Finish testing and refacoring DeptProfilePage | Jeremy |
+| Fix performance | Subaru |
+| Update Service role | Subaru |
+| Update courses | Subaru |
+| Code refactoring | Subaru |
+| Fix instructor-view-course list| Subaru |
+
+
+
+### Cycle Reflection
+This cycle was about identifying bugs, and fixing them. We went very specific on identifying bugs, such as checking with the db if the correct data is shown. 
+We also had to incorporate new features because Raymon gave us the project requirements and we realized that we were missing a few. 
+Some features are completed such as importing SEI data. 
+Code refactoring is still a hard process because it takes time to read other people's code and understand it. Since we lost Adams, the workload for BE increased 50% compared to before so it was really hard to maintain our progress. 
+
+## Next Cycle Planning
+
+| Task Name             | Owner         | 
+| ----------------------- | -------------- | 
+| Code refactoring & testing | Kevin & Subaru & Jeremy & Zhiheng |
+| Implement of new feature | Zhiheng |
+| Fixing bugs in FE & BE | Jeremy & Kevin & Subaru |
+
+### Next Cycle Goal
+Our goal for the next cycle is finish up the code refactoring as well the implementation for the new feature so that we can start working on documentation. 
