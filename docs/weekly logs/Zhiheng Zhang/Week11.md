@@ -59,13 +59,12 @@ BE refactor doesn't have much new update because of changes decided on team meet
 
 ### Timesheet
 ![alt text](7-26_00.png)
-![alt text](7-26_01.png)
 
 ### Current Tasks
   * #1: 
   * #2: 
 
-### Progress Update (since 6/5/2024)
+### Progress Update (since 7/24/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
@@ -75,28 +74,34 @@ BE refactor doesn't have much new update because of changes decided on team meet
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>    </td>
+        <td> new import for SEI data </td>
         <!-- Status -->
-        <td>    </td>
+        <td> finish </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>    </td>
+        <td> new import for course performance </td>
         <!-- Status -->
-        <td>    </td>
+        <td> finish </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>    </td>
+        <td> fix old import functions to new database </td>
         <!-- Status -->
-        <td>    </td>
+        <td> finish </td>
+    </tr>
+ <tr>
+        <!-- Task/Issue # -->
+        <td> tests (BE) for refactor part 2 </td>
+        <!-- Status -->
+        <td> finish </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
-
+Tests for refactored part 2 is finished, other code test would be start ahead but not checking query call-up time so should allow more freedom for refactoring. New import functions pointed out on discord is finished, and due to some changes to the database design, some changes to the previous imports are also required and finished.
 
 ### Next Cycle Goals
-  * Goal 1 
-  * Goal 2 
+  * Goal 1 BE all test under service folder
+  * Goal 2? Integration test
