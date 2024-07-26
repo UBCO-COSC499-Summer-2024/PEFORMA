@@ -1,33 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../CSS/Admin/CreateAccount.css';
 import axios from 'axios';
 import CreateSideBar, { CreateTopBar } from '../common/commonImports.js';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { checkAccess, handleCancelForm } from '../common/utils.js';
 
-function CreateAccount() {
-    const { authToken } = useAuth();
-    const navigate = useNavigate();
+const initialFormData = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    ubcId: '',
+    division: '',
+    accountType: [],
+    password: '',
+    confirmPassword: ''
+};
 
-    const initialFormData = {
-        email: '',
-        firstName: '',
-        lastName: '',
-        ubcId: '',
-        division: '',
-        accountType: [],
-        password: '',
-        confirmPassword: ''
-    };
+const accountTypeMapping = {
+    DepartmentHead: 1,
+    DepartmentStaff: 2,
+    Instructor: 3,
+    Admin: 4
+};
 
-    const accountTypeMapping = {
-        DepartmentHead: 1,
-        DepartmentStaff: 2,
-        Instructor: 3,
-        Admin: 4
-    };
-
-    const [formData, setFormData] = useState(initialFormData);
+function useFormState(initialState) {
+    const [formData, setFormData] = useState(initialState);
     const [ubcIdError, setUbcIdError] = useState('');
 
     const handleChange = (event) => {
@@ -58,19 +56,36 @@ function CreateAccount() {
         }
     };
 
+    return { formData, ubcIdError, handleChange, setFormData };
+}
+
+function validateForm(formData) {
+    if (formData.password !== formData.confirmPassword) {
+        alert('Passwords do not match.');
+        return false;
+    }
+
+    if (formData.ubcId && (formData.ubcId.length !== 8 || isNaN(formData.ubcId))) {
+        alert('UBC ID must be an 8-digit number');
+        return false;
+    }
+
+    return true;
+}
+
+function CreateAccount() {
+    const { accountLogInType, authToken } = useAuth();
+    const navigate = useNavigate();
+    const { formData, ubcIdError, handleChange, setFormData } = useFormState(initialFormData);
+
+    useEffect(() => {
+        checkAccess(accountLogInType, navigate, 'admin', authToken)
+    }, [authToken, navigate]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Form data submitted:', formData);
 
-        if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-        }
-
-        if (formData.ubcId && (formData.ubcId.length !== 8 || isNaN(formData.ubcId))) {
-            alert('UBC ID must be an 8-digit number');
-            return;
-        }
+        if (!validateForm(formData)) return;
 
         const postData = {
             email: formData.email,
@@ -84,12 +99,9 @@ function CreateAccount() {
         };
 
         try {
-            const response = await axios.post('http://localhost:3001/api/create-account', postData,
-                {
-                    headers: { Authorization: `Bearer ${authToken.token}` },
-                }
-            );
-            console.log('Server response:', response.data);
+            await axios.post('http://localhost:3001/api/create-account', postData, {
+                headers: { Authorization: `Bearer ${authToken.token}` },
+            });
             alert('Account created successfully.');
             setFormData(initialFormData);
         } catch (error) {
@@ -100,10 +112,6 @@ function CreateAccount() {
                 alert('Error creating account: ' + error.message);
             }
         }
-    };
-
-    const handleCancel = () => {
-        setFormData(initialFormData);
     };
 
     return (
@@ -149,7 +157,7 @@ function CreateAccount() {
                         <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
                         <div className='button-align-div'>
                             <button type="submit" className="create-button">Create</button>
-                            <button type="button" className="cancel-button" onClick={handleCancel}>Cancel</button>
+                            <button type="button" className="cancel-button" onClick={() => handleCancelForm(setFormData, initialFormData)}>Cancel</button>
                         </div>
                     </form>
                 </div>

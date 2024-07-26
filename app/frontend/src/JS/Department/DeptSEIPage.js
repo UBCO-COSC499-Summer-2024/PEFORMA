@@ -6,7 +6,7 @@ import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import '../../CSS/Department/DeptSEIPage.css'
-import { checkAccess } from '../common/utils.js';
+import { checkAccess, handleCancelForm } from '../common/utils.js';
 
 function DeptSEIPage() {
   const { authToken, accountLogInType } = useAuth();
@@ -111,7 +111,7 @@ function DeptSEIPage() {
     };
   
     try {
-      const response = await axios.post('http://localhost:3001/api/courseEvaluation', postData, {
+      await axios.post('http://localhost:3001/api/courseEvaluation', postData, {
         headers: { Authorization: `Bearer ${authToken.token}` },
       });
       alert('SEI data submitted successfully.');
@@ -122,11 +122,6 @@ function DeptSEIPage() {
     }
   };
   
-
-  const handleCancel = () => {
-    setFormData(initialFormData);
-  };
-
   return (
     <div className="dashboard">
       <CreateSideBar sideBarType="Department" />
@@ -158,7 +153,7 @@ function DeptSEIPage() {
                 <label><input type="number" name="failedPercentage" placeholder={`Failed Percentage of ${formData.course}`} value={formData.failedPercentage} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
                 <div className='submit-button-align'>
                   <button type="submit">Submit</button>
-                  <button type="button" onClick={handleCancel}>Cancel</button>
+                  <button type="button" className="cancel-button" onClick={() => handleCancelForm(setFormData, initialFormData)}>Cancel</button>
                 </div>
               </> 
             )}    

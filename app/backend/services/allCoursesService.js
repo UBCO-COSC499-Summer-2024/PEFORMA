@@ -1,8 +1,8 @@
 const pool = require('../db/index.js');
-
+const {updateAllCourses} = require('./updateAllCourses.js');
 async function getAllCourses() {
   try {
-
+    await updateAllCourses();
     let result = await pool.query(`
       SELECT c."courseId",
              c."ctitle",

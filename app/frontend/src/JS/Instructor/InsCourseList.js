@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import '../../CSS/Instructor/InsCourseList.css';
-import { Link, useNavigate } from 'react-router-dom';
-import '../common/divisions.js';
 import divisions from '../common/divisions.js';
-import axios from 'axios';
+import '../common/divisions.js';
 import '../common/AuthContext.js';
+import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
+import '../../CSS/Instructor/InsCourseList.css';
 
-function InsCourseList() {
+function useInsCourseList() {
     const { authToken, accountLogInType } = useAuth();
     const params = new URLSearchParams(window.location.search);
     const divisionCode = params.get('division') || 'COSC';
@@ -30,82 +31,46 @@ function InsCourseList() {
 
     useEffect(() => {
         const fetchCourses = async () => {
-            try {
-                if (!authToken) {
-                    navigate('/Login');
-                    return;
-                }
-                const numericAccountType = Number(accountLogInType);
-                if (numericAccountType !== 3) {
-                    alert('No Access, Redirecting to department view');
-                    navigate('/DeptDashboard');
-                }
-                const res = await axios.get(`http://localhost:3001/api/courses?division=${divisionCode}`, {
-                    headers: { Authorization: `Bearer ${authToken.token}` },
-                });
-                const data = res.data;
-                console.log(data);
-                const filledCourses = fillEmptyCourses(data.courses, data.perPage);
-                setDivisionData({ ...data, courses: filledCourses });
-            } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    localStorage.removeItem('authToken');
-                    navigate('/Login');
-                } else {
-                    console.error('Error fetching courses:', error);
-                }
-            }
+          try {
+            checkAccess(accountLogInType, navigate, 'instructor', authToken);
+            const data = await fetchWithAuth(`http://localhost:3001/api/courses?division=${divisionCode}`, authToken, navigate);
+            const filledCourses = fillEmptyItems(data.courses, data.perPage);
+            setDivisionData({ ...data, courses: filledCourses });
+          } catch (error) {
+            console.error('Error fetching courses:', error);
+          }
         };
         fetchCourses();
-    }, [authToken, divisionCode, accountLogInType, navigate]);
+      }, [authToken, divisionCode, accountLogInType, navigate]);
 
-    const handlePageClick = (data) => {
-        setDivisionData((prevState) => ({
-            ...prevState,
-            currentPage: data.selected + 1,
-        }));
-    };
+    const filteredCourses = filterItems(divisionData.courses, 'insCourse', search);
+    const currentCourses = currentItems(filteredCourses, divisionData.currentPage, divisionData.perPage);
 
-    const handleSearchChange = (newSearch) => {
-        setSearch(newSearch);
-        setDivisionData((prevState) => ({ ...prevState, currentPage: 1 }));
-    };
+    return {
+        divisionCode,
+        divisionHandler,
+        divisionData,
+        setDivisionData,
+        setSearch,
+        currentCourses
+    }
+}
 
-    const fillEmptyCourses = (courses, perPage) => {
-        const filledCourses = [...courses];
-        const currentCount = courses.length;
-        const fillCount = perPage - (currentCount % perPage);
-        if (fillCount < perPage) {
-            for (let i = 0; i < fillCount; i++) {
-                filledCourses.push({});
-            }
-        }
-        return filledCourses;
-    };
-
-    const pageCount = Math.ceil(divisionData.divisionCoursesCount / divisionData.perPage);
-
-    const filteredCourses = divisionData.courses.filter(
-        (course) =>
-            (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-            (course.title?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-            (course.instructor &&
-                Array.isArray(course.instructor) &&
-                course.instructor.some((instructor) =>
-                    instructor.toLowerCase().includes(search.toLowerCase())
-                ))
-    );
-
-    const currentCourses = filteredCourses.slice(
-        (divisionData.currentPage - 1) * divisionData.perPage,
-        divisionData.currentPage * divisionData.perPage
-    );
+function InsCourseList() {
+    const {
+        divisionCode,
+        divisionHandler,
+        divisionData,
+        setDivisionData,
+        setSearch,
+        currentCourses
+    } = useInsCourseList();
 
     return (
         <div className="dashboard">
             <CreateSideBar sideBarType="Instructor" />
             <div className="container">
-                <CreateTopBar searchListType={'InsCourseList'} onSearch={handleSearchChange} />
+                <CreateTopBar searchListType={'InsCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDivisionData);}} />
 
                 <div className="courselist-main">
                     <header className="ListTitle" id="dropdown-test-content">
@@ -201,12 +166,13 @@ function InsCourseList() {
                                             previousLabel={'<'}
                                             nextLabel={'>'}
                                             breakLabel={'...'}
-                                            pageCount={pageCount}
+                                            pageCount={pageCount(divisionData.divisionCoursesCount, divisionData.perPage)}
                                             marginPagesDisplayed={3}
                                             pageRangeDisplayed={0}
-                                            onPageChange={handlePageClick}
+                                            onPageChange={(data) => handlePageClick(data, setDivisionData)}
                                             containerClassName={'pagination'}
                                             activeClassName={'active'}
+                                            forcePage={divisionData.currentPage - 1}
                                         />
                                     </td>
                                 </tr>

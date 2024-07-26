@@ -6,23 +6,26 @@ async function getCoursePerformance(req){
     
     try {
         const term = await getLatestTerm();
-        query = `SELECT d."dcode"  || ' ' || c."courseNum" AS "DivisionAndCourse",
-        stp."score"
-        FROM "SingleTeachingPerformance" stp
-        JOIN "Course" c ON c."courseId" = stp."courseId"
-        JOIN "Division" d ON d."divisionId" = c."divisionId"
-        WHERE c."divisionId" = $1 AND stp."term" = $2
-        ORDER BY stp."score" DESC;
-        `;
+        query = `SELECT d."dcode" || ' ' || c."courseNum" AS "DivisionAndCourse",
+                    COALESCE(AVG(stp."score"), 0) AS "AverageScore"
+                FROM "Course" c
+                LEFT JOIN "CourseByTerm" cbt ON cbt."courseId" = c."courseId"
+                LEFT JOIN "SingleTeachingPerformance" stp ON stp."courseId" = cbt."courseId" AND stp."term" = cbt."term"
+                LEFT JOIN "Division" d ON d."divisionId" = c."divisionId"
+                WHERE c."divisionId" = $1 AND c."isActive" = true
+                AND (stp."term" IS NULL OR stp."term" <= $2)
+                GROUP BY d."dcode", c."courseNum"
+                ORDER BY c."courseNum" DESC;`;
         result = await pool.query(query,[divisionId,term]);
         const data = result.rows.map(row => ({
             courseCode: row.DivisionAndCourse || '',
-            rank:calculateRank(row.score) || '',
-            score: row.score.toFixed(2) || ''
+            rank:calculateRank(row.AverageScore) || '',
+            score: row.AverageScore.toFixed(2) || ''
         }));
         const output = {
             courses:data
         };
+        console.log("output",output);
         return output;
     } catch (error) {
         throw error;
@@ -36,8 +39,11 @@ async function getCoursePerformance(req){
             return 'C';
         } else if (score >= 60) {
             return 'D';
-        } else {
+        } else if (score < 60 && score != 0){
             return 'F';
+        }
+        else{
+            return 'N/A';
         }
     }
 };

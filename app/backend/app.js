@@ -5,8 +5,8 @@ const loginRouter = require('./routes/logincheck'); // 确保路径正确
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
-const queryAccountRouter = require('./routes/queryAccountRouter').router;
-const AccountTypeRouter = require('./routes/AccountType');
+const queryAccountRouter = require('./routes/queryAccountRouter');
+const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
 const { setupDatabase } = require('./insertProfileImages');
@@ -75,9 +75,9 @@ console.log('before:');
 
 //login pprocess
 app.use('/',queryAccountRouter);//serach account in db
-app.use('/', loginRouter);//check for login
+app.use('/logincheck', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
-app.use('/',AccountTypeRouter);//check account type
+app.use('/accountType',AccountTypeRouter);//check account type
 
 //Profile BE
 app.use('/api/instructorProfile',profileRoutes);

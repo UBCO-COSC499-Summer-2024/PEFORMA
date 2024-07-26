@@ -7,7 +7,7 @@ async function getDeptLeaderBoard(){
             SELECT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, AVG(stp."score") AS average_score
             FROM "Profile" p
             JOIN "SingleTeachingPerformance" stp ON p."profileId" = stp."profileId"
-            WHERE stp."term" = $1 
+            WHERE stp."term" <= $1 
             GROUP BY p."profileId"
             ORDER BY average_score DESC
             LIMIT 5;`, [latestTerm]);
@@ -16,7 +16,7 @@ async function getDeptLeaderBoard(){
             SELECT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, AVG(stp."score") AS average_score
             FROM "Profile" p
             JOIN "SingleTeachingPerformance" stp ON p."profileId" = stp."profileId"
-            WHERE stp."term" = $1 
+            WHERE stp."term" <= $1 
             GROUP BY p."profileId"
             ORDER BY average_score ASC
             LIMIT 5;`, [latestTerm]);

@@ -13,7 +13,7 @@ async function getDepartPerformance() {
             FROM "SingleTeachingPerformance" stp
             JOIN "CourseByTerm" cbt ON stp."courseId" = cbt."courseId" AND stp."term" = cbt."term"
             JOIN "Course" c ON cbt."courseId" = c."courseId"
-            WHERE stp."term" = $1
+            WHERE stp."term" <= $1
             GROUP BY c."divisionId"
             ORDER BY c."divisionId";
         `;

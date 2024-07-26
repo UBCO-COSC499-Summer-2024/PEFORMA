@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, toggleStatus } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
+
+function handleStatusChange(authToken, course, newStatus, courseData, setCourseData) {
+	toggleStatus(authToken, course, newStatus, courseData, setCourseData, 'DeptStatusChangeCourse');
+};
 
 function DeptStatusChangeCourse() {
 	const { authToken, accountLogInType } = useAuth();
@@ -21,7 +24,7 @@ function DeptStatusChangeCourse() {
 
 
 	useEffect(() => {
-		checkAccess(accountLogInType, navigate, 'department');
+		checkAccess(accountLogInType, navigate, 'department', authToken);
 		if (location.state.deptCourseList) {
 				const filledCourses = fillEmptyItems(
 				location.state.deptCourseList.courses,
@@ -29,44 +32,9 @@ function DeptStatusChangeCourse() {
 			);
 			setDeptCourseList({ ...location.state.deptCourseList, courses: filledCourses, currentPage: 1 });
 		}
-	}, [location.state]);
+	}, [accountLogInType, navigate, location.state, authToken]);
 
-	const toggleStatus = async (course, newStatus) => {
-		const updatedCourse = { ...course, status: newStatus };
-		const updatedCourses = deptCourseList.courses.map((c) => (course.id === c.id ? updatedCourse : c));
-		try {
-			const response = await axios.post(
-				`http://localhost:3001/api/DeptStatusChangeCourse`,
-				{
-					courseid: course.id,
-					newStatus: newStatus,
-				},
-				{
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				}
-			);
-			if (response.status === 200) {
-				setDeptCourseList((prevState) => {
-					const filledCourses = fillEmptyItems(updatedCourses, prevState.perPage);
-					return {
-						...prevState,
-						courses: filledCourses,
-					};
-				});
-			} else {
-				console.error('Error updating course status:', response.statusText);
-			}
-		} catch (error) {
-			console.error('Error updating course status:', error);
-		}
-	};
-
-	const filteredCourses = deptCourseList.courses.filter(
-		(course) =>
-			(course.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
-			(course.title?.toLowerCase() ?? '').includes(search.toLowerCase())
-	);
-
+	const filteredCourses = filterItems(deptCourseList.courses, 'course', search);
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
@@ -98,10 +66,7 @@ function DeptStatusChangeCourse() {
 									return (
 										<tr key={course.id}>
 											<td>
-												<Link
-													to={`http://localhost:3000/DeptCourseInformation?courseid=${course.id}`}>
-													{course.courseCode}
-												</Link>
+												<Link to={`/DeptCourseInformation?courseid=${course.id}`}>{course.courseCode}</Link>
 											</td>
 											<td>{course.title}</td>
 											<td>{course.description}</td>
@@ -112,14 +77,16 @@ function DeptStatusChangeCourse() {
 															className={`${
 																course.status ? 'active-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(course, true)} disabled={course.status}>
+															onClick={() => handleStatusChange(authToken, course, true, deptCourseList.courses, setDeptCourseList)} 
+															disabled={course.status}>
 															Active
 														</button>
 														<button
 															className={`${
 																course.status === false ? 'inactive-button' : 'default-button'
 															} button`}
-															onClick={() => toggleStatus(course, false)} disabled={!course.status}>
+															onClick={() => handleStatusChange(authToken, course, false, deptCourseList.courses, setDeptCourseList)} 
+															disabled={!course.status}>
 															Inactive
 														</button>
 													</>

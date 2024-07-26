@@ -1,23 +1,84 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
-import DeptCoscTable from './PerformanceImports/DeptCoscTable.js';
-import DeptMathTable from './PerformanceImports/DeptMathTable.js';
-import DeptPhysTable from './PerformanceImports/DeptPhysTable.js';
-import DeptStatTable from './PerformanceImports/DeptStatTable.js';
-import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
-import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
-import { checkAccess } from '../common/utils.js';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import axios from 'axios';
 import { Download } from 'lucide-react';
 
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
+import DeptDivisionTable from './PerformanceImports/DeptDivisionTable.js';
+import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
+import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
+import { checkAccess, getCurrentMonthName, fetchWithAuth } from '../common/utils.js';
 import '../../CSS/Department/DeptPerformancePage.css';
 
-function PerformanceDepartmentPage() {
+function formatTime(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = Math.round(minutes % 60);
+    return `${hours} hours ${remainingMinutes} minutes`;
+}
+
+function getReadableColumns(columns) {
+    const columnMap = {
+        courseCode: 'Course Code',
+        rank: 'Rank',
+        score: 'Score',
+        name: 'Name',
+        shortage: 'Shortage'
+    };
+    return columns.map(col => columnMap[col] || col.charAt(0).toUpperCase() + col.slice(1));
+}
+
+
+function mapDataWithIndex(data) {
+    return data.map((item, index) => ({
+        '#': index + 1,
+        ...item
+    }));
+}
+
+function addTable(doc, title, data, columns, yOffset, formatters = {}) {
+    doc.setFontSize(16);
+    doc.text(title, 14, yOffset);
+
+    const rankedData = mapDataWithIndex(data);
+    const readableColumns = getReadableColumns(columns);
+
+    doc.autoTable({
+        startY: yOffset + 10,
+        head: [['#', ...readableColumns]],
+        body: rankedData.map(item =>
+            ['#', ...columns].map(col =>
+                formatters[col] ? formatters[col](item[col]) : item[col]
+            )
+        ),
+    });
+    return doc.lastAutoTable.finalY + 20;
+}
+
+function exportAllToPDF(data) {
+    const doc = new jsPDF();
+    let yOffset = 10;
+
+    yOffset = addTable(doc, 'Computer Science Courses', data.cosc, ['courseCode', 'rank', 'score'], yOffset);
+    yOffset = addTable(doc, 'Mathematics Courses', data.math, ['courseCode', 'rank', 'score'], yOffset);
+    yOffset = addTable(doc, 'Physics Courses', data.phys, ['courseCode', 'rank', 'score'], yOffset);
+    yOffset = addTable(doc, 'Statistics Courses', data.stat, ['courseCode', 'rank', 'score'], yOffset);
+    
+    const currentMonth = getCurrentMonthName();
+    yOffset = addTable(doc, `Benchmark - ${currentMonth}`, data.benchmark, ['name', 'shortage'], yOffset, { shortage: formatTime });
+    
+    doc.addPage();
+    yOffset = 10;
+    yOffset = addTable(doc, 'Top 5 Instructors', data.leaderboard.top, ['name', 'score'], yOffset);
+    addTable(doc, 'Bottom 5 Instructors', data.leaderboard.bottom, ['name', 'score'], yOffset);
+
+    doc.save('department_performance_overview.pdf');
+}
+
+
+function usePerformanceDepartmentData() {
     const navigate = useNavigate();
     const { authToken, accountLogInType } = useAuth();
     const [allData, setAllData] = useState({
@@ -28,122 +89,44 @@ function PerformanceDepartmentPage() {
         benchmark: [],
         leaderboard: { top: [], bottom: [] }
     });
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const checkAuth = async () => {
-            if (!authToken) {
-                navigate('/Login');
-                return;
-            }
+        const fetchAllData = async () => {
             try {
-                checkAccess(accountLogInType, navigate, 'department');
+                checkAccess(accountLogInType, navigate, 'department', authToken);
+                const [cosc, math, phys, stat, benchmark, leaderboard] = await Promise.all([
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=1`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=2`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=3`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=4`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/benchmark?currMonth=${new Date().getMonth() + 1}`, authToken, navigate),
+                    fetchWithAuth(`http://localhost:3001/api/deptLeaderBoard`, authToken, navigate),
+                ]);
+
+                const sortedBenchmark = benchmark.people.sort((a, b) => b.shortage - a.shortage);
+                const newData = {
+                    cosc: cosc.courses,
+                    math: math.courses,
+                    phys: phys.courses,
+                    stat: stat.courses,
+                    benchmark: sortedBenchmark,
+                    leaderboard: leaderboard
+                };
+
+                setAllData(newData);
             } catch (error) {
-                console.error('Failed to fetch account type', error);
-                navigate('/Login');
+                console.error('Error fetching all data:', error);
             }
         };
 
-        checkAuth();
+        fetchAllData();
     }, [authToken, accountLogInType, navigate]);
 
-    const fetchAllData = async () => {
-        setIsLoading(true);
-        try {
-            const [cosc, math, phys, stat, benchmark, leaderboard] = await Promise.all([
-                axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 1 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 2 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 3 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                axios.get(`http://localhost:3001/api/coursePerformance`, { params: { divisionId: 4 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                axios.get(`http://localhost:3001/api/benchmark`, { params: { currMonth: new Date().getMonth() + 1 }, headers: { Authorization: `Bearer ${authToken.token}` } }),
-                axios.get(`http://localhost:3001/api/deptLeaderBoard`, { headers: { Authorization: `Bearer ${authToken.token}` } })
-            ]);
+    return allData;
+}
 
-            const newData = {
-                cosc: cosc.data.courses,
-                math: math.data.courses,
-                phys: phys.data.courses,
-                stat: stat.data.courses,
-                benchmark: benchmark.data.people,
-                leaderboard: leaderboard.data
-            };
-
-            setAllData(newData);
-            setIsLoading(false);
-            return newData;
-        } catch (error) {
-            console.error('Error fetching all data:', error);
-            setIsLoading(false);
-        }
-    };
-
-    const formatTime = (minutes) => {
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = Math.round(minutes % 60);
-        return `${hours} hours ${remainingMinutes} minutes`;
-    };
-
-    const exportAllToPDF = (data) => {
-        const doc = new jsPDF();
-        let yOffset = 10;
-
-        const addTable = (title, data, columns, formatters = {}) => {
-            doc.setFontSize(16);
-            doc.text(title, 14, yOffset);
-            
-            const rankedData = data.map((item, index) => ({
-                '#': index + 1,
-                ...item
-            }));
-
-            const readableColumns = columns.map(col => {
-                switch(col) {
-                    case 'courseCode': return 'Course Code';
-                    case 'rank': return 'Rank';
-                    case 'score': return 'Score';
-                    case 'name': return 'Name';
-                    case 'shortage': return 'Shortage';
-                    default: return col.charAt(0).toUpperCase() + col.slice(1);
-                }
-            });
-
-            doc.autoTable({
-                startY: yOffset + 10,
-                head: [['#', ...readableColumns]],
-                body: rankedData.map(item => 
-                    ['#', ...columns].map(col => 
-                        formatters[col] ? formatters[col](item[col]) : item[col]
-                    )
-                ),
-            });
-            yOffset = doc.lastAutoTable.finalY + 20;
-        };
-
-        addTable('Computer Science Courses', data.cosc, ['courseCode', 'rank', 'score']);
-        addTable('Mathematics Courses', data.math, ['courseCode', 'rank', 'score']);
-        addTable('Physics Courses', data.phys, ['courseCode', 'rank', 'score']);
-        addTable('Statistics Courses', data.stat, ['courseCode', 'rank', 'score']);
-        
-        // Sort benchmark data by shortage in descending order
-        const sortedBenchmark = [...data.benchmark].sort((a, b) => b.shortage - a.shortage);
-        addTable('Benchmark', sortedBenchmark, ['name', 'shortage'], { shortage: formatTime });
-        
-        doc.addPage();
-        yOffset = 10;
-        addTable('Top 5 Instructors', data.leaderboard.top, ['name', 'score']);
-        addTable('Bottom 5 Instructors', data.leaderboard.bottom, ['name', 'score']);
-
-        doc.save('department_performance_overview.pdf');
-    };
-
-    const handleExport = async () => {
-        setIsLoading(true);
-        const data = await fetchAllData();
-        if (data) {
-            exportAllToPDF(data);
-        }
-        setIsLoading(false);
-    };
+function PerformanceDepartmentPage() {
+    const allData = usePerformanceDepartmentData();
 
     return (
         <div className="dp-container">
@@ -154,39 +137,38 @@ function PerformanceDepartmentPage() {
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
-                        <button className='icon-button boxed' onClick={handleExport} disabled={isLoading}>
+                        <button className='icon-button' onClick={() => exportAllToPDF(allData)}>
                             <Download size={20} color="black" />
-                            {isLoading ? 'Loading...' : ''}
                         </button>
                     </div>
 
                     <div className="division-top-table">
                         <div className="division">
-                            <DeptCoscTable />
+                            <DeptDivisionTable departmentName="Computer Science" courses={allData.cosc} prefix="COSC" />
                         </div>
 
                         <div className="division">
-                            <DeptMathTable />
+                            <DeptDivisionTable departmentName="Mathematics" courses={allData.math} prefix="MATH" />
                         </div>
                     </div>
 
                     <div className="division-mid-table">
                         <div className="division">
-                            <DeptPhysTable />
+                            <DeptDivisionTable departmentName="Physics" courses={allData.phys} prefix="PHYS" />
                         </div>
 
                         <div className="division">
-                            <DeptStatTable />
+                            <DeptDivisionTable departmentName="Statistics" courses={allData.stat} prefix="STAT" />
                         </div>
                     </div>
 
                     <div className="bottom-sectin">
                         <div className="division">
-                            <DeptBenchMark />
+                            <DeptBenchMark benchmark={allData.benchmark} />
                         </div>
 
                         <div className="division">
-                            <DeptGoodBadBoard />
+                            <DeptGoodBadBoard leaderboard={allData.leaderboard} />
                         </div>
                     </div>
                 </div>
