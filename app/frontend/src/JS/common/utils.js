@@ -77,11 +77,15 @@ export const handleUnauthorizedError = (error, navigate) => {
   }
 };
 
-export const fetchWithAuth = async (url, authToken, navigate) => {
+export const fetchWithAuth = async (url, authToken, navigate, params = null) => {
+  const config = {
+    headers: { Authorization: `Bearer ${authToken.token}` },
+  };
+  if (params) {
+    config.params = params;
+  }
   try {
-    const res = await axios.get(url, {
-      headers: { Authorization: `Bearer ${authToken.token}` },
-    });
+    const res = await axios.get(url, config);
     return res.data;
   } catch (error) {
     handleUnauthorizedError(error, navigate);
@@ -119,7 +123,7 @@ export const getCurrentInstructor = (historyData) => {
   return currentInstructor;
 }
 
-export function filterItems(items, itemType, search) {
+export const filterItems = (items, itemType, search) => {
   if (itemType === 'member') {
     return items.filter((item) =>
       (item.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
@@ -133,7 +137,139 @@ export function filterItems(items, itemType, search) {
       (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
       (item.title?.toLowerCase() ?? '').includes(search.toLowerCase())
     );
+  } else if (itemType === 'insCourse') {
+    return items.filter((course) =>
+      (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (course.title?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (course.instructor &&
+       Array.isArray(course.instructor) &&
+       course.instructor.some(instructor =>
+         instructor.toLowerCase().includes(search.toLowerCase())
+       ))
+    );
   } else {
     return items;
   }
-}
+};
+
+export const sortItems = (items, sortConfig) => {
+  let sortableItems = [...items];
+  if (sortConfig.key !== null) {
+      sortableItems.sort((a, b) => {
+          if (a[sortConfig.key] < b[sortConfig.key]) {
+              return sortConfig.direction === 'ascending' ? -1 : 1;
+          }
+          if (a[sortConfig.key] > b[sortConfig.key]) {
+              return sortConfig.direction === 'ascending' ? 1 : -1;
+          }
+          return 0;
+      });
+  }
+  return sortableItems;
+};
+
+export const requestSort = (sortConfig, setSortConfig, key) => {
+  let direction = 'ascending';
+  if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+  }
+  setSortConfig({ key, direction });
+};
+
+export const getTermString = (term) => {
+  const termStr = term.toString();
+  const year = termStr.slice(0, -1);
+  const termCode = termStr.slice(-1);
+
+  const termMap = {
+      1: 'Winter Term 1',
+      2: 'Winter Term 2',
+      3: 'Summer Term 1',
+      4: 'Summer Term 2',
+  };
+
+  return `${year} ${termMap[termCode] || ''}`;
+};
+
+export const filterYearLevelCourses = (courses, identifier, prefix) => {
+  if (identifier === 'All') {
+      return courses;
+  } else {
+      return courses.filter((course) =>
+          course.courseCode.startsWith(`${prefix} ${identifier[0]}`)
+      );
+  }
+};
+
+export const getCurrentMonthName = () => {
+	const monthNames = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
+	return monthNames[new Date().getMonth()];
+};
+
+export const toggleStatus = async (authToken, item, newStatus, itemList, setItemList, endpoint) => {
+  const updatedItem = { ...item, status: newStatus };
+  const updatedItems = itemList.map((i) => (endpoint.includes('Member') ? item.ubcid === i.ubcid : item.id === i.id) ? updatedItem : i);
+
+  let itemIdKey;
+  let listKey;
+  let itemIdValue;
+
+  switch (true) {
+    case endpoint.includes('Course'):
+      itemIdKey = 'courseid';
+      listKey = 'courses';
+      itemIdValue = item.id;
+      break;
+    case endpoint.includes('Member'):
+      itemIdKey = 'memberId';
+      listKey = 'members';
+      itemIdValue = item.ubcid;
+      break;
+    case endpoint.includes('Role'):
+      itemIdKey = 'roleId';
+      listKey = 'roles';
+      itemIdValue = item.id;
+      break;
+    default:
+      throw new Error('Unknown endpoint type');
+  }
+
+  try {
+    const response = await axios.post(
+      `http://localhost:3001/api/${endpoint}`,
+      {
+        [itemIdKey]: itemIdValue,
+        newStatus: newStatus,
+      },
+      {
+        headers: { Authorization: `Bearer ${authToken.token}` },
+      }
+    );
+    if (response.status === 200) {
+      setItemList((prevState) => {
+        const filledItems = fillEmptyItems(updatedItems, prevState.perPage);
+        return {
+          ...prevState,
+          [listKey]: filledItems,
+        };
+      });
+    } else {
+      console.error('Error updating item status:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error updating item status:', error);
+  }
+};

@@ -1,58 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../common/AuthContext';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
+import { checkAccess, fetchWithAuth } from '../common/utils.js';
+import { useAuth } from '../common/AuthContext';
 import '../../CSS/Instructor/InsProfilePage.css';
 
-function InstructorProfilePage() {
+function useInstructorProfilePage() {
+	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const params = new URLSearchParams(window.location.search);
 	const ubcid = params.get('ubcid');
-	const { authToken, accountLogInType } = useAuth();
 	const initProfile = { roles: [], teachingAssignments: [] };
 	const [profile, setProfile] = useState(initProfile);
 
 	useEffect(() => {
 		const fetchData = async () => {
+			checkAccess(accountLogInType, navigate, 'instructor', authToken);
 			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
-				}
-				const numericAccountType = Number(accountLogInType);
-				if (numericAccountType !== 3) {
-					alert('No Access, Redirecting to department view');
-					navigate('/DeptDashboard');
-				}
-				const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
-					params: { ubcid: ubcid }, // Add ubcid as query parameter
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-
-				if (response.data) {
-					setProfile(response.data);
-				}
+				const response = await fetchWithAuth(`http://localhost:3001/api/instructorProfile`, authToken, navigate, { ubcid: ubcid });
+				setProfile(response);
 			} catch (error) {
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken');
-					navigate('/Login');
-				} else {
-					console.error('Error fetching instructor profile:', error);
-				}
+				console.error('Error fetching instructor profile:', error);
 			}
 		};
-
+	
 		fetchData();
-	}, [authToken, ubcid, navigate]);
+	}, [accountLogInType, authToken, ubcid, navigate]);
+	return {
+		profile
+	}
+}
+
+function InstructorProfilePage() {
+	const {
+		profile
+	} = useInstructorProfilePage();
+	
 
 	return (
 		<div className="dashboard-container">
 			<CreateSideBar sideBarType="Instructor" />
 			<div className="container">
 				<CreateTopBar />
-				<div className="main-content" id="text-content">
+				<div className="main-content" id="profile-test-content">
 					<section className="information">
 						<h1>{profile.name}'s Profile</h1>
 						<p>
