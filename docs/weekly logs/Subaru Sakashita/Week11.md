@@ -89,11 +89,12 @@ so that I could start working on tests and that Zhiheng can go all out on the im
 ## Friday (7/26/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-11-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W11_C2.png)
 
 ### Current Tasks
-  * #1: 
-  * #2: 
+  * #1: Update members
+  * #2: Code refactoring
+  * #3: Fix teaching assignment
 ### Progress Update (since 7/24/2024)
 <table>
     <tr>
@@ -104,31 +105,31 @@ so that I could start working on tests and that Zhiheng can go all out on the im
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> 
+        <td> Fix performance
         </td>
         <!-- Status -->
-        <td> 
+        <td> Complete
         </td>
     </tr>
     <tr>
-       <td> 
+       <td> Update service roles
         </td>
         <!-- Status -->
-        <td>
+        <td> Complete
         </td>
     </tr>
      <tr>
-       <td> 
+       <td> Update courses
         </td>
         <!-- Status -->
-        <td> 
+        <td> Complete
         </td>
     </tr>
        <tr>
-       <td> 
+       <td> Code refactoring
         </td>
         <!-- Status -->
-        <td>
+        <td> In progress
         </td>
     </tr>
 
@@ -136,6 +137,9 @@ so that I could start working on tests and that Zhiheng can go all out on the im
 </table>
 
 ### Weekly Goal Review
+This cycle was a lot of bug fixes and code refactoring. Since Adams is not here, his tasks were difficult to refactor. 
+Some bug fixes require big adjustments in the sql query so it was very tough. I still have 7 files of code refactoring but I am planning to finish them by the end of weekend. 
 
 ### Next Cycle Goals
-  * 
+  * Code refactoring
+  * Bug fixes
