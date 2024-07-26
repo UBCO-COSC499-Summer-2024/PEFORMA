@@ -1,7 +1,8 @@
 const pool = require('../db/index.js');
-
+const {updateAllServiceRoles} = require('./updateAllServiceRoles.js');
 async function getAllServiceRoles() {
   try {
+    await updateAllServiceRoles();
     const countResult = await pool.query(`SELECT COUNT(*) 
                                           FROM public."ServiceRole"`);
     const rolesCount = parseInt(countResult.rows[0].count);

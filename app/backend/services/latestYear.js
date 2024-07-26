@@ -1,9 +1,7 @@
-const pool = require('../db/index');
+const {getLatestTerm} = require('./latestTerm');
 async function getLatestYear(){
-    const query = `SELECT "year" FROM "ServiceRoleAssignment"
-                   ORDER BY "year" DESC LIMIT 1;`;
-    const result = await pool.query(query);
-    const latestYear = result.rows[0].year;
+    const latestTerm = await getLatestTerm();
+    const latestYear = latestTerm.toString().substring(0, 4);
     return latestYear;
 };
 module.exports = {
