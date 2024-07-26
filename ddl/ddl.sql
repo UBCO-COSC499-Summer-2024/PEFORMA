@@ -127,9 +127,13 @@ CREATE TABLE "CourseByTerm" (
 
 -- Create instructor teaching assignments
 CREATE TABLE "InstructorTeachingAssignment" (
-  "profileId"   integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "courseId"    integer,
-  "term"        integer,
+  "profileId"       integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "courseId"        integer,
+  "term"            integer,
+  "enrollment"      integer,
+  "location"        varchar(20),
+  "meetingPattern"  varchar(50), 
+
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -192,4 +196,28 @@ CREATE TABLE "CourseEvaluation" (
 
 CREATE TABLE "CurrentTerm" (
   "curTerm" integer PRIMARY KEY
+);
+
+-- Create TA assignment table
+CREATE TABLE "TaAssignmentTable" (
+  "term"          integer,
+  "UBCid"         varchar(8),
+  "firstName"     varchar(20),
+  "middleName"    varchar(20),
+  "lastName"      varchar(20),
+  "email"         varchar(100) UNIQUE NOT NULL,
+  "courseId"      integer,
+  PRIMARY KEY ("term", "courseId"),
+  FOREIGN KEY ("courseId") REFERENCES "Course" ("courseId") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Create Meeting Log Table
+CREATE TABLE "MeetingLog" (
+  "meetingId"     SERIAL PRIMARY KEY,
+  "location"      VARCHAR(30),
+  "date"          date,
+  "time"          time,
+  "UBCid"         varchar(8),
+  "attendance"    boolean,
+  FOREIGN KEY ("UBCid") REFERENCES "Profile" ("UBCid") ON UPDATE CASCADE ON DELETE CASCADE
 );
