@@ -65,3 +65,43 @@ and ran into a really pesky testing error that took me a good while to fix. Luck
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Friday (07/26/2024)
 
+### Timesheet
+![alt text](Clockify/week11-2.png)
+
+### Current Tasks
+  * #1: Start testing and refactoring a new page
+
+### Progress Update (since 07/19/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Finish testing and refacoring DeptProfilePage
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Test and refactor assign course and assign service role modals
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+    </tr>
+</table>
+
+### Cycle Goal Review
+This mini-cycle went well. I spent wednesday and thursday working on the deptprofilepage refactor and test, and I finally got it done. On thursday morning we got the email about
+the project requirements, and there's a few things we don't have yet. So tomorrow we're going to discuss how we should tackle that. 
+
+### Next Cycle Goals
+  * Hopefully finish testing and refactoring all of my FE pages
+  * Potentially work on new stuff related to our missing requirements
+
