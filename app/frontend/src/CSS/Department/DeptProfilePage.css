@@ -15,11 +15,17 @@
     flex-direction: column;
     border-radius: 1em;
     box-shadow: 1em 1em 1em var(--darkestGrey);
-    min-height: 50em;
+    
 }
 
-.deptProfile-container .performance-chart {
-    height: 10em;
+.deptProfile-container .remove-instructor {
+    background-color: var(--red);
+    color: var(--black);
+    margin-left: 0.5em;
+    height: 2.25em;
+    width: 2.25em;
+    transition: background-color 0.1s;
+    border-radius: 40%;
 }
 
 .deptProfile-container .outside {
@@ -33,7 +39,7 @@
 }
 
 .deptProfile-container .information {
-    height: auto;
+    
 }
 
 .deptProfile-container .information p {
@@ -115,5 +121,5 @@
 }
 
 .deptProfile-container .space {
-    height: 2.35em;
+    height: 3.35em;
 }
