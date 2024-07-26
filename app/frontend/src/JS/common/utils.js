@@ -123,6 +123,10 @@ export const getCurrentInstructor = (historyData) => {
   return currentInstructor;
 }
 
+export const handleCancelForm = (setFormData, initialFormData) => {
+  setFormData(initialFormData);
+};
+
 export const filterItems = (items, itemType, search) => {
   if (itemType === 'member') {
     return items.filter((item) =>
