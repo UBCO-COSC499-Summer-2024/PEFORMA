@@ -1,4 +1,132 @@
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+## Friday (7/26/2024)
+
+### Timesheet
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.24-7.25/11.2.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.24-7.25/11.2.2.png)
+
+### Current Tasks
+  * Refactor left over department views (teaching assignment, teaching assignment detail, SEI page, and instructor views (performance pages and performance imports)
+
+### Progress Update (since 7/24/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+        <td><strong>NOTES</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#496: Refactor deptCourseList
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fully refactored, fixed export function
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#497: Refactor DeptMemberList
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fully refactored, modified some export function and refactored it
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#498: Refactor DeptPerformancePage
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Made huge refactoring progress on performance page, merging 4 different division tables to one file, removed redundant axios.get function in performance pages and imported pages, instead used state to send info to division table
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#499: Refactor DeptServiceRoleList
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fully refactored, fixed export function
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#502: Refactor DeptStatusChangeCourse
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fully refactored, toggleStatus
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#503: Refactor DeptStatusChangeServiceRole
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fully refactored, toggleStatus
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#504: Refactor AdminStatusChangeMember
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fully refactored, toggleStatus
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#505: Refactor InsCourseList
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Refactored and shorten to very clean code
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#506: Refactor InsProfilePage
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Added a case when fetchWithAuth in utils.js handling when params is sent as parameter in order to refactor and make it to reusable
+        </td>
+    </tr>
+</table>
+
+### Weekly Goal Review
+In this two days of cycle, I have made a lot of progress in regarding refactoring my implementations. I have checked that there are 25+ pages I need to refactor because I implemented these files, and I have finished total 12 pages refactoring. I mostly covered all the redundant functions into utils.js so I hope the remaining files I need to refactor wouldnt be that painful.
+
+### Next Cycle Goals
+  * Until next wednesday, I am planning to finish refactoring all the files I have implemented. Also, I feel like there would be a new features that should be added by looking at the functional requirements list. I hope I can manage to hanlde new features as well.
+
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Wednesday (7/24/2024)
 
 ### Timesheet
@@ -92,59 +220,3 @@
 
 ### Next Cycle Goals
   * Until friday, which is next cycle date, I will finish refactoring instructor view pages. 
-
-
-<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-## Friday (7/26/2024)
-
-### Timesheet
-![alt text](image_url_here)
-
-### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
-
-### Progress Update (since 7/24/2024)
-<table>
-    <tr>
-        <td><strong>TASK/ISSUE #</strong>
-        </td>
-        <td><strong>STATUS</strong>
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task A
-        </td>
-        <!-- Status -->
-        <td>Complete
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task B
-        </td>
-        <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task C
-        </td>
-        <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-</table>
-
-### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
-
-### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
-
-
