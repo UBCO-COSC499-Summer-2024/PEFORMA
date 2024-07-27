@@ -22,6 +22,7 @@ function DeptSEIPage() {
     Q3: '',
     Q4: '',
     Q5: '',
+    Q6: '',
     retentionRate: '',
     averageGrade: '',
     enrollmentRate: '',
@@ -104,6 +105,7 @@ function DeptSEIPage() {
       Q3: formData.Q3,
       Q4: formData.Q4,
       Q5: formData.Q5,
+      Q6: formData.Q6,
       retentionRate: formData.retentionRate,
       averageGrade: formData.averageGrade,
       enrollmentRate: formData.enrollmentRate,
@@ -111,6 +113,7 @@ function DeptSEIPage() {
     };
   
     try {
+      console.log('postData', postData)
       await axios.post('http://localhost:3001/api/courseEvaluation', postData, {
         headers: { Authorization: `Bearer ${authToken.token}` },
       });
@@ -142,15 +145,15 @@ function DeptSEIPage() {
           )}
             {formData.profileId && (
               <>
-                <label><input type="number" name="Q1" placeholder='Q1 Average Score' value={formData.Q1} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q2" placeholder='Q2 Average Score' value={formData.Q2} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q3" placeholder='Q3 Average Score' value={formData.Q3} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q4" placeholder='Q4 Average Score' value={formData.Q4} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="Q5" placeholder='Q5 Average Score' value={formData.Q5} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="retentionRate" placeholder={`Retention Rate of ${formData.course}`} value={formData.retentionRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="averageGrade" placeholder={`Average Grade of ${formData.course}`} value={formData.averageGrade} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="enrollmentRate" placeholder={`Enrollment Rate of ${formData.course}`} value={formData.enrollmentRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label><input type="number" name="failedPercentage" placeholder={`Failed Percentage of ${formData.course}`} value={formData.failedPercentage} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                {Array.from({ length: 6 }, (_, i) => (
+                  <label key={i + 1}>
+                    Q {i + 1} Average Score:<input type="number" name={`Q${i + 1}`} placeholder='0 ~ 100' value={formData[`Q${i + 1}`]} onChange={handleChange} required min="0" max="100" step="0.01"/>
+                  </label>
+                ))}
+                <label>Retention Rate of {formData.course}<input type="number" name="retentionRate" placeholder='0 ~ 100' value={formData.retentionRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label>Average Grade of {formData.course}<input type="number" name="averageGrade" placeholder='0 ~ 100' value={formData.averageGrade} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label>Enrollment Rate of {formData.course}<input type="number" name="enrollmentRate" placeholder='0 ~ 100' value={formData.enrollmentRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label>Failed Percentage of {formData.course}<input type="number" name="failedPercentage" placeholder='0 ~ 100' value={formData.failedPercentage} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
                 <div className='submit-button-align'>
                   <button type="submit">Submit</button>
                   <button type="button" className="cancel-button" onClick={() => handleCancelForm(setFormData, initialFormData)}>Cancel</button>
