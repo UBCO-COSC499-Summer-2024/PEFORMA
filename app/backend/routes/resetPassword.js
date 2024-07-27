@@ -1,6 +1,8 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const router = express.Router();
+const crypto = require('crypto');
+const secretKey = "turkeysandwich";
 require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
@@ -15,7 +17,9 @@ const transporter = nodemailer.createTransport({
 router.post('/', (req, res) => {
 
   const { email } = req.body;
-
+  const cipher = crypto.createCipher('aes-256-cbc', secretKey);
+  let encryptedEmail = cipher.update(email, 'utf-8', 'hex');
+  encryptedEmail += cipher.final('hex');
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: email,
@@ -26,7 +30,7 @@ router.post('/', (req, res) => {
     'Do not share this link with anyone else you do not trust.'+
     'Please use the link below to reset your password.\n'+
     //FE web page to be changed later
-    'http://localhost:3000/NewPassword?email='+email+
+    'http://localhost:3000/NewPassword?email='+encryptedEmail+
     '',
   };
   console.log("Email received: ",email);

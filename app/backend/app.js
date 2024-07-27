@@ -53,6 +53,7 @@ const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
 const resetPasswordRouter = require('./routes/resetPassword');
 //const updatePasswordRouter = require('./routes/updatePassword.js')
 const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
+const decryptEmailRouter = require('./routes/decryptEmail.js');
 
 const updateRoleInfo = require('./routes/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/updateCourseInfo.js');
@@ -126,7 +127,7 @@ app.use('/api/reset', resetPasswordRouter);
 //reset password
 // app.use('/api', resetPasswordRouter);
 app.use('/api/update-password', updatePasswordRouter);
-
+app.use('/api/decryptEmail', decryptEmailRouter);
 
 app.use('/api/allInstructors',allInstructors);
 app.use('/api/adminStatusChangeMembers',adminStatusChangeMembers);

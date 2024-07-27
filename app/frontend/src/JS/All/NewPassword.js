@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../CSS/All/NewPassword.css';
 import axios from 'axios';
@@ -9,12 +9,22 @@ const NewPassword = () => {
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
+
     const query = new URLSearchParams(window.location.search);
-    const emailFromUrl = query.get('email');
-    if (emailFromUrl) {
-      setEmail(emailFromUrl);
+    const encryptedEmail = query.get('email');
+    const fetchData = async() => {
+      try {
+      const response = await axios.post('http://localhost:3001/api/decryptEmail', {
+        params: {encryptedEmail:encryptedEmail}
+      });
+      setEmail(response.data);
+    } catch(e) {
+      console.error(e);
     }
+
+    }
+    fetchData();
   }, []);
 
 
