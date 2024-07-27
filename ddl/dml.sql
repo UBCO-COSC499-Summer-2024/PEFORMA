@@ -505,7 +505,7 @@ UPDATE "Course" SET "isActive" = true;
 INSERT INTO "CurrentTerm" ("curTerm") VALUES (20244);
 
 -- TaAssignmentTable
-INSERT INTO public."TaAssignmentTable" ("term", "UBCid", "firstName", "middleName", "lastName", "email", "courseId") VALUES
+INSERT INTO public."TaAssignmentTable" ("term", "UBCId", "firstName", "middleName", "lastName", "email", "courseId") VALUES
 (20244, '12345678', 'Alice', 'Marie', 'Johnson', 'alice.johnson@student.ubc.ca', 1),
 (20244, '23456789', 'Bob', 'Lee', 'Smith', 'bob.smith@student.ubc.ca', 2),
 (20244, '34567890', 'Charlie', 'Ann', 'Brown', 'charlie.brown@student.ubc.ca', 3),
@@ -517,31 +517,24 @@ INSERT INTO public."TaAssignmentTable" ("term", "UBCid", "firstName", "middleNam
 (20242, '90123456', 'Ivan', 'James', 'Anderson', 'ivan.anderson@student.ubc.ca', 4),
 (20243, '01234567', 'Jack', 'Michael', 'Thomas', 'jack.thomas@student.ubc.ca', 5);
 
--- Insert data into MeetingLog
-INSERT INTO public."MeetingLog" ("meetingId", "date", "time", "location", "UBCid", "attendance") VALUES
--- Meeting 1
-(1, '2024-07-31', '16:00', 'SCI 234', '11111111', NULL),
-(1, '2024-07-31', '16:00', 'SCI 234', '11111112', NULL),
-(1, '2024-07-31', '16:00', 'SCI 234', '11111113', NULL),
-(1, '2024-07-31', '16:00', 'SCI 234', '11111114', NULL),
-(1, '2024-07-31', '16:00', 'SCI 234', '11111115', NULL),
-(1, '2024-07-31', '16:00', 'SCI 234', '11111116', NULL),
--- Meeting 2
-(2, '2024-09-20', '10:00', 'Online', '11111111', NULL),
-(2, '2024-09-20', '10:00', 'Online', '11111114', NULL),
--- Meeting 3
-(3, '2024-10-10', '14:00', 'ASC 101', '11111111', NULL),
-(3, '2024-10-10', '14:00', 'ASC 101', '11111112', NULL),
-(3, '2024-10-10', '14:00', 'ASC 101', '11111113', NULL),
-(3, '2024-10-10', '14:00', 'ASC 101', '11111114', NULL),
--- Meeting 4
-(4, '2024-11-15', '09:00', 'Online', '11111115', NULL),
-(4, '2024-11-15', '09:00', 'Online', '11111116', NULL),
-(4, '2024-11-15', '09:00', 'Online', '11111117', NULL),
-(4, '2024-11-15', '09:00', 'Online', '11111118', NULL),
--- Meeting 5
-(5, '2024-12-01', '13:00', 'SCI 200', '66666661', NULL),
-(5, '2024-12-01', '13:00', 'SCI 200', '66666662', NULL),
-(5, '2024-12-01', '13:00', 'SCI 200', '66666663', NULL),
-(5, '2024-12-01', '13:00', 'SCI 200', '66666664', NULL);
+-- MeetingLog DML
+INSERT INTO public."MeetingLog" ("location", "date", "time") VALUES
+('SCI 234', '2024-08-01', '10:00:00'),
+('Online', '2024-08-02', '14:00:00'),
+('ASC 215', '2024-08-03', '09:00:00');
 
+-- MeetingAttendance DML
+INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId", "attendance") VALUES
+-- Meeting 1: SCI 234
+(1, '11111111', true),  -- John Doe
+(1, '11111112', true),  -- Jane Smith
+(1, '11111113', false), -- Robert Brown
+-- Meeting 2: Online
+(2, '11111111', true),  -- John Doe
+(2, '11111114', true),  -- Emily Davis
+(2, '11111115', true),  -- David Kim
+(2, '11111116', false), -- Sarah Chen
+-- Meeting 3: ASC 215
+(3, '11111117', true),  -- Michael Nguyen
+(3, '11111118', true),  -- Olivia Rodriguez
+(3, '11111119', false); -- Daniel Taylor

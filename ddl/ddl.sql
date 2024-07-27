@@ -15,6 +15,11 @@ DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
 DROP TABLE IF EXISTS "Image" CASCADE;
 
+DROP TABLE IF EXISTS "CourseEvaluation" CASCADE;
+DROP TABLE IF EXISTS "CurrentTerm" CASCADE;
+DROP TABLE IF EXISTS "TaAssignmentTable" CASCADE;
+DROP TABLE IF EXISTS "MeetingLog" CASCADE;
+DROP TABLE IF EXISTS "MeetingAttendance" CASCADE;
 -- Create divisions
 CREATE TABLE "Division" (
   "divisionId"  SERIAL PRIMARY KEY,
@@ -42,7 +47,7 @@ CREATE TABLE "Profile" (
   "officeNum"             varchar(10),
   "position"              varchar(100),
   "divisionId"            integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "UBCId"                 varchar(8),
+  "UBCId"                 varchar(8) UNIQUE,
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
   "imageId"               integer REFERENCES "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
@@ -201,7 +206,7 @@ CREATE TABLE "CurrentTerm" (
 -- Create TA assignment table
 CREATE TABLE "TaAssignmentTable" (
   "term"          integer,
-  "UBCid"         varchar(8),
+  "UBCId"         varchar(8),
   "firstName"     varchar(20),
   "middleName"    varchar(20),
   "lastName"      varchar(20),
@@ -215,9 +220,15 @@ CREATE TABLE "TaAssignmentTable" (
 CREATE TABLE "MeetingLog" (
   "meetingId"     SERIAL PRIMARY KEY,
   "location"      VARCHAR(30),
-  "date"          date,
-  "time"          time,
-  "UBCid"         varchar(8),
-  "attendance"    boolean,
-  FOREIGN KEY ("UBCid") REFERENCES "Profile" ("UBCid") ON UPDATE CASCADE ON DELETE CASCADE
+  "date"          DATE,
+  "time"          TIME,
 );
+ALTER SEQUENCE "MeetingLog_meetingId_seq" RESTART WITH 1;
+
+CREATE TABLE "MeetingAttendance" (
+  "meetingId"     integer REFERENCES "MeetingLog" ("meetingId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "UBCId"         VARCHAR(8) REFERENCES "Profile" ("UBCId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "attendance"    BOOLEAN,
+  PRIMARY KEY ("meetingId", "UBCId")
+);
+
