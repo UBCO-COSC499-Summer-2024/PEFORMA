@@ -14,12 +14,12 @@ DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
 DROP TABLE IF EXISTS "Image" CASCADE;
-
 DROP TABLE IF EXISTS "CourseEvaluation" CASCADE;
 DROP TABLE IF EXISTS "CurrentTerm" CASCADE;
 DROP TABLE IF EXISTS "TaAssignmentTable" CASCADE;
 DROP TABLE IF EXISTS "MeetingLog" CASCADE;
 DROP TABLE IF EXISTS "MeetingAttendance" CASCADE;
+
 -- Create divisions
 CREATE TABLE "Division" (
   "divisionId"  SERIAL PRIMARY KEY,
@@ -221,7 +221,7 @@ CREATE TABLE "MeetingLog" (
   "meetingId"     SERIAL PRIMARY KEY,
   "location"      VARCHAR(30),
   "date"          DATE,
-  "time"          TIME,
+  "time"          TIME
 );
 ALTER SEQUENCE "MeetingLog_meetingId_seq" RESTART WITH 1;
 
