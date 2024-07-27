@@ -5,44 +5,50 @@ INSERT INTO public."Division" ("dcode", "dname") VALUES
 ('PHYS', 'Physics'),
 ('STAT', 'Statistics');
 
+-- Image 
+INSERT INTO "Image" ("file_type", "image_data")
+SELECT 'jpg', pg_read_binary_file('/images/' || filename)::bytea
+FROM (VALUES 
+    ('image1.jpg'),
+    ('image2.jpg'),
+    ('image3.jpg')
+) AS images(filename);
+
 -- Profile (add department staff and admin users)
-INSERT INTO public."Profile" ("firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark") VALUES
+INSERT INTO public."Profile" ("firstName", "middleName", "lastName", "email", "phoneNum", "officeBuilding", "officeNum", "position", "divisionId", "UBCId", "serviceHourCompleted", "sRoleBenchmark", "imageId") VALUES
 -- Instructors 
     -- COSC
-    ('John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 11111111, 15, 50),
-    ('Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 11111112, 8, 120),
-    ('Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Lecturer', 1, 11111113, 0, 10),
-    ('Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 1, 11111114, 0, 0),
+    ('John', NULL, 'Doe', 'john.doe@ubc.ca', '250-555-1212', 'SCI', '101', 'Professor', 1, 11111111, 15, 50, 1),
+    ('Jane', 'Allison', 'Smith', 'jane.smith@ubc.ca', '250-555-3456', 'ASC', '215', 'Associate Professor', 1, 11111112, 8, 120, NULL),
+    ('Robert', NULL, 'Brown', 'robert.brown@ubc.ca', '250-555-7890', 'SCI', '302', 'Sessional Lecturer', 1, 11111113, 0, 10, NULL),
+    ('Emily', NULL, 'Davis', 'emily.davis@ubc.ca', '250-555-2345', 'ART', '420', 'Professor Emeritus', 1, 11111114, 0, 0, NULL),
     -- MATH
-    ('David', NULL, 'Kim', 'david.kim@ubc.ca', '250-555-6789', 'SCI', '123', 'Professor', 2, 11111115, 20, 80),
-    ('Sarah', 'Lee', 'Chen', 'sarah.chen@ubc.ca', '250-555-9012', 'SCI', '234', 'Assistant Professor', 2, 11111116, 5, 110),
-    ('Michael', NULL, 'Nguyen', 'michael.nguyen@ubc.ca', '250-555-3456', 'EME', '345', 'Associate Professor', 2, 11111117, 12, 90),
-    ('Olivia', 'Marie', 'Rodriguez', 'olivia.rodriguez@ubc.ca', '250-555-7890', 'ASC', '456', 'Assistant Professor', 2, 11111118, 8, 100),
+    ('David', NULL, 'Kim', 'david.kim@ubc.ca', '250-555-6789', 'SCI', '123', 'Professor', 2, 11111115, 20, 80, 2),
+    ('Sarah', 'Lee', 'Chen', 'sarah.chen@ubc.ca', '250-555-9012', 'SCI', '234', 'Assistant Professor', 2, 11111116, 5, 110, 3),
+    ('Michael', NULL, 'Nguyen', 'michael.nguyen@ubc.ca', '250-555-3456', 'EME', '345', 'Associate Professor', 2, 11111117, 12, 90, NULL),
+    ('Olivia', 'Marie', 'Rodriguez', 'olivia.rodriguez@ubc.ca', '250-555-7890', 'ASC', '456', 'Assistant Professor', 2, 11111118, 8, 100, NULL),
     -- PHYS
-    ('Daniel', NULL, 'Taylor', 'daniel.taylor@ubc.ca', '250-555-1122', 'SCI', '124', 'Lecturer', 1, 11111119, 3, 50),
-    ('Sophia', 'Anne', 'Wilson', 'sophia.wilson@ubc.ca', '250-555-3344', 'ART', '235', 'Sessional Lecturer', 3, 11111110, 3, 10),
-    ('William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 12012124, 3, 45),
-    ('Aiden', NULL, 'Moore', 'adien.moore@ubc.ca', '236-555-8765', 'ASC', '213', 'Professor', 3, 34567890, 34, 80),
+    ('Daniel', NULL, 'Taylor', 'daniel.taylor@ubc.ca', '250-555-1122', 'SCI', '124', 'Lecturer', 1, 11111119, 3, 50, NULL),
+    ('Sophia', 'Anne', 'Wilson', 'sophia.wilson@ubc.ca', '250-555-3344', 'ART', '235', 'Sessional Lecturer', 3, 11111110, 3, 10, NULL),
+    ('William', NULL, 'Anderson', 'william.anderson@ubc.ca', '250-555-5566', 'EME', '346', 'Professor of Teaching', 3, 12012124, 3, 45, NULL),
+    ('Aiden', NULL, 'Moore', 'adien.moore@ubc.ca', '236-555-8765', 'ASC', '213', 'Professor', 3, 34567890, 34, 80, NULL),
     -- STAT
-    ('Ava', NULL, 'Martinez', 'ava.martinez1@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 58738923, 0, 0),       -- <-- People w/ the same name
-    ('Ava', NULL, 'Martinez', 'ava.martinez2@ubc.ca', '236-478-1590', 'SCI', '111', 'Asssitant Professor', 4, 34038452, 60, 120),   -- <--
-    ('Ethan', NULL, 'Anderson', 'ethan.anderson@ubc.ca', '236-555-9876', 'EME', '414', 'Asssitant Professor', 4, 23454245, 12, 95), 
+    ('Ava', NULL, 'Martinez', 'ava.martinez1@ubc.ca', '250-555-7788', 'ASC', '457', 'Professor Emeritus', 4, 58738923, 0, 0, NULL),       -- <-- People w/ the same name
+    ('Ava', NULL, 'Martinez', 'ava.martinez2@ubc.ca', '236-478-1590', 'SCI', '111', 'Asssitant Professor', 4, 34038452, 60, 120, NULL),   -- <--
+    ('Ethan', NULL, 'Anderson', 'ethan.anderson@ubc.ca', '236-555-9876', 'EME', '414', 'Asssitant Professor', 4, 23454245, 12, 95, NULL), 
 -- Department Staff
-('Alice', NULL, 'Johnson', 'alice.johnson@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 67814325, 0, 0),  
-('Bob', NULL, 'Lee', 'bob.lee@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 76548087, 0, 0),
+('Alice', NULL, 'Johnson', 'alice.johnson@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 67814325, 0, 0, NULL),  
+('Bob', NULL, 'Lee', 'bob.lee@staff.ubc.ca', '250-555-9876', 'SCI', '200', NULL, NULL, 76548087, 0, 0, NULL),
 -- Admin
     -- UBC admins
-    ('Kevin', NULL, 'Kim', 'kkim9901@student.ubc.ca', '250-666-6661', NULL, NULL, NULL, NULL, 66666661, 0, 0),                              
-    ('Jeremy', NULL, 'Adams', 'jeremyadams166@gmail.com', '250-666-6662', NULL, NULL, NULL, NULL, 66666662, 0, 0),
-    ('Zhiheng', NULL, 'Zhang', 'm15601654187@163.com', '250-666-6663', NULL, NULL, NULL, NULL, 66666663, 0, 0),
-    ('Subaru', NULL, 'Sakashita', 'baruchan@student.ubc.ca', '250-666-6664', NULL, NULL, NULL, NULL, 66666664, 0, 0),
-    ('Adams', NULL, 'Chen', 'ayhchen@student.ubc.ca', '250-666-6665', NULL, NULL, NULL, NULL, 66666665, 0, 0),
+    ('Kevin', NULL, 'Kim', 'kkim9901@student.ubc.ca', '250-666-6661', NULL, NULL, NULL, NULL, 66666661, 0, 0, NULL),                              
+    ('Jeremy', NULL, 'Adams', 'jeremyadams166@gmail.com', '250-666-6662', NULL, NULL, NULL, NULL, 66666662, 0, 0, NULL),
+    ('Zhiheng', NULL, 'Zhang', 'm15601654187@163.com', '250-666-6663', NULL, NULL, NULL, NULL, 66666663, 0, 0, NULL),
+    ('Subaru', NULL, 'Sakashita', 'baruchan@student.ubc.ca', '250-666-6664', NULL, NULL, NULL, NULL, 66666664, 0, 0, NULL),
+    ('Adams', NULL, 'Chen', 'ayhchen@student.ubc.ca', '250-666-6665', NULL, NULL, NULL, NULL, 66666665, 0, 0, NULL),
     -- Non-UBC admin
-    ('Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, NULL, NULL, NULL, 0, 0),  
-    ('Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0);    
-
--- Image 
--- Inserted through backend script
+    ('Carol', NULL, 'Wilson', 'carol.wilson@maintenance.ca', '250-555-4321', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL),  
+    ('Amelia', 'June', 'Young', 'amelia.young@maintenance.ca', '250-555-4322', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL);    
 
 -- Account (remember to hash passwords in a real system!)
 INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "isActive") VALUES
