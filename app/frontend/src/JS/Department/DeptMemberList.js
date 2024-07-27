@@ -73,11 +73,11 @@ function exportToCSV(members) {
     const headers = '#, Name, UBC ID, Service Role, Department, Email, Status\n'; // csv header
     const csvContent = filteredMembers.reduce((acc, member, index) => { // generate csv content
         const status = member.status ? 'Active' : 'Inactive';
-        const serviceRole = Array.isArray(member.serviceRole) ? member.serviceRole.join('; ') : member.serviceRole; // Join roles with semicolon for CSV format
-        return acc + `${index + 1},${member.name},${member.ubcid},"${serviceRole}",${member.department},${member.email},${status}\n`;
+        const serviceRole = Array.isArray(member.serviceRole) ? member.serviceRole.join('; ') : member.serviceRole; // join roles for csv format
+        return acc + `${index + 1},${member.name},${member.ubcid},"${serviceRole}",${member.department},${member.email},${status}\n`; // table format
     }, headers);
     
-    downloadCSV (csvContent, `${termString} Members List.csv`)
+    downloadCSV (csvContent, `${termString} Members List.csv`) // download csv with content and file name
 }
 
 

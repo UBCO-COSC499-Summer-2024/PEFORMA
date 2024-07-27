@@ -283,10 +283,11 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
   }
 };
 
-export const downloadCSV = (csvContent, filename) => {
+export const downloadCSV = (csvContent, filename) => { 
+  // generates a blob for csvContent
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
+  const link = document.createElement('a'); 
   link.setAttribute('href', url);
   link.setAttribute('download', filename);
   document.body.appendChild(link);

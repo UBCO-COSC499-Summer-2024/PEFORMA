@@ -63,10 +63,10 @@ function exportToCSV(courses) {
     const headers = '#, Course Code,Title,Description,Status\n'; // csv header
     const csvContent = filteredCourses.reduce((acc, course, index) => { // generate csv content
         const status = course.status ? 'Active' : 'Inactive';
-        return acc + `${index + 1},${course.courseCode},${course.title},"${course.description.replace(/"/g, '""')}",${status}\n`;
+        return acc + `${index + 1},${course.courseCode},${course.title},"${course.description.replace(/"/g, '""')}",${status}\n`; // table format
     }, headers);
     
-    downloadCSV (csvContent, `${termString} Course List.csv`)
+    downloadCSV (csvContent, `${termString} Course List.csv`) // download csv with content and file name
 }
 
 function DeptCourseList() {

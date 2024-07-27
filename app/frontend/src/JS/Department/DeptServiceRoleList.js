@@ -60,11 +60,10 @@ function exportToCSV(roles) {
     const headers = '"#", "Role", "Department", "Description", "Status"\n'; // csv header
     const csvContent = filteredRoles.reduce((acc, role, index) => { // generate csv content
         const status = role.status ? 'Active' : 'Inactive';
-        const roleEntry = `${index + 1}, ${role.name.replace(/,/g, '')}, ${role.department}, ${role.description.replace(/,/g, '')}, ${status}\n`;
-        return acc + roleEntry;
+        return acc + `${index + 1}, ${role.name.replace(/,/g, '')}, ${role.department}, ${role.description.replace(/,/g, '')}, ${status}\n`; // table format
     }, headers);
 
-    downloadCSV(csvContent, `${termString} Service Roles List.csv`); 
+    downloadCSV(csvContent, `${termString} Service Roles List.csv`); // download csv with content and file name
 }
 
 

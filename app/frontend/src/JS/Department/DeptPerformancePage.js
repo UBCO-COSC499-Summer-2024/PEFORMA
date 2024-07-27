@@ -11,6 +11,7 @@ import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
 import { checkAccess, getCurrentMonthName, fetchWithAuth, getTermString, downloadCSV } from '../common/utils.js';
 import '../../CSS/Department/DeptPerformancePage.css';
 
+// helper function to format the time based on the left over minutes
 function formatTime(minutes) {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = Math.round(minutes % 60);
@@ -25,7 +26,6 @@ function convertToCSV(data) {
 }
 
 function exportAllToCSV(data) {
-
     const termString = getTermString(20244); // will reaplce to curterm from db ######
     
     // create csv files for each tables
@@ -37,7 +37,8 @@ function exportAllToCSV(data) {
     const topInstructorsCSV = convertToCSV(data.leaderboard.top);
     const bottomInstructorsCSV = convertToCSV(data.leaderboard.bottom);
 
-    const allCSVData = `Computer Science Courses:\n${coscCSV}\n\n` +
+    // make into one csv data file in order to generate the table and download
+    const allCSVData = `Computer Science Courses:\n${coscCSV}\n\n` + 
         `Mathematics Courses:\n${mathCSV}\n\n` +
         `Physics Courses:\n${physCSV}\n\n` +
         `Statistics Courses:\n${statCSV}\n\n` +
@@ -45,7 +46,7 @@ function exportAllToCSV(data) {
         `Top 5 Instructors:\n${topInstructorsCSV}\n\n` +
         `Bottom 5 Instructors:\n${bottomInstructorsCSV}`;
         
-    downloadCSV (allCSVData, `${termString} Performance Overview.csv`)
+    downloadCSV (allCSVData, `${termString} Performance Overview.csv`) // download csv with content and file name
 }
 
 
@@ -61,6 +62,7 @@ function usePerformanceDepartmentData() {
         leaderboard: { top: [], bottom: [] }
     });
 
+    // fetch each division courses, benchmark and leaderboard and render it
     useEffect(() => {
         const fetchAllData = async () => {
             try {
@@ -74,7 +76,7 @@ function usePerformanceDepartmentData() {
                     fetchWithAuth(`http://localhost:3001/api/deptLeaderBoard`, authToken, navigate),
                 ]);
 
-                const sortedBenchmark = benchmark.people.sort((a, b) => b.shortage - a.shortage);
+                const sortedBenchmark = benchmark.people.sort((a, b) => b.shortage - a.shortage); // sort benchmark based on the shortage, desending order (from many to less)
                 const newData = {
                     cosc: cosc.courses,
                     math: math.courses,
@@ -101,7 +103,7 @@ function PerformanceDepartmentPage() {
 
     return (
         <div className="dp-container">
-            <CreateSideBar sideBarType="Department" />
+            <CreateSideBar sideBarType="Department" /> 
 
             <div className="container">
                 <CreateTopBar />
