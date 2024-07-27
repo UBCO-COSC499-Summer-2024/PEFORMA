@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../CSS/All/NewPassword.css';
 import axios from 'axios';
 
@@ -8,6 +8,7 @@ const NewPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -21,6 +22,8 @@ const NewPassword = () => {
       setEmail(response.data);
     } catch(e) {
       console.error(e);
+      alert("URL is invalid, returning to forgot password page");
+      navigate("/ForgotPasswordPage");
     }
 
     }
