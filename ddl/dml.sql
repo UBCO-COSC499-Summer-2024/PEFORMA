@@ -406,70 +406,70 @@ INSERT INTO public."CourseByTerm" ("courseId", "term") VALUES
 (81, 20244); -- Introduction to Mathematical Statistics (2024S2)
 
 -- InstructorTeachingAssignment
-INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term") VALUES
+INSERT INTO public."InstructorTeachingAssignment" ("profileId", "courseId", "term", "enrollment", "location", "meetingPattern") VALUES
 -- 2023W1
-(1, 1, 20231),  -- John Doe: Computer Programming I (2023W1)
-(2, 2, 20231),  -- Jane Allison Smith: Computer Programming II (2023W1)
-(3, 3, 20231),  -- Robert Brown: Machine Architecture (2023W1)
-(5, 29, 20231), -- David Kim: Integral Calculus with Applications to Physical Sciences and Engineering (2023W1)
-(9, 56, 20231), -- Daniel Taylor: Introductory Physics for the Physical Sciences I (2023W1)
-(10, 57, 20231),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences I (2023W1)
-(13, 79, 20231), -- Ava Martinez: Elementary Statistics (2023W1)
+(1, 1, 20231, 150, 'SCI 101', 'MON WED 9:00 AM - 10:30 AM'),  -- John Doe: Computer Programming I (2023W1)
+(2, 2, 20231, 200, 'ENG 102', 'TUE THU 1:00 PM - 2:30 PM'),  -- Jane Allison Smith: Computer Programming II (2023W1)
+(3, 3, 20231, 100, 'ART 103', 'MON WED 2:00 PM - 3:30 PM'),  -- Robert Brown: Machine Architecture (2023W1)
+(5, 29, 20231, 250, 'COM 104', 'WED FRI 10:00 AM - 11:30 AM'), -- David Kim: Integral Calculus with Applications to Physical Sciences and Engineering (2023W1)
+(9, 56, 20231, 180, 'ASC 105', 'MON WED 11:00 AM - 12:30 PM'), -- Daniel Taylor: Introductory Physics for the Physical Sciences I (2023W1)
+(10, 57, 20231, 190, 'SCI 106', 'TUE THU 2:00 PM - 3:30 PM'),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences I (2023W1)
+(13, 79, 20231, 130, 'ENG 107', 'MON WED 3:00 PM - 4:30 PM'), -- Ava Martinez: Elementary Statistics (2023W1)
 -- 2023W2
-(6, 32, 20232), -- Sarah Lee Chen: Matrix Algebra (2023W2)
-(7, 40, 20232), -- Michael Nguyen: Introduction to Partial Differential Equations (2023W2)
-(11, 63, 20232),-- William Anderson: Intermediate Electricity and Magnetism (2023W2)
-(14, 83, 20232), -- Ava Martinez: Intermediate Probability (2023W2)
+(6, 32, 20232, 160, 'ART 108', 'TUE THU 9:00 AM - 10:30 AM'), -- Sarah Lee Chen: Matrix Algebra (2023W2)
+(7, 40, 20232, 140, 'FIP 109', 'MON WED 10:00 AM - 11:30 AM'), -- Michael Nguyen: Introduction to Partial Differential Equations (2023W2)
+(11, 63, 20232, 110, 'EME 110', 'TUE THU 11:00 AM - 12:30 PM'),-- William Anderson: Intermediate Electricity and Magnetism (2023W2)
+(14, 83, 20232, 120, 'SCI 111', 'MON WED 8:00 AM - 9:30 AM'), -- Ava Martinez: Intermediate Probability (2023W2)
 -- 2023S1
-(8, 48, 20233), -- Olivia Marie Rodriguez: Differential Geometry (2023S1)
-(12, 72, 20233),-- Aiden Moore: Waves (2023S1)
+(8, 48, 20233, 90, 'ASC 112', 'TUE THU 2:00 PM - 3:30 PM'), -- Olivia Marie Rodriguez: Differential Geometry (2023S1)
+(12, 72, 20233, 80, 'ENG 113', 'MON WED 1:00 PM - 2:30 PM'),-- Aiden Moore: Waves (2023S1)
 -- 2023S2
-(5, 51, 20234), -- David Kim: Real Analysis (2023S2)
-(9, 78, 20234), -- Daniel Taylor: Introduction to General Relativity (2023S2)
+(5, 51, 20234, 70, 'COM 114', 'TUE THU 8:00 AM - 9:30 AM'), -- David Kim: Real Analysis (2023S2)
+(9, 78, 20234, 75, 'ART 115', 'MON WED 3:00 PM - 4:30 PM'), -- Daniel Taylor: Introduction to General Relativity (2023S2)
 -- 2024W1
-(6, 8, 20241),  -- Sarah Lee Chen: Introduction to Databases (2024W1)
-(7, 35, 20241), -- Michael Nguyen: Applied Linear Algebra (2024W1)
-(10, 66, 20241),-- Sophia Anne Wilson: Electricity and Magnetism (2024W1)
-(15, 87, 20241), -- Ethan Anderson: Environmetrics (2024W1)
+(6, 8, 20241, 180, 'FIP 116', 'TUE THU 10:00 AM - 11:30 AM'),  -- Sarah Lee Chen: Introduction to Databases (2024W1)
+(7, 35, 20241, 170, 'SCI 117', 'MON WED 11:00 AM - 12:30 PM'), -- Michael Nguyen: Applied Linear Algebra (2024W1)
+(10, 66, 20241, 190, 'EME 118', 'TUE THU 1:00 PM - 2:30 PM'),-- Sophia Anne Wilson: Electricity and Magnetism (2024W1)
+(15, 87, 20241, 100, 'ONLINE', 'FRI 9:00 AM - 12:00 PM'), -- Ethan Anderson: Environmetrics (2024W1)
 -- 2024W2
-(8, 45, 20242), -- Olivia Marie Rodriguez: Introduction to Dynamical Systems (2024W2)
-(11, 69, 20242),-- William Anderson: Introduction to Medical Physics (2024W2)
+(8, 45, 20242, 160, 'SCI 119', 'MON WED 2:00 PM - 3:30 PM'), -- Olivia Marie Rodriguez: Introduction to Dynamical Systems (2024W2)
+(11, 69, 20242, 130, 'ASC 120', 'TUE THU 11:00 AM - 12:30 PM'),-- William Anderson: Introduction to Medical Physics (2024W2)
 -- 2024S1
-(5, 52, 20243), -- David Kim: Functional Analysis (2024S1)
-(12, 75, 20243),-- Aiden Moore: Introduction to Elementary Particles (2024S1)
+(5, 52, 20243, 90, 'SCI 121', 'MON WED 8:00 AM - 9:30 AM'), -- David Kim: Functional Analysis (2024S1)
+(12, 75, 20243, 100, 'ENG 122', 'TUE THU 9:00 AM - 10:30 AM'),-- Aiden Moore: Introduction to Elementary Particles (2024S1)
 -- 2024S2
     -- COSC 
-    (1, 6, 20244),  -- John Doe: Introduction to Data Analytics (2024S2)  
-    (2, 10, 20244), -- Jane Allison Smith: Software Engineering (2024S2)
-    (3, 11, 20244), -- Robert Brown: Introduction to Operating Systems (2024S2)
-    (1, 17, 20244), -- John Doe: Human Computer Interaction (2024S2)
-    (2, 18, 20244), -- Jane Allison Smith: Image Processing and Applications (2024S2)
-    (3, 19, 20244), -- Robert Brown: Web Programming (2024S2)
-    (1, 20, 20244), -- John Doe: Database System Implementation (2024S2)
-    (2, 22, 20244), -- Jane Allison Smith: Numerical Optimization (2024S2)
-    (3, 23, 20244), -- Robert Brown: Introduction to Parallel Computing (2024S2)
-    (1, 24, 20244), -- John Doe: Computer Graphics (2024S2)
-    (2, 25, 20244), -- Jane Allison Smith: Network Science (2024S2)
-    (1, 27, 20244), -- John Doe: Computer Vision (2024S2)
-    (2, 47, 20244), -- Jane Allison Smith: Complex Variables and Applications (2024S2)
+    (1, 6, 20244, 200, 'SCI 123', 'MON WED 2:00 PM - 3:30 PM'),  -- John Doe: Introduction to Data Analytics (2024S2)  
+    (2, 10, 20244, 150, 'ENG 124', 'TUE THU 1:00 PM - 2:30 PM'), -- Jane Allison Smith: Software Engineering (2024S2)
+    (3, 11, 20244, 170, 'ART 125', 'MON WED 11:00 AM - 12:30 PM'), -- Robert Brown: Introduction to Operating Systems (2024S2)
+    (1, 17, 20244, 180, 'FIP 126', 'TUE THU 10:00 AM - 11:30 AM'), -- John Doe: Human Computer Interaction (2024S2)
+    (2, 18, 20244, 130, 'SCI 127', 'MON WED 9:00 AM - 10:30 AM'), -- Jane Allison Smith: Image Processing and Applications (2024S2)
+    (3, 19, 20244, 150, 'ENG 128', 'TUE THU 2:00 PM - 3:30 PM'), -- Robert Brown: Web Programming (2024S2)
+    (1, 20, 20244, 160, 'SCI 129', 'MON WED 3:00 PM - 4:30 PM'), -- John Doe: Database System Implementation (2024S2)
+    (2, 22, 20244, 120, 'ENG 130', 'TUE THU 8:00 AM - 9:30 AM'), -- Jane Allison Smith: Numerical Optimization (2024S2)
+    (3, 23, 20244, 110, 'SCI 131', 'MON WED 10:00 AM - 11:30 AM'), -- Robert Brown: Introduction to Parallel Computing (2024S2)
+    (1, 24, 20244, 140, 'ENG 132', 'TUE THU 1:00 PM - 2:30 PM'), -- John Doe: Computer Graphics (2024S2)
+    (2, 25, 20244, 150, 'SCI 133', 'MON WED 11:00 AM - 12:30 PM'), -- Jane Allison Smith: Network Science (2024S2)
+    (1, 27, 20244, 130, 'ENG 134', 'TUE THU 2:00 PM - 3:30 PM'), -- John Doe: Computer Vision (2024S2)
+    (2, 47, 20244, 100, 'SCI 135', 'MON WED 8:00 AM - 9:30 AM'), -- Jane Allison Smith: Complex Variables and Applications (2024S2)
     -- MATH 
-    (6, 30, 20244), -- Sarah Lee Chen: Calculus III (2024S2)
-    (7, 31, 20244), -- Michael Nguyen: Mathematical Proof (2024S2)
-    (8, 33, 20244), -- Olivia Marie Rodriguez: Linear Algebra (2024S2)
-    (5, 34, 20244), -- David Kim: Introduction to Differential Equations (2024S2)
-    (6, 41, 20244), -- Sarah Lee Chen: Applied Abstract Algebra (2024S2)
+    (6, 30, 20244, 170, 'ENG 136', 'TUE THU 9:00 AM - 10:30 AM'), -- Sarah Lee Chen: Calculus III (2024S2)
+    (7, 31, 20244, 120, 'SCI 137', 'MON WED 1:00 PM - 2:30 PM'), -- Michael Nguyen: Mathematical Proof (2024S2)
+    (8, 33, 20244, 140, 'ENG 138', 'TUE THU 10:00 AM - 11:30 AM'), -- Olivia Marie Rodriguez: Linear Algebra (2024S2)
+    (5, 34, 20244, 150, 'SCI 139', 'MON WED 2:00 PM - 3:30 PM'), -- David Kim: Introduction to Differential Equations (2024S2)
+    (6, 41, 20244, 130, 'ENG 140', 'TUE THU 11:00 AM - 12:30 PM'), -- Sarah Lee Chen: Applied Abstract Algebra (2024S2)
     -- PHYS 
-    (9, 58, 20244), -- Daniel Taylor: Introductory Physics for the Physical Sciences II (2024S2)
-    (10, 59, 20244),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences II (2024S2)
-    (11, 60, 20244),-- William Anderson: Relativity and Quanta (2024S2)
-    (7, 61, 20244), -- Michael Nguyen: Thermodynamics (2024S2) - also taught by Ava Martinez
-    (14, 61, 20244),-- Ava Martinez: Thermodynamics (2024S2) - also taught by Michael Nguyen
-    (12, 62, 20244),-- Aiden Moore: Mechanics I (2024S2)
-    (9, 67, 20244), -- Daniel Taylor: Introduction to Quantum Mechanics (2024S2) 
-    (10, 71, 20244),-- Sophia Anne Wilson: Environmental Physics (2024S2)
+    (9, 58, 20244, 160, 'SCI 141', 'MON WED 3:00 PM - 4:30 PM'), -- Daniel Taylor: Introductory Physics for the Physical Sciences II (2024S2)
+    (10, 59, 20244, 150, 'ENG 142', 'TUE THU 8:00 AM - 9:30 AM'),-- Sophia Anne Wilson: Introductory Physics for the Life Sciences II (2024S2)
+    (11, 60, 20244, 140, 'SCI 143', 'MON WED 10:00 AM - 11:30 AM'),-- William Anderson: Relativity and Quanta (2024S2)
+    (7, 61, 20244, 130, 'ENG 144', 'TUE THU 1:00 PM - 2:30 PM'), -- Michael Nguyen: Thermodynamics (2024S2) - also taught by Ava Martinez
+    (14, 61, 20244, 120, 'SCI 145', 'MON WED 11:00 AM - 12:30 PM'),-- Ava Martinez: Thermodynamics (2024S2) - also taught by Michael Nguyen
+    (12, 62, 20244, 110, 'ENG 146', 'TUE THU 2:00 PM - 3:30 PM'),-- Aiden Moore: Mechanics I (2024S2)
+    (9, 67, 20244, 100, 'SCI 147', 'MON WED 8:00 AM - 9:30 AM'), -- Daniel Taylor: Introduction to Quantum Mechanics (2024S2) 
+    (10, 71, 20244, 90, 'ONLINE', 'FRI 9:00 AM - 12:00 PM'),-- Sophia Anne Wilson: Environmental Physics (2024S2)
     -- STAT 
-    (13, 80, 20244), -- Ava Martinez: Introduction to Probability (2024S2)
-    (14, 81, 20244); -- Ava Martinez: Introduction to Mathematical Statistics (2024S2)
+    (13, 80, 20244, 200, 'SCI 148', 'MON WED 3:00 PM - 4:30 PM'), -- Ava Martinez: Introduction to Probability (2024S2)
+    (14, 81, 20244, 180, 'ENG 149', 'TUE THU 9:00 AM - 10:30 AM'); -- Ava Martinez: Introduction to Mathematical Statistics (2024S2)
 -- Note: Thermodynamics (2024S2) is taught by 2 people
 
 -- SurveyType (Assuming 1=SEI)
@@ -503,3 +503,38 @@ FROM public."InstructorTeachingAssignment";
 UPDATE "Course" SET "isActive" = true;
 
 INSERT INTO "CurrentTerm" ("curTerm") VALUES (20244);
+
+-- TaAssignmentTable
+INSERT INTO public."TaAssignmentTable" ("term", "UBCId", "firstName", "middleName", "lastName", "email", "courseId") VALUES
+(20244, '12345678', 'Alice', 'Marie', 'Johnson', 'alice.johnson@student.ubc.ca', 1),
+(20244, '23456789', 'Bob', 'Lee', 'Smith', 'bob.smith@student.ubc.ca', 2),
+(20244, '34567890', 'Charlie', 'Ann', 'Brown', 'charlie.brown@student.ubc.ca', 3),
+(20244, '45678901', 'David', 'John', 'Wilson', 'david.wilson@student.ubc.ca', 4),
+(20244, '56789012', 'Eve', 'Lynn', 'Davis', 'eve.davis@student.ubc.ca', 5),
+(20241, '67890123', 'Frank', 'Arthur', 'Miller', 'frank.miller@student.ubc.ca', 1),
+(20241, '78901234', 'Grace', 'Elizabeth', 'Moore', 'grace.moore@student.ubc.ca', 2),
+(20242, '89012345', 'Hannah', 'Rose', 'Taylor', 'hannah.taylor@student.ubc.ca', 3),
+(20242, '90123456', 'Ivan', 'James', 'Anderson', 'ivan.anderson@student.ubc.ca', 4),
+(20243, '01234567', 'Jack', 'Michael', 'Thomas', 'jack.thomas@student.ubc.ca', 5);
+
+-- MeetingLog DML
+INSERT INTO public."MeetingLog" ("location", "date", "time") VALUES
+('SCI 234', '2024-08-01', '10:00:00'),
+('Online', '2024-08-02', '14:00:00'),
+('ASC 215', '2024-08-03', '09:00:00');
+
+-- MeetingAttendance DML
+INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId", "attendance") VALUES
+-- Meeting 1: SCI 234
+(1, '11111111', true),  -- John Doe
+(1, '11111112', true),  -- Jane Smith
+(1, '11111113', false), -- Robert Brown
+-- Meeting 2: Online
+(2, '11111111', true),  -- John Doe
+(2, '11111114', true),  -- Emily Davis
+(2, '11111115', true),  -- David Kim
+(2, '11111116', false), -- Sarah Chen
+-- Meeting 3: ASC 215
+(3, '11111117', true),  -- Michael Nguyen
+(3, '11111118', true),  -- Olivia Rodriguez
+(3, '11111119', false); -- Daniel Taylor
