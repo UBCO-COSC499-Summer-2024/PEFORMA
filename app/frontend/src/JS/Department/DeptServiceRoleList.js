@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import { Edit, Download, ArrowUpDown } from 'lucide-react';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, sortItems, requestSort, checkAccess, fetchWithAuth, getTermString } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, sortItems, requestSort, checkAccess, fetchWithAuth, getTermString, downloadCSV } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptServiceRoleList.css';
 
@@ -22,17 +20,17 @@ function useServiceRoleList() {
         perPage: 10,
         currentPage: 1,
     });
-
     const [activeRolesCount, setActiveRolesCount] = useState(0);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
+    // fetch all roles and render
     useEffect(() => {
         const fetchServiceRoles = async () => {
             try {
-                checkAccess(accountLogInType, 'department', navigate, authToken)
+                checkAccess(accountLogInType, 'department', navigate, authToken) // check access with loginType and view
                 const data = await fetchWithAuth('http://localhost:3001/api/service-roles', authToken, navigate);
                 const filledRoles = fillEmptyItems(data.roles, data.perPage);
-                setActiveRolesCount(filledRoles.filter(role => role.status).length);
+                setActiveRolesCount(filledRoles.filter(role => role.status).length); // filter and set active roles count based on status
                 setRoleData({ ...data, roles: filledRoles });
             } catch (error) {
                 console.error('Error fetching service roles:', error);
@@ -41,8 +39,10 @@ function useServiceRoleList() {
         fetchServiceRoles();
     }, [authToken]);
 
+    // currentRoles will be updated every time user use sort function
     const sortedRoles = useMemo(() => sortItems(roleData.roles, sortConfig), [roleData.roles, sortConfig]);
     const currentRoles = currentItems(sortedRoles, roleData.currentPage, roleData.perPage);
+
     return {
         roleData,
         setRoleData,
@@ -53,26 +53,22 @@ function useServiceRoleList() {
     };
 }
 
-function exportToPDF(roles) {
-    const filteredRoles = roles.filter(role => role.name);
-    const doc = new jsPDF();
-    const termString = getTermString(20244); //roles.currentTerm
+function exportToCSV(roles) {
+    const filteredRoles = roles.filter(role => role.name); // filter only the valid ones
+    const termString = getTermString(20244); // replace later
 
-    doc.setFontSize(18);
-    doc.text(`List of Service Roles (${termString})`, 14, 22);
-    doc.autoTable({
-        startY: 28,
-        head: [['#', 'Role', 'Department', 'Description', 'Status']],
-        body: filteredRoles.map((role, index) => [
-            index + 1,
-            role.name,
-            role.department,
-            role.description,
-            { content: role.status ? 'Active' : 'Inactive', styles: { textColor: role.status ? [0, 128, 0] : [255, 0, 0] } }
-        ]),
-    });
-    doc.save(`${termString} Service Roles List.pdf`);
+    const headers = '"#", "Role", "Department", "Description", "Status"\n'; // csv header
+    const csvContent = filteredRoles.reduce((acc, role, index) => { // generate csv content
+        const status = role.status ? 'Active' : 'Inactive';
+        const roleEntry = `${index + 1}, ${role.name.replace(/,/g, '')}, ${role.department}, ${role.description.replace(/,/g, '')}, ${status}\n`;
+        return acc + roleEntry;
+    }, headers);
+
+    downloadCSV(csvContent, `${termString} Service Roles List.csv`); 
 }
+
+
+
 
 function ServiceRoleList() {
     const {
@@ -99,7 +95,7 @@ function ServiceRoleList() {
                                     <Edit size={20} color="black" />
                                 </button>
                             </Link>
-                            <button className='icon-button' onClick={() => exportToPDF(roleData.roles)}>
+                            <button className='icon-button' onClick={() => exportToCSV(roleData.roles)}>
                                 <Download size={20} color="black" />
                             </button>
                         </div>

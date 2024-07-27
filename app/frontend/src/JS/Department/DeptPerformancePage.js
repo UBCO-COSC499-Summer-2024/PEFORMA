@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import { Download } from 'lucide-react';
 
 import CreateSideBar from '../common/commonImports.js';
@@ -10,7 +8,7 @@ import { CreateTopBar } from '../common/commonImports.js';
 import DeptDivisionTable from './PerformanceImports/DeptDivisionTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
-import { checkAccess, getCurrentMonthName, fetchWithAuth } from '../common/utils.js';
+import { checkAccess, getCurrentMonthName, fetchWithAuth, getTermString, downloadCSV } from '../common/utils.js';
 import '../../CSS/Department/DeptPerformancePage.css';
 
 function formatTime(minutes) {
@@ -19,62 +17,35 @@ function formatTime(minutes) {
     return `${hours} hours ${remainingMinutes} minutes`;
 }
 
-function getReadableColumns(columns) {
-    const columnMap = {
-        courseCode: 'Course Code',
-        rank: 'Rank',
-        score: 'Score',
-        name: 'Name',
-        shortage: 'Shortage'
-    };
-    return columns.map(col => columnMap[col] || col.charAt(0).toUpperCase() + col.slice(1));
+function convertToCSV(data) {
+    const array = [Object.keys(data[0])].concat(data);
+    return array.map(it => {
+        return Object.values(it).toString();
+    }).join('\n');
 }
 
+function exportAllToCSV(data) {
 
-function mapDataWithIndex(data) {
-    return data.map((item, index) => ({
-        '#': index + 1,
-        ...item
-    }));
-}
-
-function addTable(doc, title, data, columns, yOffset, formatters = {}) {
-    doc.setFontSize(16);
-    doc.text(title, 14, yOffset);
-
-    const rankedData = mapDataWithIndex(data);
-    const readableColumns = getReadableColumns(columns);
-
-    doc.autoTable({
-        startY: yOffset + 10,
-        head: [['#', ...readableColumns]],
-        body: rankedData.map(item =>
-            ['#', ...columns].map(col =>
-                formatters[col] ? formatters[col](item[col]) : item[col]
-            )
-        ),
-    });
-    return doc.lastAutoTable.finalY + 20;
-}
-
-function exportAllToPDF(data) {
-    const doc = new jsPDF();
-    let yOffset = 10;
-
-    yOffset = addTable(doc, 'Computer Science Courses', data.cosc, ['courseCode', 'rank', 'score'], yOffset);
-    yOffset = addTable(doc, 'Mathematics Courses', data.math, ['courseCode', 'rank', 'score'], yOffset);
-    yOffset = addTable(doc, 'Physics Courses', data.phys, ['courseCode', 'rank', 'score'], yOffset);
-    yOffset = addTable(doc, 'Statistics Courses', data.stat, ['courseCode', 'rank', 'score'], yOffset);
+    const termString = getTermString(20244); // will reaplce to curterm from db ######
     
-    const currentMonth = getCurrentMonthName();
-    yOffset = addTable(doc, `Benchmark - ${currentMonth}`, data.benchmark, ['name', 'shortage'], yOffset, { shortage: formatTime });
-    
-    doc.addPage();
-    yOffset = 10;
-    yOffset = addTable(doc, 'Top 5 Instructors', data.leaderboard.top, ['name', 'score'], yOffset);
-    addTable(doc, 'Bottom 5 Instructors', data.leaderboard.bottom, ['name', 'score'], yOffset);
+    // create csv files for each tables
+    const coscCSV = convertToCSV(data.cosc);
+    const mathCSV = convertToCSV(data.math);
+    const physCSV = convertToCSV(data.phys);
+    const statCSV = convertToCSV(data.stat);
+    const benchmarkCSV = convertToCSV(data.benchmark.map(item => ({ name: item.name, shortage: formatTime(item.shortage) })));
+    const topInstructorsCSV = convertToCSV(data.leaderboard.top);
+    const bottomInstructorsCSV = convertToCSV(data.leaderboard.bottom);
 
-    doc.save('department_performance_overview.pdf');
+    const allCSVData = `Computer Science Courses:\n${coscCSV}\n\n` +
+        `Mathematics Courses:\n${mathCSV}\n\n` +
+        `Physics Courses:\n${physCSV}\n\n` +
+        `Statistics Courses:\n${statCSV}\n\n` +
+        `Benchmark - ${getCurrentMonthName()}:\n${benchmarkCSV}\n\n` +
+        `Top 5 Instructors:\n${topInstructorsCSV}\n\n` +
+        `Bottom 5 Instructors:\n${bottomInstructorsCSV}`;
+        
+    downloadCSV (allCSVData, `${termString} Performance Overview.csv`)
 }
 
 
@@ -137,7 +108,7 @@ function PerformanceDepartmentPage() {
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
-                        <button className='icon-button' onClick={() => exportAllToPDF(allData)}>
+                        <button className='icon-button' onClick={() => exportAllToCSV(allData)}>
                             <Download size={20} color="black" />
                         </button>
                     </div>

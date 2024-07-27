@@ -282,3 +282,14 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
     console.error('Error updating item status:', error);
   }
 };
+
+export const downloadCSV = (csvContent, filename) => {
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}

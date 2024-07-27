@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import { Download, ArrowUpDown } from 'lucide-react';
 
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth, requestSort, sortItems, filterItems, getTermString } from '../common/utils.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth, requestSort, sortItems, filterItems, getTermString, downloadCSV } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
@@ -28,13 +26,14 @@ function useDeptMemberList() {
     const [search, setSearch] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-    useEffect(() => {
+    // fetch all member lists and render
+    useEffect(() => { 
         const fetchData = async () => {
             try {
-                checkAccess(accountLogInType, navigate, 'department', authToken);
+                checkAccess(accountLogInType, navigate, 'department', authToken); // check access with log in type and current view
                 const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
                 setAllMemberData({ ...data, members: data.members})
-                const activeMembers = data.members.filter(member => member.status);
+                const activeMembers = data.members.filter(member => member.status); // will only going to use active member filtered by status
                 const filledMembers = fillEmptyItems(activeMembers, data.perPage);
                 setMemberData({
                     members: filledMembers,
@@ -50,6 +49,7 @@ function useDeptMemberList() {
         fetchData();
     }, [authToken, accountLogInType, navigate]);
 
+    // sort and filter on member list data. FillEmptyItems after filtering
     const sortedMembers = useMemo(() => sortItems(memberData.members, sortConfig), [memberData.members, sortConfig]);
     const filteredMembers = filterItems(sortedMembers, 'member', search);
     const filledFilteredMembers = fillEmptyItems(filteredMembers, memberData.perPage);
@@ -66,28 +66,20 @@ function useDeptMemberList() {
     }
 }
 
-function exportToPDF(members) {
-    const filteredMembers = members.members.filter(member => member.name); 
-    const doc = new jsPDF();
-    const termString = getTermString(20244); // members.currentTerm
+function exportToCSV(members) {
+    const filteredMembers = members.members.filter(member => member.name);
+    const termString = getTermString(20244); // will reaplce to curterm from db ######
 
-    doc.setFontSize(18);
-    doc.text(`List of Active Members (${termString})`, 14, 22);
-    doc.autoTable({
-        startY: 28,
-        head: [['#', 'Name', 'UBC ID', 'Service Role', 'Department', 'Email', 'Status']],
-        body: filteredMembers.map((member, index) => [
-            index + 1,
-            member.name,
-            member.ubcid,
-            Array.isArray(member.serviceRole) ? member.serviceRole.join(',\n') : member.serviceRole,
-            member.department,
-            member.email,
-            { content: member.status ? 'Active' : 'Inactive', styles: { textColor: member.status ? [0, 128, 0] : [255, 0, 0] } }
-        ]),
-    });
-    doc.save(`${termString} Department Member List.pdf`);
+    const headers = '#, Name, UBC ID, Service Role, Department, Email, Status\n'; // csv header
+    const csvContent = filteredMembers.reduce((acc, member, index) => { // generate csv content
+        const status = member.status ? 'Active' : 'Inactive';
+        const serviceRole = Array.isArray(member.serviceRole) ? member.serviceRole.join('; ') : member.serviceRole; // Join roles with semicolon for CSV format
+        return acc + `${index + 1},${member.name},${member.ubcid},"${serviceRole}",${member.department},${member.email},${status}\n`;
+    }, headers);
+    
+    downloadCSV (csvContent, `${termString} Members List.csv`)
 }
+
 
 function DeptMemberList() {
     const {
@@ -109,7 +101,7 @@ function DeptMemberList() {
                 <div className="member-list-main" id="dept-member-list-test-content">
                     <div className="subtitle-member">
                         List of Members ({memberData.membersCount} Active)
-                        <button className='icon-button' onClick={() => exportToPDF(allMemberData)}>
+                        <button className='icon-button' onClick={() => exportToCSV(allMemberData)}>
                             <Download size={20} color="black" />
                         </button>
                     </div>
