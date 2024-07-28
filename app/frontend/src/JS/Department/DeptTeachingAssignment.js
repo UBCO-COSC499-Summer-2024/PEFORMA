@@ -134,9 +134,9 @@ function DeptTeachingAssignment() {
 						<div className="course-list">
 							<p>{getDivisionName(selectedDivision)} Courses:</p>
 							<div className="course-cards">
-								{currentCourses.map((course) => (
+								{currentCourses.map((course, index) => (
 									<div
-										key={course.id}
+										key={`${course.id}-${index}`}
 										className="course-card"
 										onClick={() => handleItemClick(navigate, 'course', course.id)}
 										style={{ cursor: 'pointer' }}>
