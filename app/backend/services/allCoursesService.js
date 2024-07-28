@@ -3,7 +3,7 @@ const {updateAllCourses} = require('./updateAllCourses.js');
 const {getLatestTerm} = require('./latestTerm.js');
 async function getAllCourses() {
   try {
-    const currentterm = getLatestTerm();
+    const currentterm = await getLatestTerm();
     await updateAllCourses();
     let result = await pool.query(`
       SELECT c."courseId",
