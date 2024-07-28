@@ -146,7 +146,8 @@ export const filterItems = (items, itemType, search) => {
     return items.filter((item)=>
       (item.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
       (item.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
-    );
+
+);
   } else if (itemType === 'insCourse') {
     return items.filter((course) =>
       (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -373,3 +374,15 @@ export const UserIcon = ({ userName, profileId, size = 40, onClick }) => {
     );
   }
 };
+
+export const downloadCSV = (csvContent, filename) => { 
+  // generates a blob for csvContent
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a'); 
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
