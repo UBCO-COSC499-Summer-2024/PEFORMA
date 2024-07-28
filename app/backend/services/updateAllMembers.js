@@ -6,7 +6,7 @@ async function updateAllMembers() {
     try {
         const currentTerm = await getLatestTerm();
         const currentYear = await getLatestYear();
-
+        //Get all instructors
         let query = `SELECT p."profileId"
                      FROM "Profile" p
                      JOIN "Account" ac ON ac."profileId" = p."profileId"
@@ -16,11 +16,11 @@ async function updateAllMembers() {
                      ORDER BY p."profileId" ASC`;
         let result = await pool.query(query);
         const instructorsList = result.rows.map(row => row.profileId);
-
+        //Get instructors with service role
         query = `SELECT "profileId" FROM "ServiceRoleAssignment" sra WHERE sra."year" = $1`;
         result = await pool.query(query, [currentYear]);
         const currentInstructors = result.rows.map(row => row.profileId);
-
+        //Get instructors with courses
         query = `SELECT "profileId" FROM "InstructorTeachingAssignment" ita WHERE ita."term" = $1`;
         result = await pool.query(query, [currentTerm]);
         result.rows.forEach(row => {
@@ -28,11 +28,10 @@ async function updateAllMembers() {
                 currentInstructors.push(row.profileId);
             }
         });
-
+        
         const missingInstructors = instructorsList.filter(profileId => !currentInstructors.includes(profileId));
         const assignedInstructors = instructorsList.filter(profileId => currentInstructors.includes(profileId));
 
-        // Begin transaction
         await pool.query('BEGIN');
 
         if (assignedInstructors.length > 0) {
@@ -45,12 +44,11 @@ async function updateAllMembers() {
             await pool.query(deactivateQuery, [missingInstructors]);
         }
 
-        // Commit transaction
         await pool.query('COMMIT');
         return;
     } catch (error) {
         console.error("Error fetching instructors: ", error);
-        await pool.query('ROLLBACK'); // Rollback transaction on error
+        await pool.query('ROLLBACK');
     }
 }
 
