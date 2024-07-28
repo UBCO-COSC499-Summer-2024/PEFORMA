@@ -13,7 +13,6 @@ jest.mock('axios');
 useAuth.mockReturnValue({
     login:()=>{return 0}
 });
-  
 
 function mockData() {
     axios.post.mockResolvedValue({
@@ -24,8 +23,15 @@ function mockData() {
     });
 }
 
+function mockFailData() {
+    axios.post.mockResolvedValue({
+        data:{success:false, token:"token", expiresIn:"idk", email:"john.doe@ubc.ca", accountId:1, profileId:1}
+    });
+}
+
 beforeEach(async()=>{
     global.alert=jest.fn();
+    console.log = jest.fn();
     mockData();
 });
 
@@ -45,11 +51,6 @@ test('Check login button exists', async () => {
 });
 
 test('Check login success', async () => {
-    console.log = jest.fn();
- 
-  const logspy = jest.spyOn(global.console, 'log');
-
-  console.log(logspy);
     const user = userEvent.setup();
     await act(async () => {
        render(<MemoryRouter><Login/></MemoryRouter>); 
@@ -61,5 +62,19 @@ test('Check login success', async () => {
     await user.type(passwordBox, "123");
     await user.click(loginButton);
     expect(console.log).toBeCalledWith(`Log in as account type: 1`)
+});
 
+test('Check login fail', async() => {
+    mockFailData();
+    const user = userEvent.setup();
+    await act(async () => {
+        render(<MemoryRouter><Login/></MemoryRouter>); 
+     });
+     const emailBox = screen.getByPlaceholderText('Email Address');
+     const passwordBox = screen.getByPlaceholderText("Password");
+     const loginButton = screen.getByRole("button");
+     await user.type(emailBox, "john.doe@ubc.ca");
+     await user.type(passwordBox, "123");
+     await user.click(loginButton);
+     expect(global.alert).toHaveBeenCalledTimes(1);
 });
