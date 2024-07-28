@@ -145,8 +145,7 @@ export const filterItems = (items, itemType, search) => {
     return items.filter((item)=>
       (item.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
       (item.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
-
-);
+    );
   } else if (itemType === 'insCourse') {
     return items.filter((course) =>
       (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -156,6 +155,12 @@ export const filterItems = (items, itemType, search) => {
        course.instructor.some(instructor =>
          instructor.toLowerCase().includes(search.toLowerCase())
        ))
+    );
+  } else if (itemType === 'taCourse') { // teaching assignment courses search 
+    return items.filter((item)=>
+      (item.instructor?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (item.courseName?.toLowerCase() ?? '').includes(search.toLowerCase())
     );
   } else {
     return items;

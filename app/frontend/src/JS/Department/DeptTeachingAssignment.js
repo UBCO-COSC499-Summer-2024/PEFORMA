@@ -125,7 +125,8 @@ function DeptTeachingAssignment() {
 							<Link to={`/DeptTeachingAssignmentDetail`} className='detail-button'
 								state={{ selectedDivision,
 									courses: deptCourseList.courses,
-									professors: professorList
+									professors: professorList,
+									currentTerm: currentTerm
 										}}>
 								Detail
 							</Link>
