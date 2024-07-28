@@ -65,12 +65,15 @@ function RoleInformation() {
         const roleData = roleRes.data;
         roleData.perPage -=1;
         const currentTerm = getCurrentTerm();
+        const termResponse = await axios.get("http://localhost:3001/api/terms");
+        roleData.latestYear = termResponse.data.currentTerm.toString().slice(0,4);
+
         if (currentTerm.slice(0,4) > roleData.latestYear) {
           setPastState(true);
         } else if (currentTerm.slice(0,4) < roleData.latestYear) {
           setFutureState(true);
         }
-        console.log(roleData.latestYear);
+        
         roleData.assignees = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear);
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({

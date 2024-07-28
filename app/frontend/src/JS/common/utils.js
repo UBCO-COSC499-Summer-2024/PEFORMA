@@ -177,6 +177,26 @@ export const sortItems = (items, sortConfig) => {
   return sortableItems;
 };
 
+export const getCurrentTerm = () => {
+  const now = new Date();
+  let year = now.getFullYear();
+  const month = now.getMonth() + 1; // getMonth() returns 0-11
+  let term;
+
+  if (month >= 9 && month <= 12) { // Sep-Dec Winter Term 1 -> T1
+    term = `${year}1`; } 
+  else if (month >=1 && month <= 4){//Jan-Apr Winter Term 2 -> T2
+    year -= 1;
+    term = `${year}2`; }
+  else if (month >=5 && month <= 6){// May-Jun Summer Term 1 -> T3
+    year -= 1;
+    term = `${year}3`; }
+  else if (month >=7 && month <= 8){// Jul-Aug Summer Term 2 -> T4
+    year -= 1;
+    term = `${year}4`; }
+  return term;
+};
+
 export const requestSort = (sortConfig, setSortConfig, key) => {
   let direction = 'ascending';
   if (sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -198,23 +218,6 @@ export const getTermString = (term) => {
   };
 
   return `${year} ${termMap[termCode] || ''}`;
-};
-
-export const getCurrentTerm = () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1; // getMonth() returns 0-11
-  let term;
-
-  if (month >= 9 && month <= 12) { // Sep-Dec Winter Term 1 -> T1
-    term = `${year}1`; } 
-  else if (month >=1 && month <= 4){//Jan-Apr Winter Term 2 -> T2
-    term = `${year}2`; }
-  else if (month >=5 && month <= 6){// May-Jun Summer Term 1 -> T3
-    term = `${year}3`; }
-  else if (month >=7 && month <= 8){// Jul-Aug Summer Term 2 -> T4
-    term = `${year}4`; }
-  return term;
 };
 
 export const filterYearLevelCourses = (courses, identifier, prefix) => {
