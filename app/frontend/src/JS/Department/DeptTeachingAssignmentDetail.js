@@ -159,7 +159,7 @@ function DeptTeachingAssignmentDetail() {
                             <tbody>
                                 {currentCourses.map((course, index) => (
                                     <tr key={`${course.id}-${index}`}>
-                                        <td><Link to={`http://localhost:3000/DeptProfilePage?ubcid=${course.ubcid}`}>{course.instructor}</Link></td>
+                                        <td><Link to={`http://localhost:3000/DeptProfilePage?ubcid=${course.ubcid}`}>{course.instructor === "Not Assigned" ? "N/A" : course.instructor}</Link></td>
                                         <td><Link to={`http://localhost:3000/DeptCourseInformation?courseid=${course.id}`}>{course.courseCode}</Link></td>
                                         <td>{course.courseName}</td>
                                         <td>{course.email}</td>

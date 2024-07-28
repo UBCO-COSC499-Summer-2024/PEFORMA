@@ -282,3 +282,8 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
     console.error('Error updating item status:', error);
   }
 };
+
+export const filterByDivision = (courses, division, divisionMap) => {
+  const divisionPrefix = divisionMap[division];
+  return courses.filter(course => course.courseCode && course.courseCode.startsWith(divisionPrefix));
+};

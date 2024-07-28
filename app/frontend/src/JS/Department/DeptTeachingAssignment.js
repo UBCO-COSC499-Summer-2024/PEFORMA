@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
-import { fillEmptyItems, currentItems, checkAccess, getDivisionName, getTermString } from '../common/utils.js';
+import { fillEmptyItems, currentItems, checkAccess, getDivisionName, getTermString, fetchWithAuth, filterByDivision } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptTeachingAssignment.css';
 
-function DeptTeachingAssignment() {
+function handleItemClick(navigate, type, id) {
+	navigate(`/${type === 'course' ? 'DeptCourseInformation' : 'DeptProfilePage'}?${type === 'course' ? 'courseid' : 'ubcid'}=${id}`);
+}
+
+function useDeptTeachingAssignment() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
 	const [deptCourseList, setDeptCourseList] = useState({
@@ -19,21 +23,21 @@ function DeptTeachingAssignment() {
 	const [professorList, setProfessorList] = useState([]);
 	const [selectedDivision, setSelectedDivision] = useState('computer-science');
 	const [currentTerm, setCurrentTerm] = useState('');
-
-	const handleItemClick = (type, id) => {
-		navigate(`/${type === 'course' ? 'DeptCourseInformation' : 'DeptProfilePage'}?${type === 'course' ? 'courseid' : 'ubcid'}=${id}`);
+	const divisionMap = {
+    'computer-science': 'COSC',
+    'mathematics': 'MATH',
+    'physics': 'PHYS',
+    'statistics': 'STAT',
 	};
+	const handleDivisionChange = event => setSelectedDivision(event.target.value);
 
 	useEffect(() => {
 		const fetchCourses = async () => {
 			try {
         checkAccess(accountLogInType, navigate, 'department');
-				const res = await axios.get(`http://localhost:3001/api/teachingAssignment`, {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-
-				if (res.data && res.data.teachinginfo) {
-					const filledCourses = fillEmptyItems(res.data.teachinginfo.flatMap(info => 
+				const data = await fetchWithAuth(`http://localhost:3001/api/teachingAssignment`, authToken, navigate);
+				if (data && data.teachinginfo) {
+					const filledCourses = fillEmptyItems(data.teachinginfo.flatMap(info => 
 						info.courses.map((course, index) => ({
 							courseCode: course,
 							courseName: info.courseName[index],
@@ -43,25 +47,16 @@ function DeptTeachingAssignment() {
 							email: info.email,
 							division: info.division.toLowerCase().replace(' ', '-')
 						}))
-					), res.data.perPage);
-
+					), data.perPage);
 					setDeptCourseList({
 						courses: filledCourses,
-						coursesCount: res.data.teachinginfo.reduce((sum, info) => sum + info.courses.length, 0),
-						perPage: res.data.perPage || 10,
+						coursesCount: data.teachinginfo.reduce((sum, info) => sum + info.courses.length, 0),
+						perPage: data.perPage || 10,
 						currentPage: 1,
 					});
 
-					const divisionMap = {
-						'computer-science': 'COSC',
-						'mathematics': 'MATH',
-						'physics': 'PHYS',
-						'statistics': 'STAT',
-					};
-
 					const selectedDivisionPrefix = divisionMap[selectedDivision];
-
-					const filteredProfessors = res.data.teachinginfo.filter(info => 
+					const filteredProfessors = data.teachinginfo.filter(info => 
 						info.courses.some(course => course.startsWith(selectedDivisionPrefix))
 					).map(info => ({
 						instructor: info.instructor,
@@ -71,53 +66,44 @@ function DeptTeachingAssignment() {
 					}));
 
 					setProfessorList(filteredProfessors);
-					setCurrentTerm(getTermString(res.data.currentTerm));
+					setCurrentTerm(getTermString(data.currentTerm));
 
 				} else {
-					console.error('Unexpected response structure:', res.data);
+					console.error('Unexpected response structure:', data);
 				}
 
 			} catch (error) {
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken');
-					navigate('/Login');
-				} else {
-					console.error('Error fetching courses:', error);
-				}
+				console.error('Error fetching courses:', error);
 			}
 		};
 
 		fetchCourses();
-	}, [authToken, accountLogInType, navigate, selectedDivision]);
+	}, [authToken, accountLogInType, navigate]);
 
-	const handleDivisionChange = (event) => {
-		setSelectedDivision(event.target.value);
-	};
+	const filteredByDivisionCourses = filterByDivision(deptCourseList.courses, selectedDivision, divisionMap);
+	const currentCourses = currentItems(filteredByDivisionCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
-	const handleDetailClick = () => {
-		navigate('/DeptTeachingAssignmentDetail', {
-			state: {
-				selectedDivision,
-				courses: deptCourseList.courses,
-				professors: professorList,
-			},
-		});
-	};
+	return {
+		deptCourseList,
+		professorList,
+		navigate,
+		handleDivisionChange,
+		selectedDivision,
+		currentTerm,
+		currentCourses,
+	}
+}
 
-	const divisionMap = {
-		'computer-science': 'COSC',
-		'mathematics': 'MATH',
-		'physics': 'PHYS',
-		'statistics': 'STAT',
-	};
-
-	const filteredCourses = deptCourseList.courses.filter((course) => {
-		const divisionPrefix = divisionMap[selectedDivision];
-		return course.courseCode && course.courseCode.startsWith(divisionPrefix);
-	});
-	
-
-	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
+function DeptTeachingAssignment() {
+	const {
+		deptCourseList,
+		professorList,
+		navigate,
+		handleDivisionChange,
+		selectedDivision,
+		currentTerm,
+		currentCourses
+    } = useDeptTeachingAssignment();
 
 	return (
 		<div className="dashboard-container">
@@ -136,9 +122,13 @@ function DeptTeachingAssignment() {
 								<option value="physics">Physics</option>
 								<option value="statistics">Statistics</option>
 							</select>
-							<button className="detail-button" onClick={handleDetailClick}>
+							<Link to={`/DeptTeachingAssignmentDetail`} className='detail-button'
+								state={{ selectedDivision,
+									courses: deptCourseList.courses,
+									professors: professorList
+										}}>
 								Detail
-							</button>
+							</Link>
 						</div>
 						<div className="course-list">
 							<p>{getDivisionName(selectedDivision)} Courses:</p>
@@ -147,7 +137,7 @@ function DeptTeachingAssignment() {
 									<div
 										key={course.id}
 										className="course-card"
-										onClick={() => handleItemClick('course', course.id)}
+										onClick={() => handleItemClick(navigate, 'course', course.id)}
 										style={{ cursor: 'pointer' }}>
 										{course.courseCode}: {course.courseName}
 									</div>
@@ -158,11 +148,12 @@ function DeptTeachingAssignment() {
 							<p>{getDivisionName(selectedDivision)} Professors:</p>
 							<div className="professor-cards">
 								{professorList
+									.filter(professor => professor.instructor !== "Not Assigned")
 									.map((professor, index) => (
 										<div
 											key={index}
 											className="professor-card"
-											onClick={() => handleItemClick('professor', professor.ubcid)}
+											onClick={() => handleItemClick(navigate, 'professor', professor.ubcid)}
 											style={{ cursor: 'pointer' }}>
 											{professor.instructor}
 										</div>
