@@ -25,26 +25,20 @@ async function getCourseHistory(req) {
         // Extract course details from the first result row
         const { ctitle, description, courseCode, dname } = result.rows[0];
         //Join profile, course, instructorassignment, single teaching performance tables
-        query = `SELECT DISTINCT ON (ita."term", full_name, p."profileId", p."UBCId")
-        ita."term",
-        TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
-        stp."score",
-        p."profileId",
-        p."UBCId"
-        FROM
-        "Course" c
-        LEFT JOIN
-        "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
-        LEFT JOIN
-        "SingleTeachingPerformance" stp ON stp."courseId" = ita."courseId" AND stp."term" = ita."term" AND stp."profileId" = ita."profileId"
-        LEFT JOIN
-        "Profile" p ON p."profileId" = ita."profileId"
-        LEFT JOIN 
-        "Division" d ON d."divisionId" = c."divisionId"
-        WHERE 
-        c."courseId" = $1 AND ita."term" <= $2
-        ORDER BY 
-        ita."term", full_name, p."profileId", p."UBCId", stp."score" DESC;
+        query = `SELECT ita."term", TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
+                stp."score", p."profileId", p."UBCId", ita."location", ita."enrollment",ita."meetingPattern" FROM "Course" c
+                LEFT JOIN
+                "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
+                LEFT JOIN
+                "SingleTeachingPerformance" stp ON stp."courseId" = ita."courseId" AND stp."term" = ita."term" AND stp."profileId" = ita."profileId"
+                LEFT JOIN
+                "Profile" p ON p."profileId" = ita."profileId"
+                LEFT JOIN 
+                "Division" d ON d."divisionId" = c."divisionId"
+                WHERE 
+                c."courseId" = $1 AND ita."term" <= $2
+                ORDER BY 
+                ita."term", full_name, p."profileId", p."UBCId", stp."score" DESC;
         `;
         result = await pool.query(query,[courseId,latestTermResult]);
         if(result.length == 0){
@@ -90,7 +84,10 @@ async function getCourseHistory(req) {
                 term: sessionSuffix ,
                 score: row.score ? Number(row.score.toFixed(2)) : "",
                 term_num: row.term,
-                ubcid:row.UBCId
+                ubcid:row.UBCId,
+                location: row.location,
+                enrollment: row.enrollment,
+                meetingPattern: row.meetingPattern
             };
         });   
 
