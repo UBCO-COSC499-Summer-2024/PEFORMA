@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useState, useMemo } from 'react';
 
 export const fillEmptyItems = (items, perPage) => {
   const filledItems = [...items];
@@ -280,5 +281,95 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
     }
   } catch (error) {
     console.error('Error updating item status:', error);
+  }
+};
+
+// -- User image/initial icon --
+// Simple hash function to generate a number from a string
+const hashCode = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+};
+
+// Function to generate a color based on the hash
+const generateColor = (name) => {
+  const hash = hashCode(name);
+  const hue = hash % 360; // Use modulo to ensure hue is between 0 and 359
+  return `hsl(${hue}, 70%, 80%)`; // Keep saturation and lightness constant
+};
+
+export const UserIcon = ({ userName, profileId, size = 40, onClick }) => {
+  const [imageError, setImageError] = useState(false);
+
+  const { initials, bgColor } = useMemo(() => {
+    if (imageError) {
+      const nameParts = userName.split(' ');
+      let initialsArray;
+      
+      if (nameParts.length >= 3) {
+        // If there are 3 or more parts, use first and last
+        initialsArray = [nameParts[0], nameParts[nameParts.length - 1]];
+      } else {
+        // Otherwise, use all parts
+        initialsArray = nameParts;
+      }
+      
+      const initials = initialsArray
+        .map(name => name[0])
+        .join('')
+        .toUpperCase();
+
+      const bgColor = generateColor(userName);
+      return { initials, bgColor };
+    }
+    return { initials: '', bgColor: '' };
+  }, [userName, profileId, imageError]);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const commonStyles = {
+    marginRight: '10px',
+    width: `${size}px`,
+    height: `${size}px`,
+    borderRadius: '50%',
+    cursor: onClick ? 'pointer' : 'default',
+  };
+
+  if (imageError) {
+    return (
+      <div
+        className="profile-initials"
+        style={{
+          ...commonStyles,
+          backgroundColor: bgColor,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontWeight: 'bold',
+          color: '#000',
+          fontSize: `${size / 2.5}px`,
+        }}
+        onClick={onClick}
+      >
+        {initials}
+      </div>
+    );
+  } else {
+    return (
+      <img
+        src={`http://localhost:3001/api/image/${profileId}`}
+        alt="Profile image"
+        onClick={onClick}
+        style={commonStyles}
+        onError={handleImageError}
+      />
+    );
   }
 };

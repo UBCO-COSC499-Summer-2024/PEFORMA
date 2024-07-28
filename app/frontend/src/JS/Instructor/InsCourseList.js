@@ -7,7 +7,7 @@ import { CreateTopBar } from '../common/commonImports.js';
 import divisions from '../common/divisions.js';
 import '../common/divisions.js';
 import '../common/AuthContext.js';
-import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems } from '../common/utils.js';
+import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems, UserIcon } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Instructor/InsCourseList.css';
 
@@ -108,11 +108,10 @@ function InsCourseList() {
                                                     course.instructor.map((instructor, index) => (
                                                         <React.Fragment key={course.profileid[index]}>
                                                             <div className="instructor-container">
-                                                                <img 
-                                                                    className="instructor-image"
-                                                                    src={`http://localhost:3001/api/image/${course.profileid[index]}`} 
-                                                                    alt={instructor}
-                                                                    onError={(e) => { e.target.onerror = null }}
+                                                                <UserIcon 
+                                                                    userName={instructor}
+                                                                    profileId={course.profileid[index]}
+                                                                    size={30}
                                                                 />
                                                                 <Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
                                                                     {instructor}
@@ -123,11 +122,10 @@ function InsCourseList() {
                                                     ))
                                                 ) : (
                                                     <div className="single-instructor">
-                                                        <img 
-                                                            className="instructor-image"
-                                                            src={`http://localhost:3001/api/image/${course.profileid}`} 
-                                                            alt={course.instructor}
-                                                            onError={(e) => { e.target.onerror = null; e.target.src = '/path/to/default/image.jpg' }}
+                                                        <UserIcon 
+                                                            userName={course.instructor}
+                                                            profileId={course.profileid}
+                                                            size={10}
                                                         />
                                                         <Link to={`/InsProfilePage?ubcid=${course.ubcid}`}>
                                                             {course.instructor}
