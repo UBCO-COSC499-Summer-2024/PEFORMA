@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { UserIcon, fetchWithAuth } from './utils.js';
+import { UserIcon, fetchWithAuth, postWithAuth } from './utils.js';
 import { useAuth } from './AuthContext';
 import '../../CSS/common.css';
 
@@ -59,11 +59,11 @@ const useTopBarController = (authToken, profileId) => {
 
     const setNewCurrentTerm = async (term) => {
         try {
-            await fetchWithAuth(
+            await postWithAuth(
                 'http://localhost:3001/api/setCurrentTerm',
                 authToken,
                 navigate,
-                { method: 'POST', body: JSON.stringify({ term: term.value }) }
+                { term: term.value }
             );
             setAllData(prev => ({ ...prev, currentTerm: term }));
             console.log('Term set successfully');
