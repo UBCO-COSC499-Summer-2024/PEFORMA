@@ -365,7 +365,7 @@ export const UserIcon = ({ userName, profileId, size = 40, onClick }) => {
     return (
       <img
         src={`http://localhost:3001/api/image/${profileId}`}
-        alt="Profile image"
+        alt="Profile"
         onClick={onClick}
         style={commonStyles}
         onError={handleImageError}
