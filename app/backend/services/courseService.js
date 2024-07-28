@@ -63,7 +63,8 @@ async function getFormattedCourseData(divisionCode) {
         currentPage: 1,
         perPage: 10,
         divisionCoursesCount: result.rows.length,
-        courses: courses
+        courses: courses,
+        currentTerm: latestTerm
     }
    
 
