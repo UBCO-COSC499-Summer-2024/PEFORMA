@@ -9,7 +9,6 @@ const queryAccountRouter = require('./routes/queryAccountRouter');
 const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
-const { setupDatabase } = require('./insertProfileImages');
 
 const { upsertProfile } = require('./routes/upsertProfile');
 const createAccount = require('./routes/createAccount');
@@ -177,14 +176,6 @@ const startServer = async () => {
         console.log(`Data entry request: http://localhost:${port}/enter`);
         console.log(`Instructor lists: http://localhost:${port}/api/instructors`);
     });
-
-    try {
-        // Run database setup after server starts
-        await setupDatabase();
-        console.log('Database setup completed successfully');
-    } catch (error) {
-        console.error('Error during database setup:', error);
-    }
 };
 
 // Call the async function to start the server
