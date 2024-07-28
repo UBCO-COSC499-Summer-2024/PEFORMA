@@ -1,7 +1,9 @@
 const pool = require('../db/index.js');
 const {updateAllCourses} = require('./updateAllCourses.js');
+const {getLatestTerm} = require('./latestTerm.js');
 async function getAllCourses() {
   try {
+    const currentterm = await getLatestTerm();
     await updateAllCourses();
     let result = await pool.query(`
       SELECT c."courseId",
@@ -19,6 +21,7 @@ async function getAllCourses() {
     const formattedData = {
         currentPage: 1,
         perPage: 10,
+        currentTerm: currentterm,
         coursesCount: result.rowCount,
         courses: result.rows.map(row => {
             return {

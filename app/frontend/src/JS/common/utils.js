@@ -145,7 +145,8 @@ export const filterItems = (items, itemType, search) => {
     return items.filter((item)=>
       (item.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
       (item.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
-    );
+
+);
   } else if (itemType === 'insCourse') {
     return items.filter((course) =>
       (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
