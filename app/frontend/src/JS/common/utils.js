@@ -306,3 +306,20 @@ export const downloadCSV = (csvContent, filename) => {
   document.body.removeChild(link);
 }
 
+export const submitFormData = async (url, postData, authToken, initialFormData, setFormData, successMessage, errorMessageHandler) => {
+  try {
+      await axios.post(url, postData, {
+          headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      alert(successMessage);
+      setFormData(initialFormData);
+  } catch (error) {
+      console.error('Error sending data to the server:', error);
+      if (typeof errorMessageHandler === "function") {
+          errorMessageHandler(error);
+      } else {
+          console.error('An error occurred, but no error handler is provided:', error);
+          alert('An unexpected error occurred.');
+      }
+  }
+};

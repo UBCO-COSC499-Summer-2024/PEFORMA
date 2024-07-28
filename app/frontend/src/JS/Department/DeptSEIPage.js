@@ -1,50 +1,93 @@
 import React, { useState, useEffect } from 'react';
-import '../../CSS/Admin/CreateAccount.css';
-import axios from 'axios';
-import CreateSideBar, { CreateTopBar } from '../common/commonImports.js';
-import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+
+import CreateSideBar from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
+import { checkAccess, fetchWithAuth, handleCancelForm, submitFormData } from '../common/utils.js';
+import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptSEIPage.css'
-import { checkAccess, handleCancelForm } from '../common/utils.js';
 
-function DeptSEIPage() {
-  const { authToken, accountLogInType } = useAuth();
-  const navigate = useNavigate();
+const initialFormData = { // initialFormData that will be used in SEI page
+  courseId: '',
+  course: '',
+  profileId: '',
+  instructor: '',
+  Q1: '',
+  Q2: '',
+  Q3: '',
+  Q4: '',
+  Q5: '',
+  Q6: '',
+  retentionRate: '',
+  averageGrade: '',
+  enrollmentRate: '',
+  failedPercentage: ''
+};
 
-  const initialFormData = {
-    courseId: '',
-    course: '',
+// handle changes when a new course is selected by user
+function handleCourseChange(selectedOption, setFormData, setInstructorOptions) {
+  setFormData(prevState => ({
+    ...prevState,
+    courseId: selectedOption ? selectedOption.value : '',
+    course: selectedOption ? selectedOption.label : '',
     profileId: '',
-    instructor: '',
-    Q1: '',
-    Q2: '',
-    Q3: '',
-    Q4: '',
-    Q5: '',
-    Q6: '',
-    retentionRate: '',
-    averageGrade: '',
-    enrollmentRate: '',
-    failedPercentage: ''
-  };
+    instructor: ''
+  }));
+
+  // update instructor option list based on changed selected course
+  const instructors = selectedOption && selectedOption.instructors ? selectedOption.instructors : [];
+  const instructorOptions = instructors.map(instructor => ({
+    value: instructor.profileId,
+    label: instructor.name
+  }));
+  setInstructorOptions(instructorOptions);
+}
+
+// handle changes when a new instructor is selected by user
+function handleInstructorChange(selectedOption, setFormData) {
+  setFormData(prevState => ({
+    ...prevState,
+    profileId: selectedOption ? selectedOption.value : '',
+    instructor: selectedOption ? selectedOption.label : ''
+  }));
+}
+
+// custom hook for managing form state
+function useFormState() {
   const [formData, setFormData] = useState(initialFormData);
   const [courseOptions, setCourseOptions] = useState([]); 
   const [instructorOptions, setInstructorOptions] = useState([]);
 
-  const extractCourseNumber = (courseCode) => {
-    const match = courseCode.match(/\d+/);
-    return match ? parseInt(match[0], 10) : 0;
+  // handling form inputs based on user input
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
+  return {
+    formData,
+    setFormData,
+    courseOptions,
+    setCourseOptions,
+    instructorOptions,
+    handleChange,
+    handleCourseChange: (selectedOption) => handleCourseChange(selectedOption, setFormData, setInstructorOptions),
+    handleInstructorChange: (selectedOption) => handleInstructorChange(selectedOption, setFormData)
+  };
+}
+
+// function to fetch course list and following instructors to render
+function useDeptSEIPage({ authToken, accountLogInType, setCourseOptions, navigate }) {
   useEffect(() => {
     const fetchCourses = async () => {
-      checkAccess(accountLogInType, navigate, 'department');
+      checkAccess(accountLogInType, navigate, 'department', authToken); // checkAccess with accountLogInType and authToken
       try {
-        const response = await axios.get('http://localhost:3001/api/courseEvaluationForm');
-        const sortedCourses = response.data.courses.sort((a, b) => {
-          return extractCourseNumber(a.courseCode) - extractCourseNumber(b.courseCode);
-        });
+        const data = await fetchWithAuth('http://localhost:3001/api/courseEvaluationForm', authToken, navigate);
+        const sortedCourses = data.courses.sort((a, b) => a.courseCode.localeCompare(b.courseCode));
         const options = sortedCourses.map(course => ({
           value: course.courseId,
           label: course.courseCode,
@@ -57,46 +100,30 @@ function DeptSEIPage() {
     };
   
     fetchCourses();
-  }, [accountLogInType, navigate]);
-  
+  }, [authToken, accountLogInType, navigate, setCourseOptions]);
+}
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+// main component for SEI page
+function DeptSEIPage() {
+  const { authToken, accountLogInType } = useAuth();
+  const navigate = useNavigate();
+  const { 
+    formData, 
+    setFormData, 
+    courseOptions, 
+    setCourseOptions, 
+    instructorOptions, 
+    handleChange, 
+    handleCourseChange, 
+    handleInstructorChange 
+  } = useFormState();
 
-  const handleCourseChange = (selectedOption) => {
-    setFormData(prevState => ({
-      ...prevState,
-      courseId: selectedOption ? selectedOption.value : '',
-      course: selectedOption ? selectedOption.label : '',
-      profileId: '', 
-      instructor: ''   
-    }));
-  
-    const instructors = selectedOption && selectedOption.instructors ? selectedOption.instructors : [];
-    const instructorOptions = instructors.map(instructor => ({
-      value: instructor.profileId,
-      label: instructor.name
-    }));
-    setInstructorOptions(instructorOptions);
-  };
-  
+  // handle course fetching and access 
+  useDeptSEIPage({ authToken, accountLogInType, setCourseOptions, navigate });
 
-  const handleInstructorChange = (selectedOption) => {
-    setFormData(prevState => ({
-      ...prevState,
-      profileId: selectedOption ? selectedOption.value : '',
-      instructor: selectedOption ? selectedOption.label : ''
-    }));
-  };
-
+  // handle submit using postData that is pulled from formData
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
     const postData = {
       courseId: formData.courseId,
       profileId: formData.profileId,
@@ -111,18 +138,9 @@ function DeptSEIPage() {
       enrollmentRate: formData.enrollmentRate,
       failedPercentage: formData.failedPercentage
     };
-  
-    try {
-      console.log('postData', postData)
-      await axios.post('http://localhost:3001/api/courseEvaluation', postData, {
-        headers: { Authorization: `Bearer ${authToken.token}` },
-      });
-      alert('SEI data submitted successfully.');
-      setFormData(initialFormData);
-    } catch (error) {
-      console.error('Error sending data to the server:', error);
-      alert('Error submitting SEI form: ' + error.message);
-    }
+    
+    // use submitFormData with api url, set to initialFormData when SEI data is submitted successfully
+    await submitFormData('http://localhost:3001/api/courseEvaluation', postData, authToken, initialFormData, setFormData, 'SEI data submitted successfully.');
   };
   
   return (
