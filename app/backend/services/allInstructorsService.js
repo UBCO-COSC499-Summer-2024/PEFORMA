@@ -1,7 +1,8 @@
 const pool = require('../db/index.js');
-
+const {getLatestTerm} = require('./latestTerm.js');
 async function getAllInstructors()  {
     try {
+        const currentTerm = getLatestTerm();
         let query = `
             SELECT p."UBCId", 
                    TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, 
@@ -31,6 +32,7 @@ async function getAllInstructors()  {
         const output = {
             currentPage: 1,
             perPage: 10,
+            currentTerm: currentTerm,
             membersCount: members.length,
             members: members
         };

@@ -23,7 +23,8 @@ async function getCoursePerformance(req){
             score: row.AverageScore.toFixed(2) || ''
         }));
         const output = {
-            courses:data
+            courses:data,
+            currentTerm:term
         };
         console.log("output",output);
         return output;
