@@ -77,7 +77,7 @@ async function getTeachingAssignment() {
     // Get additional course information based on courseId
     for (let row of result.rows) {
       const courseDetails = await pool.query(`
-        SELECT TRIM(d."dcode" || ' ' || c."courseNum") AS coursename, c."ctitle"
+        SELECT TRIM(d."dcode" || ' ' || c."courseNum") AS coursename, c."ctitle",c."courseId"
         FROM "Course" c
         JOIN "Division" d ON d."divisionId" = c."divisionId"
         WHERE c."courseId" = ANY($1)
@@ -87,11 +87,12 @@ async function getTeachingAssignment() {
     // Initialize arrays to hold course names and titles
     row.courseNames = [];
     row.courseTitles = [];
-
+    row.courseId = [];
     // Populate the arrays with data from the courseDetails
     courseDetails.rows.forEach(cd => {
       row.courseNames.push(cd.coursename);
       row.courseTitles.push(cd.ctitle);
+      row.courseId.push(cd.courseId);
     });
     console.log("Course Names for current instructor:", row.courseNames);
     console.log("Course Titles for current instructor:", row.courseTitles);
@@ -107,14 +108,14 @@ async function getTeachingAssignment() {
         // Log the courses for the current instructor
         console.log("Courses for instructor:", row.courseNames);
         console.log("Course title:", row.courseTitles);
-        console.log("Course id", row.courseid);
+        console.log("Course id", row.courseId);
         return {
           instructor: row.full_name,
           ubcid: row.UBCId,
           division: row.department_name,
           courses: row.courseNames,  
           courseName: row.courseTitles,
-          courseid: row.courseid,
+          courseid: row.courseId,
           email: row.email
         };
       })
