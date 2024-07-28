@@ -14,6 +14,11 @@ DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
 DROP TABLE IF EXISTS "Image" CASCADE;
+DROP TABLE IF EXISTS "CourseEvaluation" CASCADE;
+DROP TABLE IF EXISTS "CurrentTerm" CASCADE;
+DROP TABLE IF EXISTS "TaAssignmentTable" CASCADE;
+DROP TABLE IF EXISTS "MeetingLog" CASCADE;
+DROP TABLE IF EXISTS "MeetingAttendance" CASCADE;
 
 -- Create divisions
 CREATE TABLE "Division" (
@@ -42,7 +47,7 @@ CREATE TABLE "Profile" (
   "officeNum"             varchar(10),
   "position"              varchar(100),
   "divisionId"            integer REFERENCES "Division" ("divisionId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "UBCId"                 varchar(8),
+  "UBCId"                 varchar(8) UNIQUE,
   "serviceHourCompleted"  double precision,
   "sRoleBenchmark"        integer,
   "imageId"               integer REFERENCES "Image"("imageId") ON UPDATE CASCADE ON DELETE SET NULL,
@@ -127,9 +132,13 @@ CREATE TABLE "CourseByTerm" (
 
 -- Create instructor teaching assignments
 CREATE TABLE "InstructorTeachingAssignment" (
-  "profileId"   integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "courseId"    integer,
-  "term"        integer,
+  "profileId"       integer REFERENCES "Profile" ("profileId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "courseId"        integer,
+  "term"            integer,
+  "enrollment"      integer,
+  "location"        varchar(20),
+  "meetingPattern"  varchar(50), 
+
   PRIMARY KEY ("profileId", "courseId", "term"),
   FOREIGN KEY ("courseId", "term") REFERENCES "CourseByTerm" ("courseId", "term") ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -193,3 +202,33 @@ CREATE TABLE "CourseEvaluation" (
 CREATE TABLE "CurrentTerm" (
   "curTerm" integer PRIMARY KEY
 );
+
+-- Create TA assignment table
+CREATE TABLE "TaAssignmentTable" (
+  "term"          integer,
+  "UBCId"         varchar(8),
+  "firstName"     varchar(20),
+  "middleName"    varchar(20),
+  "lastName"      varchar(20),
+  "email"         varchar(100) UNIQUE NOT NULL,
+  "courseId"      integer,
+  PRIMARY KEY ("term", "courseId"),
+  FOREIGN KEY ("courseId") REFERENCES "Course" ("courseId") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Create Meeting Log Table
+CREATE TABLE "MeetingLog" (
+  "meetingId"     SERIAL PRIMARY KEY,
+  "location"      VARCHAR(30),
+  "date"          DATE,
+  "time"          TIME
+);
+ALTER SEQUENCE "MeetingLog_meetingId_seq" RESTART WITH 1;
+
+CREATE TABLE "MeetingAttendance" (
+  "meetingId"     integer REFERENCES "MeetingLog" ("meetingId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "UBCId"         VARCHAR(8) REFERENCES "Profile" ("UBCId") ON UPDATE CASCADE ON DELETE CASCADE,
+  "attendance"    BOOLEAN,
+  PRIMARY KEY ("meetingId", "UBCId")
+);
+
