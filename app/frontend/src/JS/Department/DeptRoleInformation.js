@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-import { fillEmptyItems, getCurrentTerm } from '../common/utils.js';
+import { fillEmptyItems, getCurrentTerm, getTermString } from '../common/utils.js';
 
 function RoleInformation() {
   const { authToken, accountLogInType } = useAuth();
@@ -24,7 +24,7 @@ function RoleInformation() {
   });
   const [pastState, setPastState] = useState(false);
   const [futureState, setFutureState] = useState(false);
-
+  const [termString, setTermString] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     roleName: '',
@@ -65,16 +65,19 @@ function RoleInformation() {
         const roleData = roleRes.data;
         roleData.perPage -=1;
         const currentTerm = getCurrentTerm();
+        console.log(currentTerm);
+        
         const termResponse = await axios.get("http://localhost:3001/api/terms");
         roleData.latestYear = termResponse.data.currentTerm.toString().slice(0,4);
-
-        if (currentTerm.slice(0,4) > roleData.latestYear) {
+        
+        if (parseInt(currentTerm) > termResponse.data.currentTerm) {
           setPastState(true);
-        } else if (currentTerm.slice(0,4) < roleData.latestYear) {
+        } else if (parseInt(currentTerm) < termResponse.data.currentTerm) {
           setFutureState(true);
         }
         
         roleData.assignees = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear);
+        setTermString(getTermString(termResponse.data.currentTerm));
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
           roleName: roleData.roleName,
@@ -383,9 +386,9 @@ function RoleInformation() {
             )}
 
           {pastState || futureState ? (
-            <p>Assignees for {roleData.latestYear}</p>
+            <p>Assignees for {termString}</p>
           ) : (
-            <p>Current Assignees ({roleData.latestYear})</p>
+            <p>Current Assignees ({termString})</p>
           )}
           
           <input
