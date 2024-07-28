@@ -284,7 +284,7 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
   }
 };
 
-// -- User image/initial icon --
+// -- User image/initials icon --
 // Simple hash function to generate a number from a string
 const hashCode = (str) => {
   let hash = 0;
