@@ -9,29 +9,30 @@ import { fillEmptyItems, handlePageClick, handleSearchChange, pageCount, current
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptTeachingAssignment.css';
 
+// fetch data sent from DeptTeachingAssignment using state, location and render
 function useDeptTeachingAssignment() {
     const { authToken, accountLogInType } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const { selectedDivision, courses, professors, currentTerm } = location.state || {};
+    const { selectedDivision, courses, professors, currentTerm } = location.state || {}; // retrieve data sent from DeptTeachingAssignment
     const [courseList, setCourseList] = useState({
         courses: [],
         totalCoursesCount: 0,
         perPage: 10,
         currentPage: 1,
     });
-    const [currentDivision, setCurrentDivision] = useState(selectedDivision);
+    const [currentDivision, setCurrentDivision] = useState(selectedDivision); // set current division from DeptTeachingAssignment sent
     const [search, setSearch] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-    const handleDivisionChange = event => setCurrentDivision(event.target.value);
+    const handleDivisionChange = event => setCurrentDivision(event.target.value); // set current division to changed division by user
 
     useEffect(() => {
-        checkAccess(accountLogInType, navigate, 'department', authToken);
+        checkAccess(accountLogInType, navigate, 'department', authToken); // check access with loginType and authToken
         if (courses && professors) {
-            const prefix = currentDivision === 'computer-science' ? 'COSC' : currentDivision.slice(0, 4).toUpperCase();
+            const prefix = currentDivision === 'computer-science' ? 'COSC' : currentDivision.slice(0, 4).toUpperCase(); // set prefix
             const filteredCourses = courses.filter(course => course.courseCode && course.courseCode.startsWith(prefix));
-            const filledCourses = fillEmptyItems(filteredCourses, courseList.perPage);
+            const filledCourses = fillEmptyItems(filteredCourses, courseList.perPage); // fill courses up for table format
             setCourseList({
                 courses: filledCourses,
                 totalCoursesCount: filteredCourses.length,
@@ -41,6 +42,7 @@ function useDeptTeachingAssignment() {
         }
     }, [currentDivision, courses, professors, courseList.perPage]);
 
+    // sort courses based on Instructor, Course Code, Course Name that user clicks, or if theres a filter, filter from search bar, and set the result into currentCourses
     const sortedCourses = useMemo(() => sortItems(courseList.courses, sortConfig), [courseList.courses, sortConfig]);
     const filteredCourses = filterItems(sortedCourses, 'taCourse', search);
     const currentCourses = currentItems(filteredCourses, courseList.currentPage, courseList.perPage);
@@ -58,16 +60,18 @@ function useDeptTeachingAssignment() {
     };
 }
 
+// export function that exports to CSV
 function exportToCSV(courses, currentTerm, currentDivision) {
     const filteredCourses = courses.filter(course => course.courseCode); // filter out the null
     const headers = '#, Instructor, Course Code, Course Name, Email\n'; // csv header
-    const csvContent = filteredCourses.reduce((acc, course, index) => {
+    const csvContent = filteredCourses.reduce((acc, course, index) => { // generate csv Content
         const instructorName = course.instructor === "Not Assigned" ? "N/A" : course.instructor;
         return acc + `${index + 1}, ${instructorName},${course.courseCode},${course.courseName},${course.email}\n`;
     }, headers);
-    downloadCSV (csvContent, `${currentTerm} ${currentDivision} Teaching Assignment`);
+    downloadCSV (csvContent, `${currentTerm} ${currentDivision} Teaching Assignment`); // use downloadCSV defined in utils.js to export
 }
 
+// main component function that renders the page component
 function DeptTeachingAssignmentDetail() {
     const {
         courseList,
