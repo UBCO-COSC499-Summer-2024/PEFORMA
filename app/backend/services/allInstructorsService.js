@@ -36,7 +36,7 @@ async function getAllInstructors()  {
             membersCount: members.length,
             members: members
         };
-
+        console.log(output);
         return output;
     } catch (error) {
        throw error;

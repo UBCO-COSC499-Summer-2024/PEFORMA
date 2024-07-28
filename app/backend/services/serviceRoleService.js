@@ -1,8 +1,10 @@
 const pool = require('../db/index.js');
 const {updateAllServiceRoles} = require('./updateAllServiceRoles.js');
+const {getLatesTerm} = require('./latestTerm.js');
 async function getAllServiceRoles() {
   try {
     await updateAllServiceRoles();
+    const latestTerm = getLatesTerm();
     const countResult = await pool.query(`SELECT COUNT(*) 
                                           FROM public."ServiceRole"`);
     const rolesCount = parseInt(countResult.rows[0].count);
@@ -22,6 +24,7 @@ async function getAllServiceRoles() {
      const formattedData = {
         currentPage: 1,
         perPage: 10,
+        currentTerm: latestTerm,
         rolesCount: rolesCount,
         roles: result.rows.map(row => {
             return {

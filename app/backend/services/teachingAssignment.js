@@ -112,7 +112,7 @@ async function getTeachingAssignment() {
           instructor: row.full_name,
           ubcid: row.UBCId,
           division: row.department_name,
-          courses: row.courseNames,  // Each 'courses' is an array of course details
+          courses: row.courseNames,  
           courseName: row.courseTitles,
           courseid: row.courseid,
           email: row.email
