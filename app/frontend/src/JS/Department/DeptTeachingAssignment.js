@@ -31,7 +31,6 @@ function DeptTeachingAssignment() {
 				const res = await axios.get(`http://localhost:3001/api/teachingAssignment`, {
 					headers: { Authorization: `Bearer ${authToken.token}` },
 				});
-				console.log("adjslkfjkldasjf",res);
 				if (res.data && res.data.teachinginfo) {
 					const filledCourses = fillEmptyItems(res.data.teachinginfo.flatMap(info => 
 						info.courses.map((course, index) => ({
