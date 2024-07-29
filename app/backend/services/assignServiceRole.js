@@ -3,8 +3,6 @@ module.exports.assignServiceRole = async function assignServiceRole(profileId, s
     const allrole = `SELECT "stitle" FROM "ServiceRole"`;
     const allresult = await pool.query(allrole);
     const titles = allresult.rows.map(row => row.stitle);
-    //console.log(`all roles: ${titles.join(', ')}`);
-    // 先查询对应的serviceRoleId
     const serviceRoleQuery = `
         SELECT * FROM public."ServiceRole" WHERE "stitle" = $1 AND "divisionId" = $2;
     `;
