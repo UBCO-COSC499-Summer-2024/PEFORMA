@@ -134,7 +134,7 @@ describe('UserIcon Dropdown Component', () => {
 
     fireEvent.click(switchAccountOption);
     await waitFor(() => {
-      expect(within(dropdownMenu).getByText('Department')).toBeInTheDocument();
+      expect(within(dropdownMenu).getByText('Department Head')).toBeInTheDocument();
       expect(within(dropdownMenu).getByText('Instructor')).toBeInTheDocument();
     });
   });
