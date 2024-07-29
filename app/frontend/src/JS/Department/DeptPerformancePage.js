@@ -30,7 +30,6 @@ function getReadableColumns(columns) {
     return columns.map(col => columnMap[col] || col.charAt(0).toUpperCase() + col.slice(1));
 }
 
-
 function mapDataWithIndex(data) {
     return data.map((item, index) => ({
         '#': index + 1,
@@ -77,8 +76,7 @@ function exportAllToPDF(data) {
     doc.save('department_performance_overview.pdf');
 }
 
-
-function usePerformanceDepartmentData() {
+function usePerformanceDepartmentData(currentTerm) {
     const navigate = useNavigate();
     const { authToken, accountLogInType } = useAuth();
     const [allData, setAllData] = useState({
@@ -94,7 +92,7 @@ function usePerformanceDepartmentData() {
         const fetchAllData = async () => {
             try {
                 checkAccess(accountLogInType, navigate, 'department', authToken);
-                const [cosc, math, phys, stat, benchmark, leaderboard] = await Promise.all([
+                const [cosc, math, phys, stat, benchmark, leaderboard] = await Promise.all([ 
                     fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=1`, authToken, navigate),
                     fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=2`, authToken, navigate),
                     fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=3`, authToken, navigate),
@@ -120,20 +118,26 @@ function usePerformanceDepartmentData() {
         };
 
         fetchAllData();
-    }, [authToken, accountLogInType, navigate]);
+    }, [authToken, accountLogInType, navigate, currentTerm]);
 
     return allData;
 }
 
 function PerformanceDepartmentPage() {
-    const allData = usePerformanceDepartmentData();
+    const [currentTerm, setCurrentTerm] = useState(null);
+    const allData = usePerformanceDepartmentData(currentTerm);
+
+    const handleTermChange = (newTerm) => {
+        setCurrentTerm(newTerm);
+        console.log(currentTerm);
+    };
 
     return (
         <div className="dp-container">
             <CreateSideBar sideBarType="Department" />
 
             <div className="container">
-                <CreateTopBar />
+                <CreateTopBar onTermChange={handleTermChange} />
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
