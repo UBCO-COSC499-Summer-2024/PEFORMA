@@ -26,7 +26,7 @@ async function getCourseHistory(req) {
         const { ctitle, description, courseCode, dname } = result.rows[0];
         //Join profile, course, instructorassignment, single teaching performance tables
         query = `SELECT ita."term", TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
-                stp."score", p."profileId", p."UBCId", ita."location", ita."enrollment",ita."meetingPattern" FROM "Course" c
+                 COALESCE(stp."score", 'N/A') AS score, p."profileId", p."UBCId", ita."location", ita."enrollment",ita."meetingPattern" FROM "Course" c
                 LEFT JOIN
                 "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
                 LEFT JOIN
