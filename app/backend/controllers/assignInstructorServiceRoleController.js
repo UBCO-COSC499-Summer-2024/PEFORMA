@@ -1,4 +1,3 @@
-const express = require('express');
 const assignServiceRoleService = require('../services/assignServiceRole');
 
 async function assignServiceRole (req, res) {
