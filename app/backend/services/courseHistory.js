@@ -26,7 +26,7 @@ async function getCourseHistory(req) {
         const { ctitle, description, courseCode, dname } = result.rows[0];
         //Join profile, course, instructorassignment, single teaching performance tables
         query = `SELECT ita."term", TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
-                 COALESCE(stp."score", 'N/A') AS score, p."profileId", p."UBCId", ita."location", ita."enrollment",ita."meetingPattern" FROM "Course" c
+                 COALESCE(stp."score", '0') AS score, p."profileId", p."UBCId", ita."location", ita."enrollment",ita."meetingPattern" FROM "Course" c
                 LEFT JOIN
                 "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
                 LEFT JOIN
@@ -95,8 +95,19 @@ async function getCourseHistory(req) {
         query = `SELECT AVG("score") AS "avgScore" FROM "SingleTeachingPerformance"
                  WHERE "courseId" = $1 GROUP BY "courseId";`;
         result = await pool.query(query, [courseId]);
-        const avgScore = result.rows.length > 0 ? Math.round(result.rows[0].avgScore) : 0;        
-                                          
+        const avgScore = result.rows.length > 0 ? Math.round(result.rows[0].avgScore) : 0; 
+        
+        
+        //Get the TA info
+        query = `SELECT TRIM("firstName" || ' ' || COALESCE("middleName" || ' ', '') || "lastName") AS full_name, 
+                "email", "term", "UBCId"  FROM "TaAssignmentTable" WHERE "courseId" = $1 AND "term" <= $2`;  
+        result = await pool.query(query,[courseId,latestTermResult]);
+        const tainfo = result.rows.map(row => ({
+            taname: row.full_name,
+            taemail: row.email,
+            taUBCId: row.UBCId,
+            taterm: row.term
+        }));                        
         const output = {
             currentPage,
             perPage,
@@ -108,7 +119,8 @@ async function getCourseHistory(req) {
             courseDescription: description,
             division: dname,
             avgScore: avgScore, 
-            history
+            history,
+            tainfo
         };
         console.log("dlskjflakjf",output);
         return output;
