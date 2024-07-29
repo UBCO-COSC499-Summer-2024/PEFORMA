@@ -1,74 +1,65 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import ReactApexChart from 'react-apexcharts';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../../common/AuthContext';
+import { fetchWithAuth } from '../../common/utils';
 
-function WorkHoursBarChart({profileid, height, width}) {
+function useWorkHoursBarChart(profileid, authToken) {
 	const navigate = useNavigate();
 	const [workingHours, setWorkingHours] = useState({
-		series: [
-			{
-				name: 'Worked Hours',
-				data: [],
-			},
-		],
-		options: {
-			chart: { height: 350, type: 'bar' },
-			plotOptions: { bar: { columnWidth: '50%' } },
-			colors: ['#00E396'],
-			dataLabels: { enabled: false },
-			legend: {
-				show: true,
-				showForSingleSeries: true,
-				customLegendItems: ['Service Hours'],
-				markers: { fillColors: ['#00E396'] },
-			},
-		},
-	});
-	const { authToken } = useAuth();
-	const profileId = profileid;
-	useEffect(() => {
-		const date = new Date();
-		const currentMonth = date.getMonth() + 1;
-		const fetchData = async () => {
-			if (profileId != null) {
-			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
-				}
-				const res = await axios.get('http://localhost:3001/api/workingHoursRoutes', {
-					params: { profileId: profileId, currentMonth: currentMonth },
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				return res.data;
-			} catch (error) {
-				console.error('Error fetching data: ', error);
-				return null;
-			} }
-		};
-		fetchData().then((dataJson) => {
-			if (dataJson) {
-				setWorkingHours((prevState) => ({
-					...prevState,
-					series: [
-						{
+			series: [
+					{
 							name: 'Worked Hours',
-							data: dataJson.data.map((wdata) => {
-								return {
-									x: wdata.x,
-									y: wdata.y,
-								};
-							}),
-						},
-					],
-				}));
-			}
-		});
-		fetchData();
-	}, [profileId]);
+							data: [],
+					},
+			],
+			options: {
+					chart: { height: 350, type: 'bar' },
+					plotOptions: { bar: { columnWidth: '50%' } },
+					colors: ['#00E396'],
+					dataLabels: { enabled: false },
+					legend: {
+							show: true,
+							showForSingleSeries: true,
+							customLegendItems: ['Service Hours'],
+							markers: { fillColors: ['#00E396'] },
+					},
+			},
+	});
+
+	useEffect(() => {
+			const fetchData = async () => {
+					try {
+						const data = await fetchWithAuth('http://localhost:3001/api/workingHoursRoutes', authToken, navigate, {
+							profileId: profileid,
+							currentMonth: new Date().getMonth() + 1
+							});
+
+							setWorkingHours((prevState) => ({
+									...prevState,
+									series: [
+											{
+													name: 'Worked Hours',
+													data: data.data.map((wdata) => ({
+															x: wdata.x,
+															y: wdata.y,
+													})),
+											},
+									],
+							}));
+					} catch (error) {
+							console.error('Error fetching data:', error);
+					}
+			};
+
+			fetchData();
+	}, [profileid, authToken, navigate]);
+
+	return workingHours;
+}
+
+function WorkHoursBarChart({profileid, height, width, authToken}) {
+	const workingHours = useWorkHoursBarChart(profileid, authToken);
 
 	return (
 		<div className="App">

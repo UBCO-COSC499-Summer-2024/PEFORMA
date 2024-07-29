@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+import { fetchWithAuth } from '../../common/utils';
 import { useAuth } from '../../common/AuthContext';
 
-function ServiceHoursProgressChart() {
+function useServiceHoursProgress( authToken ) {
 	const navigate = useNavigate();
-	const { authToken } = useAuth();
 	const { profileId } = useAuth();
 	const [progress, setProgress] = useState({
 		series: [],
@@ -47,7 +47,6 @@ function ServiceHoursProgressChart() {
 						},
 					},
 					dataLabels: {
-						show: true,
 						name: {
 							offsetY: -10,
 							show: true,
@@ -86,40 +85,27 @@ function ServiceHoursProgressChart() {
 	});
 
 	useEffect(() => {
-		const date = new Date();
-		const currentMonth = date.getMonth() + 1;
-
+		const currentMonth = new Date().getMonth() + 1;
 		const fetchData = async () => {
-			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
-				}
-				const res = await axios.get('http://localhost:3001/api/progressRoutes', {
-					params: {
-						profileId: profileId,
-						currentMonth: currentMonth,
-					},
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				return res.data;
-			} catch (error) {
-				console.error('Error fetching data: ', error);
-				return null;
-			}
-		};
-		fetchData().then((data) => {
+			const data = await fetchWithAuth('http://localhost:3001/api/progressRoutes', authToken, navigate, {
+				profileId: profileId,
+				currentMonth: currentMonth,
+			});
 			if (data) {
 				setProgress((prevState) => ({
 					...prevState,
 					series: data.series,
-					options: {
-						...prevState.options,
-					},
 				}));
 			}
-		});
-	}, []);
+		};
+		fetchData();
+	}, [authToken, profileId, navigate]);
+
+	return progress;
+}
+
+function ServiceHoursProgressChart( authToken ) {
+	const progress = useServiceHoursProgress( authToken );
 
 	return (
 		<div className="App">

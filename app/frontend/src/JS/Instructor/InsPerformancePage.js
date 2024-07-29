@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../../CSS/Instructor/InsPerformancePage.css';
-import CreateSideBar, {
-	CreateLeaderboardChart,
-	CreateScorePolarChart,
-	CreateTopBar,
-	CreateWorkingBarChart,
-	CreateProgressChart,
-} from '../common/commonImports.js';
-import { useAuth } from '../common/AuthContext.js';
+import axios from 'axios';
+
+import CreateSideBar, { CreateTopBar } from '../common/commonImports.js';
+import WorkHoursBarChart from './InsPerformanceImports/InsWorkHoursBarChart.js';
+import DeptPerformancePieChart from './InsPerformanceImports/InsPerformancePolarChart.js';
+import LeaderBoard from './InsPerformanceImports/InsLeaderBoard.js';
+import ServiceHoursProgressChart from './InsPerformanceImports/InsServiceHoursProgressChart.js'
 import { checkAccess } from '../common/utils.js'
+import { useAuth } from '../common/AuthContext.js';
+import '../../CSS/Instructor/InsPerformancePage.css';
 
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
@@ -103,26 +102,26 @@ function PerformanceInstructorPage() {
 
 					<div className="graph-section">
 						<h2 className="subTitle">Working Hours</h2>
-						<CreateWorkingBarChart profileid={profileId} height={600}/>
+						<WorkHoursBarChart profileid={profileId} height={600} authToken={authToken}/>
 					</div>
 				</div>
 
 				<div className="bottom-section">
 					<div className="polarchart-section">
 						<h2 className="subTitle">Department Performance</h2>
-						<CreateScorePolarChart />
+						<DeptPerformancePieChart authToken={authToken} />
 					</div>
 
 					<div className="leaderboard-section">
-						<h2 className="subTitle">Leader Board (Updated per month)</h2>
-						<CreateLeaderboardChart />
+						<h2 className="subTitle">Leader Board</h2>
+						<LeaderBoard authToken={authToken} />
 					</div>
 				</div>
 
 				<div className="under-bottom-section">
 					<div className="progress-section">
-						<h2 className="subTitle">Progress Chart (Year)</h2>
-						<CreateProgressChart />
+						<h2 className="subTitle">Progress Chart</h2>
+						<ServiceHoursProgressChart authToken={authToken} />
 					</div>
 				</div>
 			</div>

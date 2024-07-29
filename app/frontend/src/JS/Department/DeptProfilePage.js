@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
 import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar, CreateWorkingBarChart } from '../common/commonImports.js';
+import { CreateTopBar } from '../common/commonImports.js';
+import WorkHoursBarChart from './../Instructor/InsPerformanceImports/InsWorkHoursBarChart.js'
 import '../../CSS/Department/DeptProfilePage.css';
 import AssignCoursesModal from '../DeptAssignCoursesModal.js';
 import AssignRolesModal from '../DeptAssignRolesModal.js';
@@ -414,7 +415,7 @@ function DeptProfilePage() {
                         ) : (
                         <div>
                         <p className='chart'><strong>Service Hours:</strong></p>
-                        <CreateWorkingBarChart profileid={profile.profileId} height={400} width={500} className='performance-chart'/>
+                        <WorkHoursBarChart profileid={profile.profileId} height={400} width={500} className='performance-chart' authToken={authToken}/>
                         </div>
                         )}
                     </section>

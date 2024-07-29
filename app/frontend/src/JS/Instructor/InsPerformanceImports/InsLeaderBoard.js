@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../common/AuthContext';
-function LeaderBoard() {
+
+import { fetchWithAuth } from '../../common/utils';
+
+function useLeaderBoard( authToken ) {
 	const navigate = useNavigate();
-	const { authToken } = useAuth();
-	const [leader, setLeader] = useState({
-		series: [
-			{
-				name: 'performance score',
-				data: [],
-			},
-		],
+	const [leaderData, setLeaderData] = useState({
+		series: [{ name: 'performance score', data: [] }],
 		options: {
-			chart: {
-				type: 'bar',
-				height: 350,
-			},
+			chart: { type: 'bar', height: 350 },
 			plotOptions: {
 				bar: {
 					borderRadius: 5,
@@ -31,42 +23,41 @@ function LeaderBoard() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
-				}
-				const res = await axios.get('http://localhost:3001/api/leaderBoardRoutes', {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				return res.data;
+				const data = await fetchWithAuth('http://localhost:3001/api/leaderBoardRoutes', authToken, navigate);
+				return data;
 			} catch (error) {
-				console.error('Error fetching data: ', error);
+				console.error('Error fetching data:', error);
 				return null;
 			}
 		};
+
 		fetchData().then((data) => {
 			if (data) {
-				setLeader((prevState) => ({
+				setLeaderData((prevState) => ({
 					...prevState,
 					series: [
 						{
-							data: data.data.map((wdata) => {
-								return {
-									x: wdata.x,
-									y: wdata.y,
-								};
-							}),
+							data: data.data.map((item) => ({
+								x: item.x,
+								y: item.y,
+							})),
 						},
 					],
 				}));
 			}
 		});
-	}, []);
+	}, [authToken, navigate]);
+
+	return leaderData;
+}
+
+function LeaderBoard( authToken ) {
+	const leaderData = useLeaderBoard( authToken );
 
 	return (
 		<div>
 			<div id="leader-chart">
-				<ReactApexChart options={leader.options} series={leader.series} type="bar" height={350} />
+				<ReactApexChart options={leaderData.options} series={leaderData.series} type="bar" height={350} />
 			</div>
 		</div>
 	);

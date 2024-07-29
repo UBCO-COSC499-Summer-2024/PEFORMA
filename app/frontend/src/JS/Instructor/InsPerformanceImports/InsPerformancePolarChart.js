@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../common/AuthContext';
 
-function DeptPerformancePieChart() {
+import { fetchWithAuth } from '../../common/utils';
+
+function useDeptPerformancePieChart( authToken ) {
 	const navigate = useNavigate();
-	const { authToken } = useAuth();
 	const [score, setScore] = useState({
 		series: [],
 		options: {
@@ -39,32 +38,30 @@ function DeptPerformancePieChart() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
+				const data = await fetchWithAuth('http://localhost:3001/api/deptPerformance', authToken, navigate);
+				if (data) {
+					setScore((prevState) => ({
+						...prevState,
+						series: data.series,
+						options: {
+							...prevState.options,
+							labels: data.labels,
+						},
+					}));
 				}
-				const res = await axios.get('http://localhost:3001/api/deptPerformance', {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				return res.data;
 			} catch (error) {
-				console.error('Error fetching data: ', error);
-				return null;
+				console.error('Error fetching data:', error);
 			}
 		};
-		fetchData().then((data) => {
-			if (data) {
-				setScore((prevState) => ({
-					...prevState,
-					series: data.series,
-					options: {
-						...prevState.options,
-						labels: data.labels,
-					},
-				}));
-			}
-		});
-	}, []);
+		fetchData();
+	}, [authToken, navigate]);
+
+	return score;
+}
+
+function DeptPerformancePieChart( {authToken} ) {
+	const score = useDeptPerformancePieChart( authToken );
+
 
 	return (
 		<div className="App">
