@@ -57,7 +57,6 @@ const updateCourseInfo = require('./routes/updateCourseInfo.js');
 const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
 const assignInstructorCourse = require('./routes/assignInstructorCourse.js');
 const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
-const latestCourseRouter = require('./routes/latestCourseRoutes.js');
 const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
 const allTerms = require('./routes/allTermsRoutes.js')
 const setTerm = require('./routes/setCurrentTermRoutes.js')
@@ -148,7 +147,7 @@ app.use('/api/upload', dataImportRoutes);
 //Course Evaluation
 app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
-app.use('/api',assignInstructorCourse);
+app.use('/api/assignInstructorCourse',assignInstructorCourse);
 
 app.use('/api/terms',allTerms);
 app.use('/api', setTerm)
@@ -163,7 +162,6 @@ app.use('/api',updateCourseInfo);
 app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
 app.use('/api',removeInstructorRoleRouter);
-app.use('/api',latestCourseRouter);
 app.use('/api',removeInstructorCourse);
 
 const port = 3001;
