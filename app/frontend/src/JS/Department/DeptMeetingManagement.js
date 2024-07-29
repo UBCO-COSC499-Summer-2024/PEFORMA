@@ -127,7 +127,7 @@ function DeptMeetingManagement() {
       <CreateSideBar sideBarType="Department" />
       <div className='container'>
         <CreateTopBar />
-        <div className='SEI-form' id='SEI-test-content'>
+        <div className='SEI-form' id='meeting-test-content'>
           <h1>Meeting Management</h1>
           <form>
             <p className="current-date-time">Current Time: {currentDateTime}</p>
