@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import { useNavigate } from 'react-router-dom';
+import ReactApexChart from 'react-apexcharts'; // external library for chart
 
 import { fetchWithAuth } from '../../common/utils';
 
-function useWorkHoursBarChart(profileid, authToken) {
-	const navigate = useNavigate();
-	const [workingHours, setWorkingHours] = useState({
+// custom hook for fetching work hours data
+function useWorkHoursBarChart(profileid, authToken, navigate) {
+	const [workingHours, setWorkingHours] = useState({ // format of chart
 			series: [
 					{
 							name: 'Worked Hours',
@@ -27,7 +26,7 @@ function useWorkHoursBarChart(profileid, authToken) {
 			},
 	});
 
-	useEffect(() => {
+	useEffect(() => { // fetch data when profileId or authToken changes
 			const fetchData = async () => {
 					try {
 						const data = await fetchWithAuth('http://localhost:3001/api/workingHoursRoutes', authToken, navigate, {
@@ -35,7 +34,7 @@ function useWorkHoursBarChart(profileid, authToken) {
 							currentMonth: new Date().getMonth() + 1
 							});
 
-							setWorkingHours((prevState) => ({
+							setWorkingHours((prevState) => ({ // set working hours bar chart data
 									...prevState,
 									series: [
 											{
@@ -58,8 +57,9 @@ function useWorkHoursBarChart(profileid, authToken) {
 	return workingHours;
 }
 
-function WorkHoursBarChart({profileid, height, width, authToken}) {
-	const workingHours = useWorkHoursBarChart(profileid, authToken);
+// main component for render a bar chart of service hours
+function WorkHoursBarChart({profileid, height, width, authToken, navigate}) {
+	const workingHours = useWorkHoursBarChart(profileid, authToken, navigate); // use custom hook for work hours bar chart
 
 	return (
 		<div className="App">

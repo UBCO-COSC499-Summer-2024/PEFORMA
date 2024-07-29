@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import { useNavigate } from 'react-router-dom';
+import ReactApexChart from 'react-apexcharts'; // external library for chart
 
 import { fetchWithAuth } from '../../common/utils';
 
-function useDeptPerformancePieChart( authToken ) {
-	const navigate = useNavigate();
-	const [score, setScore] = useState({
+// custom hook for fetching department performance data
+function useDeptPerformancePieChart( authToken, navigate ) {
+	const [score, setScore] = useState({ // format of chart
 		series: [],
 		options: {
 			chart: {
@@ -35,12 +34,12 @@ function useDeptPerformancePieChart( authToken ) {
 		},
 	});
 
-	useEffect(() => {
+	useEffect(() => { // fetch data when authToken changes
 		const fetchData = async () => {
 			try {
 				const data = await fetchWithAuth('http://localhost:3001/api/deptPerformance', authToken, navigate);
 				if (data) {
-					setScore((prevState) => ({
+					setScore((prevState) => ({ // set score data
 						...prevState,
 						series: data.series,
 						options: {
@@ -56,12 +55,12 @@ function useDeptPerformancePieChart( authToken ) {
 		fetchData();
 	}, [authToken, navigate]);
 
-	return score;
+	return score; // return score state data 
 }
 
-function DeptPerformancePieChart( {authToken} ) {
-	const score = useDeptPerformancePieChart( authToken );
-
+// main component to render a department performance pie chart
+function DeptPerformancePieChart( authToken, navigate ) {
+	const score = useDeptPerformancePieChart( authToken, navigate ); // use custom hook for performance pie chart
 
 	return (
 		<div className="App">

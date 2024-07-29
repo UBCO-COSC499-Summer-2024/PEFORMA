@@ -101,27 +101,27 @@ function PerformanceInstructorPage() {
 					</section>
 
 					<div className="graph-section">
-						<h2 className="subTitle">Working Hours</h2>
-						<WorkHoursBarChart profileid={profileId} height={600} authToken={authToken}/>
+						<h2 className="subTitle">Service Hours</h2>
+						<WorkHoursBarChart profileid={profileId} height={600} authToken={authToken} navigate={navigate} />
 					</div>
 				</div>
 
 				<div className="bottom-section">
 					<div className="polarchart-section">
 						<h2 className="subTitle">Department Performance</h2>
-						<DeptPerformancePieChart authToken={authToken} />
+						<DeptPerformancePieChart authToken={authToken} navigate={navigate} />
 					</div>
 
 					<div className="leaderboard-section">
 						<h2 className="subTitle">Leader Board</h2>
-						<LeaderBoard authToken={authToken} />
+						<LeaderBoard authToken={authToken} navigate={navigate} />
 					</div>
 				</div>
 
 				<div className="under-bottom-section">
 					<div className="progress-section">
 						<h2 className="subTitle">Progress Chart</h2>
-						<ServiceHoursProgressChart authToken={authToken} />
+						<ServiceHoursProgressChart authToken={authToken} navigate={navigate} />
 					</div>
 				</div>
 			</div>

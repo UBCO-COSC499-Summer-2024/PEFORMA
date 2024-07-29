@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import { useNavigate } from 'react-router-dom';
+import ReactApexChart from 'react-apexcharts'; // external library for chart
 
 import { fetchWithAuth } from '../../common/utils';
 
-function useLeaderBoard( authToken ) {
-	const navigate = useNavigate();
-	const [leaderData, setLeaderData] = useState({
+// custom hook for fetching leader board data
+function useLeaderBoard( authToken, navigate ) {
+	const [leaderData, setLeaderData] = useState({ // format of chart
 		series: [{ name: 'performance score', data: [] }],
 		options: {
 			chart: { type: 'bar', height: 350 },
@@ -20,7 +19,7 @@ function useLeaderBoard( authToken ) {
 		},
 	});
 
-	useEffect(() => {
+	useEffect(() => { // fetch data when authToken changes
 		const fetchData = async () => {
 			try {
 				const data = await fetchWithAuth('http://localhost:3001/api/leaderBoardRoutes', authToken, navigate);
@@ -33,7 +32,7 @@ function useLeaderBoard( authToken ) {
 
 		fetchData().then((data) => {
 			if (data) {
-				setLeaderData((prevState) => ({
+				setLeaderData((prevState) => ({ // set leaderboard data
 					...prevState,
 					series: [
 						{
@@ -48,11 +47,12 @@ function useLeaderBoard( authToken ) {
 		});
 	}, [authToken, navigate]);
 
-	return leaderData;
+	return leaderData; // return state of leader data
 }
 
-function LeaderBoard( authToken ) {
-	const leaderData = useLeaderBoard( authToken );
+// main component to render a leader board chart data
+function LeaderBoard( authToken, navigate ) {
+	const leaderData = useLeaderBoard( authToken, navigate ); // use custom hook for leader data
 
 	return (
 		<div>
