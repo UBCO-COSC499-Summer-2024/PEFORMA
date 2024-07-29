@@ -10,7 +10,6 @@ const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
 
-const { upsertProfile } = require('./routes/upsertProfile');
 const createAccount = require('./routes/createAccount');
 
 const workingHoursRoutes = require('./routes/workingHoursRoutes');
