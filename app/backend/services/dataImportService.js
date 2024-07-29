@@ -534,6 +534,7 @@ const csv = require('fast-csv');
 const fs = require('fs');
 const Joi = require('joi');
 const pool = require('../db/index.js');
+const { updateTeachingPerformance , computeScore } = require('./courseEvaluation.js');
 
 // --- Validation Schemas --- 
 
@@ -605,11 +606,12 @@ const CoursePerformanceDataSchema = Joi.object({
     courseId: Joi.number().integer().required(),
     term:Joi.number().integer().required(),
     profileId:Joi.number().integer().required(),
-    SEIQ1:Joi.number().precision(2).required(),
-    SEIQ2:Joi.number().precision(2).required(),
-    SEIQ3:Joi.number().precision(2).required(),
-    SEIQ4:Joi.number().precision(2).required(),
-    SEIQ5:Joi.number().precision(2).required(),
+    SEIQ1:Joi.number().precision(2).allow(null,''),
+    SEIQ2:Joi.number().precision(2).allow(null,''),
+    SEIQ3:Joi.number().precision(2).allow(null,''),
+    SEIQ4:Joi.number().precision(2).allow(null,''),
+    SEIQ5:Joi.number().precision(2).allow(null,''),
+    SEIQ6:Joi.number().precision(2).allow(null,''),
     retentionRate:Joi.number().precision(2).required(),
     failRate:Joi.number().precision(2).required(),
     enrolRate:Joi.number().precision(2).required(),
@@ -991,7 +993,7 @@ async function processSEIData(row,client) {
         UBCId: String(row.UBCId),
         response: String(row.Response),
     };
-    console.log("SEI data:\n",SEIData);
+    //console.log("SEI data:\n",SEIData);
     const { error } = SEIDataSchema.validate(SEIData);
     if (error) {
         console.log(`Validation Error: ${error.message}`);
@@ -1011,7 +1013,8 @@ async function processSEIData(row,client) {
 
         // Insert into Survey-Question-Response table
         await client.query(`
-            INSERT INTO public."SurveyQuestionResponse" ("surveyTypeId", "surveyQuestionId" , "courseId", "term", "profileId" ,"studentId" , "response")
+            INSERT INTO public."SurveyQuestionResponse" 
+            ("surveyTypeId", "surveyQuestionId" , "courseId", "term", "profileId" ,"studentId" , "response")
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             ON CONFLICT DO NOTHING
         `, [
@@ -1040,6 +1043,7 @@ async function processCoursePerformanceData (row,client){
         SEIQ3:Number(row.SEIQ3),
         SEIQ4:Number(row.SEIQ4),
         SEIQ5:Number(row.SEIQ5),
+        SEIQ6:Number(row.SEIQ6),
         profileId:Number(row.profileId),
         retentionRate:Number(row.retentionRate),
         failRate:Number(row.failRate),
@@ -1055,7 +1059,7 @@ async function processCoursePerformanceData (row,client){
     try {
         // Insert into Survey-Question-Response table
         await client.query(`
-            INSERT INTO public."CourseEvaluation" ("courseId", "term" , "profileId", "SEIQ1", "SEIQ2" ,"SEIQ3" , "SEIQ4" , "SEIQ5" , "retentionRate" , "failRate" , "enrolRate" , "averageGrade")
+            INSERT INTO public."CourseEvaluation" ("courseId", "term" , "profileId", "SEIQ1", "SEIQ2" ,"SEIQ3" , "SEIQ4" , "SEIQ5" , "SEIQ6" , "retentionRate" , "failRate" , "enrolRate" , "averageGrade")
             VALUES ($1, $2, $3, $4, $5, $6, $7 , $8, $9, $10, $11, $12)
             ON CONFLICT DO NOTHING
         `, [
@@ -1067,6 +1071,7 @@ async function processCoursePerformanceData (row,client){
             coursePerformanceData.SEIQ3,
             coursePerformanceData.SEIQ4,
             coursePerformanceData.SEIQ5,
+            coursePerformanceData.SEIQ6,
             coursePerformanceData.retentionRate,
             coursePerformanceData.failRate,
             coursePerformanceData.enrolRate,
@@ -1074,6 +1079,9 @@ async function processCoursePerformanceData (row,client){
         ]);
 
         console.log(`Course Performance data import for profileId No. ${coursePerformanceData.profileId} success.`);
+
+        updateTeachingPerformance(coursePerformanceData);
+
     } catch (err) {
         console.log(`Error processing Course Performance data: ${err.message}`);
         throw err;
