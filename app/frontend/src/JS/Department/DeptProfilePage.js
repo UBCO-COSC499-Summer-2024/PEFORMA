@@ -38,13 +38,13 @@ function DeptProfilePage() {
     const [showCoursesModal, setShowCoursesModal] = useState(false);
 
     function handleNullData(data) {
-        if (data.benchmark == null) {
+        if (data.benchmark === null) {
             data.benchmark = "N/A";
         }
-        if (data.phoneNum == "" || data.phoneNum == null) {
+        if (data.phoneNum === "" || data.phoneNum === null) {
             data.phoneNum = "N/A";
         }
-        if (data.office == null+" "+null || data.office == null) {
+        if (data.office === null+" "+null || data.office === null) {
             data.office = "N/A";
         }
         return data;
@@ -288,7 +288,7 @@ function DeptProfilePage() {
 
     const unassign = async (id, index, type) => {
         let dataList;
-        if (type == "course") {
+        if (type === "course") {
             selectedCourses.splice(index, 1);
             dataList = courseData.courses;
         } else {
@@ -303,7 +303,7 @@ function DeptProfilePage() {
             }
           }
           
-          if (type == "course") {
+          if (type === "course") {
             courseData.courses = dataList;
           } else {
             roleData.roles = dataList;
@@ -386,7 +386,7 @@ function DeptProfilePage() {
                         <p><strong>Office Location:</strong> {profile.office}</p>
                         <p>
                             <strong>Teaching Assignments: </strong>
-                            {selectedCourses.length == 0 && (
+                            {selectedCourses.length === 0 && (
                                 <span>N/A</span>
                             )}
                             {selectedCourses.map((teachingAssign, index) => (
