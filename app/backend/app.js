@@ -157,7 +157,7 @@ app.use('/enter',saveDataToDatabase);
 
 app.use('/api/instructors',instructorFetch);
 
-app.use('/api',updateRoleInfo);
+app.use('/api/updateRoleInfo',updateRoleInfo);
 app.use('/api/updateCourseInfo',updateCourseInfo);
 app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
