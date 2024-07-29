@@ -191,6 +191,7 @@ CREATE TABLE "CourseEvaluation" (
   "SEIQ3"    double precision,
   "SEIQ4"    double precision,
   "SEIQ5"    double precision,
+  "SEIQ6"    double precision,
   "retentionRate" double precision,
   "failRate"   double precision,
   "enrolRate"double precision,
