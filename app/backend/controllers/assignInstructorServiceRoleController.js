@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const assignServiceRoleService = require('../services/assignServiceRole');
 
 async function assignServiceRole (req, res) {
