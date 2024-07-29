@@ -1,7 +1,10 @@
 const pool = require('../db/index.js');
 const {getLatestTerm} = require('./latestTerm.js');
+const {updateAllMembers} = require('./updateAllMembers.js');
+
 async function getAllInstructors()  {
     try {
+        await updateAllMembers();
         const currentTerm = await getLatestTerm();
         let query = `
             SELECT p."UBCId", 
