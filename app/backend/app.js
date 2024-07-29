@@ -155,7 +155,7 @@ app.use('/api', setTerm)
 app.use('/enter',saveDataToDatabase);
 
 
-app.use('/api',instructorFetch);
+app.use('/api/instructors',instructorFetch);
 
 app.use('/api',updateRoleInfo);
 app.use('/api',updateCourseInfo);
