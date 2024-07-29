@@ -535,6 +535,7 @@ const fs = require('fs');
 const Joi = require('joi');
 const pool = require('../db/index.js');
 const { updateTeachingPerformance , computeScore } = require('./courseEvaluation.js');
+const { title } = require('process');
 
 // --- Validation Schemas --- 
 
@@ -619,6 +620,7 @@ const CoursePerformanceDataSchema = Joi.object({
 });
 
 const meetingLogSchema = Joi.object({
+    title: Joi.string().required(),
     location: Joi.string().required(),
     date: Joi.date().required(),
     time: Joi.string().required()
@@ -1159,6 +1161,7 @@ async function processTeachingAssignmentData(row, client) {
 
 async function processMeetingLogData(row, client) {
     const meetingLogData = {
+        title: row.title || null,
         location: row.location || null,
         date: row.date || null,
         time: row.time || null
@@ -1172,8 +1175,8 @@ async function processMeetingLogData(row, client) {
 
     try {
         await client.query(`
-            INSERT INTO public."MeetingLog" ("location", "date", "time")
-            VALUES ($1, $2, $3)
+            INSERT INTO public."MeetingLog" ("title", "location", "date", "time")
+            VALUES ($1, $2, $3, $4)
             ON CONFLICT DO NOTHING
         `, Object.values(meetingLogData));
     } catch (err) {
