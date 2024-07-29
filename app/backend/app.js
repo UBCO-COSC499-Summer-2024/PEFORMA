@@ -12,7 +12,6 @@ const saveDataToDatabase = require('./routes/DataEntry');
 
 const { upsertProfile } = require('./routes/upsertProfile');
 const createAccount = require('./routes/createAccount');
-const { assignServiceRole } = require ('./routes/assignServiceRole');
 
 const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
@@ -161,7 +160,7 @@ app.use('/api',instructorFetch);
 
 app.use('/api',updateRoleInfo);
 app.use('/api',updateCourseInfo);
-app.use('/api',AssignInstructor);
+app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
 app.use('/api',removeInstructorRoleRouter);
 app.use('/api',latestCourseRouter);
