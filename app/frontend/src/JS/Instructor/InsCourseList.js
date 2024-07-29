@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import divisions from '../common/divisions.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
 import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Instructor/InsCourseList.css';
@@ -71,9 +69,9 @@ function InsCourseList() {
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Instructor" />
+            <SideBar sideBarType="Instructor" />
             <div className="container">
-                <CreateTopBar searchListType={'InsCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDivisionData);}} />
+                <TopBar searchListType={'InsCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDivisionData);}} />
 
                 <div className="courselist-main">
                     <header className="ListTitle" id="dropdown-test-content">

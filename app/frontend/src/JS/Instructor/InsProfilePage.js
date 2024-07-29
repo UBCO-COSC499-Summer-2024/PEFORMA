@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { checkAccess, fetchWithAuth } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext';
 import '../../CSS/Instructor/InsProfilePage.css';
@@ -43,9 +43,9 @@ function InstructorProfilePage() {
 
 	return (
 		<div className="dashboard-container">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor" />
 			<div className="container">
-				<CreateTopBar />
+				<TopBar />
 				<div className="main-content" id="profile-test-content">
 					<section className="information">
 						<h1>{profile.name}'s Profile</h1>

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef, useReducer } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import WorkHoursBarChart from './../Instructor/InsPerformanceImports/InsWorkHoursBarChart.js'
 import '../../CSS/Department/DeptProfilePage.css';
 import AssignCoursesModal from '../DeptAssignCoursesModal.js';
@@ -313,9 +313,9 @@ function DeptProfilePage() {
     
     return (
         <div className="deptProfile-container">
-            <CreateSideBar sideBarType="Department" />
+            <SideBar sideBarType="Department" />
             <div className="container" data-testid="main-container">
-                <CreateTopBar />
+                <TopBar />
                 <div className='outside'>
                     {!editState ? (
                         <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
