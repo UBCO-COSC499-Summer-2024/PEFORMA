@@ -161,7 +161,7 @@ app.use('/api/updateCourseInfo',updateCourseInfo);
 app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
 app.use('/api',removeInstructorRoleRouter);
-app.use('/api',removeInstructorCourse);
+app.use('/api/removeInstructorCourse',removeInstructorCourse);
 
 const port = 3001;
 // Wrap server startup in an async function

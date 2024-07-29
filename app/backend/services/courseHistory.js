@@ -5,8 +5,6 @@ console.log(pool);
 async function getCourseHistory(req) {
     const latestTermResult = await getLatestTerm();
     const courseId = req.query.courseId;  
-    console.log("Received courseId:", courseId);
-    console.log("Received term", latestTermResult);
     try {
         let query = `
         SELECT 
@@ -113,10 +111,10 @@ async function getCourseHistory(req) {
             avgScore: avgScore, 
             history
         };
-        console.log("dlskjflakjf",output);
         return output;
     } catch (error) {
         console.error('Database query error:', error);
+        throw error;
     }
     
 };
