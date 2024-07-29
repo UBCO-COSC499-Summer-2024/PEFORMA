@@ -11,14 +11,15 @@ import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, 
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Instructor/InsCourseList.css';
 
+// custom hook for fetching course data
 function useInsCourseList() {
     const { authToken, accountLogInType } = useAuth();
-    const params = new URLSearchParams(window.location.search);
-    const divisionCode = params.get('division') || 'COSC';
+    const params = new URLSearchParams(window.location.search); // parse url query parameters
+    const divisionCode = params.get('division') || 'COSC'; // get division parameter from url, default setting is COSC
 
     const navigate = useNavigate();
-    const divisionHandler = (e) => {
-        navigate('?division=' + e.target.value);
+    const divisionHandler = (e) => { // handler for changing division
+        navigate('?division=' + e.target.value); // when user click to different division, navigate to it
     };
 
     const [divisionData, setDivisionData] = useState({
@@ -32,10 +33,10 @@ function useInsCourseList() {
     useEffect(() => {
         const fetchCourses = async () => {
           try {
-            checkAccess(accountLogInType, navigate, 'instructor', authToken);
+            checkAccess(accountLogInType, navigate, 'instructor', authToken); // check access with accountloginType and authToken is valid
             const data = await fetchWithAuth(`http://localhost:3001/api/courses?division=${divisionCode}`, authToken, navigate);
-            const filledCourses = fillEmptyItems(data.courses, data.perPage);
-            setDivisionData({ ...data, courses: filledCourses });
+            const filledCourses = fillEmptyItems(data.courses, data.perPage); // fill empty items to keep the format of the table
+            setDivisionData({ ...data, courses: filledCourses }); // update state with fetched data
           } catch (error) {
             console.error('Error fetching courses:', error);
           }
@@ -43,8 +44,9 @@ function useInsCourseList() {
         fetchCourses();
       }, [authToken, divisionCode, accountLogInType, navigate]);
 
+    // filter the course based on a filterItem function in utils.js and set it into filteredCourses
     const filteredCourses = filterItems(divisionData.courses, 'insCourse', search);
-    const currentCourses = currentItems(filteredCourses, divisionData.currentPage, divisionData.perPage);
+    const currentCourses = currentItems(filteredCourses, divisionData.currentPage, divisionData.perPage); // set filteredCourses as our currentItems to render on page
 
     return {
         divisionCode,
@@ -56,6 +58,7 @@ function useInsCourseList() {
     }
 }
 
+// main component for rendering the list of courses
 function InsCourseList() {
     const {
         divisionCode,
@@ -64,7 +67,7 @@ function InsCourseList() {
         setDivisionData,
         setSearch,
         currentCourses
-    } = useInsCourseList();
+    } = useInsCourseList(); // use custom hook to fetch data
 
     return (
         <div className="dashboard">
