@@ -60,6 +60,8 @@ const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js')
 const allTerms = require('./routes/allTermsRoutes.js')
 const setTerm = require('./routes/setCurrentTermRoutes.js')
 
+const meetingRoutes = require('./routes/meetingRoutes');
+
 const app = express();
 
 app.use(express.json());
@@ -104,6 +106,9 @@ app.use('/api/profile', (req, res, next) => {
     console.log('Profile route hit:', req.url);
     next();
   }, userProfileRoutes);
+
+// Meeting retrieval process
+app.use('/meetings', meetingRoutes);
   
 app.use('/api', userRoutes);
 
