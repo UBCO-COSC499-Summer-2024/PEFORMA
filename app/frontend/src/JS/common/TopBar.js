@@ -16,7 +16,7 @@ function useTopBarController(authToken, profileId, onTermChange) {
         activeMenu: 'main',
     });
 
-    React.useEffect(function() {
+    React.useEffect(function () {
         // Fetches user data and available terms from the server
         async function fetchAllData() {
             try {
@@ -28,8 +28,8 @@ function useTopBarController(authToken, profileId, onTermChange) {
 
                 // Process and sort terms for the dropdown
                 const termsOptions = termsData.terms
-                    .sort(function(a, b) { return b - a; }) // Sort in descending order
-                    .map(function(term) {
+                    .sort(function (a, b) { return b - a; }) // Sort in descending order
+                    .map(function (term) {
                         return {
                             value: String(term),
                             label: getTermString(String(term)),
@@ -42,7 +42,7 @@ function useTopBarController(authToken, profileId, onTermChange) {
                 };
 
                 // Update state with fetched data
-                setAllData(function(prev) {
+                setAllData(function (prev) {
                     return {
                         ...prev,
                         userName: `${userData.firstName} ${userData.lastName}`,
@@ -68,7 +68,7 @@ function useTopBarController(authToken, profileId, onTermChange) {
 
     // Toggles the visibility of the user dropdown menu
     function toggleDropdown() {
-        setAllData(function(prev) {
+        setAllData(function (prev) {
             return {
                 ...prev,
                 showDropdown: !prev.showDropdown,
@@ -79,7 +79,7 @@ function useTopBarController(authToken, profileId, onTermChange) {
 
     // Changes the active menu in the dropdown
     function setActiveMenu(menu) {
-        setAllData(function(prev) {
+        setAllData(function (prev) {
             return { ...prev, activeMenu: menu };
         });
     }
@@ -93,10 +93,10 @@ function useTopBarController(authToken, profileId, onTermChange) {
                 navigate,
                 { term: term.value }
             );
-            setAllData(function(prev) {
+            setAllData(function (prev) {
                 return { ...prev, currentTerm: term };
             });
-			if (typeof onTermChange === 'function') {
+            if (typeof onTermChange === 'function') {
                 onTermChange(term.value);
             }
             console.log('Term set successfully');
@@ -138,7 +138,7 @@ function getPlaceholderText(searchListType) {
 // Handles user logout
 function handleLogOut(navigate) {
     // Clear all authentication-related items from localStorage
-    ['token', 'profileId', 'accountType', 'accountLogInType'].forEach(function(item) {
+    ['token', 'profileId', 'accountType', 'accountLogInType'].forEach(function (item) {
         localStorage.removeItem(item);
     });
     alert('Log out successfully\n\nRedirecting to Home Page');
@@ -159,7 +159,7 @@ function handleSwitchAccount(type, accountLogInType, setAccountLogInType, naviga
 function AccountSwitcher({ allData, accountType, handleSwitchAccount, navigate, toggleDropdown, setActiveMenu, profileId }) {
     return (
         <div className="account-switcher">
-            <UserIcon 
+            <UserIcon
                 userName={allData.userName}
                 profileId={profileId}
                 size={40}
@@ -170,25 +170,25 @@ function AccountSwitcher({ allData, accountType, handleSwitchAccount, navigate, 
                     {/* Conditional rendering based on active menu */}
                     {allData.activeMenu === 'main' ? (
                         <>
-                            <li onClick={function() { navigate('/UserProfile'); }}>My profile</li>
-                            <li onClick={function() { setActiveMenu('account'); }}>My account</li>
+                            <li onClick={function () { navigate('/UserProfile'); }}>My profile</li>
+                            <li onClick={function () { setActiveMenu('account'); }}>My account</li>
                             {accountType.length > 1 && (
-                                <li onClick={function() { setActiveMenu('switch'); }}>Switch account</li>
+                                <li onClick={function () { setActiveMenu('switch'); }}>Switch account</li>
                             )}
                         </>
                     ) : allData.activeMenu === 'switch' ? (
                         <>
-                            <li onClick={function() { setActiveMenu('main'); }} style={{ fontWeight: 'bold' }}>← Back</li>
-                            {accountType.map(function(type) {
+                            <li onClick={function () { setActiveMenu('main'); }} style={{ fontWeight: 'bold' }}>← Back</li>
+                            {accountType.map(function (type) {
                                 return (
-                                    <li key={type} onClick={function() { handleSwitchAccount(type); }}>{getAccountTypeLabel(type)}</li>
+                                    <li key={type} onClick={function () { handleSwitchAccount(type); }}>{getAccountTypeLabel(type)}</li>
                                 );
                             })}
                         </>
                     ) : (
                         <>
-                            <li onClick={function() { setActiveMenu('main'); }} style={{ fontWeight: 'bold' }}>← Back</li>
-                            <li onClick={function() { navigate('/ChangePassword'); }}>Change password</li>
+                            <li onClick={function () { setActiveMenu('main'); }} style={{ fontWeight: 'bold' }}>← Back</li>
+                            <li onClick={function () { navigate('/ChangePassword'); }}>Change password</li>
                         </>
                     )}
                 </ul>
@@ -203,23 +203,13 @@ function TopBar({ searchListType, onSearch, onTermChange }) {
     const { authToken, accountType, accountLogInType, setAccountLogInType, profileId } = useAuth();
     const { allData, toggleDropdown, setActiveMenu, setNewCurrentTerm } = useTopBarController(authToken, profileId, onTermChange);
 
-    // Wrapper functions to provide necessary context to handlers
-    function handleSwitchAccountWrapper(type) {
-        handleSwitchAccount(type, accountLogInType, setAccountLogInType, navigate);
-    }
-    
-    function handleLogOutWrapper() {
-        handleLogOut(navigate);
-    }
-
     return (
         <div className={searchListType && onSearch ? "topbar-search" : "topbar"}>
-            {/* Conditional rendering of search input or term selector */}
             {searchListType && onSearch ? (
                 <input
                     type="text"
                     placeholder={getPlaceholderText(searchListType)}
-                    onChange={function(e) { onSearch(e.target.value); }}
+                    onChange={function (e) { onSearch(e.target.value); }}
                 />
             ) : (accountLogInType == 1) ? (
                 <Select className='term-select'
@@ -228,17 +218,17 @@ function TopBar({ searchListType, onSearch, onTermChange }) {
                     onChange={setNewCurrentTerm}
                 />
             ) : null}
-            <AccountSwitcher 
+            <AccountSwitcher
                 allData={allData}
                 accountType={accountType}
-                handleSwitchAccount={handleSwitchAccountWrapper}
+                handleSwitchAccount={(type) => handleSwitchAccount(type, accountLogInType, setAccountLogInType, navigate)}
                 navigate={navigate}
                 toggleDropdown={toggleDropdown}
                 setActiveMenu={setActiveMenu}
                 profileId={profileId}
             />
             <div className="account-type">{getAccountTypeLabel(accountLogInType)}</div>
-            <div className="logout" onClick={handleLogOutWrapper}>Logout</div>
+            <div className="logout" onClick={() => handleLogOut(navigate)}>Logout</div>
         </div>
     );
 }
