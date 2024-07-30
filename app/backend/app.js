@@ -26,6 +26,7 @@ const allInstructors = require('./routes/ShowList/allInstructorsRoutes.js');
 const allTerms = require('./routes/ShowList/allTermsRoutes.js')
 const allCoursesRoutes = require('./routes/ShowList/allCoursesRoutes.js'); 
 const courseRoutes = require('./routes/ShowList/courses.js');  
+const teachingAssignment = require('./routes/ShowList/teachingAssignment.js');
 
 const instructorFetch = require('./routes/AssignInstructor/instructorFetch.js');
 const deptProfileRoutes = require('./routes/deptProfileRoutes');
@@ -47,7 +48,6 @@ const roleInfoRoutes = require('./routes/ShowInfo/roleInfoRoutes');
 const updatePasswordRouter = require('./routes/updatePassword');
 
 const deptStatusChangeCourseRoutes = require('./routes/UpdateStatus/deptStatusChangeCourseRouters.js')
-const teachingAssignment = require('./routes/teachingAssignment.js');
 const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
 const resetPasswordRouter = require('./routes/resetPassword');
 const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js');

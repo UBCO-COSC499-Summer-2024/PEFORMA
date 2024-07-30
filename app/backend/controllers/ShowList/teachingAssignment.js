@@ -1,4 +1,4 @@
-const teachingAssignment = require('../services/teachingAssignment');
+const teachingAssignment = require('../../services/ShowList/teachingAssignment');
 
 async function getTeachingAssignment(req, res) {
   try {
