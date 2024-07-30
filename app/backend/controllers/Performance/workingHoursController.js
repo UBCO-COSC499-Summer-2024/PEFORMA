@@ -1,4 +1,4 @@
-const workingHoursService = require('../services/Performance/workingHours');
+const workingHoursService = require('../../services/Performance/workingHours');
 
 async function getWorkingHours(req, res) {
   try {

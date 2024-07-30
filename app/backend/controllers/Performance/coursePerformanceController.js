@@ -1,4 +1,4 @@
-const coursePerformanceService = require('../services/Performance/coursePerformance');
+const coursePerformanceService = require('../../services/Performance/coursePerformance');
 
 async function getCoursePerformance(req, res) {
   try {
