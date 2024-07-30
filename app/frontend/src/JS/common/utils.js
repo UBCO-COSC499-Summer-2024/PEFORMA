@@ -156,6 +156,11 @@ export const filterItems = (items, itemType, search) => {
          instructor.toLowerCase().includes(search.toLowerCase())
        ))
     );
+  } else if (itemType === 'instructor') {
+    return items.filter((instructor) =>
+      (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
+      (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
+    );
   } else {
     return items;
   }

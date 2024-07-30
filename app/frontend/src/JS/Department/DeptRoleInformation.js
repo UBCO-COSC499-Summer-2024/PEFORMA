@@ -292,12 +292,13 @@ function RoleInformation() {
       <div className="container">
         <CreateTopBar />
 
-        <div className="ri-main">
+        <div className="ri-main" data-testid="ri-main">
           <h1 className="roleName">
             {isEditing ? (
               <input
                 type="text"
                 name="roleName"
+                data-testid="roleName"
                 value={editData.roleName}
                 onChange={handleChange}
                 className="editable-input"
@@ -311,6 +312,7 @@ function RoleInformation() {
             {isEditing ? (
               <textarea
                 name="roleDescription"
+                data-testid="roleDescription"
                 value={editData.roleDescription}
                 onChange={handleChange}
                 className="editable-textarea"
@@ -324,6 +326,7 @@ function RoleInformation() {
             Department:{' '}
             {isEditing ? (
               <select
+                data-testid="department"
                 name="department"
                 value={editData.department}
                 onChange={handleChange}
@@ -348,11 +351,11 @@ function RoleInformation() {
           </p>
           <div className="buttons">
             {isEditing ? (
-              <button role="button" onClick={handleSaveClick}>
+              <button role="button" data-testid="save" onClick={handleSaveClick}>
                 Save
               </button>
             ) : (
-              <button role="button" id="edit" onClick={handleEditClick}>
+              <button role="button" id="edit" data-testid="edit" onClick={handleEditClick}>
                 Edit Role
               </button>
             )}
@@ -432,9 +435,6 @@ function RoleInformation() {
 											);
 										}
                   }
-
-
-
 								})}
 							</tbody>
 							<tfoot>
