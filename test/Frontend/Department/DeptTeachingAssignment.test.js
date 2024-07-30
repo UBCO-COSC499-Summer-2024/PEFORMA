@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mock axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
@@ -12,12 +13,12 @@ describe('DeptTeachingAssignment', () => {
   let element;
   
   beforeEach(async () => {
-    useAuth.mockReturnValue({
+    useAuth.mockReturnValue({ // mock authToken
       authToken: { token: 'mocked-token' },
       profileId: { profileId: 'mocked-profileId' }
     });
     axios.get.mockResolvedValue({
-      data: {
+      data: { // mock data
         "currentTerm": 20243,
         "currentPage": 1,
         "perPage": 10,
@@ -55,18 +56,19 @@ describe('DeptTeachingAssignment', () => {
     });
 
     await act(async () => {
-      render(
+      render( // render DeptTeachingAssignment page
         <MemoryRouter>
           <DeptTeachingAssignment />
         </MemoryRouter>
       );
     });
-    element = document.getElementById('teaching-assignment-test-content');
+    element = document.getElementById('teaching-assignment-test-content'); // set element with id
   });
 
   test('Testing rendering mock data in computer science overview page', async () => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
+    //expect info to be rendered correctly
     expect(element).toHaveTextContent("Teaching assignment (2024 Summer Term 1)");
     expect(element).toHaveTextContent("COSC 109");
     expect(element).toHaveTextContent("COSC 210");
@@ -86,7 +88,7 @@ describe('DeptTeachingAssignment', () => {
     expect(element).toHaveTextContent("COSC 109");
     expect(element).toHaveTextContent("COSC 210");
     
-    const select = screen.getByRole('combobox');
+    const select = screen.getByRole('combobox'); // find switching to different division box
 
     // switch to physics division
     await act(async () => {

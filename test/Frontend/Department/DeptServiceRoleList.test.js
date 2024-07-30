@@ -5,6 +5,7 @@ import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mock axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
@@ -12,11 +13,11 @@ describe('DeptServiceRoleList', () => {
   let element; 
 
 	beforeEach(() => {
-		useAuth.mockReturnValue({
+		useAuth.mockReturnValue({ // mock authToken
 			authToken: { token: 'mocked-token' },
 		});
     axios.get.mockImplementation(() => 
-			Promise.resolve({
+			Promise.resolve({ // mock data
 				data: {"currentPage":1, "perPage": 10, "rolesCount":13,
           roles:[
             { "id": 1, "name": "Undergrad Advisor", "department": "Testing 1", "description":"Some random testing", "status":true},
@@ -36,18 +37,19 @@ describe('DeptServiceRoleList', () => {
         }
 			})
 		);
-    render(
+    render( // render DeptServiceRoleList
 			<MemoryRouter>
 				<DeptServiceRoleList />
 			</MemoryRouter>
 		);
-    element = document.getElementById('dept-service-role-list-test-content');
+    element = document.getElementById('dept-service-role-list-test-content'); // set element with id
 	});
 
   test('Testing rendering with mock data service role list', async () => {
 		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    expect(element).toHaveTextContent("List of Service Roles (9 Active)");
+    expect(element).toHaveTextContent("List of Service Roles (9 Active)"); // expect header to be same
 
+    // check it renders mock data well
     expect(element).toHaveTextContent("Role");
     expect(element).toHaveTextContent("Department");
     expect(element).toHaveTextContent("Description");
@@ -71,6 +73,7 @@ describe('DeptServiceRoleList', () => {
 
     expect(element).toHaveTextContent("Dept 10");
 
+    // Role 11, Dept 11, Description 11 are in second page so expect.not
     expect(element).not.toHaveTextContent("Role 11");
     expect(element).not.toHaveTextContent("Dept 11");
     expect(element).not.toHaveTextContent("Description 11");
@@ -79,35 +82,36 @@ describe('DeptServiceRoleList', () => {
   test('Testing pagination', async () => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
-    const paginationElement = element.querySelector('.pagination'); 
-    expect(paginationElement).toBeInTheDocument();
+    const paginationElement = element.querySelector('.pagination'); // find pagination
+    expect(paginationElement).toBeInTheDocument(); // expect pagination to be exist
 
-    const firstPageRows = element.querySelectorAll('tbody tr');
-    expect(firstPageRows.length).toBe(10);
+    const firstPageRows = element.querySelectorAll('tbody tr'); // find first page rows
+    expect(firstPageRows.length).toBe(10); // expect rows length are 10 
 
-    const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');; 
-    fireEvent.click(nextPageButton);
+    const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a'); // find nextPage button
+    fireEvent.click(nextPageButton); // simulate clicking next page button
 
     await waitFor(() => { // check next page
-      expect(element).not.toHaveTextContent("Role 7");
+      expect(element).not.toHaveTextContent("Role 7"); // role 7 is in first page
       expect(element).toHaveTextContent("Role 11");
       expect(element).toHaveTextContent("Role 12");
       expect(element).toHaveTextContent("Role 13");
 
-      expect(element).not.toHaveTextContent("Dept 4");
+      expect(element).not.toHaveTextContent("Dept 4"); // dept 4 is in first page
       expect(element).toHaveTextContent("Dept 11");
       expect(element).toHaveTextContent("Dept 12");
       expect(element).toHaveTextContent("Dept 13");
     })
 
-    const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a');;
-    fireEvent.click(prevPageButton);
+    const prevPageButton = element.querySelector('.pagination .prev a') || element.querySelector('.pagination li:first-child a'); // find prev page button
+    fireEvent.click(prevPageButton); // simulate clicking prev page button
 
     await waitFor(() => { // check going back to prev page
       expect(element).not.toHaveTextContent("Role 12");
       expect(element).not.toHaveTextContent("Dept 12");
       expect(element).not.toHaveTextContent("Description 12");
 
+      // now expect Role 5 appears in first page as its first page data
       expect(element).toHaveTextContent("Role 5");
     })
   })

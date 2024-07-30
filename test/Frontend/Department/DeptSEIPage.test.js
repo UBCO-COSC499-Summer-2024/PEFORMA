@@ -5,17 +5,18 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mock axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
 describe('DeptSEIPage', () => {
   beforeEach(async () => {
-    useAuth.mockReturnValue({
+    useAuth.mockReturnValue({ // mock authToken
       authToken: { token: 'mocked-token' },
       profileId: { profileId: 'mocked-profileId' }
     });
     axios.get.mockResolvedValue({
-      data: {
+      data: { // mock data
         courses: [
           { courseId: '1', courseCode: 'COSC 101', instructor: [{ profileId: '1', name: 'Don' }] },
           { courseId: '2', courseCode: 'MATH 499', instructor: [{ profileId: '2', name: 'Math prof' }, { profileId: '5', name: 'David' }] }
@@ -24,7 +25,7 @@ describe('DeptSEIPage', () => {
     });
 
     await act(async () => {
-      render(
+      render( // render DeptSEIPage
         <MemoryRouter>
           <DeptSEIPage />
         </MemoryRouter>
@@ -69,6 +70,7 @@ describe('DeptSEIPage', () => {
       fireEvent.click(insOption);
     });
 
+    // find each inputs by placeholder
     const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
     const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
     const Q3Input = await screen.findByPlaceholderText('Q3 Average Score');
@@ -79,6 +81,7 @@ describe('DeptSEIPage', () => {
     const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of MATH 499');
     const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of MATH 499');
 
+    // expect each input box exists
     expect(Q1Input).toBeInTheDocument();
     expect(Q2Input).toBeInTheDocument();
     expect(Q3Input).toBeInTheDocument();
@@ -127,6 +130,7 @@ describe('DeptSEIPage', () => {
       fireEvent.click(insOption);
     });
 
+    // find each inputs by placeholder
     const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
     const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
     const Q3Input = await screen.findByPlaceholderText('Q3 Average Score');
@@ -137,7 +141,7 @@ describe('DeptSEIPage', () => {
     const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of COSC 101');
     const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of COSC 101');
 
-    await act(async () => {
+    await act(async () => { // input different values in each different input box
       fireEvent.change(Q1Input, { target: { value: '95' } });
       fireEvent.change(Q2Input, { target: { value: '90' } });
       fireEvent.change(Q3Input, { target: { value: '85' } });
@@ -149,8 +153,8 @@ describe('DeptSEIPage', () => {
       fireEvent.change(failedPercentageInput, { target: { value: '4' } });
     });
 
-    const submitButton = screen.getByText('Submit');
-    expect(submitButton).toBeInTheDocument();
+    const submitButton = screen.getByText('Submit'); // find submit button
+    expect(submitButton).toBeInTheDocument(); // simulate clicking submit button
 
     // expect axios.post to be called one time = submit button has been clicked
     await act(async () => {
@@ -161,7 +165,7 @@ describe('DeptSEIPage', () => {
       expect(axios.post).toHaveBeenCalledTimes(1);
     });
 
-    await waitFor(() => expect(axios.post).toHaveBeenCalledWith(
+    await waitFor(() => expect(axios.post).toHaveBeenCalledWith( // axios.post with postData
       'http://localhost:3001/api/courseEvaluation',
       {
         courseId: '1',  
@@ -224,6 +228,7 @@ describe('DeptSEIPage', () => {
       fireEvent.click(insOption);
     });
 
+    // find each inputs by placeholder
     const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
     const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
     const Q3Input = await screen.findByPlaceholderText('Q3 Average Score');
@@ -234,7 +239,7 @@ describe('DeptSEIPage', () => {
     const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of COSC 101');
     const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of COSC 101');
 
-    await act(async () => {
+    await act(async () => { // input different values in each input box
       fireEvent.change(Q1Input, { target: { value: '95' } });
       fireEvent.change(Q2Input, { target: { value: '90' } });
       fireEvent.change(Q3Input, { target: { value: '85' } });
@@ -246,10 +251,10 @@ describe('DeptSEIPage', () => {
       fireEvent.change(failedPercentageInput, { target: { value: '4' } });
     });
 
-    const cancelButton = screen.getByText('Cancel');
-    expect(cancelButton).toBeInTheDocument();
+    const cancelButton = screen.getByText('Cancel'); // find cancel button
+    expect(cancelButton).toBeInTheDocument(); // expect cancel button to exist
     
-    await act(async () => {
+    await act(async () => { // simulate clicking cancel button
       fireEvent.click(cancelButton);
     });
 

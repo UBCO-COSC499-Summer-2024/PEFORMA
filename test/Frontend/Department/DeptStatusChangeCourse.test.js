@@ -1,22 +1,23 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptStatusChangeCourse from '../../../app/frontend/src/JS/Department/DeptStatusChangeCourse';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mock axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn(),
+  useLocation: jest.fn(), // mock useLocation to receive state
 }));
 
 describe('DeptStatusChangeCourse', () => {
   let element; 
 
   beforeEach(() => {
-    useAuth.mockReturnValue({
+    useAuth.mockReturnValue({ // mock authToken
       authToken: { token: 'mocked-token' },
       profileId: { profileId: 'mocked-profileId' }
     });
@@ -42,16 +43,16 @@ describe('DeptStatusChangeCourse', () => {
         }
       }
     });
-    axios.post.mockResolvedValue({ status: 200 });
-    render(
+    axios.post.mockResolvedValue({ status: 200 }); // set stuats to 200 for axios.post successful
+    render( // render DeptStatusChangeCourse
       <MemoryRouter>
         <DeptStatusChangeCourse />
       </MemoryRouter>
     );
-    element = document.getElementById('course-status-controller-test-content');
+    element = document.getElementById('course-status-controller-test-content'); // set element with id
   });
 
-  afterEach(() => {
+  afterEach(() => { // clear all mockings after test
     jest.clearAllMocks();
   });
 
