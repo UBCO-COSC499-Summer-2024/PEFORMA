@@ -12,20 +12,21 @@ const saveDataToDatabase = require('./routes/DataEntry');
 
 const createAccount = require('./routes/createAccount');
 
-const workingHoursRoutes = require('./routes/workingHoursRoutes');
-//const serverRouter = require('./routes/server')
-const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
-const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
-const progressRoutes = require('./routes/progressRoutes');
+//Performance Routers
+const workingHoursRoutes = require('./routes/Performance/workingHoursRoutes.js');
+const DeptPerformanceRouter = require('./routes/Performance/deptPerformanceRoutes.js');
+const leaderBoardRoutes = require('./routes/Performance/leaderBoardRoutes.js');
+const progressRoutes = require('./routes/Performance/progressRoutes.js');
+const benchmark = require('./routes/Performance/benchmark.js');
+const deptLeaderBoard = require('./routes/Performance/deptLeaderboard.js');
+const coursePerformance = require('./routes/Performance/coursePerformance.js');
+
 const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 
 //const update = require('./routes/update');
 const instructorFetch = require('./routes/instructorFetch.js');
 const courseRoutes = require('./routes/courses.js');  
 const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
-const benchmark = require('./routes/benchmark.js');
-const deptLeaderBoard = require('./routes/deptLeaderboard.js');
-const coursePerformance = require('./routes/coursePerformance.js');
 const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
 
