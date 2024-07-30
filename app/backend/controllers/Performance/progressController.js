@@ -1,4 +1,4 @@
-const progressService = require('../services/Performance/progress');
+const progressService = require('../../services/Performance/progress');
 
 async function getProgress(req, res) {
   try {
