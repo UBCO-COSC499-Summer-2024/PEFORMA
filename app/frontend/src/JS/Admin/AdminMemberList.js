@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, fetchWithAuth, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
+// custom hook for fetching member list
 function useAdminMemberList() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
@@ -19,17 +18,17 @@ function useAdminMemberList() {
 		perPage: 10,
 		currentPage: 1,
 	});
-	const [search, setSearch] = useState('');
-	const [activeMembersCount, setActiveMembersCount] = useState(0);
+	const [search, setSearch] = useState(''); // state for search
+	const [activeMembersCount, setActiveMembersCount] = useState(0); // state for active members count, default to 0
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				checkAccess(accountLogInType, navigate, 'admin', authToken);
+				checkAccess(accountLogInType, navigate, 'admin', authToken); // check access with accountLogInType and authToken
 				const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
-				const filledMembers = fillEmptyItems(data.members, data.perPage);
-				const activeCount = filledMembers.filter((member) => member.status).length;
-				setActiveMembersCount(activeCount);
+				const filledMembers = fillEmptyItems(data.members, data.perPage); // fill empty rows for table format
+				const activeCount = filledMembers.filter((member) => member.status).length; // check status of active members 
+				setActiveMembersCount(activeCount); // set activeMembersCount that are filtered with status is true
 				setMemberData({
 					members: filledMembers,
 					membersCount: data.membersCount,
@@ -44,34 +43,34 @@ function useAdminMemberList() {
 		fetchData();
 	}, [authToken, accountLogInType, search]);
 
+	// filter member by search function and set all results into filtered members and to current members for final render
 	const filteredMembers = filterItems(memberData.members, 'member', search);
 	const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return {
 		memberData,
 		setMemberData,
-		search,
 		setSearch,
 		activeMembersCount,
 		currentMembers
 	};
 }
 
+// main component for rendering member list data
 function AdminMemberList() {
 	const {
 		memberData,
 		setMemberData,
 		setSearch,
 		activeMembersCount,
-		search,
 		currentMembers
-} = useAdminMemberList();
+} = useAdminMemberList(); // use custom hook to fetch and receive
 	
 	return (
 		<div className="dashboard" id="admin-member-list-test-content">
-			<CreateSideBar sideBarType="Admin" />
+			<SideBar sideBarType="Admin" />
 			<div className="container">
-				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
+				<TopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setMemberData);}} />
 
 				<div className="member-list-main" id="dept-member-list-test-content">
 					<div className="subtitle-member">List of Members ({activeMembersCount} Active)
