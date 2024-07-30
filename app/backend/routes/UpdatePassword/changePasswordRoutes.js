@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const changePasswordController = require('../../controllers/Password/changePasswordController');
+const changePasswordController = require('../../controllers/UpdatePassword/changePasswordController');
 
 router.post('/:profileId', changePasswordController.changePassword);
 
