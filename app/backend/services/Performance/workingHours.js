@@ -1,4 +1,4 @@
-const {getServiceHour} = require('./serviceHour.js');
+const {getServiceHour} = require('./serviceHour');
 async function getWorkingHours(req) {
     const profileId = req.query.profileId;
 

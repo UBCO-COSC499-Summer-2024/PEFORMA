@@ -1,4 +1,4 @@
-const leaderBoardService = require('../services/leaderBoard');
+const leaderBoardService = require('../services/Performance/leaderBoard');
 
 async function getLeaderBoard(req, res) {
   try {

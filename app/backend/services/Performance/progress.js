@@ -1,4 +1,4 @@
-const  pool = require('../db/index.js'); 
+const  pool = require('../../db/index.js'); 
 const {getServiceHour} = require('./serviceHour.js');
 async function getProgress(req) {
     try {

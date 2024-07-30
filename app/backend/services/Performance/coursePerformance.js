@@ -1,5 +1,5 @@
-const  pool = require('../db/index.js'); 
-const {getLatestTerm} = require('./latestTerm.js');
+const  pool = require('../../db/index.js'); 
+const {getLatestTerm} = require('../latestTerm.js');
 async function getCoursePerformance(req){
 
     const divisionId = parseInt(req.query.divisionId);

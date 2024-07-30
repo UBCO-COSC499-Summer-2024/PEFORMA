@@ -1,5 +1,5 @@
-const  pool = require('../db/index.js'); 
-const {getLatestTerm} = require('./latestTerm');
+const  pool = require('../../db/index.js'); 
+const {getLatestTerm} = require('../latestTerm.js');
 async function getLeaderBoard() {
     try {
 

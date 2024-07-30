@@ -1,4 +1,4 @@
-const deptPerformanceService = require('../services/deptPerformance');
+const deptPerformanceService = require('../services/Performance/deptPerformance');
 
 async function getDepartPerformance(req, res) {
   try {

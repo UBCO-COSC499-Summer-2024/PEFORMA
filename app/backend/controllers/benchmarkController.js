@@ -1,4 +1,4 @@
-const benchmarkService = require('../services/benchmark'); 
+const benchmarkService = require('../services/Performance/benchmark'); 
 
 async function getBenchmark(req, res) {
     try {

@@ -1,5 +1,5 @@
-const pool = require('../db/index');
-const {getLatestYear} = require('./latestYear');
+const pool = require('../../db/index');
+const {getLatestYear} = require('../latestYear');
 async function getServiceHour(profileId){
     const year = await getLatestYear();
     try{
