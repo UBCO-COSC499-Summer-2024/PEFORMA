@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { fillEmptyItems, currentItems, checkAccess, getDivisionName, getTermString, fetchWithAuth, filterByDivision } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptTeachingAssignment.css';
 
-// fetch data for course and professor from api and render
+// custoom hook for fetch data for course and professor from api and render
 function useDeptTeachingAssignment() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
@@ -17,9 +17,9 @@ function useDeptTeachingAssignment() {
 		perPage: 10,
 		currentPage: 1,
 	});
-	const [professorList, setProfessorList] = useState([]);
-	const [selectedDivision, setSelectedDivision] = useState('computer-science');
-	const [currentTerm, setCurrentTerm] = useState('');
+	const [professorList, setProfessorList] = useState([]); // state for professorList card vioew
+	const [selectedDivision, setSelectedDivision] = useState('computer-science'); // state for selected division, default cosc
+	const [currentTerm, setCurrentTerm] = useState(''); // state for currentTerm
 	const divisionMap = {
     'computer-science': 'COSC',
     'mathematics': 'MATH',
@@ -28,6 +28,7 @@ function useDeptTeachingAssignment() {
 	};
 	const handleDivisionChange = event => setSelectedDivision(event.target.value); // set current division to changed division by user
 
+	// fetch data when authToken and accountLogInType changes
 	useEffect(() => {
 		const fetchCourses = async () => {
 			try {
@@ -77,10 +78,11 @@ function useDeptTeachingAssignment() {
 		fetchCourses();
 	}, [authToken, accountLogInType, navigate]);
 
+	// filter by division and set into currentCourses for render
 	const filteredByDivisionCourses = filterByDivision(deptCourseList.courses, selectedDivision, divisionMap); // filter with division code
 	const currentCourses = currentItems(filteredByDivisionCourses, deptCourseList.currentPage, deptCourseList.perPage); // set currentCourses with only followed prefix
 
-	return {
+	return { // return related data that needs to be rendered
 		deptCourseList,
 		professorList,
 		handleDivisionChange,
@@ -99,13 +101,13 @@ function DeptTeachingAssignment() {
 		selectedDivision,
 		currentTerm,
 		currentCourses
-    } = useDeptTeachingAssignment();
+    } = useDeptTeachingAssignment(); // use custom hook for rendering
 
 	return (
 		<div className="dashboard-container">
-			<CreateSideBar sideBarType="Department" />
+			<SideBar sideBarType="Department" />
 			<div className="container" id='teaching-assignment-test-content'>
-				<CreateTopBar />
+				<TopBar />
 				<div className="teaching-assignment-subtitle">
 					<h1>Teaching assignment ({currentTerm})</h1>
 				</div>

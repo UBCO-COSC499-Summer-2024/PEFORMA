@@ -3,13 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { Download, ArrowUpDown } from 'lucide-react';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { fillEmptyItems, handlePageClick, handleSearchChange, pageCount, currentItems, checkAccess, requestSort, sortItems, downloadCSV, filterItems } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptTeachingAssignment.css';
 
-// fetch data sent from DeptTeachingAssignment using state, location and render
+// customm hook for fetch data sent from DeptTeachingAssignment using state, location and render
 function useDeptTeachingAssignment() {
     const { authToken, accountLogInType } = useAuth();
     const navigate = useNavigate();
@@ -27,6 +27,7 @@ function useDeptTeachingAssignment() {
 
     const handleDivisionChange = event => setCurrentDivision(event.target.value); // set current division to changed division by user
 
+	// fetch data when current division, accountloginType, location.state and authToken changes
     useEffect(() => {
         checkAccess(accountLogInType, navigate, 'department', authToken); // check access with loginType and authToken
         if (courses && professors) {
@@ -40,7 +41,7 @@ function useDeptTeachingAssignment() {
                 currentPage: 1,
             });
         }
-    }, [currentDivision, courses, professors, courseList.perPage]);
+    }, [currentDivision, accountLogInType, navigate, location.state, authToken]);
 
     // sort courses based on Instructor, Course Code, Course Name that user clicks, or if theres a filter, filter from search bar, and set the result into currentCourses
     const sortedCourses = useMemo(() => sortItems(courseList.courses, sortConfig), [courseList.courses, sortConfig]);
@@ -87,9 +88,9 @@ function DeptTeachingAssignmentDetail() {
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Department" />
+            <SideBar sideBarType="Department" />
             <div className="container">
-                <CreateTopBar searchListType={'DeptTeachingAssignmentDetail'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setCourseList);}} />
+                <TopBar searchListType={'DeptTeachingAssignmentDetail'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setCourseList);}} />
 
                 <div className="srlist-main" id="detail-teaching-assignment-test-content">
                     <div className="subtitle-course">
