@@ -71,15 +71,16 @@ describe('DeptSEIPage', () => {
     });
 
     // find each inputs by placeholder
-    const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
-    const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
-    const Q3Input = await screen.findByPlaceholderText('Q3 Average Score');
-    const Q4Input = await screen.findByPlaceholderText('Q4 Average Score');
-    const Q5Input = await screen.findByPlaceholderText('Q5 Average Score');
-    const retentionRateInput = await screen.findByPlaceholderText('Retention Rate of MATH 499');
-    const averageGradeInput = await screen.findByPlaceholderText('Average Grade of MATH 499');
-    const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of MATH 499');
-    const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of MATH 499');
+    const Q1Input = screen.getByLabelText('Q 1 Average Score:');
+    const Q2Input = screen.getByLabelText('Q 2 Average Score:');
+    const Q3Input = screen.getByLabelText('Q 3 Average Score:');
+    const Q4Input = screen.getByLabelText('Q 4 Average Score:');
+    const Q5Input = screen.getByLabelText('Q 5 Average Score:');
+    const Q6Input = screen.getByLabelText('Q 6 Average Score:');
+    const retentionRateInput = screen.getByLabelText('Retention Rate of MATH 499');
+    const averageGradeInput = screen.getByLabelText('Average Grade of MATH 499');
+    const enrollmentRateInput = screen.getByLabelText('Enrollment Rate of MATH 499');
+    const failedPercentageInput = screen.getByLabelText('Failed Percentage of MATH 499');
 
     // expect each input box exists
     expect(Q1Input).toBeInTheDocument();
@@ -87,6 +88,7 @@ describe('DeptSEIPage', () => {
     expect(Q3Input).toBeInTheDocument();
     expect(Q4Input).toBeInTheDocument();
     expect(Q5Input).toBeInTheDocument();
+    expect(Q6Input).toBeInTheDocument();
     expect(retentionRateInput).toBeInTheDocument();
     expect(averageGradeInput).toBeInTheDocument();
     expect(enrollmentRateInput).toBeInTheDocument();
@@ -131,15 +133,16 @@ describe('DeptSEIPage', () => {
     });
 
     // find each inputs by placeholder
-    const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
-    const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
-    const Q3Input = await screen.findByPlaceholderText('Q3 Average Score');
-    const Q4Input = await screen.findByPlaceholderText('Q4 Average Score');
-    const Q5Input = await screen.findByPlaceholderText('Q5 Average Score');
-    const retentionRateInput = await screen.findByPlaceholderText('Retention Rate of COSC 101');
-    const averageGradeInput = await screen.findByPlaceholderText('Average Grade of COSC 101');
-    const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of COSC 101');
-    const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of COSC 101');
+    const Q1Input = screen.getByLabelText('Q 1 Average Score:');
+    const Q2Input = screen.getByLabelText('Q 2 Average Score:');
+    const Q3Input = screen.getByLabelText('Q 3 Average Score:');
+    const Q4Input = screen.getByLabelText('Q 4 Average Score:');
+    const Q5Input = screen.getByLabelText('Q 5 Average Score:');
+    const Q6Input = screen.getByLabelText('Q 6 Average Score:');
+    const retentionRateInput = screen.getByLabelText('Retention Rate of COSC 101');
+    const averageGradeInput = screen.getByLabelText('Average Grade of COSC 101');
+    const enrollmentRateInput = screen.getByLabelText('Enrollment Rate of COSC 101');
+    const failedPercentageInput = screen.getByLabelText('Failed Percentage of COSC 101');
 
     await act(async () => { // input different values in each different input box
       fireEvent.change(Q1Input, { target: { value: '95' } });
@@ -147,6 +150,7 @@ describe('DeptSEIPage', () => {
       fireEvent.change(Q3Input, { target: { value: '85' } });
       fireEvent.change(Q4Input, { target: { value: '75' } });
       fireEvent.change(Q5Input, { target: { value: '77' } });
+      fireEvent.change(Q6Input, { target: { value: '50' } });
       fireEvent.change(retentionRateInput, { target: { value: '90' } });
       fireEvent.change(averageGradeInput, { target: { value: '86' } });
       fireEvent.change(enrollmentRateInput, { target: { value: '92' } });
@@ -175,6 +179,7 @@ describe('DeptSEIPage', () => {
         Q3: '85',
         Q4: '75',
         Q5: '77',
+        Q6: '50',
         retentionRate: '90',
         averageGrade: '86',
         enrollmentRate: '92',
@@ -229,15 +234,16 @@ describe('DeptSEIPage', () => {
     });
 
     // find each inputs by placeholder
-    const Q1Input = await screen.findByPlaceholderText('Q1 Average Score');
-    const Q2Input = await screen.findByPlaceholderText('Q2 Average Score');
-    const Q3Input = await screen.findByPlaceholderText('Q3 Average Score');
-    const Q4Input = await screen.findByPlaceholderText('Q4 Average Score');
-    const Q5Input = await screen.findByPlaceholderText('Q5 Average Score');
-    const retentionRateInput = await screen.findByPlaceholderText('Retention Rate of COSC 101');
-    const averageGradeInput = await screen.findByPlaceholderText('Average Grade of COSC 101');
-    const enrollmentRateInput = await screen.findByPlaceholderText('Enrollment Rate of COSC 101');
-    const failedPercentageInput = await screen.findByPlaceholderText('Failed Percentage of COSC 101');
+    const Q1Input = screen.getByLabelText('Q 1 Average Score:');
+    const Q2Input = screen.getByLabelText('Q 2 Average Score:');
+    const Q3Input = screen.getByLabelText('Q 3 Average Score:');
+    const Q4Input = screen.getByLabelText('Q 4 Average Score:');
+    const Q5Input = screen.getByLabelText('Q 5 Average Score:');
+    const Q6Input = screen.getByLabelText('Q 6 Average Score:');
+    const retentionRateInput = screen.getByLabelText('Retention Rate of COSC 101');
+    const averageGradeInput = screen.getByLabelText('Average Grade of COSC 101');
+    const enrollmentRateInput = screen.getByLabelText('Enrollment Rate of COSC 101');
+    const failedPercentageInput = screen.getByLabelText('Failed Percentage of COSC 101');
 
     await act(async () => { // input different values in each input box
       fireEvent.change(Q1Input, { target: { value: '95' } });
@@ -245,6 +251,7 @@ describe('DeptSEIPage', () => {
       fireEvent.change(Q3Input, { target: { value: '85' } });
       fireEvent.change(Q4Input, { target: { value: '75' } });
       fireEvent.change(Q5Input, { target: { value: '77' } });
+      fireEvent.change(Q6Input, { target: { value: '70' } });
       fireEvent.change(retentionRateInput, { target: { value: '90' } });
       fireEvent.change(averageGradeInput, { target: { value: '86' } });
       fireEvent.change(enrollmentRateInput, { target: { value: '92' } });
@@ -260,15 +267,16 @@ describe('DeptSEIPage', () => {
 
     // check if the form resets after clicking cancel button
     await waitFor(() => {
-      expect(screen.queryByPlaceholderText('Q1 Average Score')).toBeNull();
-      expect(screen.queryByPlaceholderText('Q2 Average Score')).toBeNull();
-      expect(screen.queryByPlaceholderText('Q3 Average Score')).toBeNull();
-      expect(screen.queryByPlaceholderText('Q4 Average Score')).toBeNull();
-      expect(screen.queryByPlaceholderText('Q5 Average Score')).toBeNull();
-      expect(screen.queryByPlaceholderText('Retention Rate of COSC 101')).toBeNull();
-      expect(screen.queryByPlaceholderText('Average Grade of COSC 101')).toBeNull();
-      expect(screen.queryByPlaceholderText('Enrollment Rate of COSC 101')).toBeNull();
-      expect(screen.queryByPlaceholderText('Failed Percentage of COSC 101')).toBeNull();
+      expect(screen.getByLabelText('Q 1 Average Score')).toBeNull();
+      expect(screen.getByLabelText('Q 2 Average Score')).toBeNull();
+      expect(screen.getByLabelText('Q 3 Average Score')).toBeNull();
+      expect(screen.getByLabelText('Q 4 Average Score')).toBeNull();
+      expect(screen.getByLabelText('Q 5 Average Score')).toBeNull();
+      expect(screen.getByLabelText('Q 6 Average Score')).toBeNull();
+      expect(screen.getByLabelText('Retention Rate of COSC 101')).toBeNull();
+      expect(screen.getByLabelText('Average Grade of COSC 101')).toBeNull();
+      expect(screen.getByLabelText('Enrollment Rate of COSC 101')).toBeNull();
+      expect(screen.getByLabelText('Failed Percentage of COSC 101')).toBeNull();
     });
   });
   test('Testing react-select search functionality', async () => {
