@@ -7,6 +7,8 @@ import { CreateTopBar } from '../common/commonImports.js';
 import { checkAccess, fetchWithAuth, downloadCSV } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptSEIPage.css';
+import ImportModal from './DataImportImports/DeptImportModal.js';
+import { FaFileImport } from 'react-icons/fa';
 
 // export meeting to csv file
 function exportToCSV(selectedMeeting, selectedParticipants) {
@@ -122,15 +124,29 @@ function DeptMeetingManagement() {
     currentDateTime
   } = useDeptMeetingManagement();
 
+  const [showImportModal, setShowImportModal] = useState(false);
+
   return (
     <div className="dashboard">
       <CreateSideBar sideBarType="Department" />
       <div className='container'>
         <CreateTopBar />
         <div className='SEI-form' id='meeting-test-content'>
-          <h1>Meeting Management</h1>
           <form>
-            <p className="current-date-time">Current Time: {currentDateTime}</p>
+            <div className="form-header">
+              <h1>Meeting Management</h1>
+              <p className="current-date-time">Current Time: {currentDateTime}</p>
+              <button 
+                className="import-button" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowImportModal(true);
+                }}
+                aria-label="Import data"
+              >
+                <FaFileImport />
+              </button>
+            </div>
             <label>
               Select Meeting:
               <Select
@@ -156,7 +172,10 @@ function DeptMeetingManagement() {
                   />
                 </label>
                 <div className="submit-button-align">
-                  <button type="submit" onClick={() => exportToCSV(selectedMeeting, selectedParticipants)}>Export</button>
+                  <button type="submit" onClick={(e) => {
+                    e.preventDefault();
+                    exportToCSV(selectedMeeting, selectedParticipants);
+                  }}>Export</button>
                   <button type="button" className="cancel-button" onClick={() => handleCancel(setSelectedMeeting)}>Cancel</button>
                 </div>
               </>
@@ -164,6 +183,10 @@ function DeptMeetingManagement() {
           </form>
         </div>
       </div>
+      <ImportModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+      />
     </div>
   );
 }
