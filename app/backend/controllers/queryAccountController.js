@@ -1,4 +1,4 @@
-const queryAccountService = require('../services/queryAccount');
+const queryAccountService = require('../services/Login/queryAccount');
 
 async function queryAccount(req,res){
     try{

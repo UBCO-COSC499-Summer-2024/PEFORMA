@@ -1,4 +1,4 @@
-const accountTypeService = require('../services/accountType');
+const accountTypeService = require('../services/Login/accountType');
 async function queryAccountType(req,res){
     const accountId = parseInt(req.params.accountId, 10);
     try {

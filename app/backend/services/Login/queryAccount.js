@@ -1,4 +1,4 @@
-const pool = require('../db/index');
+const pool = require('../../db/index');
 async function queryAccount(){
     try {
         const client = await pool.connect();

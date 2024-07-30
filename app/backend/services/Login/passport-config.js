@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-const { queryAccount } = require('../services/queryAccount');
+const { queryAccount } = require('./queryAccount');
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
