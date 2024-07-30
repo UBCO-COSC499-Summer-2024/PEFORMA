@@ -1,4 +1,4 @@
-const courseHistoryService = require('../services/courseHistory');
+const courseHistoryService = require('../../services/ShowInfo/courseHistory');
 
 async function getCourseHistory(req, res) {
   try {

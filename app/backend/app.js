@@ -5,7 +5,6 @@ const loginRouter = require('./routes/Login/logincheck.js'); // 确保路径正�
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
-// const queryAccountRouter = require('./routes/queryAccountRouter');
 const AccountTypeRouter = require('./routes/Login/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
@@ -38,8 +37,9 @@ const userRoutes = require('./routes/userRoutes');
 const changePasswordRoutes = require('./routes/changePasswordRoutes');
 
 
-const courseHistoryRouter = require('./routes/courseHistoryRoutes');
-const roleInfoRoutes = require('./routes/roleInfoRoutes');
+//Show Information Router
+const courseHistoryRouter = require('./routes/ShowInfo/courseHistoryRoutes.js');
+const roleInfoRoutes = require('./routes/ShowInfo/roleInfoRoutes');
 
 
 const updatePasswordRouter = require('./routes/updatePassword');

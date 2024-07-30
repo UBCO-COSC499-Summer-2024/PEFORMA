@@ -1,4 +1,4 @@
-const roleInfo = require('../services/roleInfo');
+const roleInfo = require('../../services/ShowInfo/roleInfo');
 
 async function getServiceInfo(req, res) {
   try {
