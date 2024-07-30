@@ -23,26 +23,20 @@ async function getCourseHistory(req) {
         // Extract course details from the first result row
         const { ctitle, description, courseCode, dname } = result.rows[0];
         //Join profile, course, instructorassignment, single teaching performance tables
-        query = `SELECT DISTINCT ON (ita."term", full_name, p."profileId", p."UBCId")
-        ita."term",
-        TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
-        stp."score",
-        p."profileId",
-        p."UBCId"
-        FROM
-        "Course" c
-        LEFT JOIN
-        "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
-        LEFT JOIN
-        "SingleTeachingPerformance" stp ON stp."courseId" = ita."courseId" AND stp."term" = ita."term" AND stp."profileId" = ita."profileId"
-        LEFT JOIN
-        "Profile" p ON p."profileId" = ita."profileId"
-        LEFT JOIN 
-        "Division" d ON d."divisionId" = c."divisionId"
-        WHERE 
-        c."courseId" = $1 AND ita."term" <= $2
-        ORDER BY 
-        ita."term", full_name, p."profileId", p."UBCId", stp."score" DESC;
+        query = `SELECT ita."term", TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name,
+                 COALESCE(stp."score", '0') AS score, p."profileId", p."UBCId", ita."location", ita."enrollment",ita."meetingPattern" FROM "Course" c
+                LEFT JOIN
+                "InstructorTeachingAssignment" ita ON c."courseId" = ita."courseId"
+                LEFT JOIN
+                "SingleTeachingPerformance" stp ON stp."courseId" = ita."courseId" AND stp."term" = ita."term" AND stp."profileId" = ita."profileId"
+                LEFT JOIN
+                "Profile" p ON p."profileId" = ita."profileId"
+                LEFT JOIN 
+                "Division" d ON d."divisionId" = c."divisionId"
+                WHERE 
+                c."courseId" = $1 AND ita."term" <= $2
+                ORDER BY 
+                ita."term", full_name, p."profileId", p."UBCId", stp."score" DESC;
         `;
         result = await pool.query(query,[courseId,latestTermResult]);
         if(result.length == 0){
@@ -88,7 +82,10 @@ async function getCourseHistory(req) {
                 term: sessionSuffix ,
                 score: row.score ? Number(row.score.toFixed(2)) : "",
                 term_num: row.term,
-                ubcid:row.UBCId
+                ubcid:row.UBCId,
+                location: row.location,
+                enrollment: row.enrollment,
+                meetingPattern: row.meetingPattern
             };
         });   
 
@@ -96,8 +93,19 @@ async function getCourseHistory(req) {
         query = `SELECT AVG("score") AS "avgScore" FROM "SingleTeachingPerformance"
                  WHERE "courseId" = $1 GROUP BY "courseId";`;
         result = await pool.query(query, [courseId]);
-        const avgScore = result.rows.length > 0 ? Math.round(result.rows[0].avgScore) : 0;        
-                                          
+        const avgScore = result.rows.length > 0 ? Math.round(result.rows[0].avgScore) : 0; 
+        
+        
+        //Get the TA info
+        query = `SELECT TRIM("firstName" || ' ' || COALESCE("middleName" || ' ', '') || "lastName") AS full_name, 
+                "email", "term", "UBCId"  FROM "TaAssignmentTable" WHERE "courseId" = $1 AND "term" <= $2`;  
+        result = await pool.query(query,[courseId,latestTermResult]);
+        const tainfo = result.rows.map(row => ({
+            taname: row.full_name,
+            taemail: row.email,
+            taUBCId: row.UBCId,
+            taterm: row.term
+        }));                        
         const output = {
             currentPage,
             perPage,
@@ -109,7 +117,8 @@ async function getCourseHistory(req) {
             courseDescription: description,
             division: dname,
             avgScore: avgScore, 
-            history
+            history,
+            tainfo
         };
         return output;
     } catch (error) {
