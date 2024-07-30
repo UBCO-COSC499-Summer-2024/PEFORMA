@@ -1,6 +1,6 @@
-const pool = require('../db/index.js');
-const {updateAllServiceRoles} = require('./UpdateStatus/updateAllServiceRoles.js');
-const {getLatestTerm} = require('./latestTerm.js');
+const pool = require('../../db/index.js');
+const {updateAllServiceRoles} = require('../UpdateStatus/updateAllServiceRoles.js');
+const {getLatestTerm} = require('../latestTerm.js');
 async function getAllServiceRoles() {
   try {
     await updateAllServiceRoles();

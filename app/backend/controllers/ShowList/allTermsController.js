@@ -1,4 +1,4 @@
-const allTermsService = require('../services/allTermsService');
+const allTermsService = require('../../services/ShowList/allTermsService');
 
 async function getAllTerms(req, res) {
   try {

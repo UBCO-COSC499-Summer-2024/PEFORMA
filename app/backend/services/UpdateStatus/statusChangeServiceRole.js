@@ -1,5 +1,5 @@
 const pool = require('../../db/index.js'); 
-const { getAllServiceRoles } = require('../serviceRoleService');
+const { getAllServiceRoles } = require('../ShowList/serviceRoleService.js');
 
 async function getStatusChangeServiceRole(req) {
     const serviceRoleId = req.body.roleId; 

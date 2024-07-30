@@ -1,4 +1,4 @@
-const pool = require('../db/index.js');
+const pool = require('../../db/index');
 
 async function getAllTerms(){
     try {

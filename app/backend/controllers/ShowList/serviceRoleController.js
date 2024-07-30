@@ -1,4 +1,4 @@
-const serviceRoleService = require('../services/serviceRoleService');
+const serviceRoleService = require('../../services/ShowList/serviceRoleService');
 
 async function getAllServiceRoles(req, res) {
   try {

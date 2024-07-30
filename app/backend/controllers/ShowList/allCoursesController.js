@@ -1,4 +1,4 @@
-const allCoursesService = require('../services/allCoursesService');
+const allCoursesService = require('../../services/ShowList/allCoursesService');
 
 async function getAllCourses(req, res) {
   try {

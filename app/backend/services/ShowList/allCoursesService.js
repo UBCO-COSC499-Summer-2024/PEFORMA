@@ -1,6 +1,6 @@
-const pool = require('../db/index.js');
-const {updateAllCourses} = require('./UpdateStatus/updateAllCourses.js');
-const {getLatestTerm} = require('./latestTerm.js');
+const pool = require('../../db/index.js');
+const {updateAllCourses} = require('../UpdateStatus/updateAllCourses.js');
+const {getLatestTerm} = require('../latestTerm.js');
 async function getAllCourses() {
   try {
     const currentterm = await getLatestTerm();

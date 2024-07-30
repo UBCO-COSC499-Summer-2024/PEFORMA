@@ -20,16 +20,18 @@ const benchmark = require('./routes/Performance/benchmark.js');
 const deptLeaderBoard = require('./routes/Performance/deptLeaderboard.js');
 const coursePerformance = require('./routes/Performance/coursePerformance.js');
 
-const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
+//Show List
+const serviceRoleRoutes = require('./routes/ShowList/serviceRoleRoutes.js');
+const allInstructors = require('./routes/ShowList/allInstructorsRoutes.js');
+const allTerms = require('./routes/ShowList/allTermsRoutes.js')
+const allCoursesRoutes = require('./routes/ShowList/allCoursesRoutes.js'); 
+const courseRoutes = require('./routes/ShowList/courses.js');  
 
 const instructorFetch = require('./routes/AssignInstructor/instructorFetch.js');
-const courseRoutes = require('./routes/courses.js');  
-const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
 const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
 
 const adminStatusChangeMembers = require('./routes/UpdateStatus/adminStatusChangeMembersRoutes.js');
-const allInstructors = require('./routes/allInstructorsRoutes');
 const deptStatusChangeServiceRoutes = require('./routes/UpdateStatus/deptStatusChangeServiceRoleRoutes.js');
 const imageRoutes = require('./routes/imageRoutes');
 const userProfileRoutes = require('./routes/userProfileRoutes');
@@ -62,7 +64,6 @@ const assignInstructorCourse = require('./routes/AssignInstructor/assignInstruct
 const removeInstructorRoleRouter = require('./routes/RemoveInstructor/removeInstructorRoleRouter.js');
 const removeInstructorCourse = require('./routes/RemoveInstructor/removeInstructorCourseRout.js');
 
-const allTerms = require('./routes/allTermsRoutes.js')
 const setTerm = require('./routes/setCurrentTermRoutes.js')
 
 const app = express();

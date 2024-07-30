@@ -1,4 +1,4 @@
-const allInstructorsService = require('../services/allInstructorsService');
+const allInstructorsService = require('../../services/ShowList/allInstructorsService');
 
 async function getAllInstructors(req, res) {
   try {
