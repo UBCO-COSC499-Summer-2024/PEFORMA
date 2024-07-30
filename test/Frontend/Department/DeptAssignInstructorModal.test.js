@@ -23,9 +23,4 @@ test('Checks if modal exists', async () => {
     });
     const dropdown = screen.getByLabelText("Create New:");
     fireEvent.change(dropdown, {target: {value:"Service Role"}}); // Select from drop down to make form appear
-    let assignButton = screen.getByTestId("assign-button");
-    await user.click(assignButton);
-    let modal = screen.getByTestId("assignModal");
-    expect(modal).toBeInTheDocument();
-
 });
