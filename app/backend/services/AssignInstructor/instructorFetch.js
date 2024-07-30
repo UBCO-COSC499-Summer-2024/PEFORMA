@@ -1,4 +1,4 @@
-const pool = require('../db/index'); 
+const pool = require('../../db/index'); 
 
 async function instructorFetch(){
     try {

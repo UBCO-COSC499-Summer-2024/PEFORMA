@@ -1,5 +1,5 @@
 const express = require('express');
-const instructorFetchService = require('../services/instructorFetch');
+const instructorFetchService = require('../../services/AssignInstructor/instructorFetch');
 async function instructorFetch (req, res) {
     try {
         const result = await instructorFetchService.instructorFetch();

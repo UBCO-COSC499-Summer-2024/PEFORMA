@@ -24,7 +24,7 @@ const coursePerformance = require('./routes/Performance/coursePerformance.js');
 const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 
 //const update = require('./routes/update');
-const instructorFetch = require('./routes/instructorFetch.js');
+const instructorFetch = require('./routes/AssignInstructor/instructorFetch.js');
 const courseRoutes = require('./routes/courses.js');  
 const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
 const deptProfileRoutes = require('./routes/deptProfileRoutes');
