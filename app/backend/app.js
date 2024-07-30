@@ -48,9 +48,11 @@ const changePasswordRoutes = require('./routes/Password/changePasswordRoutes.js'
 const updatePasswordRouter = require('./routes/Password/updatePassword.js');
 
 const deptStatusChangeCourseRoutes = require('./routes/UpdateStatus/deptStatusChangeCourseRouters.js')
-const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
 const resetPasswordRouter = require('./routes/Password/resetPassword.js');
-const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js');
+
+//Course Evaluation
+const courseEvaluation = require('./routes/CourseEvaluation/courseEvaluationRoutes.js');
+const courseEvaluationForm = require('./routes/CourseEvaluation/courseEvaluationFormRoutes.js');
 
 //Update Info Router
 const updateRoleInfo = require('./routes/UpdateInfo/updateRoleInfo.js');

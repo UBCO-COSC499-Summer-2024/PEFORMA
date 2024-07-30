@@ -1,4 +1,4 @@
-const courseEvaluationService = require('../services/courseEvaluation');
+const courseEvaluationService = require('../../services/CourseEvaluation/courseEvaluation');
 
 async function getCourseEvaluation(req, res) {
   try {

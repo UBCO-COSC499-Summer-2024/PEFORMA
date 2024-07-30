@@ -1,5 +1,5 @@
-const pool = require('../db/index.js');
-const { getLatestTerm } = require('./latestTerm.js');
+const pool = require('../../db/index.js');
+const { getLatestTerm } = require('../latestTerm.js');
 
 async function getCourseEvaluation(req) {
     const { courseId, profileId, Q1, Q2, Q3, Q4, Q5, retentionRate, averageGrade, enrollmentRate, failedPercentage } = req.body;

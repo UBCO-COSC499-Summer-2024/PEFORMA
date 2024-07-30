@@ -1,4 +1,4 @@
-const courseEvaluationFormService = require('../services/courseEvaluationForm');
+const courseEvaluationFormService = require('../../services/CourseEvaluation/courseEvaluationForm');
 async function getCourseInformation(req, res) {
   try {
     const formData = await courseEvaluationFormService.getCourseInformation();
