@@ -10,9 +10,7 @@ const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
 
-const { upsertProfile } = require('./routes/upsertProfile');
 const createAccount = require('./routes/createAccount');
-const { assignServiceRole } = require ('./routes/assignServiceRole');
 
 const workingHoursRoutes = require('./routes/workingHoursRoutes');
 //const serverRouter = require('./routes/server')
@@ -58,7 +56,6 @@ const updateCourseInfo = require('./routes/updateCourseInfo.js');
 const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
 const assignInstructorCourse = require('./routes/assignInstructorCourse.js');
 const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
-const latestCourseRouter = require('./routes/latestCourseRoutes.js');
 const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
 const allTerms = require('./routes/allTermsRoutes.js')
 const setTerm = require('./routes/setCurrentTermRoutes.js')
@@ -149,23 +146,22 @@ app.use('/api/upload', dataImportRoutes);
 //Course Evaluation
 app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
-app.use('/api',assignInstructorCourse);
+app.use('/api/assignInstructorCourse',assignInstructorCourse);
 
 app.use('/api/terms',allTerms);
-app.use('/api', setTerm)
+app.use('/api/setCurrentTerm', setTerm)
 
 app.use('/enter',saveDataToDatabase);
 
 
-app.use('/api',instructorFetch);
+app.use('/api/instructors',instructorFetch);
 
-app.use('/api',updateRoleInfo);
-app.use('/api',updateCourseInfo);
-app.use('/api',AssignInstructor);
+app.use('/api/updateRoleInfo',updateRoleInfo);
+app.use('/api/updateCourseInfo',updateCourseInfo);
+app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
-app.use('/api',removeInstructorRoleRouter);
-app.use('/api',latestCourseRouter);
-app.use('/api',removeInstructorCourse);
+app.use('/api/removeInstructorRole',removeInstructorRoleRouter);
+app.use('/api/removeInstructorCourse',removeInstructorCourse);
 
 const port = 3001;
 // Wrap server startup in an async function

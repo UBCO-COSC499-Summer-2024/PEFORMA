@@ -1,7 +1,5 @@
 const pool = require('../db/index.js');
 const { getLatestYear } = require('./latestYear.js');
-
-
 async function getServiceInfo(req){
 
     const serviceRoleId = req.query.serviceRoleId;
