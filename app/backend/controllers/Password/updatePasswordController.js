@@ -1,4 +1,4 @@
-const updatePasswordService = require('../services/updatePassword.js');
+const updatePasswordService = require('../../services/Password/updatePassword');
 
 async function updatePassword(req, res)  {
   try {

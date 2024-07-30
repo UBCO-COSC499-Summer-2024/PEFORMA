@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const pool = require('../db/index.js');
+const pool = require('../../db/index.js');
 
 
 async function updatePassword(req)  {

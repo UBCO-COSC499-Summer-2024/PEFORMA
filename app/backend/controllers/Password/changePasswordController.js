@@ -1,4 +1,4 @@
-const changePasswordService = require('../services/changePasswordService');
+const changePasswordService = require('../../services/Password/changePasswordService');
 
 exports.changePassword = async (req, res) => {
     try {
