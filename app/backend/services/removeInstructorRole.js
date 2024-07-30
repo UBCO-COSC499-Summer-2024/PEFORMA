@@ -1,7 +1,8 @@
 const pool = require('../db'); 
+const {getLatestYear} = require('./latestYear');
 async function removeInstructorRole(req)  {
   const { serviceRoleId, id } = req.body;
-  const currentYear = new Date().getFullYear();
+  const currentYear = await getLatestYear();
   
   try {
     const profileResult = await pool.query('SELECT "profileId" FROM "Profile" WHERE "UBCId" = $1', [String(id)]);
