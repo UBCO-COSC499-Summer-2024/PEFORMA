@@ -149,7 +149,7 @@ app.use('/api/courseEvaluation',courseEvaluation);
 app.use('/api/assignInstructorCourse',assignInstructorCourse);
 
 app.use('/api/terms',allTerms);
-app.use('/api', setTerm)
+app.use('/api/setCurrentTerm', setTerm)
 
 app.use('/enter',saveDataToDatabase);
 
