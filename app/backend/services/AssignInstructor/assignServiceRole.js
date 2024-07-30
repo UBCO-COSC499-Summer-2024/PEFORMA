@@ -1,5 +1,5 @@
 module.exports.assignServiceRole = async function assignServiceRole(profileId, serviceRole, year,division) {
-    const pool = require('../db/index');
+    const pool = require('../../db/index');
     const allrole = `SELECT "stitle" FROM "ServiceRole"`;
     const allresult = await pool.query(allrole);
     const titles = allresult.rows.map(row => row.stitle);
@@ -9,7 +9,7 @@ module.exports.assignServiceRole = async function assignServiceRole(profileId, s
     console.log(`serching for postion: ${serviceRole} in division: ${division}`)
     const roleResult = await pool.query(serviceRoleQuery,[serviceRole,division]);
     if (roleResult.rows.length === 0) {
-        throw new Error('服务角色不存在:|'+serviceRole+"|");
+        throw new Error("No role found");
     }
     const get_serviceRoleId = roleResult.rows[0].serviceRoleId;
 

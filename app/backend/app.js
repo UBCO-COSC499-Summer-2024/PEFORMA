@@ -54,8 +54,8 @@ const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
 
 const updateRoleInfo = require('./routes/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/updateCourseInfo.js');
-const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
-const assignInstructorCourse = require('./routes/assignInstructorCourse.js');
+const AssignInstructor = require('./routes/AssignInstructor/AssignInstructorServiceRole.js');
+const assignInstructorCourse = require('./routes/AssignInstructor/assignInstructorCourse.js');
 const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
 const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
 const allTerms = require('./routes/allTermsRoutes.js')

@@ -1,4 +1,4 @@
-const pool = require('../db/index');
+const pool = require('../../db/index');
 
 async function assignCourse(req) {
     try {
@@ -11,7 +11,6 @@ async function assignCourse(req) {
             SELECT * FROM "CourseByTerm" WHERE "courseId" = $1 AND "term" = $2;
         `;
         const checkResult = await pool.query(checkCourseTermQuery, [courseId, term]);
-        console.log('result for searching course by term:\n', checkResult);
         
         if (checkResult.rows.length === 0) {
             throw new Error('Create course for this term first');

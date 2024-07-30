@@ -1,4 +1,4 @@
-const assignServiceRoleService = require('../services/assignServiceRole');
+const assignServiceRoleService = require('../../services/AssignInstructor/assignServiceRole');
 
 async function assignServiceRole (req, res) {
     const { profileId, serviceRole, year, division } = req.body;
