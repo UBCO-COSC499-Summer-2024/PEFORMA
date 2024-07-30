@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const loginRouter = require('./routes/logincheck'); // 确保路径正确
+const loginRouter = require('./routes/Login/logincheck.js'); // 确保路径正确
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
-const queryAccountRouter = require('./routes/queryAccountRouter');
-const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
+// const queryAccountRouter = require('./routes/queryAccountRouter');
+const AccountTypeRouter = require('./routes/Login/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
 
@@ -70,7 +70,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 console.log('before:');
 
 //login pprocess
-app.use('/',queryAccountRouter);//serach account in db
+// app.use('/',queryAccountRouter);//serach account in db
 app.use('/logincheck', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/accountType',AccountTypeRouter);//check account type
