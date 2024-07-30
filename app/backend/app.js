@@ -160,7 +160,7 @@ app.use('/api/updateRoleInfo',updateRoleInfo);
 app.use('/api/updateCourseInfo',updateCourseInfo);
 app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
-app.use('/api',removeInstructorRoleRouter);
+app.use('/api/removeInstructorRole',removeInstructorRoleRouter);
 app.use('/api/removeInstructorCourse',removeInstructorCourse);
 
 const port = 3001;
