@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const loginRouter = require('./routes/Login/logincheck.js'); // 确保路径正确
+const loginRouter = require('./routes/Login/logincheck.js'); 
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
