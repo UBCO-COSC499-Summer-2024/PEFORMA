@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mock axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 

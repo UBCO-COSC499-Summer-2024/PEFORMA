@@ -9,7 +9,7 @@ global.Date = jest.fn(() => mockCurrentDate);
 
 describe('DeptBenchMark', () => {
   let element; 
-  const mockBenchmarkData = [
+  const mockBenchmarkData = [ // mock data
     { "name": "Kevin Kim", "shortage": 30 },
     { "name": "Asen Lee", "shortage": 148 },
     { "name": "Minsuk Oh", "shortage": 1 },
@@ -17,12 +17,12 @@ describe('DeptBenchMark', () => {
   ];
 
 	beforeEach(() => {
-    render(
+    render( // render DeptBenchMark with parameter using mock data
       <MemoryRouter>
         <DeptBenchMark benchmark={mockBenchmarkData} />
       </MemoryRouter>
     );
-    element = document.getElementById('benchmark-test-content');
+    element = document.getElementById('benchmark-test-content'); // set element with id
 	});
 
 	test('Testing header components of current month', () => {
