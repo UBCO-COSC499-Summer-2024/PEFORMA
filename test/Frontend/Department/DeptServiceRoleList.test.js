@@ -45,7 +45,7 @@ describe('DeptServiceRoleList', () => {
 	});
 
   test('Testing rendering with mock data service role list', async () => {
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
     expect(element).toHaveTextContent("List of Service Roles (9 Active)");
 
     expect(element).toHaveTextContent("Role");
@@ -67,7 +67,7 @@ describe('DeptServiceRoleList', () => {
 
   })
   test('Testing mock datas id after 11 not to show on first page', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
 
     expect(element).toHaveTextContent("Dept 10");
 
@@ -77,7 +77,7 @@ describe('DeptServiceRoleList', () => {
   })
   
   test('Testing pagination', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
     const paginationElement = element.querySelector('.pagination'); 
     expect(paginationElement).toBeInTheDocument();
