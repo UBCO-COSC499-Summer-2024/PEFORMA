@@ -1,4 +1,4 @@
-const updateRoleInfoService = require('../services/updateRoleInfo.js');
+const updateRoleInfoService = require('../../services/UpdateInfo/updateRoleInfo');
 
 async function updateRoleInfo (req, res)  {
     try {

@@ -1,4 +1,4 @@
-const updateCourseInfoService = require('../services/updateCourseInfo.js');
+const updateCourseInfoService = require('../../services/UpdateInfo/updateCourseInfo');
 
 async function updateCourseInfo (req, res) {
     try {

@@ -1,4 +1,4 @@
-const pool = require('../db/index.js');
+const pool = require('../../db/index.js');
 
 async function updateCourseInfo(req)  {
     const { courseId, courseDescription } = req.body;

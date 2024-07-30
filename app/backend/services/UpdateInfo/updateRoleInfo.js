@@ -1,4 +1,4 @@
-const pool = require('../db/index.js');
+const pool = require('../../db/index.js');
 
 async function updateRoleInfo(req)  {
     const newServiceRole = req.body;

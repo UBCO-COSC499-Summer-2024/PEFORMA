@@ -23,7 +23,6 @@ const coursePerformance = require('./routes/Performance/coursePerformance.js');
 
 const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
 
-//const update = require('./routes/update');
 const instructorFetch = require('./routes/AssignInstructor/instructorFetch.js');
 const courseRoutes = require('./routes/courses.js');  
 const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
@@ -50,12 +49,17 @@ const teachingAssignment = require('./routes/teachingAssignment.js');
 const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
 const resetPasswordRouter = require('./routes/resetPassword');
 //const updatePasswordRouter = require('./routes/updatePassword.js')
-const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
+const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js');
 
-const updateRoleInfo = require('./routes/updateRoleInfo.js');
-const updateCourseInfo = require('./routes/updateCourseInfo.js');
+//Update Info
+const updateRoleInfo = require('./routes/UpdateInfo/updateRoleInfo.js');
+const updateCourseInfo = require('./routes/UpdateInfo/updateCourseInfo.js');
+
+//Assign Instructor
 const AssignInstructor = require('./routes/AssignInstructor/AssignInstructorServiceRole.js');
 const assignInstructorCourse = require('./routes/AssignInstructor/assignInstructorCourse.js');
+
+//Remove Instructor
 const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
 const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
 const allTerms = require('./routes/allTermsRoutes.js')
