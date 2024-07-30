@@ -37,6 +37,9 @@
   border: 1px solid #ccc;
   background-color: #007bff;
   color: white;
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block; 
   cursor: pointer;
 }
 
