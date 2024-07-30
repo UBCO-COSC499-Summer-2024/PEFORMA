@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import React, { useState, useEffect } from 'react';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../CSS/Department/DeptDataEntry.css';
 import '../../CSS/Department/AssignInstructorModal.css';
 import divisions from '../common/divisions.js';
-import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { useAuth } from '../common/AuthContext.js';
 import { FaFileUpload } from "react-icons/fa";
 import ImportModal from './DataImportImports/DeptImportModal.js';
@@ -17,18 +16,11 @@ function DataEntryComponent() {
 	window.onbeforeunload = function () {
 		return 'Data will be lost if you leave this page. Are you sure?';
 	};
-
-	const [instructorData, setInstructorData] = useState({
-		instructors: [{}],
-		instructorCount: 0,
-		perPage: 8,
-		currentPage: 1,
-	});
+	// Variables for maximum title and description length
 	const titleLimit = 100;
 	const descLimit = 1000;
-
+	// Assortment of state variables
 	const [selection, setSelection] = useState('');
-	const [showInstructorModal, setShowInstructorModal] = useState(false);
 	const [courseTitle, setCourseTitle] = useState('');
 	const [courseDepartment, setCourseDepartment] = useState('COSC');
 	const [courseCode, setCourseCode] = useState('');
@@ -39,87 +31,18 @@ function DataEntryComponent() {
 	const [serviceRoleTitle, setServiceRoleTitle] = useState('');
 	const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
 	const [serviceRoleDescription, setServiceRoleDescription] = useState('');
-	const [selectedInstructors, setSelectedInstructors] = useState([]);
 	const [serviceRoleYear, setServiceRoleYear] = useState('');
-	const [, forceUpdate] = useReducer(x => x + 1, 0);
 	const [monthlyHours, setMonthlyHours] = useState({ january: 0, february: 0, march: 0, april: 0, may: 0, june: 0, july: 0, august: 0, september: 0, october: 0, november: 0, december: 0 });
-
 	const [showFileUploadModal, setShowFileUploadModal] = useState(false);
 
-	const handleChange = (event) => {
-		setSelection(event.target.value);
-		console.log(`Selected: ${event.target.value}`);
-	};
-
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const numericAccountType = Number(accountLogInType);
-				if (numericAccountType !== 1 && numericAccountType !== 2) {
-					alert('No Access, Redirecting to instructor view');
-					navigate('/Dashboard');
-				}
-				const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN;
-				const url = 'http://localhost:3001/api/instructors';
-				const res = await axios.get(url, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				const data = res.data;
-				const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
-				setInstructorData({ ...data, instructors: filledInstructors });
-			} catch (error) {
-				console.error('Error occurs when fetching people.\nDetail message:\n', error);
-			}
-		};
-		fetchData();
+		// Ensure account type is correct
+		const numericAccountType = Number(accountLogInType);
+		if (numericAccountType !== 1 && numericAccountType !== 2) {
+			alert('No Access, Redirecting to instructor view');
+			navigate('/Dashboard');
+		}
 	}, []);
-
-	const fillEmptyInstructors = (instructors, perPage) => {
-		const filledInstructors = [...instructors];
-		const currentCount = instructors.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledInstructors.push({});
-			}
-		}
-		return filledInstructors;
-	};
-
-	const prevInstructors = useRef({});
-
-	const handleShowInstructorModal = () => {
-		prevInstructors.current = JSON.stringify(instructorData);
-		setShowInstructorModal(true);
-	};
-
-	const handleCloseInstructorModal = (save) => {
-		if (!save) {
-			if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
-				setInstructorData(JSON.parse(prevInstructors.current));
-			} else {
-				return;
-			}
-		} else {
-			var selected = instructorData.instructors.filter((instructor) => instructor.assigned);
-			setSelectedInstructors(selected);
-		}
-		instructorData.currentPage = 1;
-		setShowInstructorModal(false);
-	};
-
-	const removeInstructor = (id, index) => {
-		selectedInstructors.splice(index, 1);
-		for (let i = 0; i < instructorData.instructors.length; i++) {
-			if (id === instructorData.instructors[i].id) {
-				instructorData.instructors[i].assigned = false;
-				break;
-			}
-		}
-		forceUpdate();
-	}
 
 	function checkLength(input, limit, section, valid) {
 		if (!valid) {
@@ -136,10 +59,12 @@ function DataEntryComponent() {
 		if (!valid) {
 			return false;
 		}
+		// Checks course code length
 		if (courseCode.length !== 3) {
 			alert('Course code should be 3 digits.');
 			return false;
 		}
+		// Checks course code is all digits
 		for (let i = 0; i < courseCode.length; i++) {
 			if (!Number.isInteger(parseInt(courseCode.charAt(i)))) {
 				alert('Course code should be 3 digits.');
@@ -149,6 +74,7 @@ function DataEntryComponent() {
 		return true;
 	}
 
+	// Helper function for checking course input fields
 	function checkCourseValidity() {
 		let valid = true;
 		valid = checkLength(courseTitle, titleLimit, 'Title', valid);
@@ -156,7 +82,7 @@ function DataEntryComponent() {
 		valid = checkCourseCode(valid);
 		return valid;
 	}
-
+	// Helper function for checking service role input fields
 	function checkServiceRoleValidity() {
 		let valid = true;
 		valid = checkLength(serviceRoleTitle, titleLimit, 'Title', valid);
@@ -164,15 +90,8 @@ function DataEntryComponent() {
 		return valid;
 	}
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-
-		let assignedInstructors = [];
-		for (let i = 0; i < instructorData.instructors.length; i++) {
-			if (instructorData.instructors[i].assigned === true) {
-				assignedInstructors.push(instructorData.instructors[i].id);
-			}
-		}
+	// Get correct term number depending on selected session and term
+	function getTermNumber(courseSession, sessionTerm) {
 		let courseTerm = 1;
 		if (courseSession == "S") {
 			if (sessionTerm == 1) {
@@ -187,7 +106,14 @@ function DataEntryComponent() {
 				courseTerm = 2;
 			}
 		}
+		return courseTerm;
+	}
 
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		
+		let courseTerm = getTermNumber(courseSession, sessionTerm);
+		// Data to be submitted
 		const formData = {
 			selection,
 			courseTitle,
@@ -199,13 +125,10 @@ function DataEntryComponent() {
 			serviceRoleTitle,
 			serviceRoleDepartment,
 			serviceRoleDescription,
-			assignedInstructors,
 			serviceRoleYear,
 			monthlyHours
 		};
-
-		console.log('Submitting data:', formData);
-
+		// Check validity of input and set confirm message
 		let valid = false;
 		let confirmMessage = '';
 		if (selection === 'Course') {
@@ -218,13 +141,14 @@ function DataEntryComponent() {
 		}
 		if (valid) {
 			if (window.confirm(confirmMessage) === true) {
+				// Send inputted data to backend to be added to database
 				axios.post('http://localhost:3001/enter', formData)
 					.then(() => {
 						if (selection === 'Course') {
-							alert('Data entry successful. Navigate to new page: Course list.');
+							alert('Data entry successful. Navigating to course list.');
 							navigate('/DeptCourseList');
 						} else {
-							alert('Data entry successful. Navigate to new page: Service Role list.');
+							alert('Data entry successful. Navigating to service role list.');
 							navigate('/DeptServiceRoleList');
 						}
 					})
@@ -239,15 +163,14 @@ function DataEntryComponent() {
 						}
 					});
 			}
-			
 		}
 	};
 
 	return (
 		<div className="DataEntry-page">
-			<CreateSideBar sideBarType="Department" />
+			<SideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar />
+				<TopBar />
 				<div className="main">
 					<h1>Create New Course/Role</h1>
 					<div className="create-new">
@@ -255,7 +178,7 @@ function DataEntryComponent() {
 						<select
 							id="create-new-select"
 							value={selection}
-							onChange={(e) => handleChange(e)}
+							onChange={(e) => setSelection(e.target.value)}
 							role="button"
 							name="dropdown">
 							<option value="" disabled>
@@ -301,7 +224,7 @@ function DataEntryComponent() {
 										required>
 										<option disabled="disabled">Select a division</option>
 										{divisions.map((division) => {
-											if (division.code != "ALL") {
+											if (division.code != "ALL" && division.code != "N/A") {
 												return (
 													<option key={division.code} value={division.code}>
 														{division.label}
@@ -375,7 +298,6 @@ function DataEntryComponent() {
 										})}
 									</select>
 								</div>
-					
 								<label>Estimated hours per month:</label>
 								<div className="monthlyHours">
 									<div className='monthlyHoursRow formInput'>
@@ -439,8 +361,8 @@ function DataEntryComponent() {
 									onChange={(e) => setServiceRoleDescription(e.target.value)}
 									placeholder="Describe the service role"
 									name="serviceRoleDescription"
-									required></textarea>
-
+									required>
+								</textarea>
 								<input type="submit" id="service-role-submit" className="hidden" />
 								<input type="hidden" name="formType" value="Service Role" />
 							</form>
@@ -449,15 +371,6 @@ function DataEntryComponent() {
 							</label>
 						</div>
 					)}
-					
-					{showInstructorModal && (
-						<AssignInstructorsModal
-							instructorData={instructorData}
-							setInstructorData={setInstructorData}
-							handleCloseInstructorModal={handleCloseInstructorModal}
-						/>
-					)}
-
 					<ImportModal
 						isOpen={showFileUploadModal}
 						onClose={() => setShowFileUploadModal(false)}
