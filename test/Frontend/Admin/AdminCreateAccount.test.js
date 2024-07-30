@@ -5,25 +5,27 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mocking axios and useAuth modules
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
 describe('AdminCreateAccount', () => {
   let element; 
 
+  // setup function to run before each test
 	beforeEach(() => {
-    useAuth.mockReturnValue({
+    useAuth.mockReturnValue({ // mocking token and profileId
       authToken: { token: 'mocked-token' },
       profileId: { profileId: 'mocked-profileId'}
     });
-    render(
+    render( // render AdminCreateAccount component
       <MemoryRouter>
         <AdminCreateAccount />
       </MemoryRouter>
     );
-    element = document.getElementById('admin-create-account-test-content');
+    element = document.getElementById('admin-create-account-test-content'); // get element by id
   });
-  test('renders CreateAccount form', () => {
+  test('renders CreateAccount form', () => { // check if CreateAccount form is rendered properly
     expect(element).toContainElement(screen.getByPlaceholderText('Email'));
     expect(element).toContainElement(screen.getByPlaceholderText('First Name'));
     expect(element).toContainElement(screen.getByPlaceholderText('Last Name'));
@@ -36,7 +38,7 @@ describe('AdminCreateAccount', () => {
     expect(element).toContainElement(screen.getByPlaceholderText('Password'));
     expect(element).toContainElement(screen.getByPlaceholderText('Confirm Password'));
 });
-  test('Testing form input changes', () => {
+  test('Testing form input changes', () => { // check if the form input values change correctly
     fireEvent.change(element.querySelector('input[name="email"]'), { target: { value: 'testing@gamil.com' } });
     fireEvent.change(element.querySelector('input[name="firstName"]'), { target: { value: 'Kevin' } });
     fireEvent.change(element.querySelector('input[name="lastName"]'), { target: { value: 'Kim' } });
@@ -60,7 +62,7 @@ describe('AdminCreateAccount', () => {
     expect(element.querySelector('input[name="password"]').value).toBe('qwer1@3$');
     expect(element.querySelector('input[name="confirmPassword"]').value).toBe('qwer1@3$');
   });
-  test('Testing accountType checkbox changes', () => {
+  test('Testing accountType checkbox changes', () => { // check accountType checkbox change corretly
     fireEvent.click(element.querySelector('input[name="DepartmentHead"]'));
     fireEvent.click(element.querySelector('input[name="Admin"]'));
 
@@ -70,7 +72,7 @@ describe('AdminCreateAccount', () => {
     expect(element.querySelector('input[name="Admin"]').checked).toBe(true); // clicked checkbox, so true
   });
 
-  test('Testing password matches', async () => {
+  test('Testing password matches', async () => { // test password validation function works well
     window.alert = jest.fn(); 
 
     fireEvent.change(element.querySelector('input[name="email"]'), { target: { value: 'random@gmail.com' } });
@@ -86,7 +88,7 @@ describe('AdminCreateAccount', () => {
     await waitFor(() => expect(window.alert).toHaveBeenCalledWith('Passwords do not match.'));
     expect(axios.post).not.toHaveBeenCalled(); // password do not match, no calling axios.post
   });
-  test('Testing submit button works', async () => {
+  test('Testing submit button works', async () => { // test axios.post is working when submit button is clicked
     axios.post.mockResolvedValue({ data: { message: 'Account created successfully' } });
 
     fireEvent.change(element.querySelector('input[name="email"]'), { target: { value: 'braioh@gmail.com' } });
@@ -102,7 +104,7 @@ describe('AdminCreateAccount', () => {
     fireEvent.submit(element.querySelector('form'));
 
     await waitFor(() => expect(axios.post).toHaveBeenCalledTimes(1));
-    await waitFor(() => expect(axios.post).toHaveBeenCalledWith(
+    await waitFor(() => expect(axios.post).toHaveBeenCalledWith( // submit buttom clicked, axois.post with postData
       'http://localhost:3001/api/create-account',
       {
         email: 'braioh@gmail.com',
@@ -117,7 +119,7 @@ describe('AdminCreateAccount', () => {
       { headers: { Authorization: `Bearer mocked-token` } }
     ));
 
-    await waitFor(() => {
+    await waitFor(() => { // check every inputs are '' after posting data
       expect(element.querySelector('input[name="email"]').value).toBe('');
       expect(element.querySelector('input[name="firstName"]').value).toBe('');
       expect(element.querySelector('input[name="lastName"]').value).toBe('');
@@ -131,22 +133,22 @@ describe('AdminCreateAccount', () => {
       expect(element.querySelector('input[name="Admin"]').checked).toBe(false);
     });
   });
-  test('Testing cancel button will reset form', () => {
+  test('Testing cancel button will reset form', () => { // test if every input resets when cancel button is clicked
     fireEvent.change(element.querySelector('input[name="email"]'), { target: { value: 'test@example.com' } });
     fireEvent.change(element.querySelector('input[name="firstName"]'), { target: { value: 'random' } });
     fireEvent.change(element.querySelector('input[name="lastName"]'), { target: { value: 'guy' } });
     fireEvent.click(element.querySelector('input[name="Instructor"]'));
     fireEvent.click(element.querySelector('input[name="Admin"]'));
 
-    expect(element.querySelector('input[name="Instructor"]').checked).toBe(true);
-    expect(element.querySelector('input[name="Admin"]').checked).toBe(true);
+    expect(element.querySelector('input[name="Instructor"]').checked).toBe(true); //  check Instructor
+    expect(element.querySelector('input[name="Admin"]').checked).toBe(true); // check Admin
 
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancel')); // press cancel button
 
     expect(element.querySelector('input[name="email"]').value).toBe('');
     expect(element.querySelector('input[name="firstName"]').value).toBe('');
     expect(element.querySelector('input[name="lastName"]').value).toBe('');
-    expect(element.querySelector('input[name="Instructor"]').checked).toBe(false);
-    expect(element.querySelector('input[name="Admin"]').checked).toBe(false);
+    expect(element.querySelector('input[name="Instructor"]').checked).toBe(false); // check if disabled
+    expect(element.querySelector('input[name="Admin"]').checked).toBe(false); // check if disabled
   });
 });
