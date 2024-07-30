@@ -1,5 +1,5 @@
-const pool = require('../db'); 
-const {getLatestTerm} = require('./latestTerm');
+const pool = require('../../db/index'); 
+const {getLatestTerm} = require('../latestTerm');
 async function removeInstructorCourse (req)  {
 const currentTerm = await getLatestTerm();
 

@@ -1,5 +1,5 @@
-const pool = require('../db'); 
-const {getLatestYear} = require('./latestYear');
+const pool = require('../../db/index'); 
+const {getLatestYear} = require('../latestYear');
 async function removeInstructorRole(req)  {
   const { serviceRoleId, id } = req.body;
   const currentYear = await getLatestYear();

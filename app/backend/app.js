@@ -59,8 +59,9 @@ const AssignInstructor = require('./routes/AssignInstructor/AssignInstructorServ
 const assignInstructorCourse = require('./routes/AssignInstructor/assignInstructorCourse.js');
 
 //Remove Instructor Router
-const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
-const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
+const removeInstructorRoleRouter = require('./routes/RemoveInstructor/removeInstructorRoleRouter.js');
+const removeInstructorCourse = require('./routes/RemoveInstructor/removeInstructorCourseRout.js');
+
 const allTerms = require('./routes/allTermsRoutes.js')
 const setTerm = require('./routes/setCurrentTermRoutes.js')
 
