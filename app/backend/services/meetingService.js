@@ -18,7 +18,7 @@ async function getMeetings() {
           (SELECT json_agg(json_build_object('ubcid', p."UBCId", 'name', concat(p."firstName", ' ', p."lastName")))
           FROM "MeetingAttendance" ma
           JOIN "Profile" p ON ma."UBCId" = p."UBCId"
-          WHERE ma."meetingId" = ml."meetingId" AND ma."attendance" = true),
+          WHERE ma."meetingId" = ml."meetingId"),
           '[]'
         ) as participants
       FROM 
@@ -30,7 +30,7 @@ async function getMeetings() {
         ml."meetingId", ml."meetingTitle", ml."location", ml."date", ml."time"
       -- Order by most recent meetings first
       ORDER BY 
-        ml."date" DESC, ml."time" DESC
+        ml."date" ASC, ml."time" ASC
     `;
 
     try {
