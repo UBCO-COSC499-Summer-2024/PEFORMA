@@ -31,7 +31,7 @@ const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
 const adminStatusChangeMembers = require('./routes/UpdateStatus/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
-const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
+const deptStatusChangeServiceRoutes = require('./routes/UpdateStatus/deptStatusChangeServiceRoleRoutes.js');
 const imageRoutes = require('./routes/imageRoutes');
 const userProfileRoutes = require('./routes/userProfileRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -43,23 +43,22 @@ const roleInfoRoutes = require('./routes/roleInfoRoutes');
 
 
 const updatePasswordRouter = require('./routes/updatePassword');
-// const updatePasswordRouter = require('./routes/updatePassword.js')
-const deptStatusChangeCourseRoutes = require('./routes/deptStatusChangeCourseRouters.js')
+
+const deptStatusChangeCourseRoutes = require('./routes/UpdateStatus/deptStatusChangeCourseRouters.js')
 const teachingAssignment = require('./routes/teachingAssignment.js');
 const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
 const resetPasswordRouter = require('./routes/resetPassword');
-//const updatePasswordRouter = require('./routes/updatePassword.js')
 const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js');
 
-//Update Info
+//Update Info Router
 const updateRoleInfo = require('./routes/UpdateInfo/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/UpdateInfo/updateCourseInfo.js');
 
-//Assign Instructor
+//Assign Instructor Router
 const AssignInstructor = require('./routes/AssignInstructor/AssignInstructorServiceRole.js');
 const assignInstructorCourse = require('./routes/AssignInstructor/assignInstructorCourse.js');
 
-//Remove Instructor
+//Remove Instructor Router
 const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
 const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
 const allTerms = require('./routes/allTermsRoutes.js')

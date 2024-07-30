@@ -1,4 +1,4 @@
-const statusChangeCourseService = require('../services/UpdateStatus/statusChangeCourse');
+const statusChangeCourseService = require('../../services/UpdateStatus/statusChangeCourse');
 
 async function getStatusChangeCourse(req, res) {
   try {
