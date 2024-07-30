@@ -1,0 +1,9 @@
+{
+  "meetings":[
+    {"id":1, "meetingTitle":"Physics, department, meeting", "location":"ASC 234","date":"2024-07-28", "time":"09:00", "participants":[{"ubcid":11111111, "name":"John doe"}, {"ubcid":11111112, "name":"Doe Doe"}]},
+    {"id":2, "meetingTitle":"Math department meeting", "location":"FIP 210","date":"2024-08-01", "time":"11:00", "participants":[{"ubcid":11111111, "name":"John doe"}, {"ubcid":11111113, "name":"Random doe"}, {"ubcid":11111112, "name":"Doe Doe"}, {"ubcid":11111111, "name":"MATH BOi"}]},
+    {"id":3, "meetingTitle":"Daily meeting", "location":"Online","date":"2024-08-15", "time":"10:00", "participants":[{"ubcid":11111111, "name":"John doe"}, {"ubcid":44444433, "name":"Dong"}]},
+    {"id":4, "meetingTitle":"Computer Science course adjustment meeting", "location":"SCI 301","date":"2024-09-21", "time":"18:00", "participants":[{"ubcid":11111112, "name":"Doe Doe"}, {"ubcid":12312312, "name":"leo ma"}]},
+    {"id":5, "meetingTitle":"asdasdasdasd", "location":"SCI 300001","date":"2024-09-25", "time":"18:00", "participants":[{"ubcid":11111112, "name":"Doe Doe"}, {"ubcid":12312312, "name":"leo ma"}]}
+  ]
+}

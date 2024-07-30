@@ -524,10 +524,10 @@ INSERT INTO public."TaAssignmentTable" ("term", "UBCId", "firstName", "middleNam
 (20243, '01234567', 'Jack', 'Michael', 'Thomas', 'jack.thomas@student.ubc.ca', 5);
 
 -- MeetingLog DML
-INSERT INTO public."MeetingLog" ("location", "date", "time") VALUES
-('SCI 234', '2024-08-01', '10:00:00'),
-('Online', '2024-08-02', '14:00:00'),
-('ASC 215', '2024-08-03', '09:00:00');
+INSERT INTO public."MeetingLog" ("meetingTitle", "location", "date", "time") VALUES
+('Physics department meeting', 'SCI 234', '2024-08-01', '10:00:00'),
+('Daily meeting', 'Online', '2024-08-02', '14:00:00'),
+('Computer Science course adjustment meeting', 'ASC 215', '2024-08-03', '09:00:00');
 
 -- MeetingAttendance DML
 INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId", "attendance") VALUES
