@@ -25,13 +25,9 @@ function DataEntryComponent() {
 	const [courseDepartment, setCourseDepartment] = useState('COSC');
 	const [courseCode, setCourseCode] = useState('');
 	const [courseDescription, setCourseDescription] = useState('');
-	const [courseYear, setCourseYear] = useState('');
-	const [sessionTerm, setSessionTerm] = useState(1);
-	const [courseSession, setCourseSession] = useState('W');
 	const [serviceRoleTitle, setServiceRoleTitle] = useState('');
 	const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
 	const [serviceRoleDescription, setServiceRoleDescription] = useState('');
-	const [serviceRoleYear, setServiceRoleYear] = useState('');
 	const [monthlyHours, setMonthlyHours] = useState({ january: 0, february: 0, march: 0, april: 0, may: 0, june: 0, july: 0, august: 0, september: 0, october: 0, november: 0, december: 0 });
 	const [showFileUploadModal, setShowFileUploadModal] = useState(false);
 
@@ -90,29 +86,32 @@ function DataEntryComponent() {
 		return valid;
 	}
 
-	// Get correct term number depending on selected session and term
-	function getTermNumber(courseSession, sessionTerm) {
-		let courseTerm = 1;
-		if (courseSession == "S") {
-			if (sessionTerm == 1) {
-				courseTerm = 3;
+	const sendData = async(formData) => {
+		// Send inputted data to backend to be added to database
+		axios.post('http://localhost:3001/enter', formData)
+		.then(() => {
+			if (selection === 'Course') {
+				alert('Data entry successful. Navigating to course list.');
+				navigate('/DeptCourseList');
 			} else {
-				courseTerm = 4;
+				alert('Data entry successful. Navigating to service role list.');
+				navigate('/DeptServiceRoleList');
 			}
-		} else {
-			if (sessionTerm == 1) {
-				courseTerm = 1;
+		})
+		.catch(error => {
+			// Handling errors here
+			if (error.response) {
+				alert(`Failed to enter data. Server responded with status: ${error.response.status}`);
+			} else if (error.request) {
+				alert('Failed to enter data. No response from server.');
 			} else {
-				courseTerm = 2;
+				alert('Error: ' + error.message);
 			}
-		}
-		return courseTerm;
+		});
 	}
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		
-		let courseTerm = getTermNumber(courseSession, sessionTerm);
 		// Data to be submitted
 		const formData = {
 			selection,
@@ -120,12 +119,9 @@ function DataEntryComponent() {
 			courseDepartment,
 			courseCode,
 			courseDescription,
-			courseYear,
-			courseTerm,
 			serviceRoleTitle,
 			serviceRoleDepartment,
 			serviceRoleDescription,
-			serviceRoleYear,
 			monthlyHours
 		};
 		// Check validity of input and set confirm message
@@ -141,27 +137,7 @@ function DataEntryComponent() {
 		}
 		if (valid) {
 			if (window.confirm(confirmMessage) === true) {
-				// Send inputted data to backend to be added to database
-				axios.post('http://localhost:3001/enter', formData)
-					.then(() => {
-						if (selection === 'Course') {
-							alert('Data entry successful. Navigating to course list.');
-							navigate('/DeptCourseList');
-						} else {
-							alert('Data entry successful. Navigating to service role list.');
-							navigate('/DeptServiceRoleList');
-						}
-					})
-					.catch(error => {
-						// Handling errors here
-						if (error.response) {
-							alert(`Failed to enter data. Server responded with status: ${error.response.status}`);
-						} else if (error.request) {
-							alert('Failed to enter data. No response from server.');
-						} else {
-							alert('Error: ' + error.message);
-						}
-					});
+				sendData(formData);
 			}
 		}
 	};
