@@ -1,4 +1,3 @@
-
 const pool = require('../db'); 
 async function removeInstructorRole(req)  {
   const { serviceRoleId, id } = req.body;
