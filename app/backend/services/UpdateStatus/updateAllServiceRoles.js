@@ -1,5 +1,5 @@
-const pool = require('../db/index.js');
-const { getLatestYear } = require('./latestYear.js');
+const pool = require('../../db/index.js'); 
+const { getLatestYear } = require('../latestYear.js');
 
 async function updateAllServiceRoles() {
     const client = await pool.connect();

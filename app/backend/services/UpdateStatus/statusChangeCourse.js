@@ -1,5 +1,5 @@
-const  pool = require('../db/index.js'); 
-const { getAllCourses } = require('./allCoursesService.js');  
+const pool = require('../../db/index.js'); 
+const { getAllCourses } = require('../allCoursesService.js');  
 console.log(pool); 
 
 async function getStatusChangeCourse(req) {

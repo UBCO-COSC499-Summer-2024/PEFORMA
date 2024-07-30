@@ -1,6 +1,6 @@
-const pool = require('../db/index.js');
-const { getLatestTerm } = require('./latestTerm.js');
-const { getLatestYear } = require('./latestYear.js');
+const pool = require('../../db/index.js'); 
+const { getLatestTerm } = require('../latestTerm.js');
+const { getLatestYear } = require('../latestYear.js');
 
 async function updateAllMembers() {
     try {

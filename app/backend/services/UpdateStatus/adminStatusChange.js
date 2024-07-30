@@ -1,5 +1,5 @@
-const  pool = require('../db/index.js'); 
-const { getAllInstructors } = require('./allInstructorsService');  // Corrected import to directly destructure the function
+const pool = require('../../db/index.js'); 
+const { getAllInstructors } = require('../allInstructorsService');  // Corrected import to directly destructure the function
 
 async function StatusChangeMembers(req) {
     const ubcId = req.body.memberId; 

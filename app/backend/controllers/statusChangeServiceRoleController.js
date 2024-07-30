@@ -1,4 +1,4 @@
-const statusChangeServiceRoleService = require('../services/statusChangeServiceRole');
+const statusChangeServiceRoleService = require('../services/UpdateStatus/statusChangeServiceRole');
 
 async function getStatusChangeServiceRole(req, res) {
   try {

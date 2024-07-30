@@ -30,7 +30,7 @@ const allCoursesRoutes = require('./routes/allCoursesRoutes.js');
 const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
 
-const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
+const adminStatusChangeMembers = require('./routes/UpdateStatus/adminStatusChangeMembersRoutes.js');
 const allInstructors = require('./routes/allInstructorsRoutes');
 const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
 const imageRoutes = require('./routes/imageRoutes');

@@ -1,4 +1,4 @@
-const adminStatusChangeService = require('../services/adminStatusChange');
+const adminStatusChangeService = require('../../services/UpdateStatus/adminStatusChange');
 
 async function StatusChangeMembers(req, res) {
   try {
