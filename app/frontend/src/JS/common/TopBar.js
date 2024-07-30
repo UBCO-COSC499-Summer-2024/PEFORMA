@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { UserIcon, fetchWithAuth, postWithAuth } from './utils.js';
+import { UserIcon, fetchWithAuth, postWithAuth, getTermString } from './utils.js';
 import { useAuth } from './AuthContext';
 import '../../CSS/common.css';
 
@@ -32,13 +32,13 @@ function useTopBarController(authToken, profileId, onTermChange) {
                     .map(function(term) {
                         return {
                             value: String(term),
-                            label: getTermLabel(String(term)),
+                            label: getTermString(String(term)),
                         };
                     });
 
                 const currentTerm = {
                     value: String(termsData.currentTerm),
-                    label: getTermLabel(String(termsData.currentTerm)),
+                    label: getTermString(String(termsData.currentTerm)),
                 };
 
                 // Update state with fetched data
@@ -106,19 +106,6 @@ function useTopBarController(authToken, profileId, onTermChange) {
     }
 
     return { allData, toggleDropdown, setActiveMenu, setNewCurrentTerm };
-}
-
-// Converts a term code to a human-readable label
-function getTermLabel(term) {
-    const year = term.slice(0, 4);
-    const termCode = term.slice(4);
-    const termMap = {
-        '1': 'Winter Term 1',
-        '2': 'Winter Term 2',
-        '3': 'Summer Term 1',
-        '4': 'Summer Term 2',
-    };
-    return `${year} ${termMap[termCode] || ''}`;
 }
 
 // Converts account type code to a readable label
