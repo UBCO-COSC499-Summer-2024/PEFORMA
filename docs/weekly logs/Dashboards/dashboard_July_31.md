@@ -14,12 +14,12 @@
 
 ## Time Tracking
 
-![Clockify Summary](./Clockify%20images/Clockify_July_31_1.png)
-![Clockify Summary](./Clockify%20images/Clockify_July_31_2.png)
-![Clockify Summary](./Clockify%20images/Clockify_July_31_3.png)
-![Clockify Summary](./Clockify%20images/Clockify_July_31_4.png)
-![Clockify Summary](./Clockify%20images/Clockify_July_31_5.png)
-![Clockify Summary](./Clockify%20images/Clockify_July_31_6.png)
+![Clockify Summary](./Clockify%20images/Clockify_July_31_1.jpg)
+![Clockify Summary](./Clockify%20images/Clockify_July_31_2.jpg)
+![Clockify Summary](./Clockify%20images/Clockify_July_31_3.jpg)
+![Clockify Summary](./Clockify%20images/Clockify_July_31_4.jpg)
+![Clockify Summary](./Clockify%20images/Clockify_July_31_5.jpg)
+![Clockify Summary](./Clockify%20images/Clockify_July_31_6.jpg)
 
 ## Test Results
 
