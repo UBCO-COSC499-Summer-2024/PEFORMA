@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import ReactApexChart from 'react-apexcharts'; // external library for chart
+
+import { fetchWithAuth } from '../../common/utils';
 import { useAuth } from '../../common/AuthContext';
 
-function ServiceHoursProgressChart() {
-	const navigate = useNavigate();
-	const { authToken } = useAuth();
+// custom hook for fetching service hour progress data
+function useServiceHoursProgress( authToken, navigate ) {
 	const { profileId } = useAuth();
-	const [progress, setProgress] = useState({
+	const [progress, setProgress] = useState({ // format of chart
 		series: [],
 		options: {
 			chart: {
@@ -47,7 +46,6 @@ function ServiceHoursProgressChart() {
 						},
 					},
 					dataLabels: {
-						show: true,
 						name: {
 							offsetY: -10,
 							show: true,
@@ -85,41 +83,29 @@ function ServiceHoursProgressChart() {
 		},
 	});
 
-	useEffect(() => {
-		const date = new Date();
-		const currentMonth = date.getMonth() + 1;
-
+	useEffect(() => { // fetch data when profileId or authToken changes
+		const currentMonth = new Date().getMonth() + 1;
 		const fetchData = async () => {
-			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
-				}
-				const res = await axios.get('http://localhost:3001/api/progressRoutes', {
-					params: {
-						profileId: profileId,
-						currentMonth: currentMonth,
-					},
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				return res.data;
-			} catch (error) {
-				console.error('Error fetching data: ', error);
-				return null;
-			}
-		};
-		fetchData().then((data) => {
+			const data = await fetchWithAuth('http://localhost:3001/api/progressRoutes', authToken, navigate, {
+				profileId: profileId,
+				currentMonth: currentMonth,
+			});
 			if (data) {
-				setProgress((prevState) => ({
+				setProgress((prevState) => ({ // set progress data in chart
 					...prevState,
 					series: data.series,
-					options: {
-						...prevState.options,
-					},
 				}));
 			}
-		});
-	}, []);
+		};
+		fetchData();
+	}, [authToken, profileId, navigate]);
+
+	return progress;
+}
+
+// main component for render progress chart
+function ServiceHoursProgressChart( authToken, navigate ) {
+	const progress = useServiceHoursProgress( authToken, navigate ); // use custom hook for progress chart data
 
 	return (
 		<div className="App">

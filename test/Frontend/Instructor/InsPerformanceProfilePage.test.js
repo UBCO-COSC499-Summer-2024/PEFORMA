@@ -49,7 +49,7 @@ describe('InsPerformancePage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(9));
 
     const element = document.getElementById('info-test-content');
     
@@ -90,7 +90,7 @@ describe('InsPerformancePage', () => {
 			</MemoryRouter>
 		);
 
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(10));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(18));
 
     const element = document.getElementById('info-test-content');
     
