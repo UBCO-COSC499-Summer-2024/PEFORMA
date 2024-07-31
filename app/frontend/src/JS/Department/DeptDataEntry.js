@@ -9,16 +9,108 @@ import divisions from '../common/divisions.js';
 import { useAuth } from '../common/AuthContext.js';
 import { FaFileUpload } from "react-icons/fa";
 import ImportModal from './DataImportImports/DeptImportModal.js';
+import {checkAccess} from '../common/utils.js';
 
-function DataEntryComponent() {
+// Variables for maximum title and description length
+const titleLimit = 100;
+const descLimit = 1000;
+
+function checkLength(input, limit, section, valid) {
+	if (!valid) {
+		return false;
+	}
+	if (input.length > limit) {
+		alert(section + ' cannot exceed ' + limit + ' characters');
+		return false;
+	}
+	return true;
+}
+
+function checkCourseCode(valid, courseCode) {
+	if (!valid) {
+		return false;
+	}
+	// Checks course code length
+	if (courseCode.length !== 3) {
+		alert('Course code should be 3 digits.');
+		return false;
+	}
+	// Checks course code is all digits
+	for (let i = 0; i < courseCode.length; i++) {
+		if (!Number.isInteger(parseInt(courseCode.charAt(i)))) {
+			alert('Course code should be 3 digits.');
+			return false;
+		}
+	}
+	return true;
+}
+
+// Helper function for checking course input fields
+function checkCourseValidity(courseTitle, titleLimit, courseDescription, descLimit, courseCode) {
+	let valid = true;
+	valid = checkLength(courseTitle, titleLimit, 'Title', valid);
+	valid = checkLength(courseDescription, descLimit, 'Description', valid);
+	valid = checkCourseCode(valid, courseCode);
+	return valid;
+}
+
+// Helper function for checking service role input fields
+function checkServiceRoleValidity(serviceRoleTitle, titleLimit, serviceRoleDescription, descLimit) {
+	let valid = true;
+	valid = checkLength(serviceRoleTitle, titleLimit, 'Title', valid);
+	valid = checkLength(serviceRoleDescription, descLimit, 'Description', valid);
+	return valid;
+}
+const handleSubmit = async (event, formData, navigate) => {
+	event.preventDefault();
+	// Check validity of input and set confirm message
+	let valid = false;
+	let confirmMessage = '';
+	if (formData.selection === 'Course') {
+		valid = checkCourseValidity(formData.courseTitle, titleLimit, formData.courseDescription, descLimit, formData.courseCode);
+		confirmMessage = 'Confirm course creation?';
+	}
+	if (formData.selection === 'Service Role') {
+		valid = checkServiceRoleValidity(formData.serviceRoleTitle, titleLimit, formData.serviceRoleDescription, descLimit);
+		confirmMessage = 'Confirm service role creation?';
+	}
+	if (valid) {
+		if (window.confirm(confirmMessage) === true) {
+			sendData(formData, navigate);
+		}
+	}
+};
+
+const sendData = async(formData, navigate) => {
+	// Send inputted data to backend to be added to database
+	axios.post('http://localhost:3001/enter', formData)
+	.then(() => {
+		if (formData.selection === 'Course') {
+			alert('Data entry successful. Navigating to course list.');
+			navigate('/DeptCourseList');
+		} else {
+			alert('Data entry successful. Navigating to service role list.');
+			navigate('/DeptServiceRoleList');
+		}
+	})
+	.catch(error => {
+		// Handling errors here
+		if (error.response) {
+			alert(`Failed to enter data. Server responded with status: ${error.response.status}`);
+		} else if (error.request) {
+			alert('Failed to enter data. No response from server.');
+		} else {
+			alert('Error: ' + error.message);
+		}
+	});
+}
+
+function useDataEntryComponent() {
 	const navigate = useNavigate();
 	const { accountLogInType, authToken } = useAuth();
 	window.onbeforeunload = function () {
 		return 'Data will be lost if you leave this page. Are you sure?';
 	};
-	// Variables for maximum title and description length
-	const titleLimit = 100;
-	const descLimit = 1000;
 	// Assortment of state variables
 	const [selection, setSelection] = useState('');
 	const [courseTitle, setCourseTitle] = useState('');
@@ -30,118 +122,43 @@ function DataEntryComponent() {
 	const [serviceRoleDescription, setServiceRoleDescription] = useState('');
 	const [monthlyHours, setMonthlyHours] = useState({ january: 0, february: 0, march: 0, april: 0, may: 0, june: 0, july: 0, august: 0, september: 0, october: 0, november: 0, december: 0 });
 	const [showFileUploadModal, setShowFileUploadModal] = useState(false);
-
 	useEffect(() => {
 		// Ensure account type is correct
-		const numericAccountType = Number(accountLogInType);
-		if (numericAccountType !== 1 && numericAccountType !== 2) {
-			alert('No Access, Redirecting to instructor view');
-			navigate('/Dashboard');
-		}
+		checkAccess(accountLogInType, navigate, 'department', authToken);
 	}, []);
-
-	function checkLength(input, limit, section, valid) {
-		if (!valid) {
-			return false;
-		}
-		if (input.length > limit) {
-			alert(section + ' cannot exceed ' + limit + ' characters');
-			return false;
-		}
-		return true;
+	return {
+		selection, setSelection,
+		courseTitle, setCourseTitle,
+		courseDepartment, setCourseDepartment,
+		courseCode, setCourseCode,
+		courseDescription, setCourseDescription,
+		serviceRoleTitle, setServiceRoleTitle,
+		serviceRoleDepartment, setServiceRoleDepartment,
+		serviceRoleDescription, setServiceRoleDescription,
+		monthlyHours, setMonthlyHours,
+		showFileUploadModal, setShowFileUploadModal,
+		navigate
 	}
+}
 
-	function checkCourseCode(valid) {
-		if (!valid) {
-			return false;
-		}
-		// Checks course code length
-		if (courseCode.length !== 3) {
-			alert('Course code should be 3 digits.');
-			return false;
-		}
-		// Checks course code is all digits
-		for (let i = 0; i < courseCode.length; i++) {
-			if (!Number.isInteger(parseInt(courseCode.charAt(i)))) {
-				alert('Course code should be 3 digits.');
-				return false;
-			}
-		}
-		return true;
-	}
+function DataEntryComponent() {
+	const {
+		selection, setSelection,
+		courseTitle, setCourseTitle,
+		courseDepartment, setCourseDepartment,
+		courseCode, setCourseCode,
+		courseDescription, setCourseDescription,
+		serviceRoleTitle, setServiceRoleTitle,
+		serviceRoleDepartment, setServiceRoleDepartment,
+		serviceRoleDescription, setServiceRoleDescription,
+		monthlyHours, setMonthlyHours,
+		showFileUploadModal, setShowFileUploadModal,
+		navigate
+	} = useDataEntryComponent();
 
-	// Helper function for checking course input fields
-	function checkCourseValidity() {
-		let valid = true;
-		valid = checkLength(courseTitle, titleLimit, 'Title', valid);
-		valid = checkLength(courseDescription, descLimit, 'Description', valid);
-		valid = checkCourseCode(valid);
-		return valid;
-	}
-	// Helper function for checking service role input fields
-	function checkServiceRoleValidity() {
-		let valid = true;
-		valid = checkLength(serviceRoleTitle, titleLimit, 'Title', valid);
-		valid = checkLength(serviceRoleDescription, descLimit, 'Description', valid);
-		return valid;
-	}
-
-	const sendData = async(formData) => {
-		// Send inputted data to backend to be added to database
-		axios.post('http://localhost:3001/enter', formData)
-		.then(() => {
-			if (selection === 'Course') {
-				alert('Data entry successful. Navigating to course list.');
-				navigate('/DeptCourseList');
-			} else {
-				alert('Data entry successful. Navigating to service role list.');
-				navigate('/DeptServiceRoleList');
-			}
-		})
-		.catch(error => {
-			// Handling errors here
-			if (error.response) {
-				alert(`Failed to enter data. Server responded with status: ${error.response.status}`);
-			} else if (error.request) {
-				alert('Failed to enter data. No response from server.');
-			} else {
-				alert('Error: ' + error.message);
-			}
-		});
-	}
-
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		// Data to be submitted
-		const formData = {
-			selection,
-			courseTitle,
-			courseDepartment,
-			courseCode,
-			courseDescription,
-			serviceRoleTitle,
-			serviceRoleDepartment,
-			serviceRoleDescription,
-			monthlyHours
-		};
-		// Check validity of input and set confirm message
-		let valid = false;
-		let confirmMessage = '';
-		if (selection === 'Course') {
-			valid = checkCourseValidity();
-			confirmMessage = 'Confirm course creation?';
-		}
-		if (selection === 'Service Role') {
-			valid = checkServiceRoleValidity();
-			confirmMessage = 'Confirm service role creation?';
-		}
-		if (valid) {
-			if (window.confirm(confirmMessage) === true) {
-				sendData(formData);
-			}
-		}
-	};
-
+	const courseFormData = {selection, courseTitle, courseDepartment, courseCode, courseDescription};
+	const roleFormData = {selection, serviceRoleTitle, serviceRoleDepartment, serviceRoleDescription, monthlyHours};
+	
 	return (
 		<div className="DataEntry-page">
 			<SideBar sideBarType="Department" />
@@ -178,7 +195,7 @@ function DataEntryComponent() {
 								className="course-form"
 								data-testid="course-form"
 								role="form"
-								onSubmit={handleSubmit}>
+								onSubmit={(e)=>handleSubmit(e, courseFormData, navigate)}>
 								<div className="titleInput formInput">
 									<label htmlFor="course-title">Course Title:</label>
 									<input
@@ -246,7 +263,7 @@ function DataEntryComponent() {
 								className="service-role-form"
 								data-testid="service-role-form"
 								role="form"
-								onSubmit={handleSubmit}>
+								onSubmit={(e)=>handleSubmit(e, roleFormData, navigate)}>
 								<div className="titleInput formInput">
 									<label htmlFor="service-role-title">Service Role Title:</label>
 									<input
