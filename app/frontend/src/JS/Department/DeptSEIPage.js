@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { checkAccess, fetchWithAuth, handleCancelForm, submitFormData } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptSEIPage.css'
@@ -55,9 +55,9 @@ function handleInstructorChange(selectedOption, setFormData) {
 
 // custom hook for managing form state
 function useFormState() {
-  const [formData, setFormData] = useState(initialFormData);
-  const [courseOptions, setCourseOptions] = useState([]); 
-  const [instructorOptions, setInstructorOptions] = useState([]);
+  const [formData, setFormData] = useState(initialFormData); // formData will always have initialFormData format
+  const [courseOptions, setCourseOptions] = useState([]); // state for courseOptions
+  const [instructorOptions, setInstructorOptions] = useState([]); // state for instructorOptions
 
   // handling form inputs based on user input
   const handleChange = (event) => {
@@ -124,7 +124,7 @@ function DeptSEIPage() {
   // handle submit using postData that is pulled from formData
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const postData = {
+    const postData = { // set up data for posting to server
       courseId: formData.courseId,
       profileId: formData.profileId,
       Q1: formData.Q1,
@@ -145,9 +145,9 @@ function DeptSEIPage() {
   
   return (
     <div className="dashboard">
-      <CreateSideBar sideBarType="Department" />
+      <SideBar sideBarType="Department" />
       <div className='container'>
-        <CreateTopBar />
+        <TopBar />
         <div className='SEI-form' id='SEI-test-content'>
           <h1>SEI Data Entry</h1>
           <form onSubmit={handleSubmit}>
