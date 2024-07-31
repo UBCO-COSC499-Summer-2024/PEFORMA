@@ -29,7 +29,10 @@
 | Fix import   |              Zhiheng                            |
 | BE tests   |              Zhiheng                            |
 | BE refactoring   |              Subaru                         |
-|    |              Subaru                          |
+| Code refactor   |              Subaru                          |
+| Update member   |              Subaru                          |
+| Fix teaching assignment bug   |              Subaru                          |
+| Fix bugs service info   |              Subaru                          |
 | Create unit tests for user icon   |              Adams                         |
 | Create unit tests for user icon dropdown  |              Adams                         |
 | Create unit tests for term selector dropdown   |              Adams                         |
@@ -56,7 +59,7 @@ Lots of tests were done as well to verify the validity of our code and that our 
 | Final round trouble shooting | Zhiheng |
 | Preparing for final testing | Zhiheng |
 | Documentation | Zhiheng |
-| | Subaru |
+| Fix small bugs | Subaru |
 | Finish all enhancements and fixes | Adams |
 | Finish all testing | Adams |
 | Documentation | Adams |
