@@ -5,15 +5,20 @@ import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mocking axios and useAuth modules
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
-jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
+// mocking sidebar
+jest.mock('../../../app/frontend/src/JS/common/SideBar.js', () => ({
   __esModule: true,
-  default: jest.fn(({ sideBarType }) => (
-    <div>{`Mock Sidebar ${sideBarType}`}</div>
-  )),
-  CreateTopBar: jest.fn(({ onSearch }) => (
+  default: jest.fn(() => <div>Mock Sidebar</div>),
+}));
+
+// mocking topbar for testing search function
+jest.mock('../../../app/frontend/src/JS/common/TopBar.js', () => ({
+  __esModule: true,
+  default: jest.fn(({ onSearch }) => (
     <div className="topbar-search">
       <input type="text" placeholder="Search member" onChange={e => onSearch(e.target.value)} />
       <div className="logout">Logout</div>
@@ -24,8 +29,8 @@ jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
 describe('AdminMemberList', () => {
   let element; 
 
-	beforeEach(() => {
-		useAuth.mockReturnValue({
+	beforeEach(() => { // setup function to run before each test
+		useAuth.mockReturnValue({ // mock token and profileId
 			authToken: { token: 'mocked-token' },
       profileId: { profileId: 'mocked-profileId'}
 		});
@@ -49,7 +54,7 @@ describe('AdminMemberList', () => {
         }
 			})
 		);
-    render(
+    render( // render AdminMemberList
 			<MemoryRouter>
 				<AdminMemberList />
 			</MemoryRouter>
@@ -58,7 +63,7 @@ describe('AdminMemberList', () => {
 	});
 
   test('Testing rendering with mock data course list', async () => {
-		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+		await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1)); // expect axios.get called one time
 
     // only 8 members out of 12 members are having true = 8 active
     expect(element).toHaveTextContent("List of Members (8 Active)"); 
@@ -82,7 +87,7 @@ describe('AdminMemberList', () => {
   test('Test pagination works', async() => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
 
-    const paginationElement = element.querySelector('.pagination'); 
+    const paginationElement = element.querySelector('.pagination');  // find pagination
     expect(paginationElement).toBeInTheDocument();
 
     const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');

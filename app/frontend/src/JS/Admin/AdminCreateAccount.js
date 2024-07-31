@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { checkAccess, handleCancelForm, submitFormData } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Admin/CreateAccount.css';
@@ -124,9 +124,9 @@ function CreateAccount() {
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Admin" />
+            <SideBar sideBarType="Admin" />
             <div className='container'>
-                <CreateTopBar />
+                <TopBar />
                 <div className='create-account-form' id='admin-create-account-test-content'>
                     <h1>Create Account</h1>
                     <form onSubmit={handleSubmit}>
