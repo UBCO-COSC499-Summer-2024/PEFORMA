@@ -72,6 +72,7 @@ function RoleInformation() {
         
         if (parseInt(currentTerm) > termResponse.data.currentTerm) {
           setPastState(true);
+
         } else if (parseInt(currentTerm) < termResponse.data.currentTerm) {
           setFutureState(true);
         }
@@ -382,7 +383,7 @@ function RoleInformation() {
               className="assign-button"
               onClick={handleShowInstructorModal}
             >
-              <span className="plus">+</span> Assign Professors (s)
+              <span className="plus">+</span> Assign Instructor(s)
             </button>
           )}
               </>

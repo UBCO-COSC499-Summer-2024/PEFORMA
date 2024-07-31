@@ -46,7 +46,7 @@ function InsRoleInformation() {
 			<div className="container">
 				<CreateTopBar />
                 <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
-				<div className="ri-main">
+				<div className="ri-main" data-testid="ri-main">
 					<h1 className="roleName">{roleData.roleName}</h1>
 					<div className="description">{roleData.roleDescription}</div>
 					<p>

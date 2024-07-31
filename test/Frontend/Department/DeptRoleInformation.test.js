@@ -46,6 +46,39 @@ function mockData() {
   return;
 }
 
+function mockPast() {
+  axios.get.mockImplementation((url) => {
+    if (url == 'http://localhost:3001/api/roleInfo') {
+      return Promise.resolve({"data":{perPage: 5, currentPage: 1, roleID:1, assigneeCount:7, roleName:"Cheese", roleDescription: "Fish",
+                                      department:"Computer Science", benchmark:0, latestYear:20234,
+                                      assignees:[
+                                        {instructorID: '12341234', name:"Mister Test1", year:2023},
+                                        {instructorID: '12341235', name:"Mister Test2", year:2023},
+                                        {instructorID: '12341236', name:"Mister Test3", year:2023},
+                                        {instructorID: '12341237', name:"Mister Test4", year:2023},
+                                        {instructorID: '12341238', name:"Mister Test5", year:2023},
+                                        {instructorID: '12341239', name:"Mister Test6", year:2023}
+                                      ]}});
+    } else if (url == "http://localhost:3001/api/terms") {
+      return Promise.resolve({"data": {currentTerm:20224}});
+    } else if (url == "http://localhost:3001/api/instructors") {
+      return Promise.resolve({"data":{perPage: 8, currentPage: 1, instructorCount:9,
+        instructors:[
+          {profileId: 1, name:"Mister Test11", id:"11112221"},
+          {profileId: 2, name:"Mister Test12", id:"11112222"},
+          {profileId: 3, name:"Mister Test13", id:"11112223"},
+          {profileId: 4, name:"Mister Test14", id:"11112224"},
+          {profileId: 5, name:"Mister Test15", id:"11112225"},
+          {profileId: 6, name:"Mister Test16", id:"11112226"},
+          {profileId: 7, name:"Mister Test17", id:"11112227"},
+          {profileId: 8, name:"Mister Test18", id:"11112228"},
+          {profileId: 9, name:"Mister Test19", id:"11112229"},
+        ]}});
+    }
+  });
+  return;
+}
+
 beforeEach(async() => {
   mockData();
   delete window.location;
@@ -123,10 +156,25 @@ test('Checks editing info works', async() => {
   expect(main).not.toHaveTextContent("Save");
   await user.click(editButton);
   expect(main).toHaveTextContent("Save");
-
+  
   let titleEdit = screen.getByTestId("roleName");
   await fireEvent.change(titleEdit, {target: {value:"EEE"}});
   let saveButton = screen.getByTestId("save");
   await user.click(saveButton);
   expect(main).toHaveTextContent("EEE");
+});
+
+test('Check past state', async() => {
+  const user = userEvent.setup();
+  mockPast();
+  await act(async () => {
+    render(<MemoryRouter><DeptRoleInformation/></MemoryRouter>);
+  });
+    console.log = jest.fn();
+  const logspy = jest.spyOn(global.console, 'log');
+
+  console.log(logspy);
+  const main = screen.getByTestId("ri-main");
+  expect(main).toHaveTextContent("2022");
+  expect(main).not.toHaveTextContent("Assign Instructor(s)");
 });
