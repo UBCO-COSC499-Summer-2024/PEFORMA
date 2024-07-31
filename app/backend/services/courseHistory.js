@@ -1,5 +1,5 @@
-const  pool = require('../../db/index.js');
-const { getLatestTerm } = require('../latestTerm.js');
+const  pool = require('../db/index.js');
+const { getLatestTerm } = require('./latestTerm.js');
 console.log(pool); 
 
 async function getCourseHistory(req) {
