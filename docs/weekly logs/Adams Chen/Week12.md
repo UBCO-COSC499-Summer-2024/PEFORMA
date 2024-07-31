@@ -4,8 +4,8 @@
 ## Wednesday (7/31/2024)
 
 ### Timesheet
-![alt text](./weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_July_31_1.jpg)
-![alt text](./weekly%20logs/Adams%20Chen/Clockify%20images/Clockify_July_31_2.jpg)
+![alt text](./Clockify%20images/Clockify_July_31_1.jpg)
+![alt text](./Clockify%20images/Clockify_July_31_2.jpg)
 
 ### Current Tasks
   * #588: Test user profile page
