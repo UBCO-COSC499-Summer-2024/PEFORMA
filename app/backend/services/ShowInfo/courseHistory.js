@@ -107,7 +107,7 @@ async function getCourseHistory(req) {
         
         //Get the TA info
         query = `SELECT TRIM("firstName" || ' ' || COALESCE("middleName" || ' ', '') || "lastName") AS full_name, 
-                "email", "term", "UBCId"  FROM "TaAssignmentTable" WHERE "courseId" = $1 AND "term" <= $2`;  
+                "email", "term", "UBCId"  FROM "TaAssignmentTable" WHERE "courseId" = $1 AND "term" = $2`;  
         result = await pool.query(query,[courseId,latestTermResult]);
         const tainfo = result.rows.map(row => ({
             taname: row.full_name,
