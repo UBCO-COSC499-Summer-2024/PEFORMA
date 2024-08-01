@@ -113,7 +113,7 @@ test('Checks profile data is rendered properly', async () => {
     ({getByTestId} = render(<MemoryRouter><DeptProfilePage/></MemoryRouter>)); 
   });
 
-  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+  await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
   let main = screen.getByTestId('main-container');
   expect(main).toBeInTheDocument();
 

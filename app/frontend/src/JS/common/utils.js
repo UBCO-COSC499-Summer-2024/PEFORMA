@@ -102,6 +102,19 @@ export const fetchWithAuth = async (url, authToken, navigate, params = null) => 
   }
 };
 
+export const postWithAuth = async (url, authToken, navigate, data) => {
+  const config = {
+    headers: { Authorization: `Bearer ${authToken.token}` },
+  };
+  try {
+      const res = await axios.post(url, data, config);
+      return res.data;
+  } catch (error) {
+      handleUnauthorizedError(error, navigate);
+      throw error;
+  }
+};
+
 export const getCurrentInstructor = (historyData) => {
   let history = historyData.history;
   let currentInstructor = [];

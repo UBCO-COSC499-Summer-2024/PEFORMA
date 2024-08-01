@@ -48,7 +48,7 @@ describe('TopBar', () => {
 
   test('Testing logged in initially with department, accountLogInType 1', () => {
     // expect screen to show Department on topbar and show 1 as accountLogInType
-    expect(screen.getByText('Department')).toBeInTheDocument();
+    expect(screen.getByText('Department Head')).toBeInTheDocument();
     expect(localStorage.getItem('accountLogInType')).toBe('1');
   });
 

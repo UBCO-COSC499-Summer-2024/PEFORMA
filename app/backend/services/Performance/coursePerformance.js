@@ -1,10 +1,13 @@
-const  pool = require('../../db/index.js'); 
-const {getLatestTerm} = require('../latestTerm.js');
+const  pool = require('../db/index.js'); 
+const {updateAllCourses} = require('./updateAllCourses.js');
+const {getLatestTerm} = require('./latestTerm.js');
+
 async function getCoursePerformance(req){
 
     const divisionId = parseInt(req.query.divisionId);
     
     try {
+        await updateAllCourses();
         const term = await getLatestTerm();
         query = `SELECT d."dcode" || ' ' || c."courseNum" AS "DivisionAndCourse",
                     COALESCE(AVG(stp."score"), 0) AS "AverageScore"

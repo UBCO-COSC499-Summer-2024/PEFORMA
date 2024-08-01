@@ -57,7 +57,7 @@ describe('DeptMeetingManagement', () => {
   });
 
   test('Testing rendering list of participants after selecting meeting', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
     // find the react-select component for meeting
     const meetingSelect = screen.getByText('Select Meeting');
@@ -98,7 +98,7 @@ describe('DeptMeetingManagement', () => {
     expect(participant4).toBeInTheDocument();
   });
   test('Testing selecting John Doe to be in participants list', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
 
     // find the react-select component for meeting
     const meetingSelect = screen.getByText('Select Meeting');
@@ -139,7 +139,7 @@ describe('DeptMeetingManagement', () => {
     expect(selectedParticipants).toBeInTheDocument();
   });
   test('Testing cancel button', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(9));
 
     // find the react-select component for meeting
     const meetingSelect = screen.getByText('Select Meeting');

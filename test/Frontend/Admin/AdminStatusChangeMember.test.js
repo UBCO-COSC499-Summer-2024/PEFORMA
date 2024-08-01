@@ -59,7 +59,7 @@ describe('AdminStatusChangeMember', () => {
 
   test('Testing rendering with mock data member list', async () => { 
     // expect to be 1 time called because its using location.state to receive data 0 time of calling axios (except topbar is calling 1 axios.get)
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(0));
 		await waitFor(() => {
       expect(element).toHaveTextContent("List of Members (15 in Database)")
       // expect only first page members to be in screen

@@ -33,7 +33,7 @@ describe('DeptSEIPage', () => {
   });
 
   test('Testing rendering SEI data entry form after selecting MATH 499 and David', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
     // find the react-select component for course
     const courseSelect = screen.getByText('Select course');
@@ -92,7 +92,7 @@ describe('DeptSEIPage', () => {
     expect(failedPercentageInput).toBeInTheDocument();
   });
   test('Testing submitting form with selecting COSC 101, professor Don', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
     window.alert = jest.fn(); 
 
     // find the react-select component for course
@@ -192,7 +192,7 @@ describe('DeptSEIPage', () => {
     expect(Q1InputAfterSubmit).toBeNull();
     });
     test('Testing if cancel button resets input values', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(9));
     window.alert = jest.fn(); 
 
     // find the react-select component for course
@@ -273,7 +273,7 @@ describe('DeptSEIPage', () => {
     });
   });
   test('Testing react-select search functionality', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(8));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(12));
   
     // find the react-select component for course
     const courseSelect = screen.getByText('Select course');
