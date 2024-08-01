@@ -75,7 +75,7 @@ function useDeptMeetingManagement() {
     const fetchMeetings = async () => {
       checkAccess(accountLogInType, navigate, 'department', authToken); // check access with logintype and authToken
       try {
-        const data = await fetchWithAuth('http://localhost:3000/meetingData.json', authToken, navigate);
+        const data = await fetchWithAuth('http://localhost:3001/meetings', authToken, navigate);
   
         const today = new Date(); // get todays date
         const threeDaysAgo = new Date(); // get 3 days agos date
