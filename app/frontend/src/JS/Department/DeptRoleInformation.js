@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-import { fillEmptyItems } from '../common/utils.js';
+import { fillEmptyItems, getCurrentTerm, getTermString } from '../common/utils.js';
 
 function RoleInformation() {
   const { authToken, accountLogInType } = useAuth();
@@ -22,12 +22,9 @@ function RoleInformation() {
     roleDescription: '',
     department: '',
   });
-  const [pastAssignees, setPastAssignees] = useState({
-    past: [{}],
-    assigneeCount: 0,
-    perPage: 4,
-    currentPage: 1
-  });
+  const [pastState, setPastState] = useState(false);
+  const [futureState, setFutureState] = useState(false);
+  const [termString, setTermString] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     roleName: '',
@@ -67,14 +64,27 @@ function RoleInformation() {
         });
         const roleData = roleRes.data;
         roleData.perPage -=1;
+        const currentTerm = getCurrentTerm();
+        console.log(currentTerm);
         
+        const termResponse = await axios.get("http://localhost:3001/api/terms");
+        roleData.latestYear = termResponse.data.currentTerm.toString().slice(0,4);
+        
+        if (parseInt(currentTerm) > termResponse.data.currentTerm) {
+          setPastState(true);
+        } else if (parseInt(currentTerm) < termResponse.data.currentTerm) {
+          setFutureState(true);
+        }
+        
+        roleData.assignees = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear);
+        setTermString(getTermString(termResponse.data.currentTerm));
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
           roleName: roleData.roleName,
           roleDescription: roleData.roleDescription,
           department: roleData.department,
         });
-        setPastAssignees({...pastAssignees, past:roleData.assignees.filter((assignee) => assignee.year !== roleData.latestYear)});
+                
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -104,7 +114,7 @@ function RoleInformation() {
       console.error('Error updating role info', error);
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditData((prevData) => ({
@@ -126,15 +136,6 @@ function RoleInformation() {
   const handlePageClick = (data) => {
    
     setRoleData((prevState) => ({
-      ...prevState,
-      currentPage: data.selected + 1,
-    }));
-  
-  };
-
-  const handlePastPageClick = (data) => {
-   
-    setPastAssignees((prevState) => ({
       ...prevState,
       currentPage: data.selected + 1,
     }));
@@ -220,20 +221,12 @@ function RoleInformation() {
       case "Statistics": div = 4; break;
       default: div = 0;
     }
-    const newAssigneeData = {
-      profileId: assignedInstructors, // Assuming profileId corresponds to assignedInstructors
-      serviceRole: roleData.roleName, // Assuming serviceRole corresponds to roleName
-      year: new Date().getFullYear(), // Example: Current year
-      division: div // Assuming division corresponds to department
-    };
-
-    console.log("Assigned profs are:", assignedInstructors, "\nAnd the assigned service Role Id is", serviceRoleId);
 
     for (let i = 0; i < assignedInstructors.length; i++) {
       var newAssigneeList = {
         profileId: assignedInstructors[i].profileId,
         serviceRole: roleData.roleName,
-        year: new Date().getFullYear(),
+        year: roleData.latestYear,
         division: div
       };
       try {
@@ -281,7 +274,6 @@ function RoleInformation() {
   }
 
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
-  const pastPageCount = Math.ceil(pastAssignees.past.length / pastAssignees.perPage);
 
   const filteredAssignees = roleData.assignees.filter(
     (assignee) =>
@@ -292,11 +284,6 @@ function RoleInformation() {
   const currentAssignees = filteredAssignees.slice(
     (roleData.currentPage - 1) * roleData.perPage,
     roleData.currentPage * roleData.perPage
-  );
-
-  const currentPastAssignees =  pastAssignees.past.slice(
-    (pastAssignees.currentPage - 1) * pastAssignees.perPage,
-    pastAssignees.currentPage * pastAssignees.perPage
   );
 
   return (
@@ -377,8 +364,9 @@ function RoleInformation() {
               </label>
             )}
           </div>
-
-          {showInstructorModal ? (
+            {!pastState && (
+              <>
+                        {showInstructorModal ? (
             <AssignInstructorsModal
               instructorData={instructorData}
               setInstructorData={setInstructorData}
@@ -394,7 +382,15 @@ function RoleInformation() {
               <span className="plus">+</span> Assign Professors (s)
             </button>
           )}
-          <p>Current Assignee's ({roleData.latestYear})</p>
+              </>
+            )}
+
+          {pastState || futureState ? (
+            <p>Assignees for {termString}</p>
+          ) : (
+            <p>Current Assignees ({termString})</p>
+          )}
+          
           <input
             type="text"
             id="search"
@@ -405,7 +401,9 @@ function RoleInformation() {
             <table>
               <tbody>
               <tr><th>Instructor</th><th>UBC ID</th></tr>
-
+              {currentAssignees.length === 0 && (
+                <tr><td colSpan={3}>There are no assigned instructors for this year</td></tr>
+              )}
 
                 {currentAssignees.map((assignee, index) => {
                   
@@ -424,7 +422,9 @@ function RoleInformation() {
 														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
 															{assignee.name}
 														</Link>
+                            {!pastState && (
                             <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(assignee.instructorID, index) }}>X</button>
+                            )}
 
 													</td>
 													<td>{assignee.instructorID}</td>
@@ -456,59 +456,7 @@ function RoleInformation() {
 							</tfoot>
             </table>
           </div>
-          <p>Past Assignee's</p>
-					<div className='assigneeTable'>
-					<table>
-							<tbody>
-								<tr>
-									<th>Instructor</th><th>UBC ID</th><th>Year of assignment</th>
-								</tr>
-                {currentPastAssignees.length === 0 && (
-                  <tr><td colSpan={3}>There are no past instructors for this role.</td></tr>
-                )}
-								{currentPastAssignees.map((assignee, index) => {
-
-
-										if (assignee.instructorID == '' || assignee.instructorID == null) {
-                      return (<tr key={index}><td colSpan={3}>There are no past instructors for this role.</td></tr>);
-										} else {
-                      if (assignee.year !== roleData.latestYear) {
-											return (
-												<tr key={assignee.instructorID}>
-													<td>
-														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-															{assignee.name}
-														</Link>
-													</td>
-													<td>{assignee.instructorID}</td>
-													<td>{assignee.year}</td>
-												</tr>
-											);
-										}
-
-                  }
-
-								})}
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colSpan="3">
-										<ReactPaginate
-											previousLabel={'<'}
-											nextLabel={'>'}
-											breakLabel={'...'}
-											pageCount={pastPageCount}
-											marginPagesDisplayed={3}
-											pageRangeDisplayed={0}
-											onPageChange={handlePastPageClick}
-											containerClassName={'pagination'}
-											activeClassName={'active'}
-										/>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
+         
         </div>
       </div>
     </div>

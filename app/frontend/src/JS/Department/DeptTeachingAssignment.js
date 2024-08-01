@@ -76,7 +76,7 @@ function useDeptTeachingAssignment() {
 		};
 
 		fetchCourses();
-	}, [authToken, accountLogInType, navigate]);
+	}, [authToken, accountLogInType, navigate, selectedDivision]);
 
 	// filter by division and set into currentCourses for render
 	const filteredByDivisionCourses = filterByDivision(deptCourseList.courses, selectedDivision, divisionMap); // filter with division code

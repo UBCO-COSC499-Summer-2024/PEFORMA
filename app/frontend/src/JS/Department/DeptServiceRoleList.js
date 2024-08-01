@@ -92,7 +92,7 @@ function ServiceRoleList() {
                                     <Edit size={20} color="black" />
                                 </button>
                             </Link>
-                            <button className='icon-button' onClick={() => exportToCSV(roleData.roles, currentTerm)}>
+                            <button className='icon-button' data-testid="download-button" onClick={() => exportToCSV(roleData.roles, currentTerm)}>
                                 <Download size={20} color="black" />
                             </button>
                         </div>

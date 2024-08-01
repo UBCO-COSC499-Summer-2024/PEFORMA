@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import DeptTeachingAssignmentDetail from '../../../app/frontend/src/JS/Department/DeptTeachingAssignmentDetail';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
+import * as utils from '../../../app/frontend/src/JS/common/utils';
 
 // mocking axios
 jest.mock('axios');
@@ -10,6 +11,10 @@ jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
 	useLocation: jest.fn(), // mocking useLocation to receive state
+}));
+jest.mock('../../../app/frontend/src/JS/common/utils', () => ({
+	...jest.requireActual('../../../app/frontend/src/JS/common/utils'),
+	downloadCSV: jest.fn(),
 }));
 
 describe('DeptTeachingAssignmentDetail', () => {
@@ -22,6 +27,7 @@ describe('DeptTeachingAssignmentDetail', () => {
 		useLocation.mockReturnValue({ // mocking data receiving from useLocation
 			state: {
 				selectedDivision: 'computer-science',
+        		currentTerm: '2024 Summer Term 2',
 				courses: [
 					{
 						courseCode: 'COSC 109',
@@ -90,7 +96,7 @@ describe('DeptTeachingAssignmentDetail', () => {
 		});
 		await act(async () => {
 			render( // render DeptTeachingAssignmentDetail page
-				<MemoryRouter> 
+				<MemoryRouter>
 					<DeptTeachingAssignmentDetail />
 				</MemoryRouter>
 			);
@@ -122,51 +128,71 @@ describe('DeptTeachingAssignmentDetail', () => {
 			fireEvent.change(select, { target: { value: 'mathematics' } });
 		});
 
-    // check if data renders as expected
+		// check if data renders as expected
 		expect(element).toHaveTextContent('MATH 101');
 		expect(element).toHaveTextContent('Calculus I');
 		expect(element).toHaveTextContent('Alice Johnson');
 		expect(element).not.toHaveTextContent('PHYS 201');
-    expect(element).not.toHaveTextContent('COSC 109');
+		expect(element).not.toHaveTextContent('COSC 109');
 
-    // switch to physics division
+		// switch to physics division
 		await act(async () => {
 			fireEvent.change(select, { target: { value: 'physics' } });
 		});
 
-    // check if data renders as expected
+		// check if data renders as expected
 		expect(element).toHaveTextContent('PHYS 201');
-    expect(element).not.toHaveTextContent('MATH 101');
+		expect(element).not.toHaveTextContent('MATH 101');
 		expect(element).not.toHaveTextContent('Calculus I');
 		expect(element).not.toHaveTextContent('Alice Johnson');
-    expect(element).not.toHaveTextContent('COSC 109');
+		expect(element).not.toHaveTextContent('COSC 109');
 	});
-  test('Testing search functionality', async () => {
-    const searchInput = screen.getByRole('textbox'); // find search input box
-  
-    await act(async () => { // search John Doe
-      fireEvent.change(searchInput, { target: { value: 'John Doe' } });
-    });
-  
-    // check John Doe is present, Jane is not present
-    expect(element).toHaveTextContent('John Doe');
-    expect(element).not.toHaveTextContent('Jane Smith');
-  });
-  test('Testing sorting functionality', async () => {
-    const sortButton = screen.getByText('Instructor').querySelector('.sort-button'); //find sort button under instructor
-  
-    // check order of row before click sort button
-    expect(element).toHaveTextContent('John Doe');
-    expect(element).toHaveTextContent('Jane Smith');
-  
-    await act(async () => {
-      fireEvent.click(sortButton); // click sort
-    });
-  
-    const rows = screen.getAllByRole('row');
+	test('Testing search functionality', async () => {
+		const searchInput = screen.getByRole('textbox'); // find search input box
 
-    // check if the order is sorted
-    expect(rows[1]).toHaveTextContent('Jane Smith');
-    expect(rows[2]).toHaveTextContent('John Doe');
-  });
+		await act(async () => { // search John Doe
+			fireEvent.change(searchInput, { target: { value: 'John Doe' } });
+		});
+
+		// check John Doe is present, Jane is not present
+		expect(element).toHaveTextContent('John Doe');
+		expect(element).not.toHaveTextContent('Jane Smith');
+	});
+	test('Testing sorting functionality', async () => {
+		const sortButton = screen.getByText('Instructor').querySelector('.sort-button'); //find sort button under instructor
+
+		// check order of row before click sort button
+		expect(element).toHaveTextContent('John Doe');
+		expect(element).toHaveTextContent('Jane Smith');
+
+		await act(async () => {
+			fireEvent.click(sortButton); // click sort
+		});
+
+		const rows = screen.getAllByRole('row');
+
+		// check if the order is sorted
+		expect(rows[1]).toHaveTextContent('Jane Smith');
+		expect(rows[2]).toHaveTextContent('John Doe');
+	});
+
+	test('Test export functionality', async () => {
+		// Mock current term and division
+		const mockCurrentTerm = '2024 Summer Term 2';
+		const mockCurrentDivision = 'computer-science';
+
+		// Find and click the export button using its class name
+		const exportButton = element.querySelector('.icon-button');
+		await act(async () => {
+			fireEvent.click(exportButton);
+		});
+
+		// Check if downloadCSV was called with the correct arguments
+		expect(utils.downloadCSV).toHaveBeenCalledWith(
+			'#, Instructor, Course Code, Course Name, Email\n' +
+			'1, John Doe,COSC 109,Introduction to Computer Science,john.doe@example.com\n' +
+			'2, Jane Smith,COSC 210,Data Structures,jane.smith@example.com\n',
+			`${mockCurrentTerm} ${mockCurrentDivision} Teaching Assignment`
+		);
+	});
 });
