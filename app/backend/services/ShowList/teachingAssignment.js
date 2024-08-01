@@ -41,9 +41,7 @@ async function getTeachingAssignment() {
       row.courseTitles.push(cd.ctitle);
       row.courseId.push(cd.courseId);
     });
-    console.log("Course Names for current instructor:", row.courseNames);
-    console.log("Course Titles for current instructor:", row.courseTitles);
-    console.log("lsdfjlksdjfkls",row.courses);
+
 
     }
     // Reformat the data

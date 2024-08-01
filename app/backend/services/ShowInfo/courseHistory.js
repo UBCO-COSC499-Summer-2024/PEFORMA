@@ -1,5 +1,5 @@
-const  pool = require('../db/index.js');
-const { getLatestTerm } = require('./latestTerm.js');
+const  pool = require('../../db/index.js');
+const { getLatestTerm } = require('../latestTerm.js');
 console.log(pool); 
 
 async function getCourseHistory(req) {
@@ -95,6 +95,15 @@ async function getCourseHistory(req) {
         result = await pool.query(query, [courseId]);
         const avgScore = result.rows.length > 0 ? Math.round(result.rows[0].avgScore) : 0; 
         
+        query = `SELECT * FROM "CourseByTerm" WHERE "courseId" = $1 AND "term" = $2;`;
+        result = await pool.query(query,[courseId,latestTermResult]);
+        let exists;
+        if(result.rows.length == 0){
+            exists = false;
+        }
+        else{
+            exists = true;
+        }
         
         //Get the TA info
         query = `SELECT TRIM("firstName" || ' ' || COALESCE("middleName" || ' ', '') || "lastName") AS full_name, 
@@ -111,6 +120,7 @@ async function getCourseHistory(req) {
             perPage,
             courseID: parseInt(courseId),
             entryCount,
+            exists: exists,
             courseCode,
             latestTerm:latestTermResult,
             courseName: ctitle,

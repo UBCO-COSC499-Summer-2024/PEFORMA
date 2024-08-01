@@ -5,19 +5,36 @@ async function getServiceInfo(req){
     const serviceRoleId = req.query.serviceRoleId;
     try {
         const latestYear = await getLatestYear();
+        //Get the service role info 
         let query = `
-            SELECT sr."stitle", sr."description", d."dname", p."UBCId", sra."year",
-            TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name
+            SELECT sr."stitle", sr."description", d."dname"
             FROM "ServiceRole" sr
             JOIN "Division" d ON d."divisionId" = sr."divisionId"
-            LEFT JOIN "ServiceRoleAssignment" sra ON sra."serviceRoleId" = sr."serviceRoleId"
+            WHERE sr."serviceRoleId" = $1;
+        `;
+
+        let result = await pool.query(query, [serviceRoleId]);
+        const { stitle, description, dname } = result.rows[0];
+        query = `SELECT * FROM "ServiceRoleByYear" WHERE "serviceRoleId" = $1 AND "year" = $2;`
+        result = await pool.query(query,[serviceRoleId,latestYear]);
+        let exists;
+        if(result.length == 0){
+            exists = false;
+        }
+        else{
+            exists = true;
+        }
+        query = `
+            SELECT p."UBCId", sra."year",
+            TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name
+            FROM "ServiceRoleAssignment" sra
             LEFT JOIN "Profile" p ON p."profileId" = sra."profileId"
-            WHERE sr."serviceRoleId" = $1 AND sra."year" <= $2
+            WHERE sra."serviceRoleId" = $1 AND sra."year" <= $2
             ORDER BY sra."year" DESC;
         `;
-        let result = await pool.query(query, [serviceRoleId,latestYear]);
-        const { stitle, description, dname } = result.rows[0];
+        result = await pool.query(query, [serviceRoleId, latestYear]);
         const assigneeCount = result.rows.length;
+        
         const assignees = result.rows.map(row => ({
             instructorID: row.UBCId || '',
             name: row.full_name || '',
@@ -29,17 +46,17 @@ async function getServiceInfo(req){
             perPage: 5,
             roleID: serviceRoleId,
             assigneeCount: assigneeCount,
+            exists: exists,
             roleName: stitle || "",
             roleDescription: description || "",
             department: dname || "",
-            benchmark:0,
             assignees: assignees,
             latestYear: latestYear
         };
-        console.log("Output ", output);
         return output;
     } catch (error) {
         console.error('Database query error:', error);
+        throw error;
     }
 };
 module.exports = {
