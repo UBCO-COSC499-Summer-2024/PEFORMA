@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import '../../CSS/Admin/CreateAccount.css';
-import axios from 'axios';
-import CreateSideBar, { CreateTopBar } from '../common/commonImports.js';
-import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
-import { checkAccess, handleCancelForm } from '../common/utils.js';
 
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
+import { checkAccess, handleCancelForm, submitFormData } from '../common/utils.js';
+import { useAuth } from '../common/AuthContext.js';
+import '../../CSS/Admin/CreateAccount.css';
+
+// initial form data that will be used in createAccount
 const initialFormData = {
     email: '',
     firstName: '',
@@ -17,6 +19,7 @@ const initialFormData = {
     confirmPassword: ''
 };
 
+// mapping of account types to numerical values for BE processing
 const accountTypeMapping = {
     DepartmentHead: 1,
     DepartmentStaff: 2,
@@ -24,10 +27,12 @@ const accountTypeMapping = {
     Admin: 4
 };
 
+// custom hook for managing form state
 function useFormState(initialState) {
     const [formData, setFormData] = useState(initialState);
     const [ubcIdError, setUbcIdError] = useState('');
 
+    // handle form input changes including checkboxes for account type
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
         if (type === 'checkbox') {
@@ -45,7 +50,8 @@ function useFormState(initialState) {
                 ...prevState,
                 [name]: value
             }));
-
+            
+            // validate ubc id as 8 digit number
             if (name === 'ubcId') {
                 if (value !== '' && (value.length !== 8 || isNaN(value))) {
                     setUbcIdError('UBC ID must be an 8-digit number');
@@ -59,12 +65,14 @@ function useFormState(initialState) {
     return { formData, ubcIdError, handleChange, setFormData };
 }
 
+// function for validating data before submission
 function validateForm(formData) {
+    // check password matches
     if (formData.password !== formData.confirmPassword) {
         alert('Passwords do not match.');
         return false;
     }
-
+    // check ubcid is 8 digit number
     if (formData.ubcId && (formData.ubcId.length !== 8 || isNaN(formData.ubcId))) {
         alert('UBC ID must be an 8-digit number');
         return false;
@@ -73,6 +81,7 @@ function validateForm(formData) {
     return true;
 }
 
+// main component for creating user accounts in the admin view
 function CreateAccount() {
     const { accountLogInType, authToken } = useAuth();
     const navigate = useNavigate();
@@ -82,9 +91,11 @@ function CreateAccount() {
         checkAccess(accountLogInType, navigate, 'admin', authToken)
     }, [authToken, navigate]);
 
+    // handle submitting form
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // validate form first and if it doenst meet the requirements, do nothing and return
         if (!validateForm(formData)) return;
 
         const postData = {
@@ -98,27 +109,24 @@ function CreateAccount() {
             confirmPassword: formData.confirmPassword
         };
 
-        try {
-            await axios.post('http://localhost:3001/api/create-account', postData, {
-                headers: { Authorization: `Bearer ${authToken.token}` },
-            });
-            alert('Account created successfully.');
-            setFormData(initialFormData);
-        } catch (error) {
-            console.error('Error sending data to the server:', error);
+        // custom error handling message for form submission
+        const errorMessageHandler = (error) => {
             if (error.response && error.response.status === 400 && error.response.data.message === 'Email already exists') {
                 alert('Error: Email already exists');
             } else {
                 alert('Error creating account: ' + error.message);
             }
-        }
+        };
+
+        // submuit for data to server and handle responses and erros
+        await submitFormData('http://localhost:3001/api/create-account', postData, authToken, initialFormData, setFormData, 'Account created successfully.', errorMessageHandler);
     };
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Admin" />
+            <SideBar sideBarType="Admin" />
             <div className='container'>
-                <CreateTopBar />
+                <TopBar />
                 <div className='create-account-form' id='admin-create-account-test-content'>
                     <h1>Create Account</h1>
                     <form onSubmit={handleSubmit}>

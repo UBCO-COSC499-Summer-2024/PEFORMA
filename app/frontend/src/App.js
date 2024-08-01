@@ -36,6 +36,7 @@ import DeptTeachingAssignment from './JS/Department/DeptTeachingAssignment';
 import DeptTeachingAssignmentDetail from './JS/Department/DeptTeachingAssignmentDetail';
 import DeptStatusChangeCourse from './JS/Department/DeptStatusChangeCourse';
 import DeptSEIPage from './JS/Department/DeptSEIPage';
+import DeptMeetingManagement from './JS/Department/DeptMeetingManagement';
 
 //
 import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
@@ -99,6 +100,8 @@ function App() {
 					<Route path="/DeptTeachingAssignment" element={<DeptTeachingAssignment />} />
 					<Route path="/DeptTeachingAssignmentDetail" element={<DeptTeachingAssignmentDetail />} />
 					<Route path="/DeptSEIPage" element={<DeptSEIPage />} />
+					<Route path="/DeptMeetingManagement" element={<DeptMeetingManagement />} />
+
 				</Routes>
 			</AuthProvider>
 		</BrowserRouter>

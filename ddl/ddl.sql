@@ -191,6 +191,7 @@ CREATE TABLE "CourseEvaluation" (
   "SEIQ3"    double precision,
   "SEIQ4"    double precision,
   "SEIQ5"    double precision,
+  "SEIQ6"    double precision,
   "retentionRate" double precision,
   "failRate"   double precision,
   "enrolRate"double precision,
@@ -219,6 +220,7 @@ CREATE TABLE "TaAssignmentTable" (
 -- Create Meeting Log Table
 CREATE TABLE "MeetingLog" (
   "meetingId"     SERIAL PRIMARY KEY,
+  "meetingTitle"  VARCHAR(50),
   "location"      VARCHAR(30),
   "date"          DATE,
   "time"          TIME

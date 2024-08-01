@@ -146,8 +146,7 @@ export const filterItems = (items, itemType, search) => {
     return items.filter((item)=>
       (item.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
       (item.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
-
-);
+    );
   } else if (itemType === 'insCourse') {
     return items.filter((course) =>
       (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -157,6 +156,12 @@ export const filterItems = (items, itemType, search) => {
        course.instructor.some(instructor =>
          instructor.toLowerCase().includes(search.toLowerCase())
        ))
+    );
+  } else if (itemType === 'taCourse') { // teaching assignment courses search 
+    return items.filter((item)=>
+      (item.instructor?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (item.courseName?.toLowerCase() ?? '').includes(search.toLowerCase())
     );
   } else {
     return items;
@@ -177,6 +182,26 @@ export const sortItems = (items, sortConfig) => {
       });
   }
   return sortableItems;
+};
+
+export const getCurrentTerm = () => {
+  const now = new Date();
+  let year = now.getFullYear();
+  const month = now.getMonth() + 1; // getMonth() returns 0-11
+  let term;
+
+  if (month >= 9 && month <= 12) { // Sep-Dec Winter Term 1 -> T1
+    term = `${year}1`; } 
+  else if (month >=1 && month <= 4){//Jan-Apr Winter Term 2 -> T2
+    year -= 1;
+    term = `${year}2`; }
+  else if (month >=5 && month <= 6){// May-Jun Summer Term 1 -> T3
+    year -= 1;
+    term = `${year}3`; }
+  else if (month >=7 && month <= 8){// Jul-Aug Summer Term 2 -> T4
+    year -= 1;
+    term = `${year}4`; }
+  return term;
 };
 
 export const requestSort = (sortConfig, setSortConfig, key) => {
@@ -375,6 +400,11 @@ export const UserIcon = ({ userName, profileId, size = 40, onClick }) => {
   }
 };
 
+export const filterByDivision = (courses, division, divisionMap) => {
+  const divisionPrefix = divisionMap[division];
+  return courses.filter(course => course.courseCode && course.courseCode.startsWith(divisionPrefix));
+};
+
 export const downloadCSV = (csvContent, filename) => { 
   // generates a blob for csvContent
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -386,3 +416,21 @@ export const downloadCSV = (csvContent, filename) => {
   link.click();
   document.body.removeChild(link);
 }
+
+export const submitFormData = async (url, postData, authToken, initialFormData, setFormData, successMessage, errorMessageHandler) => {
+  try {
+      await axios.post(url, postData, {
+          headers: { Authorization: `Bearer ${authToken.token}` },
+      });
+      alert(successMessage);
+      setFormData(initialFormData);
+  } catch (error) {
+      console.error('Error sending data to the server:', error);
+      if (typeof errorMessageHandler === "function") {
+          errorMessageHandler(error);
+      } else {
+          console.error('An error occurred, but no error handler is provided:', error);
+          alert('An unexpected error occurred.');
+      }
+  }
+};

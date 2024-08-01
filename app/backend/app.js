@@ -1,67 +1,75 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const loginRouter = require('./routes/logincheck'); // 确保路径正确
+const loginRouter = require('./routes/Login/logincheck.js'); 
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
-const queryAccountRouter = require('./routes/queryAccountRouter');
-const AccountTypeRouter = require('./routes/accountTypeRoutes.js');
+const AccountTypeRouter = require('./routes/Login/accountTypeRoutes.js');
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
 
-const { upsertProfile } = require('./routes/upsertProfile');
 const createAccount = require('./routes/createAccount');
-const { assignServiceRole } = require ('./routes/assignServiceRole');
 
-const workingHoursRoutes = require('./routes/workingHoursRoutes');
-//const serverRouter = require('./routes/server')
-const DeptPerformanceRouter = require('./routes/deptPerformanceRoutes');
-const leaderBoardRoutes = require('./routes/leaderBoardRoutes');
-const progressRoutes = require('./routes/progressRoutes');
-const serviceRoleRoutes = require('./routes/serviceRoleRoutes');
+//Performance Routers
+const workingHoursRoutes = require('./routes/Performance/workingHoursRoutes.js');
+const DeptPerformanceRouter = require('./routes/Performance/deptPerformanceRoutes.js');
+const leaderBoardRoutes = require('./routes/Performance/leaderBoardRoutes.js');
+const progressRoutes = require('./routes/Performance/progressRoutes.js');
+const benchmark = require('./routes/Performance/benchmark.js');
+const deptLeaderBoard = require('./routes/Performance/deptLeaderboard.js');
+const coursePerformance = require('./routes/Performance/coursePerformance.js');
 
-//const update = require('./routes/update');
-const instructorFetch = require('./routes/instructorFetch.js');
-const courseRoutes = require('./routes/courses.js');  
-const allCoursesRoutes = require('./routes/allCoursesRoutes.js'); 
-const benchmark = require('./routes/benchmark.js');
-const deptLeaderBoard = require('./routes/deptLeaderboard.js');
-const coursePerformance = require('./routes/coursePerformance.js');
+//Show List
+const serviceRoleRoutes = require('./routes/ShowList/serviceRoleRoutes.js');
+const allInstructors = require('./routes/ShowList/allInstructorsRoutes.js');
+const allTerms = require('./routes/ShowList/allTermsRoutes.js')
+const allCoursesRoutes = require('./routes/ShowList/allCoursesRoutes.js'); 
+const courseRoutes = require('./routes/ShowList/courses.js');  
+const teachingAssignment = require('./routes/ShowList/teachingAssignment.js');
+
+const instructorFetch = require('./routes/AssignInstructor/instructorFetch.js');
 const deptProfileRoutes = require('./routes/deptProfileRoutes');
 
+//Update Status Router
+const deptStatusChangeCourseRoutes = require('./routes/UpdateStatus/deptStatusChangeCourseRouters.js');
+const adminStatusChangeMembers = require('./routes/UpdateStatus/adminStatusChangeMembersRoutes.js');
+const deptStatusChangeServiceRoutes = require('./routes/UpdateStatus/deptStatusChangeServiceRoleRoutes.js');
 
-const adminStatusChangeMembers = require('./routes/adminStatusChangeMembersRoutes.js');
-const allInstructors = require('./routes/allInstructorsRoutes');
-const deptStatusChangeServiceRoutes = require('./routes/deptStatusChangeServiceRoleRoutes');
+
 const imageRoutes = require('./routes/imageRoutes');
 const userProfileRoutes = require('./routes/userProfileRoutes');
 const userRoutes = require('./routes/userRoutes');
-const changePasswordRoutes = require('./routes/changePasswordRoutes');
 
 
-const courseHistoryRouter = require('./routes/courseHistoryRoutes');
-const roleInfoRoutes = require('./routes/roleInfoRoutes');
+//Show Information Router
+const courseHistoryRouter = require('./routes/ShowInfo/courseHistoryRoutes.js');
+const roleInfoRoutes = require('./routes/ShowInfo/roleInfoRoutes');
 
+//Update Password Router
+const changePasswordRoutes = require('./routes/UpdatePassword/changePasswordRoutes.js');
+const updatePasswordRouter = require('./routes/UpdatePassword/updatePassword.js');
+const resetPasswordRouter = require('./routes/UpdatePassword/resetPassword.js');
 
-const updatePasswordRouter = require('./routes/updatePassword');
-// const updatePasswordRouter = require('./routes/updatePassword.js')
-const deptStatusChangeCourseRoutes = require('./routes/deptStatusChangeCourseRouters.js')
-const teachingAssignment = require('./routes/teachingAssignment.js');
-const courseEvaluation = require('./routes/courseEvaluationRoutes.js');
-const resetPasswordRouter = require('./routes/resetPassword');
-//const updatePasswordRouter = require('./routes/updatePassword.js')
-const courseEvaluationForm = require('./routes/courseEvaluationFormRoutes.js')
+//Course Evaluation
+const courseEvaluation = require('./routes/CourseEvaluation/courseEvaluationRoutes.js');
+const courseEvaluationForm = require('./routes/CourseEvaluation/courseEvaluationFormRoutes.js');
 
-const updateRoleInfo = require('./routes/updateRoleInfo.js');
-const updateCourseInfo = require('./routes/updateCourseInfo.js');
-const AssignInstructor = require('./routes/AssignInstructorServiceRole.js');
-const assignInstructorCourse = require('./routes/assignInstructorCourse.js');
-const removeInstructorRoleRouter = require('./routes/removeInstructorRoleRouter');
-const latestCourseRouter = require('./routes/latestCourseRoutes.js');
-const removeInstructorCourse = require('./routes/removeInstructorCourseRout.js');
-const allTerms = require('./routes/allTermsRoutes.js')
+//Update Info Router
+const updateRoleInfo = require('./routes/UpdateInfo/updateRoleInfo.js');
+const updateCourseInfo = require('./routes/UpdateInfo/updateCourseInfo.js');
+
+//Assign Instructor Router
+const AssignInstructor = require('./routes/AssignInstructor/AssignInstructorServiceRole.js');
+const assignInstructorCourse = require('./routes/AssignInstructor/assignInstructorCourse.js');
+
+//Remove Instructor Router
+const removeInstructorRoleRouter = require('./routes/RemoveInstructor/removeInstructorRoleRouter.js');
+const removeInstructorCourse = require('./routes/RemoveInstructor/removeInstructorCourseRout.js');
+
 const setTerm = require('./routes/setCurrentTermRoutes.js')
+
+const meetingRoutes = require('./routes/meetingRoutes');
 
 const app = express();
 
@@ -73,7 +81,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 console.log('before:');
 
 //login pprocess
-app.use('/',queryAccountRouter);//serach account in db
+// app.use('/',queryAccountRouter);//serach account in db
 app.use('/logincheck', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/accountType',AccountTypeRouter);//check account type
@@ -107,6 +115,9 @@ app.use('/api/profile', (req, res, next) => {
     console.log('Profile route hit:', req.url);
     next();
   }, userProfileRoutes);
+
+// Meeting retrieval process
+app.use('/meetings', meetingRoutes);
   
 app.use('/api', userRoutes);
 
@@ -149,23 +160,22 @@ app.use('/api/upload', dataImportRoutes);
 //Course Evaluation
 app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
-app.use('/api',assignInstructorCourse);
+app.use('/api/assignInstructorCourse',assignInstructorCourse);
 
 app.use('/api/terms',allTerms);
-app.use('/api', setTerm)
+app.use('/api/setCurrentTerm', setTerm)
 
 app.use('/enter',saveDataToDatabase);
 
 
-app.use('/api',instructorFetch);
+app.use('/api/instructors',instructorFetch);
 
-app.use('/api',updateRoleInfo);
-app.use('/api',updateCourseInfo);
-app.use('/api',AssignInstructor);
+app.use('/api/updateRoleInfo',updateRoleInfo);
+app.use('/api/updateCourseInfo',updateCourseInfo);
+app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
-app.use('/api',removeInstructorRoleRouter);
-app.use('/api',latestCourseRouter);
-app.use('/api',removeInstructorCourse);
+app.use('/api/removeInstructorRole',removeInstructorRoleRouter);
+app.use('/api/removeInstructorCourse',removeInstructorCourse);
 
 const port = 3001;
 // Wrap server startup in an async function
