@@ -11,9 +11,9 @@ async function updateAllServiceRoles() {
         // Activate courses for the latest term
         const activateQuery = `
             UPDATE "ServiceRole" SET "isActive" = true 
-            FROM "ServiceRoleAssignment"
-            WHERE "ServiceRole"."serviceRoleId" = "ServiceRoleAssignment"."serviceRoleId" 
-              AND "ServiceRoleAssignment"."year" = $1;
+            FROM "ServiceRoleByYear"
+            WHERE "ServiceRole"."serviceRoleId" = "ServiceRoleByYear"."serviceRoleId" 
+              AND "ServiceRoleByYear"."year" = $1;
         `;
         await client.query(activateQuery, [latestYear]);
 
@@ -22,7 +22,7 @@ async function updateAllServiceRoles() {
             UPDATE "ServiceRole" SET "isActive" = false 
             WHERE "serviceRoleId" NOT IN (
                 SELECT "serviceRoleId" 
-                FROM "ServiceRoleAssignment" 
+                FROM "ServiceRoleByYear" 
                 WHERE "year" = $1
             );
         `;

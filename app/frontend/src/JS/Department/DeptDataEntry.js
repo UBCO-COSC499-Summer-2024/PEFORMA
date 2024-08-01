@@ -136,10 +136,9 @@ function useDataEntryComponent() {
 					},
 				});
 				const data = res.data;
-				const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
 				divisions[4].code = "N/A";
 				divisions[4].label = "N/A";
-				setInstructorData({ ...data, instructors: filledInstructors });
+				setInstructorData({ ...data});
 			} catch (error) {
 				console.error('Error occurs when fetching people.\nDetail message:\n', error);
 			}
