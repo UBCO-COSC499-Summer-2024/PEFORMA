@@ -86,7 +86,7 @@ const ImportModal = ({ isOpen, onClose }) => {
                 </button>
                 <h2>Import Data</h2>
                 <div className="dropzone-container" {...getRootProps()}>
-                    <input {...getInputProps()} />
+                    <input {...getInputProps()} data-testid="file-input" type="file" />
                     <div className="dropzone-content">
                         <FaFileUpload size={40} style={{ color: 'grey' }} className="dropzone-icon" />
                         <p className="drag-and-drop">Drag & drop files here, or click to select files</p>
