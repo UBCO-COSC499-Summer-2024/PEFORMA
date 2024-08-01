@@ -12,7 +12,7 @@ async function saveDataToDatabase(data) {
             case 'MATH': division=[2];break;
             case 'PHYS': division=[3];break;
             case 'STAT':division=[4];break;
-            case 'N/A' : division = [1,2,3,4];break;
+            case 'All' : division = [1,2,3,4];break;
             default: division = [];
         }
         query = `SELECT * FROM "ServiceRole" WHERE "divisionId" = ANY($1) AND "stitle" = $2;`;
