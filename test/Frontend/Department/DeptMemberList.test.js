@@ -316,10 +316,8 @@ describe('DeptMemberList', () => {
 
     // Find and click the export button using its class name
     const exportButton = element.querySelector('.icon-button');
-    await act(async () => {
-      fireEvent.click(exportButton);
-    });
-
+    fireEvent.click(exportButton);
+    
     // Check if downloadCSV was called with the correct arguments
     expect(utils.downloadCSV).toHaveBeenCalledWith(
       '#, Name, UBC ID, Service Role, Department, Email, Status\n' +
