@@ -9,8 +9,8 @@ function CreateSideBar({ sideBarType }) {
 	return <SideBar sideBarType={sideBarType} />;
 }
 
-function CreateTopBar({ searchListType, onSearch }) {
-	return <TopBar searchListType={searchListType} onSearch={onSearch} />;
+function CreateTopBar({ searchListType, onSearch, onTermChange }) {
+    return <TopBar searchListType={searchListType} onSearch={onSearch} onTermChange={onTermChange} />;
 }
 
 export default CreateSideBar;
