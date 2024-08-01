@@ -7,17 +7,13 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-import { fillEmptyItems, getCurrentTerm, getTermString, checkAccess, filterItems, currentItems } from '../common/utils.js';
+import { getCurrentTerm, getTermString, checkAccess, filterItems, currentItems } from '../common/utils.js';
 
-const params = new URLSearchParams(window.location.search);
-const serviceRoleId = params.get('roleid');
-
-const fetchRoleData = async(authToken) => {
+const fetchRoleData = async(authToken, serviceRoleId) => {
   const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
     params: { serviceRoleId: serviceRoleId },
     headers: { Authorization: `Bearer ${authToken.token}` },
   });
-  console.log(roleRes);
   roleRes.data.perPage -=1; // Page length is too long so this is to reduce it by 1
   return roleRes.data;
 }
@@ -42,6 +38,8 @@ const handleEditClick = (setIsEditing, setShowDeactivate) => {
 };
 
 function useRoleInformation() {
+  const params = new URLSearchParams(window.location.search);
+  const serviceRoleId = params.get('roleid');
   const { authToken, accountLogInType } = useAuth();
   const navigate = useNavigate();
   const prevInstructors = useRef({});
@@ -83,7 +81,7 @@ function useRoleInformation() {
       }
       checkAccess(accountLogInType, navigate, 'department', authToken);
       try {
-        const roleData = await fetchRoleData(authToken);
+        const roleData = await fetchRoleData(authToken, serviceRoleId);
         const currentTerm = getCurrentTerm();
         
         const termData = await fetchTermResponse();
@@ -102,7 +100,6 @@ function useRoleInformation() {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, [authToken, accountLogInType, navigate, serviceRoleId]);
   return {
@@ -120,7 +117,8 @@ function useRoleInformation() {
     reactUpdate,
     navigate,
     authToken,
-    prevInstructors
+    prevInstructors,
+    serviceRoleId
   }
 }
 
@@ -163,40 +161,44 @@ const handlePageClick = (data, setRoleData) => {
   }));
 };
 
-  const handleShowInstructorModal = async (instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors) => {
-    prevInstructors.current = JSON.stringify(instructorData);
-    setShowInstructorModal(true);
-
-    try {
-      const res = await axios.get('http://localhost:3001/api/instructors', {
-        headers: { Authorization: `Bearer ${authToken.token}` },
-      });
-      const professors = res.data.instructors;
-      if (Array.isArray(professors)) {
-        setInstructorData((prevData) => ({
-          ...prevData,
-          instructors: professors,
-          instructorCount: professors.length,
-        }));
-      } else {
-        setInstructorData((prevData) => ({
-          ...prevData,
-          instructors: [],
-          instructorCount: 0,
-        }));
-        console.error('Expected an array but got:', professors);
-      }
-    } catch (error) {
-      console.error('Error fetching professors:', error);
+const fetchInstructors = async(authToken, setInstructorData) => {
+  try {
+    const res = await axios.get('http://localhost:3001/api/instructors', {
+      headers: { Authorization: `Bearer ${authToken.token}` },
+    });
+    const professors = res.data.instructors;
+    // Handle different possible backend responses
+    if (Array.isArray(professors)) {
+      setInstructorData((prevData) => ({
+        ...prevData,
+        instructors: professors,
+        instructorCount: professors.length,
+      }));
+    } else {
       setInstructorData((prevData) => ({
         ...prevData,
         instructors: [],
         instructorCount: 0,
       }));
+      console.error('Expected an array but got:', professors);
     }
-  };
+  } catch (error) {
+    console.error('Error fetching professors:', error);
+    setInstructorData((prevData) => ({
+      ...prevData,
+      instructors: [],
+      instructorCount: 0,
+    }));
+  }
+}
 
-  const handleCloseInstructorModal = (save, [instructorData, setInstructorData, roleData, setShowInstructorModal, prevInstructors, authToken]) => {
+const handleShowInstructorModal = async (instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors) => {
+    prevInstructors.current = JSON.stringify(instructorData);
+    setShowInstructorModal(true);
+    await fetchInstructors(authToken, setInstructorData);
+};
+
+const handleCloseInstructorModal = (save, [instructorData, setInstructorData, roleData, setShowInstructorModal, prevInstructors, authToken]) => {
     if (!save) {
       if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
         setInstructorData(JSON.parse(prevInstructors.current));
@@ -204,79 +206,93 @@ const handlePageClick = (data, setRoleData) => {
         return;
       }
     } else {
-      roleData.assignees = [];
-
-      for (let i = 0; i < instructorData.instructors.length; i++) {
-        if (instructorData.instructors[i].assigned) {
-          roleData.assignees.push({
-            instructorID: instructorData.instructors[i].profileId,
-            name: instructorData.instructors[i].name,
-          });
-        }
-      }
       updateAssignees(instructorData, roleData, authToken);
     }
     setShowInstructorModal(false);
-  };
+};
 
-  const updateAssignees = async (instructorData, roleData, authToken) => {
-    let assignedInstructors = [];
-    for (let i = 0; i < instructorData.instructors.length; i++) {
-      if (instructorData.instructors[i].assigned === true) {
-        assignedInstructors.push(instructorData.instructors[i]);
-      }
+function getAssignedInstructors(instructorData, roleData) {
+  let assignedInstructors = [];
+  roleData.assignees = [];
+  for (let i = 0; i < instructorData.instructors.length; i++) {
+    if (instructorData.instructors[i].assigned === true) {
+      assignedInstructors.push(instructorData.instructors[i]);
+      roleData.assignees.push({
+        instructorID: instructorData.instructors[i].profileId,
+        name: instructorData.instructors[i].name,
+      });
     }
+  }
+  return assignedInstructors;
+}
 
-    // Submitting new data goes here:
-    var div = 0;
-    switch (roleData.department) {
-      case "Computer Science": div = 1; break;
-      case "Mathematics": div = 2; break;
-      case "Physics": div = 3; break;
-      case "Statistics": div = 4; break;
-      default: div = 0;
-    }
+function getDivisionDigit(roleData) {
+  let div = 0;
+  switch (roleData.department) {
+    case "Computer Science": div = 1; break;
+    case "Mathematics": div = 2; break;
+    case "Physics": div = 3; break;
+    case "Statistics": div = 4; break;
+    default: div = 0;
+  }
+  return div;
+}
 
-    for (let i = 0; i < assignedInstructors.length; i++) {
-      var newAssigneeList = {
-        profileId: assignedInstructors[i].profileId,
-        serviceRole: roleData.roleName,
-        year: roleData.latestYear,
-        division: div
-      };
-      try {
-        const res = await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
-          headers: { Authorization: `Bearer ${authToken.token}` },
-        });
-      } catch (error) {
-        console.error('Error updating assignees', error);
-      }
-    }
-    window.location.reload();
-  };
-
-  const onSearch = (newSearch, setSearch, setRoleData) => {
-    setSearch(newSearch);
-    setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
-  };
-
-  const removeInstructor = async (id, index, roleData, instructorData, authToken, reactUpdate) => {
-    roleData.assignees.splice(index, 1);
-    for (let i = 0; i < instructorData.instructors.length; i++) {
-      if (id === instructorData.instructors[i].id) {
-        instructorData.instructors[i].assigned = false;
-        break;
-      }
-    }
-    reactUpdate();
+const sendAssignees = async(assignedInstructors, roleData, authToken, div) => {
+  for (let i = 0; i < assignedInstructors.length; i++) {
+    var newAssigneeList = {
+      profileId: assignedInstructors[i].profileId,
+      serviceRole: roleData.roleName,
+      year: roleData.latestYear,
+      division: div
+    };
     try {
-      await axios.post('http://localhost:3001/api/removeInstructorRole', {serviceRoleId, id}, {
+      await axios.post('http://localhost:3001/api/assignInstructorServiceRole', newAssigneeList, {
         headers: { Authorization: `Bearer ${authToken.token}` },
       });
     } catch (error) {
-      window.alert("Delete error:\n",error.message);
+      console.error('Error updating assignees', error);
     }
   }
+}
+
+const updateAssignees = async (instructorData, roleData, authToken) => {
+  let assignedInstructors = getAssignedInstructors(instructorData, roleData);
+  let div = getDivisionDigit(roleData);
+  await sendAssignees(assignedInstructors, roleData, authToken, div);
+  window.location.reload();
+};
+
+const onSearch = (newSearch, setSearch, setRoleData) => {
+    setSearch(newSearch);
+    setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
+};
+
+function removeInstructorFromRoleData(roleData, instructorData, index, id, reactUpdate) {
+  roleData.assignees.splice(index, 1);
+  for (let i = 0; i < instructorData.instructors.length; i++) {
+    if (id === instructorData.instructors[i].id) {
+      instructorData.instructors[i].assigned = false;
+      break;
+    }
+  }
+  reactUpdate();
+}
+
+const sendRemovedInstructor = async(serviceRoleId, id, authToken) => {
+  try {
+    await axios.post('http://localhost:3001/api/removeInstructorRole', {serviceRoleId, id}, {
+      headers: { Authorization: `Bearer ${authToken.token}` },
+    });
+  } catch (error) {
+    window.alert("Delete error:\n",error.message);
+  }
+}
+
+const removeInstructor = async (id, index, roleData, instructorData, authToken, reactUpdate, serviceRoleId) => {
+    removeInstructorFromRoleData(roleData, instructorData, index, id, reactUpdate);
+    await sendRemovedInstructor(serviceRoleId, id, authToken);
+}
 
 function RoleInformation() {
   const {
@@ -294,9 +310,9 @@ function RoleInformation() {
       reactUpdate,
       navigate,
       authToken,
-      prevInstructors
+      prevInstructors,
+      serviceRoleId
   } = useRoleInformation();
-
 
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
   const filteredAssignees = filterItems(roleData.assignees, 'assignee', search);
@@ -438,7 +454,7 @@ function RoleInformation() {
 															{assignee.name}
 														</Link>
                             {!pastState && (
-                              <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(assignee.instructorID, index, roleData, instructorData, authToken, reactUpdate) }}>X</button>
+                              <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(assignee.instructorID, index, roleData, instructorData, authToken, reactUpdate, serviceRoleId) }}>X</button>
                             )}
 													</td>
 													<td>{assignee.instructorID}</td>

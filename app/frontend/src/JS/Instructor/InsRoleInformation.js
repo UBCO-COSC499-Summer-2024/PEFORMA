@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import '../../CSS/Department/DeptRoleInformation.css';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { checkAccess } from '../common/utils.js';
