@@ -15,6 +15,15 @@ async function getServiceInfo(req){
 
         let result = await pool.query(query, [serviceRoleId]);
         const { stitle, description, dname } = result.rows[0];
+        query = `SELECT * FROM "ServiceRoleByYear" WHERE "serviceRoleId" = $1 AND "year" = $2;`
+        result = await pool.query(query,[serviceRoleId,latestYear]);
+        let exists;
+        if(result.length == 0){
+            exists = false;
+        }
+        else{
+            exists = true;
+        }
         query = `
             SELECT p."UBCId", sra."year",
             TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name
@@ -37,6 +46,7 @@ async function getServiceInfo(req){
             perPage: 5,
             roleID: serviceRoleId,
             assigneeCount: assigneeCount,
+            exists: exists,
             roleName: stitle || "",
             roleDescription: description || "",
             department: dname || "",
