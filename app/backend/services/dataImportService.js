@@ -97,8 +97,7 @@ const meetingLogSchema = Joi.object({
 
 const meetingAttendanceSchema = Joi.object({
     meetingId: Joi.number().integer().required(),
-    UBCId: Joi.string().length(8).required(),
-    attendance: Joi.boolean().allow(null, '')
+    UBCId: Joi.string().length(8).required()
 });
 
 const taAssignmentSchema = Joi.object({
@@ -110,41 +109,6 @@ const taAssignmentSchema = Joi.object({
     email: Joi.string().email().required(),
     courseId: Joi.number().integer().required()
 });
-/*
-async function importData(files) {
-    const client = await pool.connect();
-    try {
-        await client.query('BEGIN');
-        
-        let importedCount = 0;
-        let errors = [];
-        
-        for (const file of files) {
-            try {
-                const fileData = await processFile(file, client);
-                importedCount += fileData.length;
-            } catch (error) {
-                console.error(`Error processing file: ${file.originalname}\n`, error.message);
-                errors.push({ file: file.originalname, error: error.message });
-            }
-        }
-        
-        await client.query('COMMIT');
-
-        return { 
-            success: errors.length === 0,
-            importedCount, 
-            errors
-        };
-    } catch (error) {
-        await client.query('ROLLBACK');
-        console.error('Transaction failed and rolled back:', error.message);
-        throw error;
-    } finally {
-        client.release();
-    }
-}
-*/
 
 async function importData(files) {
     const maxRetries = files.length+1;
@@ -644,7 +608,7 @@ async function processMeetingLogData(row, client) {
     const meetingLogData = {
         title: row.title || null,
         location: row.location || null,
-        date: row.date || null,
+        date: Date(row.date) || null,
         time: row.time || null
     };
 
@@ -669,8 +633,7 @@ async function processMeetingLogData(row, client) {
 async function processMeetingAttendanceData(row, client) {
     const meetingAttendanceData = {
         meetingId: row.meetingId || null,
-        UBCId: String(row.UBCId) || null,
-        attendance: row.attendance || false
+        UBCId: String(row.UBCId) || null
     };
 
     const { error } = meetingAttendanceSchema.validate(meetingAttendanceData);
@@ -681,8 +644,8 @@ async function processMeetingAttendanceData(row, client) {
 
     try {
         await client.query(`
-            INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId", "attendance")
-            VALUES ($1, $2, $3)
+            INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId")
+            VALUES ($1, $2)
             ON CONFLICT ("meetingId", "UBCId") DO UPDATE SET "attendance" = EXCLUDED."attendance"
         `, Object.values(meetingAttendanceData));
     } catch (err) {
