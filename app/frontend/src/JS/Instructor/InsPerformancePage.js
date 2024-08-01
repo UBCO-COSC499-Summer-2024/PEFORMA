@@ -1,65 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../../CSS/Instructor/InsPerformancePage.css';
-import CreateSideBar, {
-	CreateLeaderboardChart,
-	CreateScorePolarChart,
-	CreateTopBar,
-	CreateWorkingBarChart,
-	CreateProgressChart,
-} from '../common/commonImports.js';
-import { useAuth } from '../common/AuthContext.js';
-import { checkAccess } from '../common/utils.js'
 
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
+import WorkHoursBarChart from './InsPerformanceImports/InsWorkHoursBarChart.js';
+import DeptPerformancePieChart from './InsPerformanceImports/InsPerformancePolarChart.js';
+import LeaderBoard from './InsPerformanceImports/InsLeaderBoard.js';
+import ServiceHoursProgressChart from './InsPerformanceImports/InsServiceHoursProgressChart.js'
+import { checkAccess, fetchWithAuth } from '../common/utils.js'
+import { useAuth } from '../common/AuthContext.js';
+import '../../CSS/Instructor/InsPerformancePage.css';
+
+// custom hook for fetching instructor profile data
+function useFetchInstructorProfile( authToken, accountLogInType, profileId, navigate ) {
+	const [profile, setProfile] = useState({
+			roles: [],
+			teachingAssignments: [{}],
+	});
+
+	useEffect(() => { // fetch data when authToken, profileId, and accountLogInType changes
+			const date = new Date();
+			const currentMonth = date.getMonth() + 1; // setting currentMonth to send BE 
+
+			const fetchData = async () => { 
+					try {
+							checkAccess(accountLogInType, navigate, 'instructor', authToken); // check access with accountLogInType and authToken
+							const data = await fetchWithAuth(`http://localhost:3001/api/instructorProfile`, authToken, navigate, {
+									profileId: profileId,
+									currentMonth: currentMonth,
+							});
+							setProfile(data); // set profile data with data from api response
+					} catch (error) {
+							console.error('Error fetching instructor profile:', error);
+					}
+			};
+
+			fetchData();
+	}, [authToken, profileId, navigate, accountLogInType]);
+
+	return profile; // return updated profile data
+}
+
+// main component to render a profile information
 function PerformanceInstructorPage() {
 	const navigate = useNavigate();
 	const { authToken, accountLogInType, profileId } = useAuth();
-
-	const initProfile = {
-		roles: [],
-		teachingAssignments: [{}],
-	};
-	const [profile, setProfile] = useState(initProfile);
-
-	useEffect(() => {
-		const date = new Date();
-		const currentMonth = date.getMonth() + 1;
-
-		const fetchData = async () => {
-			try {
-
-				checkAccess(accountLogInType, navigate, 'instructor', authToken);
-				const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
-					params: {
-						profileId: profileId,
-						currentMonth: currentMonth,
-					},
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-
-				if (response.data) {
-					setProfile(response.data);
-				}
-			} catch (error) {
-				if (error.response && error.response.status === 401) {
-					localStorage.removeItem('authToken');
-					navigate('/Login');
-				} else {
-					console.error('Error fetching instructor profile:', error);
-				}
-			}
-		};
-
-		fetchData();
-	}, [authToken, profileId, navigate]);
+	// use custom hook for profile 
+	const profile = useFetchInstructorProfile( authToken, accountLogInType, profileId, navigate );
 
 	return (
 		<div className="dashboard-container">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor" />
 
 			<div className="container" id="info-test-content">
-				<CreateTopBar />
+				<TopBar />
 				<div className="greeting">
 					<h1>Welcome {profile.name}, check out your performance!</h1>
 				</div>
@@ -102,27 +96,27 @@ function PerformanceInstructorPage() {
 					</section>
 
 					<div className="graph-section">
-						<h2 className="subTitle">Working Hours</h2>
-						<CreateWorkingBarChart profileid={profileId} height={600}/>
+						<h2 className="subTitle">Service Hours</h2>
+						<WorkHoursBarChart profileid={profileId} height={600} authToken={authToken} navigate={navigate} />
 					</div>
 				</div>
 
 				<div className="bottom-section">
 					<div className="polarchart-section">
 						<h2 className="subTitle">Department Performance</h2>
-						<CreateScorePolarChart />
+						<DeptPerformancePieChart authToken={authToken} navigate={navigate} />
 					</div>
 
 					<div className="leaderboard-section">
-						<h2 className="subTitle">Leader Board (Updated per month)</h2>
-						<CreateLeaderboardChart />
+						<h2 className="subTitle">Leader Board</h2>
+						<LeaderBoard authToken={authToken} navigate={navigate} />
 					</div>
 				</div>
 
 				<div className="under-bottom-section">
 					<div className="progress-section">
-						<h2 className="subTitle">Progress Chart (Year)</h2>
-						<CreateProgressChart />
+						<h2 className="subTitle">Progress Chart</h2>
+						<ServiceHoursProgressChart authToken={authToken} navigate={navigate} />
 					</div>
 				</div>
 			</div>

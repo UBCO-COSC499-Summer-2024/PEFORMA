@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 
+// function to select top or bottom button
 function displayInstructors(identifier, leaderboard) {
 	if (identifier === 'Top') {
-		return leaderboard.top;
+		return leaderboard.top; // return top section of leaderboard if identifier is top
 	} else if (identifier === 'Bottom') {
-		return leaderboard.bottom;
+		return leaderboard.bottom; // return bottom section of leaderboard if identifier is bottom
 	}
 	return [];
 }
 
-function GoodBadBoard({ leaderboard }) {
-	const [instructors, setInstructors] = useState(leaderboard.top);
+function GoodBadBoard({ leaderboard }) { // define goodbadboard component that render leaderboard
+	const [instructors, setInstructors] = useState(leaderboard.top); // default set is top 
 
-	useEffect(() => {
+	useEffect(() => { // update instructor list when prop change
 		setInstructors(leaderboard.top);
 	}, [leaderboard]);
 

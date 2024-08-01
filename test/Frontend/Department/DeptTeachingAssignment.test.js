@@ -94,7 +94,7 @@ describe('DeptTeachingAssignment', () => {
     });
 
     // wait for axios to be called one more
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(5));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
 
     // expect PHYS courses are now present
     expect(element).toHaveTextContent("PHYS 201");

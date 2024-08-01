@@ -1,23 +1,14 @@
 import { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../common/AuthContext';
-function LeaderBoard() {
-	const navigate = useNavigate();
-	const { authToken } = useAuth();
-	const [leader, setLeader] = useState({
-		series: [
-			{
-				name: 'performance score',
-				data: [],
-			},
-		],
+import ReactApexChart from 'react-apexcharts'; // external library for chart
+
+import { fetchWithAuth } from '../../common/utils';
+
+// custom hook for fetching leader board data
+function useLeaderBoard( authToken, navigate ) {
+	const [leaderData, setLeaderData] = useState({ // format of chart
+		series: [{ name: 'performance score', data: [] }],
 		options: {
-			chart: {
-				type: 'bar',
-				height: 350,
-			},
+			chart: { type: 'bar', height: 350 },
 			plotOptions: {
 				bar: {
 					borderRadius: 5,
@@ -28,45 +19,45 @@ function LeaderBoard() {
 		},
 	});
 
-	useEffect(() => {
+	useEffect(() => { // fetch data when authToken changes
 		const fetchData = async () => {
 			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
-				}
-				const res = await axios.get('http://localhost:3001/api/leaderBoardRoutes', {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				return res.data;
+				const data = await fetchWithAuth('http://localhost:3001/api/leaderBoardRoutes', authToken, navigate);
+				return data;
 			} catch (error) {
-				console.error('Error fetching data: ', error);
+				console.error('Error fetching data:', error);
 				return null;
 			}
 		};
+
 		fetchData().then((data) => {
 			if (data) {
-				setLeader((prevState) => ({
+				setLeaderData((prevState) => ({ // set leaderboard data
 					...prevState,
 					series: [
 						{
-							data: data.data.map((wdata) => {
-								return {
-									x: wdata.x,
-									y: wdata.y,
-								};
-							}),
+							data: data.data.map((item) => ({
+								x: item.x,
+								y: item.y,
+							})),
 						},
 					],
 				}));
 			}
 		});
-	}, []);
+	}, [authToken, navigate]);
+
+	return leaderData; // return state of leader data
+}
+
+// main component to render a leader board chart data
+function LeaderBoard( authToken, navigate ) {
+	const leaderData = useLeaderBoard( authToken, navigate ); // use custom hook for leader data
 
 	return (
 		<div>
 			<div id="leader-chart">
-				<ReactApexChart options={leader.options} series={leader.series} type="bar" height={350} />
+				<ReactApexChart options={leaderData.options} series={leaderData.series} type="bar" height={350} />
 			</div>
 		</div>
 	);

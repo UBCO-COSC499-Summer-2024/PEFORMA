@@ -5,15 +5,20 @@ import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mock axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
-jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
+// mocking sidebar
+jest.mock('../../../app/frontend/src/JS/common/SideBar.js', () => ({
   __esModule: true,
-  default: jest.fn(({ sideBarType }) => (
-    <div>{`Mock Sidebar ${sideBarType}`}</div>
-  )),
-  CreateTopBar: jest.fn(({ onSearch }) => (
+  default: jest.fn(() => <div>Mock Sidebar</div>),
+}));
+
+// mocking topbar for testing search function
+jest.mock('../../../app/frontend/src/JS/common/TopBar.js', () => ({
+  __esModule: true,
+  default: jest.fn(({ onSearch }) => (
     <div className="topbar-search">
       <input type="text" placeholder="Search member" onChange={e => onSearch(e.target.value)} />
       <div className="logout">Logout</div>
@@ -25,12 +30,11 @@ describe('DeptMemberList', () => {
   let element; 
 
   beforeEach(async () => {
-		useAuth.mockReturnValue({
+		useAuth.mockReturnValue({ // mock authToken
 			authToken: { token: 'mocked-token' },
-      profileId: { profileId: 'mocked-profileId'}
 		});
     axios.get.mockImplementation(() => 
-			Promise.resolve({
+			Promise.resolve({ // mock data
 				data: {"currentPage":1, "perPage": 10, "membersCount":15,
           "members":[
             {"ubcid": 12312312, "name":"Kevin", "department": "Computer Science", "roleid":[1,10], "serviceRole":["RANDOM", "ROLEBRO"], "email":"abc@gmail.com", "status": true},
@@ -53,13 +57,13 @@ describe('DeptMemberList', () => {
       })
     );
     await act(async () => {
-      render(
+      render( // render DeptMemberList
         <MemoryRouter>
           <DeptMemberList />
         </MemoryRouter>
       );
     });
-    element = document.getElementById('dept-member-list-test-content');
+    element = document.getElementById('dept-member-list-test-content'); // set element with id
 	});
 
   test('Testing rendering with mock data member list', async () => {
@@ -69,7 +73,7 @@ describe('DeptMemberList', () => {
     // only 11 members out of 15 members are having true = 11 active
     expect(element).toHaveTextContent("List of Members (11 Active)"); 
     
-
+    // expect element to have Kevin, Don, Woo
     expect(element).toHaveTextContent("Kevin");
     expect(element).toHaveTextContent("Don");
     expect(element).toHaveTextContent("Woo");
@@ -84,12 +88,12 @@ describe('DeptMemberList', () => {
   test('Test pagination in deptMemberList', async() => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
 
-    const paginationElement = element.querySelector('.pagination'); 
+    const paginationElement = element.querySelector('.pagination'); // find pagination
     expect(paginationElement).toBeInTheDocument();
 
-    const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a');
+    const nextPageButton = element.querySelector('.pagination .next a') || element.querySelector('.pagination li:last-child a'); // find next page button
     await act(async () => {
-      fireEvent.click(nextPageButton);
+      fireEvent.click(nextPageButton); // simulate clicking next button
     });
 
     await waitFor(() => { // now show only page 2 contents
@@ -105,9 +109,9 @@ describe('DeptMemberList', () => {
   test('Test search bar in department member list', async() => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
-    const searchInput = screen.getByPlaceholderText('Search member'); 
+    const searchInput = screen.getByPlaceholderText('Search member'); // find search box with place holder 'Search member'
     await act(async () => {
-      fireEvent.change(searchInput, { target: { value: 'Jest' }});
+      fireEvent.change(searchInput, { target: { value: 'Jest' }}); // search Jest
     });
 
     // Search by name Jest, only 1 row, data related jest will show up
@@ -127,7 +131,7 @@ describe('DeptMemberList', () => {
   test('Testing sort button for name', async () => {
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
   
-    const sortButtons = document.querySelectorAll('.sort-button');
+    const sortButtons = document.querySelectorAll('.sort-button'); // find sort button 
   
     // click for ascending order
     await act(async () => {

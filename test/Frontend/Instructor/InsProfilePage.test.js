@@ -5,26 +5,26 @@ import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mocking axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
 beforeAll(() => {
-	global.alert = jest.fn();
+	global.alert = jest.fn(); // mock global alert function
 });
 
 afterAll(() => {
-	jest.restoreAllMocks();
+	jest.restoreAllMocks(); // restore all mocks to original state
 });
 
 describe('InsProfilePage', () => {
 	beforeEach(() => {
-		useAuth.mockReturnValue({
+		useAuth.mockReturnValue({ // mocking authToken for axios.get
 			authToken: { token: 'mocked-token' },
-			accountLogInType: 'instructor',
 		});
 
 		axios.get.mockResolvedValue({
-			data: {
+			data: { // mocking data with ubcid 18592831
 				name: 'Billy Guy',
 				ubcid: '18592831',
 				benchmark: '1300',
@@ -44,13 +44,13 @@ describe('InsProfilePage', () => {
 	});
 
 	test('Check if context shows correctly', async () => {
-    render(
+    render( // render InsProfilePage with url path ubcid 18593821 that mocked before
 			<MemoryRouter initialEntries={['/somepath?ubcid=18592831']}>
 				<InsProfilePage />
 			</MemoryRouter>
     );
 
-		await waitFor(() => {
+		await waitFor(() => { // waiting for axios.get to be called with correct parameter
 			expect(axios.get).toHaveBeenCalledWith(
 				"http://localhost:3001/api/instructorProfile",
 				expect.objectContaining({
@@ -62,7 +62,7 @@ describe('InsProfilePage', () => {
 			);
 		});
 
-		await waitFor(() => {
+		await waitFor(() => { // check if the profile content is rendered properly from mock data
 			const element = document.getElementById('profile-test-content');
 			expect(element).toHaveTextContent("Billy Guy's Profile");
 			expect(element).toHaveTextContent('Name: Billy Guy');

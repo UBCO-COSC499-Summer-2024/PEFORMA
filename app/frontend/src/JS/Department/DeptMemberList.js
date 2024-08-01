@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import { Download, ArrowUpDown } from 'lucide-react';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth, requestSort, sortItems, filterItems, getTermString } from '../common/utils.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, checkAccess, fetchWithAuth, requestSort, sortItems, filterItems, getTermString, downloadCSV } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptMemberList.css';
 
@@ -25,23 +21,26 @@ function useDeptMemberList() {
     const [allMemberData, setAllMemberData] = useState({ //only for export
         members: [{}]
     })
+    const [currentTerm, setCurrentTerm] = useState(''); // state for setting current term for csv import
     const [search, setSearch] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-    useEffect(() => {
+    // fetch all member lists and render
+    useEffect(() => { 
         const fetchData = async () => {
             try {
-                checkAccess(accountLogInType, navigate, 'department', authToken);
+                checkAccess(accountLogInType, navigate, 'department', authToken); // check access with log in type and current view
                 const data = await fetchWithAuth(`http://localhost:3001/api/allInstructors`, authToken, navigate);
                 setAllMemberData({ ...data, members: data.members})
-                const activeMembers = data.members.filter(member => member.status);
-                const filledMembers = fillEmptyItems(activeMembers, data.perPage);
-                setMemberData({
+                const activeMembers = data.members.filter(member => member.status); // will only going to use active member filtered by status
+                const filledMembers = fillEmptyItems(activeMembers, data.perPage); // fill with empty rows
+                setMemberData({ // set member data with filledMembers
                     members: filledMembers,
                     membersCount: activeMembers.length,
                     perPage: data.perPage,
                     currentPage: 1,
                 });
+                setCurrentTerm(getTermString(data.currentTerm)); // set currentTerm using getTermString, 20244 => 2024 Summer Term 2
             } catch (error) {
                 console.log('Error fetching members: ', error);
             }
@@ -50,10 +49,11 @@ function useDeptMemberList() {
         fetchData();
     }, [authToken, accountLogInType, navigate]);
 
+    // sort and filter on member list data. FillEmptyItems after filtering
     const sortedMembers = useMemo(() => sortItems(memberData.members, sortConfig), [memberData.members, sortConfig]);
     const filteredMembers = filterItems(sortedMembers, 'member', search);
     const filledFilteredMembers = fillEmptyItems(filteredMembers, memberData.perPage);
-    const currentMembers = currentItems(filledFilteredMembers, memberData.currentPage, memberData.perPage);
+    const currentMembers = currentItems(filledFilteredMembers, memberData.currentPage, memberData.perPage); // final state before render
 
     return {
         memberData,
@@ -62,32 +62,22 @@ function useDeptMemberList() {
         setSearch,
         sortConfig,
         setSortConfig,
-        currentMembers
+        currentMembers,
+        currentTerm
     }
 }
 
-function exportToPDF(members) {
-    const filteredMembers = members.members.filter(member => member.name); 
-    const doc = new jsPDF();
-    const termString = getTermString(20244); // members.currentTerm
-
-    doc.setFontSize(18);
-    doc.text(`List of Active Members (${termString})`, 14, 22);
-    doc.autoTable({
-        startY: 28,
-        head: [['#', 'Name', 'UBC ID', 'Service Role', 'Department', 'Email', 'Status']],
-        body: filteredMembers.map((member, index) => [
-            index + 1,
-            member.name,
-            member.ubcid,
-            Array.isArray(member.serviceRole) ? member.serviceRole.join(',\n') : member.serviceRole,
-            member.department,
-            member.email,
-            { content: member.status ? 'Active' : 'Inactive', styles: { textColor: member.status ? [0, 128, 0] : [255, 0, 0] } }
-        ]),
-    });
-    doc.save(`${termString} Department Member List.pdf`);
+function exportToCSV(members, currentTerm) {
+    const filteredMembers = members.members.filter(member => member.name); // filter out null rows
+    const headers = '#, Name, UBC ID, Service Role, Department, Email, Status\n'; // csv header
+    const csvContent = filteredMembers.reduce((acc, member, index) => { // generate csv content
+        const status = member.status ? 'Active' : 'Inactive';
+        const serviceRole = Array.isArray(member.serviceRole) ? member.serviceRole.join('; ') : member.serviceRole; // join roles for csv format
+        return acc + `${index + 1},${member.name},${member.ubcid},"${serviceRole}",${member.department},${member.email},${status}\n`; // table format
+    }, headers);
+    downloadCSV (csvContent, `${currentTerm} Members List.csv`) // download csv with content and file name
 }
+
 
 function DeptMemberList() {
     const {
@@ -97,19 +87,20 @@ function DeptMemberList() {
         setSearch,
         sortConfig,
         setSortConfig,
-        currentMembers
+        currentMembers,
+        currentTerm
     } = useDeptMemberList();
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Department" />
+            <SideBar sideBarType="Department" />
             <div className="container">
-            <CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); }} />
+            <TopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); }} />
 
                 <div className="member-list-main" id="dept-member-list-test-content">
                     <div className="subtitle-member">
                         List of Members ({memberData.membersCount} Active)
-                        <button className='icon-button' onClick={() => exportToPDF(allMemberData)}>
+                        <button className='icon-button' onClick={() => exportToCSV(allMemberData, currentTerm)}>
                             <Download size={20} color="black" />
                         </button>
                     </div>

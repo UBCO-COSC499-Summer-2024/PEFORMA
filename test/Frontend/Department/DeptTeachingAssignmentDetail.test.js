@@ -1,26 +1,25 @@
-import { fireEvent, render, waitFor, screen, act } from '@testing-library/react';
+import { fireEvent, render, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptTeachingAssignmentDetail from '../../../app/frontend/src/JS/Department/DeptTeachingAssignmentDetail';
 import { MemoryRouter, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mocking axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('react-router-dom', () => ({
 	...jest.requireActual('react-router-dom'),
-	useLocation: jest.fn(),
+	useLocation: jest.fn(), // mocking useLocation to receive state
 }));
 
 describe('DeptTeachingAssignmentDetail', () => {
 	let element;
-
+	// set beforeEach function to set up every run of test
 	beforeEach(async () => {
 		useAuth.mockReturnValue({
-			authToken: { token: 'mocked-token' },
-			profileId: { profileId: 'mocked-profileId' },
+			authToken: { token: 'mocked-token' }, // mocking authToken
 		});
-		useLocation.mockReturnValue({
+		useLocation.mockReturnValue({ // mocking data receiving from useLocation
 			state: {
 				selectedDivision: 'computer-science',
 				courses: [
@@ -90,13 +89,13 @@ describe('DeptTeachingAssignmentDetail', () => {
 			},
 		});
 		await act(async () => {
-			render(
-				<MemoryRouter>
+			render( // render DeptTeachingAssignmentDetail page
+				<MemoryRouter> 
 					<DeptTeachingAssignmentDetail />
 				</MemoryRouter>
 			);
 		});
-		element = document.getElementById('detail-teaching-assignment-test-content');
+		element = document.getElementById('detail-teaching-assignment-test-content'); // set element get by id from page
 	});
 
 	test('Testing rendering mock data in detail page using state', async () => {
@@ -116,7 +115,7 @@ describe('DeptTeachingAssignmentDetail', () => {
 		expect(element).toHaveTextContent('COSC 109');
 		expect(element).toHaveTextContent('COSC 210');
 
-		const select = screen.getByRole('combobox');
+		const select = screen.getByRole('combobox'); // find select module to change division
 
 		// switch to math division
 		await act(async () => {
@@ -143,7 +142,7 @@ describe('DeptTeachingAssignmentDetail', () => {
     expect(element).not.toHaveTextContent('COSC 109');
 	});
   test('Testing search functionality', async () => {
-    const searchInput = screen.getByRole('textbox');
+    const searchInput = screen.getByRole('textbox'); // find search input box
   
     await act(async () => { // search John Doe
       fireEvent.change(searchInput, { target: { value: 'John Doe' } });
@@ -154,7 +153,7 @@ describe('DeptTeachingAssignmentDetail', () => {
     expect(element).not.toHaveTextContent('Jane Smith');
   });
   test('Testing sorting functionality', async () => {
-    const sortButton = screen.getByText('Instructor').querySelector('.sort-button');
+    const sortButton = screen.getByText('Instructor').querySelector('.sort-button'); //find sort button under instructor
   
     // check order of row before click sort button
     expect(element).toHaveTextContent('John Doe');

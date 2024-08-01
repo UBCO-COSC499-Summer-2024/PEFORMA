@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../common/AuthContext';
+import ReactApexChart from 'react-apexcharts'; // external library for chart
 
-function DeptPerformancePieChart() {
-	const navigate = useNavigate();
-	const { authToken } = useAuth();
-	const [score, setScore] = useState({
+import { fetchWithAuth } from '../../common/utils';
+
+// custom hook for fetching department performance data
+function useDeptPerformancePieChart( authToken, navigate ) {
+	const [score, setScore] = useState({ // format of chart
 		series: [],
 		options: {
 			chart: {
@@ -36,35 +34,33 @@ function DeptPerformancePieChart() {
 		},
 	});
 
-	useEffect(() => {
+	useEffect(() => { // fetch data when authToken changes
 		const fetchData = async () => {
 			try {
-				if (!authToken) {
-					navigate('/Login');
-					return;
+				const data = await fetchWithAuth('http://localhost:3001/api/deptPerformance', authToken, navigate);
+				if (data) {
+					setScore((prevState) => ({ // set score data
+						...prevState,
+						series: data.series,
+						options: {
+							...prevState.options,
+							labels: data.labels,
+						},
+					}));
 				}
-				const res = await axios.get('http://localhost:3001/api/deptPerformance', {
-					headers: { Authorization: `Bearer ${authToken.token}` },
-				});
-				return res.data;
 			} catch (error) {
-				console.error('Error fetching data: ', error);
-				return null;
+				console.error('Error fetching data:', error);
 			}
 		};
-		fetchData().then((data) => {
-			if (data) {
-				setScore((prevState) => ({
-					...prevState,
-					series: data.series,
-					options: {
-						...prevState.options,
-						labels: data.labels,
-					},
-				}));
-			}
-		});
-	}, []);
+		fetchData();
+	}, [authToken, navigate]);
+
+	return score; // return score state data 
+}
+
+// main component to render a department performance pie chart
+function DeptPerformancePieChart( authToken, navigate ) {
+	const score = useDeptPerformancePieChart( authToken, navigate ); // use custom hook for performance pie chart
 
 	return (
 		<div className="App">
