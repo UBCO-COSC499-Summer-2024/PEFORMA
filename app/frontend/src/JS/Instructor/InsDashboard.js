@@ -21,7 +21,7 @@ function Dashboard() {
 				return;
 			}
 			try {
-				checkAccess(accountLogInType, navigate, 'instructor');
+				checkAccess(accountLogInType, navigate, 'instructor', authToken);
 
 			} catch (error) {
 				console.error('Failed to fetch account type', error);

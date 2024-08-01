@@ -14,7 +14,7 @@ function Dashboard() {
 	useEffect(() => {
 		const checkAuth = async () => {
 			try {
-				checkAccess(accountLogInType, navigate, 'department');
+				checkAccess(accountLogInType, navigate, 'department', authToken);
 
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
@@ -80,7 +80,7 @@ function Dashboard() {
 							<div className="cardDesc">Create a new course, service role, import files</div>
 						</div>
 					</Link>
-					<Link to={'/DeptDataEntry'}>
+					<Link to={'/DeptSEIPage'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
 								<div className="cardTitle">SEI Data Entry</div>
