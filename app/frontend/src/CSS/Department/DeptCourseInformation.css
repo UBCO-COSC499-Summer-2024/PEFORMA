@@ -22,10 +22,6 @@
     width: 66%;
 }
 
-.courseinfo-main .assignmentInfo {
-    margin-left: 0.5em;
-}
-
 .bold {
     font-weight: bold;
 }
@@ -145,18 +141,9 @@
 }
 
 .coursehistory .assign-button {
-    background-color: var(--darkestishGrey);
-    border: 1px solid var(--black);
-    color: var(--black);
-    height: 3em;
-    width: 15em;
-    text-align: left;
-    font-weight: normal;
-    font-size: large;
-    transition: background-color 0.1s;
-    margin: 1em 0 1em 0;
+    margin-left: 0.5em;
+    width: 12em;
 }
-
 
 .back-to-prev-button {
     background-color: var(--blue); 
