@@ -128,24 +128,13 @@ function useDataEntryComponent() {
 			try {
 				// Ensure account type is correct
 				checkAccess(accountLogInType, navigate, 'department', authToken);
-				const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN;
-				const url = 'http://localhost:3001/api/instructors';
-				const res = await axios.get(url, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				const data = res.data;
-				const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
 				divisions[4].code = "N/A";
 				divisions[4].label = "N/A";
-				setInstructorData({ ...data, instructors: filledInstructors });
 			} catch (error) {
-				console.error('Error occurs when fetching people.\nDetail message:\n', error);
+				console.error('Error', error);
 			}
 		};
 		fetchData();
-
 	}, []);
 	return {
 		selection, setSelection,

@@ -1,71 +1,52 @@
 import React, { useState, useReducer } from 'react';
 import ReactPaginate from 'react-paginate';
 import '../CSS/Department/AssignInstructorModal.css';
+import { handlePageClick, currentItems, filterItems } from './common/utils';
 
-
-const AssignInstructorsModal = (props, instructorData) => {
-    let i = 0;
+const AssignInstructorsModal = (props) => {
     const [search, setSearch] = useState('');
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const [, reactUpdate] = useReducer(i => i + 1, 0);
     const onSearch = (newSearch) => {
         setSearch(newSearch);
         props.setInstructorData(prevState => ({ ...prevState, currentPage: 1 }));
       };
-      const filteredInstructors = props.instructorData.instructors.filter(instructor =>
-        (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
-        (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
-      );
-      const currentInstructors = filteredInstructors.slice(
-        (props.instructorData.currentPage - 1) * props.instructorData.perPage,
-        props.instructorData.currentPage * props.instructorData.perPage
-      );
-      const toggleInstructorAssigned = (id, assign) => {
-        let button = document.getElementById(id);
-         for (let i = 0; i<props.instructorData.instructorCount;i++) {
-             if (props.instructorData.instructors[i].id === id) {
-                 if (!assign) {
-                     props.instructorData.instructors[i].assigned = true;
-                     setSearch(search);
-                     forceUpdate();
-                 } else {
-                     props.instructorData.instructors[i].assigned = false;
-                     setSearch(search);
-                     forceUpdate();
-                 }
-                 
-             }
-         }
-         
+
+      const filteredInstructors = filterItems(props.instructorData.instructors, "instructor", search);
+
+      const currentInstructors = currentItems(filteredInstructors, props.instructorData.currentPage, props.instructorData.perPage);
+
+      const toggleInstructorAssigned = (id) => {
+        props.setInstructorData(prevData => ({
+            ...prevData,
+            instructors: prevData.instructors.map(instructor => 
+                instructor.id === id ? { ...instructor, assigned: !instructor.assigned } : instructor
+            )
+        }));
+        reactUpdate();
      };
      const pageCount = Math.ceil(props.instructorData.instructorCount / props.instructorData.perPage);
-     const handlePageClick = (data) => {
-        props.setInstructorData(prevState => ({
-          ...prevState,
-          currentPage: data.selected + 1
-        }))
-      };
+
     return (<div className="modal-overlay">
         <div className="assignModal" data-testid="assignModal">
             <div className='assignModalTop'>
                 <div className="modalTitle">Assign <span className='bold'>Instructor(s)</span></div>
-                <button className="close-button" onClick={()=>props.handleCloseInstructorModal(false)}>X</button>
+                <button className="close-button" data-testid="close-button" onClick={()=>props.handleCloseInstructorModal(false, props.closeModalVars)}>X</button>
             </div>
             <input type="text" placeholder="Search for instructors to assign" onChange={e => onSearch(e.target.value)} />
             <table>
                 <tbody>
-                    {currentInstructors.map(instructor => {
-                        i++;
+                    {currentInstructors.map((instructor, index) => {
                         if (instructor.id == null) {
-                            return (<tr key={i} className="instructor-item">
+                            return (<tr key={index} className="instructor-item">
                                 <td></td><td></td>
                                 <td></td>
                             </tr>);
                         }
                         return (
-                        <tr key={i} className="instructor-item">
+                        <tr key={index} className="instructor-item">
                             <td className='bold'>{instructor.name}</td><td>UBC ID: {instructor.id}</td>
                             <td>
-                                <button id={instructor.id} className={"bold "+(instructor.assigned?"remove":"add")} onClick={() => toggleInstructorAssigned(instructor.id, instructor.assigned)}>
+                                <button id={instructor.id} className={"bold "+(instructor.assigned?"remove":"add")} onClick={() => toggleInstructorAssigned(instructor.id)}>
                                     {instructor.assigned ? 'Remove' : 'Add'}
                                 </button>
                             </td>
@@ -84,7 +65,7 @@ const AssignInstructorsModal = (props, instructorData) => {
                                 pageCount={pageCount}
                                 marginPagesDisplayed={3}
                                 pageRangeDisplayed={0}
-                                onPageChange={handlePageClick}
+                                onPageChange={(data)=>handlePageClick(data, props.setInstructorData)}
                                 containerClassName={'pagination'}
                                 activeClassName={'active'}
                             />
@@ -93,7 +74,7 @@ const AssignInstructorsModal = (props, instructorData) => {
                 </tfoot>
             </table>
             
-            <button className="save-button" onClick={()=>props.handleCloseInstructorModal(true)}>Save</button>
+            <button className="save-button" data-testid="modalsave-button" onClick={()=>props.handleCloseInstructorModal(true, props.closeModalVars)}>Save</button>
         </div>
     </div>);
 }
