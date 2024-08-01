@@ -58,13 +58,28 @@ describe('getCourseHistory', () => {
                 rows: [{
                     avgScore: 4.25
                 }]
-            }); // Third query
+            }) // Third query
+            .mockResolvedValueOnce({
+                rows: [{exists: true}]
+            }) // Fourth query
+            .mockResolvedValueOnce({
+                rows: [
+                    {
+                        full_name: 'TA Name',
+                        email: 'ta@example.com',
+                        term: '202301',
+                        UBCId: '12345678'
+                    }
+                ]
+            }); // Fifth query
 
         const result = await getCourseHistory(req);
 
         expect(pool.query).toHaveBeenNthCalledWith(1, expect.any(String), [1]);
         expect(pool.query).toHaveBeenNthCalledWith(2, expect.any(String), [1, '202301']);
         expect(pool.query).toHaveBeenNthCalledWith(3, expect.any(String), [1]);
+        expect(pool.query).toHaveBeenNthCalledWith(4, expect.any(String), [1, '202301']);
+        expect(pool.query).toHaveBeenNthCalledWith(5, expect.any(String), [1, '202301']);
 
         expect(result).toEqual({
             currentPage: 1,
@@ -77,6 +92,7 @@ describe('getCourseHistory', () => {
             courseDescription: 'Course Description',
             division: 'Computer Science',
             avgScore: 4,
+            exists: true,
             history: [
                 {
                     instructorID: 1,
@@ -85,16 +101,30 @@ describe('getCourseHistory', () => {
                     term: '1',
                     score: 4.5,
                     term_num: '202201',
-                    ubcid: '12345678'
+                    ubcid: '12345678',
+                    enrollment: undefined,
+                    location: undefined,
+                    meetingPattern: undefined
                 },
                 {
                     instructorID: 2,
                     instructorName: 'Jane Smith',
                     session: '2022W',
                     term: '2',
-                    score: 4.0,
+                    score: 4,
                     term_num: '202202',
-                    ubcid: '87654321'
+                    ubcid: '87654321',
+                    enrollment: undefined,
+                    location: undefined,
+                    meetingPattern: undefined
+                }
+            ],
+            tainfo: [
+                {
+                    taname: 'TA Name',
+                    taemail: 'ta@example.com',
+                    taUBCId: '12345678',
+                    taterm: '202301'
                 }
             ]
         });
@@ -117,3 +147,4 @@ describe('getCourseHistory', () => {
         expect(console.error).toHaveBeenCalledWith('Database query error:', expect.any(Error));
     });
 });
+
