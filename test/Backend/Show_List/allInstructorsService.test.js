@@ -1,12 +1,25 @@
-// allInstructorsService.test.js
 const { getAllInstructors } = require('../../../app/backend/services/ShowList/allInstructorsService.js');
 const pool = require('../../../app/backend/db/index.js');
+const { getLatestTerm } = require('../../../app/backend/services/latestTerm.js');
+const { getLatestYear } = require('../../../app/backend/services/latestYear.js');
 const faker = require('faker');
 
-// Mock the database pool
+// Mock the database pool and getLatestTerm
 jest.mock('../../../app/backend/db/index.js', () => {
   return {
     query: jest.fn(),
+  };
+});
+
+jest.mock('../../../app/backend/services/latestTerm.js', () => {
+  return {
+    getLatestTerm: jest.fn(),
+  };
+});
+
+jest.mock('../../../app/backend/services/latestYear.js', () => {
+  return {
+    getLatestYear: jest.fn(),
   };
 });
 
@@ -31,6 +44,11 @@ const generateRandomInstructors = (count) => {
 };
 
 describe('getAllInstructors', () => {
+  beforeAll(() => {
+    getLatestTerm.mockResolvedValue('202301'); // Mock a valid term
+    getLatestYear.mockResolvedValue('2023'); // Mock a valid year
+  });
+
   it('should return data successfully', async () => {
     // Generate random mock data
     const mockData = generateRandomInstructors(5);  // Generate 5 random instructors
