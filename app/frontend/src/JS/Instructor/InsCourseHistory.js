@@ -41,7 +41,8 @@ function CourseHistory() {
 			const data = res.data;
 			const filledEntries = fillEmptyEntries(data.history, data.perPage);
 			setHistoryData({ ...data, history: filledEntries });
-			setCurrentInstructor(getCurrentInstructor(data));
+			data.latestTerm = getCurrentTerm();
+			setCurrentInstructor(data.history.filter((entry)=>entry.term_num == data.latestTerm));
 			setNumInstructors(data.history.length);
 		};
 		fetchData();
@@ -58,7 +59,25 @@ function CourseHistory() {
 		}
 		return filledEntries;
 	};
-
+	const getCurrentTerm = () => {
+		const now = new Date();
+		let year = now.getFullYear();
+		const month = now.getMonth() + 1; // getMonth() returns 0-11
+		let term;
+	
+		if (month >= 9 && month <= 12) { // Sep-Dec Winter Term 1 -> T1
+		  term = `${year}1`; } 
+		else if (month >=1 && month <= 4){//Jan-Apr Winter Term 2 -> T2
+		  year -= 1;
+		  term = `${year}2`; }
+		else if (month >=5 && month <= 6){// May-Jun Summer Term 1 -> T3
+		  year -= 1;
+		  term = `${year}3`; }
+		else if (month >=7 && month <= 8){// Jul-Aug Summer Term 2 -> T4
+		  year -= 1;
+		  term = `${year}4`; }
+		return term;
+	  };
 
 	const handlePageClick = (data) => {
 		setHistoryData((prevState) => ({
