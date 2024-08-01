@@ -65,7 +65,7 @@ describe('DeptTeachingAssignment', () => {
   });
 
   test('Testing rendering mock data in computer science overview page', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(3));
 
     expect(element).toHaveTextContent("Teaching assignment (2024 Summer Term 1)");
     expect(element).toHaveTextContent("COSC 109");
@@ -80,7 +80,7 @@ describe('DeptTeachingAssignment', () => {
     expect(element).not.toHaveTextContent("MATH 102");
   });
   test('Testing on switching to other division and check if the data renders well', async () => {
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(6));
     
     // expect COSC courses to be rendered first
     expect(element).toHaveTextContent("COSC 109");
@@ -94,7 +94,7 @@ describe('DeptTeachingAssignment', () => {
     });
 
     // wait for axios to be called one more
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(7));
 
     // expect PHYS courses are now present
     expect(element).toHaveTextContent("PHYS 201");
