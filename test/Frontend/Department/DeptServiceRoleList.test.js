@@ -1,12 +1,17 @@
-import {fireEvent, render, waitFor } from '@testing-library/react';
+import {fireEvent, render, waitFor, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptServiceRoleList from '../../../app/frontend/src/JS/Department/DeptServiceRoleList';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
+import * as utils from '../../../app/frontend/src/JS/common/utils';
 
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
+jest.mock('../../../app/frontend/src/JS/common/utils', () => ({
+  ...jest.requireActual('../../../app/frontend/src/JS/common/utils'),
+  downloadCSV: jest.fn(),
+}));
 
 describe('DeptServiceRoleList', () => {
   let element; 
@@ -17,7 +22,7 @@ describe('DeptServiceRoleList', () => {
 		});
     axios.get.mockImplementation(() => 
 			Promise.resolve({
-				data: {"currentPage":1, "perPage": 10, "rolesCount":13,
+				data: {"currentPage":1, "perPage": 10, "rolesCount":13, currentTerm: 20244,
           roles:[
             { "id": 1, "name": "Undergrad Advisor", "department": "Testing 1", "description":"Some random testing", "status":true},
             { "id": 2, "name": "Grad Service Roller", "department":"C", "description":"Testing hello", "status":true},
@@ -110,7 +115,8 @@ describe('DeptServiceRoleList', () => {
 
       expect(element).toHaveTextContent("Role 5");
     })
-  })
+  });
+
   test('Testing filledRoles function is working', async () => {
     const nextPageButton = element.querySelector('.pagination .next a'); 
     fireEvent.click(nextPageButton);
@@ -123,5 +129,35 @@ describe('DeptServiceRoleList', () => {
       const isFilledSecondPage = element.querySelectorAll('tbody tr');
       expect(isFilledSecondPage.length).toBe(10);
     })
-  })
+  });
+
+  test('Test export functionality', async () => {
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(10));
+
+    // Mock current term
+    const mockCurrentTerm = '2024 Summer Term 2';
+
+    // Find and click the export button using its class name
+    const exportButton = screen.getByTestId('download-button');
+    fireEvent.click(exportButton);
+   
+    // Check if downloadCSV was called with the correct arguments
+    expect(utils.downloadCSV).toHaveBeenCalledWith(
+      '"#", "Role", "Department", "Description", "Status"\n' +
+        '1, Undergrad Advisor, Testing 1, Some random testing, Active\n' +
+        '2, Grad Service Roller, C, Testing hello, Active\n' +
+        '3, Role 3, Dept 3, Description 3, Active\n' +
+        '4, Role 4, Dept 4, Description 4, Active\n' +
+        '5, Role 5, Dept 5, Description 5, Active\n' +
+        '6, Role 6, Dept 6, Description 6, Inactive\n' +
+        '7, Role 7, Dept 7, Description 7, Active\n' +
+        '8, Role 8, Dept 8, Description 8, Active\n' +
+        '9, Role 9, Dept 9, Description 9, Inactive\n' +
+        '10, Role 10, Dept 10, Description 10, Active\n' +
+        '11, Role 11, Dept 11, Description 11, Active\n' +
+        '12, Role 12, Dept 12, Description 12, Inactive\n' +
+        '13, Role 13, Dept 13, Description 13, Inactive\n',
+      `${mockCurrentTerm} Service Roles List.csv`
+    );
+  });
 });
