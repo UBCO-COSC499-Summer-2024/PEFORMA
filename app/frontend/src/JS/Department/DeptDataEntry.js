@@ -126,9 +126,8 @@ function useDataEntryComponent() {
 
 		const fetchData = async () => {
 			try {
-				const numericAccountType = Number(accountLogInType);
-  // Ensure account type is correct
-		checkAccess(accountLogInType, navigate, 'department', authToken);
+				// Ensure account type is correct
+				checkAccess(accountLogInType, navigate, 'department', authToken);
 				const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN;
 				const url = 'http://localhost:3001/api/instructors';
 				const res = await axios.get(url, {
