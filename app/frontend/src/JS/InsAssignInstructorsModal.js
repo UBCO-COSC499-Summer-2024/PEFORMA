@@ -30,7 +30,7 @@ const AssignInstructorsModal = (props) => {
         <div className="assignModal" data-testid="assignModal">
             <div className='assignModalTop'>
                 <div className="modalTitle">Assign <span className='bold'>Instructor(s)</span></div>
-                <button className="close-button" data-testid="close-button" onClick={()=>props.handleCloseInstructorModal(false)}>X</button>
+                <button className="close-button" data-testid="close-button" onClick={()=>props.handleCloseInstructorModal(false, props.closeModalVars)}>X</button>
             </div>
             <input type="text" placeholder="Search for instructors to assign" onChange={e => onSearch(e.target.value)} />
             <table>
@@ -74,7 +74,7 @@ const AssignInstructorsModal = (props) => {
                 </tfoot>
             </table>
             
-            <button className="save-button" data-testid="modalsave-button" onClick={()=>props.handleCloseInstructorModal(true)}>Save</button>
+            <button className="save-button" data-testid="modalsave-button" onClick={()=>props.handleCloseInstructorModal(true, props.closeModalVars)}>Save</button>
         </div>
     </div>);
 }

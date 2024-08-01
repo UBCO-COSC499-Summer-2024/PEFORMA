@@ -1,7 +1,7 @@
-import {act, render, screen} from '@testing-library/react';
+import {act, getByTestId, render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
-import InsRoleInformation from '../../../app/frontend/src/JS/Instructor/InsRoleInformation';
+import DeptRoleInformation from '../../../app/frontend/src/JS/Instructor/InsRoleInformation';
 import {MemoryRouter} from "react-router-dom";
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
