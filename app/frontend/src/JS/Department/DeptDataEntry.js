@@ -123,8 +123,29 @@ function useDataEntryComponent() {
 	const [monthlyHours, setMonthlyHours] = useState({ january: 0, february: 0, march: 0, april: 0, may: 0, june: 0, july: 0, august: 0, september: 0, october: 0, november: 0, december: 0 });
 	const [showFileUploadModal, setShowFileUploadModal] = useState(false);
 	useEffect(() => {
-		// Ensure account type is correct
-		checkAccess(accountLogInType, navigate, 'department', authToken);
+
+		const fetchData = async () => {
+			try {
+				// Ensure account type is correct
+				checkAccess(accountLogInType, navigate, 'department', authToken);
+				const token = localStorage.getItem('token') || process.env.DEFAULT_ACTIVE_TOKEN;
+				const url = 'http://localhost:3001/api/instructors';
+				const res = await axios.get(url, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+				const data = res.data;
+				const filledInstructors = fillEmptyInstructors(data.instructors, data.perPage);
+				divisions[4].code = "N/A";
+				divisions[4].label = "N/A";
+				setInstructorData({ ...data, instructors: filledInstructors });
+			} catch (error) {
+				console.error('Error occurs when fetching people.\nDetail message:\n', error);
+			}
+		};
+		fetchData();
+
 	}, []);
 	return {
 		selection, setSelection,
