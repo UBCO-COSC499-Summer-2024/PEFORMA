@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useState, useMemo } from 'react';
 
-export const fillEmptyItems = (items, perPage) => {
+// fill items into array to for table format
+export const fillEmptyItems = (items, perPage) => { // fill up to 10's digit number of empty items
   const filledItems = [...items];
   const currentCount = items.length;
   const fillCount = perPage - (currentCount % perPage);
@@ -13,6 +14,7 @@ export const fillEmptyItems = (items, perPage) => {
   return filledItems;
 };
 
+// handles page click event for pagination and update current page
 export const handlePageClick = (data, setStateFunction) => {
   setStateFunction((prevState) => ({
       ...prevState,
@@ -20,10 +22,12 @@ export const handlePageClick = (data, setStateFunction) => {
   }));
 };
 
+// calculates total number of pages for pagination
 export const pageCount = (totalItems, itemsPerPage) => {
   return Math.ceil(totalItems / itemsPerPage);
 };
 
+// get item for the current page based on the pagination
 export const currentItems = (items, currentPage, itemsPerPage) => {
   return items.slice(
       (currentPage - 1) * itemsPerPage,
@@ -31,10 +35,12 @@ export const currentItems = (items, currentPage, itemsPerPage) => {
   );
 };
 
+// resets current page to 1 when search changes
 export const handleSearchChange = (setStateFunction) => {
   setStateFunction(prevState => ({ ...prevState, currentPage: 1 }));
 };
 
+// check user access based on accountLogInType and accessView
 export const checkAccess = (accountLogInType, navigate, accessView, authToken) => {
   // if (!authToken) {
   //   alert('No Access, Redirecting to login');
@@ -58,6 +64,7 @@ export const checkAccess = (accountLogInType, navigate, accessView, authToken) =
   }
 };
 
+// maps division code to divisio name
 export const getDivisionName = (division) => {
   const divisionNames = {
     'computer-science': 'Computer Science',
@@ -68,7 +75,7 @@ export const getDivisionName = (division) => {
   return divisionNames[division] || '';
 };
 
-//////////////////  testing refactoring with useEffect ///////////////////////////
+// handles unauthroized error by redirecting to login page
 export const handleUnauthorizedError = (error, navigate) => {
   if (error.response && error.response.status === 401) {
     localStorage.removeItem('authToken');
@@ -78,11 +85,12 @@ export const handleUnauthorizedError = (error, navigate) => {
   }
 };
 
+// fetchs data with auth and handles error
 export const fetchWithAuth = async (url, authToken, navigate, params = null) => {
   const config = {
     headers: { Authorization: `Bearer ${authToken.token}` },
   };
-  if (params) {
+  if (params) { // if params given set parms
     config.params = params;
   }
   try {
@@ -124,12 +132,14 @@ export const getCurrentInstructor = (historyData) => {
   return currentInstructor;
 }
 
+// resets form to initial form state
 export const handleCancelForm = (setFormData, initialFormData) => {
   setFormData(initialFormData);
 };
 
+// filter items based on item type and search
 export const filterItems = (items, itemType, search) => {
-  if (itemType === 'member') {
+  if (itemType === 'member') { // if type is member, filtering based on the logic
     return items.filter((item) =>
       (item.ubcid?.toString().toLowerCase().includes(search.toLowerCase()) || false) ||
       (item.name?.toLowerCase().includes(search.toLowerCase()) || false) ||
@@ -137,17 +147,17 @@ export const filterItems = (items, itemType, search) => {
         ? item.serviceRole.some(role => role?.toLowerCase().includes(search.toLowerCase()))
         : (item.serviceRole?.toLowerCase().includes(search.toLowerCase()) || false))
     );
-  } else if (itemType === 'course') {
+  } else if (itemType === 'course') { // if type is course, filtering based on the logic
     return items.filter((item) =>
       (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
       (item.title?.toLowerCase() ?? '').includes(search.toLowerCase())
     );
-  } else if (itemType === 'role') {
+  } else if (itemType === 'role') { // if type is role, filtering based on the logic
     return items.filter((item)=>
       (item.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
       (item.department?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
     );
-  } else if (itemType === 'insCourse') {
+  } else if (itemType === 'insCourse') { // if type is insCourse, filtering based on the logic
     return items.filter((course) =>
       (course.id?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
       (course.title?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -157,7 +167,7 @@ export const filterItems = (items, itemType, search) => {
          instructor.toLowerCase().includes(search.toLowerCase())
        ))
     );
-  } else if (itemType === 'taCourse') { // teaching assignment courses search 
+  } else if (itemType === 'taCourse') { // // if type is taCourse, filtering based on the logic
     return items.filter((item)=>
       (item.instructor?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
       (item.courseCode?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -168,6 +178,7 @@ export const filterItems = (items, itemType, search) => {
   }
 };
 
+// sort items based on the sort configuration
 export const sortItems = (items, sortConfig) => {
   let sortableItems = [...items];
   if (sortConfig.key !== null) {
@@ -184,6 +195,7 @@ export const sortItems = (items, sortConfig) => {
   return sortableItems;
 };
 
+// set sort cinfiguration for the given key
 export const getCurrentTerm = () => {
   const now = new Date();
   let year = now.getFullYear();
@@ -212,7 +224,8 @@ export const requestSort = (sortConfig, setSortConfig, key) => {
   setSortConfig({ key, direction });
 };
 
-export const getTermString = (term) => {
+// converts a term code to a readable string
+export const getTermString = (term) => { // for example, 20244 is delivered in parameter
   const termStr = term.toString();
   const year = termStr.slice(0, -1);
   const termCode = termStr.slice(-1);
@@ -227,6 +240,7 @@ export const getTermString = (term) => {
   return `${year} ${termMap[termCode] || ''}`;
 };
 
+// filter courses based on the year level identifier and prefix
 export const filterYearLevelCourses = (courses, identifier, prefix) => {
   if (identifier === 'All') {
       return courses;
@@ -237,6 +251,7 @@ export const filterYearLevelCourses = (courses, identifier, prefix) => {
   }
 };
 
+// gets the current month's name
 export const getCurrentMonthName = () => {
 	const monthNames = [
 		'January',
@@ -255,6 +270,7 @@ export const getCurrentMonthName = () => {
 	return monthNames[new Date().getMonth()];
 };
 
+// toggles the status of an item and update the item status
 export const toggleStatus = async (authToken, item, newStatus, itemList, setItemList, endpoint) => {
   const updatedItem = { ...item, status: newStatus };
   const updatedItems = itemList.map((i) => (endpoint.includes('Member') ? item.ubcid === i.ubcid : item.id === i.id) ? updatedItem : i);
@@ -263,7 +279,7 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
   let listKey;
   let itemIdValue;
 
-  switch (true) {
+  switch (true) { // set idKey, listKey, idValue in different cases
     case endpoint.includes('Course'):
       itemIdKey = 'courseid';
       listKey = 'courses';
@@ -283,7 +299,7 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
       throw new Error('Unknown endpoint type');
   }
 
-  try {
+  try { // post status with idKey
     const response = await axios.post(
       `http://localhost:3001/api/${endpoint}`,
       {
@@ -400,11 +416,13 @@ export const UserIcon = ({ userName, profileId, size = 40, onClick }) => {
   }
 };
 
+// filter courses by division using divisionMap. COSC 101 -> COSC
 export const filterByDivision = (courses, division, divisionMap) => {
   const divisionPrefix = divisionMap[division];
   return courses.filter(course => course.courseCode && course.courseCode.startsWith(divisionPrefix));
 };
 
+// download a csv file
 export const downloadCSV = (csvContent, filename) => { 
   // generates a blob for csvContent
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -417,6 +435,7 @@ export const downloadCSV = (csvContent, filename) => {
   document.body.removeChild(link);
 }
 
+// submits form data to server and handles the response
 export const submitFormData = async (url, postData, authToken, initialFormData, setFormData, successMessage, errorMessageHandler) => {
   try {
       await axios.post(url, postData, {
