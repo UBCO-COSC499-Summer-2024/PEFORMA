@@ -7,10 +7,11 @@ import { CreateTopBar } from '../common/commonImports.js';
 import { checkAccess, fetchWithAuth, downloadCSV } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptSEIPage.css';
+import ImportModal from './DataImportImports/DeptImportModal.js';
+import { FaFileImport } from 'react-icons/fa';
 
 // export meeting to csv file
 function exportToCSV(selectedMeeting, selectedParticipants) {
-
   const headers = "Date,Time,Location,Title,Participants,Missing\n";
   const { label, participants } = selectedMeeting;
   const [date, time, location, title] = label.split(' | ');
@@ -75,7 +76,7 @@ function useDeptMeetingManagement() {
     const fetchMeetings = async () => {
       checkAccess(accountLogInType, navigate, 'department', authToken); // check access with logintype and authToken
       try {
-        const data = await fetchWithAuth('http://localhost:3001/meetings', authToken, navigate);
+        const data = await fetchWithAuth('http://localhost:3000/meetingData.json', authToken, navigate);
   
         const today = new Date(); // get todays date
         const threeDaysAgo = new Date(); // get 3 days agos date
@@ -122,13 +123,24 @@ function DeptMeetingManagement() {
     currentDateTime
   } = useDeptMeetingManagement();
 
+  const [showImportModal, setShowImportModal] = useState(false);
+
   return (
     <div className="dashboard">
       <CreateSideBar sideBarType="Department" />
       <div className='container'>
         <CreateTopBar />
         <div className='SEI-form' id='meeting-test-content'>
-          <h1>Meeting Management</h1>
+          <div className="form-header">
+            <h1 className='meeting-form-title'>Meeting Management</h1>
+            <button 
+              className="import-button" 
+              onClick={() => setShowImportModal(true)}
+              aria-label="Import data"
+            >
+              <FaFileImport className='import-icon'/>Import
+            </button>
+          </div>
           <form>
             <p className="current-date-time">Current Time: {currentDateTime}</p>
             <label>
@@ -164,6 +176,10 @@ function DeptMeetingManagement() {
           </form>
         </div>
       </div>
+      <ImportModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+      />
     </div>
   );
 }
