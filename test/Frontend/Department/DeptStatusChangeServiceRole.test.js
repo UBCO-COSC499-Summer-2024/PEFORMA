@@ -1,23 +1,28 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import DeptStatusChangeServiceRole from '../../../app/frontend/src/JS/Department/DeptStatusChangeServiceRole';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mocking axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn(),
+  useLocation: jest.fn(), // mocking useLocation to receive state
 }));
 
-jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
+// mocking sidebar
+jest.mock('../../../app/frontend/src/JS/common/SideBar.js', () => ({
   __esModule: true,
-  default: jest.fn(({ sideBarType }) => (
-    <div>{`Mock Sidebar ${sideBarType}`}</div>
-  )),
-  CreateTopBar: jest.fn(({ onSearch }) => (
+  default: jest.fn(() => <div>Mock Sidebar</div>),
+}));
+
+// mocking topbar for testing search function
+jest.mock('../../../app/frontend/src/JS/common/TopBar.js', () => ({
+  __esModule: true,
+  default: jest.fn(({ onSearch }) => (
     <div className="topbar-search">
       <input type="text" placeholder="Search member" onChange={e => onSearch(e.target.value)} />
       <div className="logout">Logout</div>
@@ -29,9 +34,8 @@ describe('DeptStatusChangeServiceRole', () => {
   let element; 
 
 	beforeEach(() => {
-		useAuth.mockReturnValue({
+		useAuth.mockReturnValue({ // mock authToken
 			authToken: { token: 'mocked-token' },
-      profileId: { profileId: 'mocked-profileId'}
 		});
 
     // Mock useLocation to return state with memberData
@@ -64,13 +68,13 @@ describe('DeptStatusChangeServiceRole', () => {
         }
       }
     });
-    axios.post.mockResolvedValue({ status: 200 });
-    render(
+    axios.post.mockResolvedValue({ status: 200 }); // set status to 200 for axios.post in order to test a succes case
+    render( // render DeptStatusChangeServiceRole
 			<MemoryRouter>
 				<DeptStatusChangeServiceRole />
 			</MemoryRouter>
 		);
-    element = document.getElementById('role-status-change-test-content');
+    element = document.getElementById('role-status-change-test-content'); // set element with id
 	});
 
   test('Testing rendering with mock data role data', async () => { 
@@ -178,14 +182,12 @@ describe('DeptStatusChangeServiceRole', () => {
       const toggleButton = memberRow.querySelector('button:nth-child(2)');
       expect(toggleButton.textContent).toContain('Inactive'); // expect its inactive button
 
-
       // Grad advisor has true, so active button should have disabled (it means button is not clickable)
       const activeButton = memberRow.querySelector('button.active-button');
       expect(activeButton).toBeDisabled();
 
       // Click the inactive button
       fireEvent.click(toggleButton);
-
     });
 
     await waitFor(() => {
@@ -206,6 +208,7 @@ describe('DeptStatusChangeServiceRole', () => {
               memberRow = row;
           }
       });
+      
       // deactive is requested, so inative button is not having disabled property making button unclickable
       const inactiveButton = memberRow.querySelector('button.inactive-button');
       expect(inactiveButton).toBeDisabled();

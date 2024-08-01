@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import { Edit, Download, ArrowUpDown } from 'lucide-react';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
-import { fillEmptyItems, handlePageClick, pageCount, currentItems, sortItems, requestSort, checkAccess, fetchWithAuth, getTermString } from '../common/utils.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
+import { fillEmptyItems, handlePageClick, pageCount, currentItems, sortItems, requestSort, checkAccess, fetchWithAuth, getTermString, downloadCSV } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptServiceRoleList.css';
 
+// custom hook for fetching service role list data
 function useServiceRoleList() {
     const { authToken, accountLogInType } = useAuth();
     const navigate = useNavigate();
@@ -22,58 +19,53 @@ function useServiceRoleList() {
         perPage: 10,
         currentPage: 1,
     });
-
-    const [activeRolesCount, setActiveRolesCount] = useState(0);
+    const [currentTerm, setCurrentTerm] = useState(''); // state for setting current term for csv import
+    const [activeRolesCount, setActiveRolesCount] = useState(0); // state for active role counts
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
-    useEffect(() => {
+    // fetch all roles and render
+    useEffect(() => { // fetch data when authToken and accountLogInType changes
         const fetchServiceRoles = async () => {
             try {
-                checkAccess(accountLogInType, 'department', navigate, authToken)
+                checkAccess(accountLogInType, 'department', navigate, authToken) // check access with loginType and view
                 const data = await fetchWithAuth('http://localhost:3001/api/service-roles', authToken, navigate);
                 const filledRoles = fillEmptyItems(data.roles, data.perPage);
-                setActiveRolesCount(filledRoles.filter(role => role.status).length);
-                setRoleData({ ...data, roles: filledRoles });
+                setActiveRolesCount(filledRoles.filter(role => role.status).length); // filter and set active roles count based on status
+                setRoleData({ ...data, roles: filledRoles }); // set roledata with filledRoles
+                setCurrentTerm(getTermString(data.currentTerm));  // set currentTerm using getTermString, 20244 => 2024 Summer Term 2
             } catch (error) {
                 console.error('Error fetching service roles:', error);
             }
         };
         fetchServiceRoles();
-    }, [authToken]);
+    }, [authToken, accountLogInType, navigate]);
 
+    // currentRoles will be updated every time user use sort function
     const sortedRoles = useMemo(() => sortItems(roleData.roles, sortConfig), [roleData.roles, sortConfig]);
     const currentRoles = currentItems(sortedRoles, roleData.currentPage, roleData.perPage);
-    return {
+
+    return { // return data that will be rendered
         roleData,
         setRoleData,
         activeRolesCount,
         sortConfig,
         setSortConfig,
-        currentRoles
+        currentRoles,
+        currentTerm
     };
 }
 
-function exportToPDF(roles) {
-    const filteredRoles = roles.filter(role => role.name);
-    const doc = new jsPDF();
-    const termString = getTermString(20244); //roles.currentTerm
-
-    doc.setFontSize(18);
-    doc.text(`List of Service Roles (${termString})`, 14, 22);
-    doc.autoTable({
-        startY: 28,
-        head: [['#', 'Role', 'Department', 'Description', 'Status']],
-        body: filteredRoles.map((role, index) => [
-            index + 1,
-            role.name,
-            role.department,
-            role.description,
-            { content: role.status ? 'Active' : 'Inactive', styles: { textColor: role.status ? [0, 128, 0] : [255, 0, 0] } }
-        ]),
-    });
-    doc.save(`${termString} Service Roles List.pdf`);
+function exportToCSV(roles, currentTerm) {
+    const filteredRoles = roles.filter(role => role.name); // filter only the valid ones
+    const headers = '"#", "Role", "Department", "Description", "Status"\n'; // csv header
+    const csvContent = filteredRoles.reduce((acc, role, index) => { // generate csv content
+        const status = role.status ? 'Active' : 'Inactive';
+        return acc + `${index + 1}, ${role.name.replace(/,/g, '')}, ${role.department}, ${role.description.replace(/,/g, '')}, ${status}\n`; // table format
+    }, headers);
+    downloadCSV(csvContent, `${currentTerm} Service Roles List.csv`); // download csv with content and file name
 }
 
+// main component to render a Service role list
 function ServiceRoleList() {
     const {
         roleData,
@@ -81,14 +73,15 @@ function ServiceRoleList() {
         activeRolesCount,
         sortConfig,
         setSortConfig,
-        currentRoles
-    } = useServiceRoleList();
+        currentRoles,
+        currentTerm
+    } = useServiceRoleList(); // use custom hook for serviceRoleList
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Department" />
+            <SideBar sideBarType="Department" />
             <div className="container">
-                <CreateTopBar />
+                <TopBar />
 
                 <div className="srlist-main" id="dept-service-role-list-test-content">
                     <div className="subtitle-role">
@@ -99,7 +92,7 @@ function ServiceRoleList() {
                                     <Edit size={20} color="black" />
                                 </button>
                             </Link>
-                            <button className='icon-button' onClick={() => exportToPDF(roleData.roles)}>
+                            <button className='icon-button' onClick={() => exportToCSV(roleData.roles, currentTerm)}>
                                 <Download size={20} color="black" />
                             </button>
                         </div>

@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, toggleStatus } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
+// handler function when course status change, update data
 function handleStatusChange(authToken, course, newStatus, courseData, setCourseData) {
 	toggleStatus(authToken, course, newStatus, courseData, setCourseData, 'DeptStatusChangeCourse');
 };
@@ -16,32 +15,33 @@ function handleStatusChange(authToken, course, newStatus, courseData, setCourseD
 function DeptStatusChangeCourse() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
-	const location = useLocation();
+	const location = useLocation(); // access current navigation location
 	const [deptCourseList, setDeptCourseList] = useState(
 		location.state.deptCourseList || { courses: [], coursesCount: 0, perPage: 10, currentPage: 1 }
-	);
+	); // state management for course list
   const [search, setSearch] = useState('');
 
-
+	// fetch data when accountLogInType, location.state and authToken changes
 	useEffect(() => {
 		checkAccess(accountLogInType, navigate, 'department', authToken);
 		if (location.state.deptCourseList) {
 				const filledCourses = fillEmptyItems(
 				location.state.deptCourseList.courses,
 				location.state.deptCourseList.perPage
-			);
+			); // fill empty rows for table format
 			setDeptCourseList({ ...location.state.deptCourseList, courses: filledCourses, currentPage: 1 });
 		}
 	}, [accountLogInType, navigate, location.state, authToken]);
 
+	// filter based on the search and set the result to currentCourses
 	const filteredCourses = filterItems(deptCourseList.courses, 'course', search);
 	const currentCourses = currentItems(filteredCourses, deptCourseList.currentPage, deptCourseList.perPage);
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Department" />
+			<SideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
+				<TopBar searchListType={'DeptCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDeptCourseList);}} />
 
 				<div className="clist-main" id="course-status-controller-test-content">
 					<div className="subtitle-course">List of Courses ({deptCourseList.coursesCount} in Database)

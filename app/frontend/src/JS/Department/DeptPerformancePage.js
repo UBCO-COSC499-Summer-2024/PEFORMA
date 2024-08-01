@@ -1,86 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import { Download } from 'lucide-react';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import DeptDivisionTable from './PerformanceImports/DeptDivisionTable.js';
-import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
-import { checkAccess, getCurrentMonthName, fetchWithAuth } from '../common/utils.js';
+import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
+import { checkAccess, getCurrentMonthName, fetchWithAuth, getTermString, downloadCSV } from '../common/utils.js';
 import '../../CSS/Department/DeptPerformancePage.css';
 
+// helper function to format the time based on the left over minutes
 function formatTime(minutes) {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = Math.round(minutes % 60);
     return `${hours} hours ${remainingMinutes} minutes`;
 }
 
-function getReadableColumns(columns) {
-    const columnMap = {
-        courseCode: 'Course Code',
-        rank: 'Rank',
-        score: 'Score',
-        name: 'Name',
-        shortage: 'Shortage'
-    };
-    return columns.map(col => columnMap[col] || col.charAt(0).toUpperCase() + col.slice(1));
+function convertToCSV(data) {
+    // if data is empty then return empty string
+    if (!data || data.length === 0 || !data[0]) { 
+        return '';
+    }
+    const array = [Object.keys(data[0])].concat(data);
+    return array.map(it => {
+        return Object.values(it).toString();
+    }).join('\n');
 }
 
+function exportAllToCSV(data, currentTerm) {
+    // create csv files for each tables
+    const coscCSV = convertToCSV(data.cosc);
+    const mathCSV = convertToCSV(data.math);
+    const physCSV = convertToCSV(data.phys);
+    const statCSV = convertToCSV(data.stat);
+    const benchmarkCSV = convertToCSV(data.benchmark.map(item => ({ name: item.name, shortage: formatTime(item.shortage) })));
+    const topInstructorsCSV = convertToCSV(data.leaderboard.top);
+    const bottomInstructorsCSV = convertToCSV(data.leaderboard.bottom);
 
-function mapDataWithIndex(data) {
-    return data.map((item, index) => ({
-        '#': index + 1,
-        ...item
-    }));
-}
-
-function addTable(doc, title, data, columns, yOffset, formatters = {}) {
-    doc.setFontSize(16);
-    doc.text(title, 14, yOffset);
-
-    const rankedData = mapDataWithIndex(data);
-    const readableColumns = getReadableColumns(columns);
-
-    doc.autoTable({
-        startY: yOffset + 10,
-        head: [['#', ...readableColumns]],
-        body: rankedData.map(item =>
-            ['#', ...columns].map(col =>
-                formatters[col] ? formatters[col](item[col]) : item[col]
-            )
-        ),
-    });
-    return doc.lastAutoTable.finalY + 20;
-}
-
-function exportAllToPDF(data) {
-    const doc = new jsPDF();
-    let yOffset = 10;
-
-    yOffset = addTable(doc, 'Computer Science Courses', data.cosc, ['courseCode', 'rank', 'score'], yOffset);
-    yOffset = addTable(doc, 'Mathematics Courses', data.math, ['courseCode', 'rank', 'score'], yOffset);
-    yOffset = addTable(doc, 'Physics Courses', data.phys, ['courseCode', 'rank', 'score'], yOffset);
-    yOffset = addTable(doc, 'Statistics Courses', data.stat, ['courseCode', 'rank', 'score'], yOffset);
-    
-    const currentMonth = getCurrentMonthName();
-    yOffset = addTable(doc, `Benchmark - ${currentMonth}`, data.benchmark, ['name', 'shortage'], yOffset, { shortage: formatTime });
-    
-    doc.addPage();
-    yOffset = 10;
-    yOffset = addTable(doc, 'Top 5 Instructors', data.leaderboard.top, ['name', 'score'], yOffset);
-    addTable(doc, 'Bottom 5 Instructors', data.leaderboard.bottom, ['name', 'score'], yOffset);
-
-    doc.save('department_performance_overview.pdf');
+    // make into one csv data file in order to generate the table and download
+    const allCSVData = `Computer Science Courses:\n${coscCSV}\n\n` + 
+        `Mathematics Courses:\n${mathCSV}\n\n` +
+        `Physics Courses:\n${physCSV}\n\n` +
+        `Statistics Courses:\n${statCSV}\n\n` +
+        `Benchmark - ${getCurrentMonthName()}:\n${benchmarkCSV}\n\n` +
+        `Top 5 Instructors:\n${topInstructorsCSV}\n\n` +
+        `Bottom 5 Instructors:\n${bottomInstructorsCSV}`;
+        
+    downloadCSV (allCSVData, `${currentTerm} Performance Overview.csv`) // download csv with content and file name
 }
 
 
 function usePerformanceDepartmentData() {
-    const navigate = useNavigate();
     const { authToken, accountLogInType } = useAuth();
+    const navigate = useNavigate();
     const [allData, setAllData] = useState({
         cosc: [],
         math: [],
@@ -89,11 +63,13 @@ function usePerformanceDepartmentData() {
         benchmark: [],
         leaderboard: { top: [], bottom: [] }
     });
+    const [currentTerm, setCurrentTerm] = useState(''); // state for setting current term for csv import
 
+    // fetch each division courses, benchmark and leaderboard and render it
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                checkAccess(accountLogInType, navigate, 'department', authToken);
+                checkAccess(accountLogInType, navigate, 'department', authToken); // check access with accountLogInType and authToken
                 const [cosc, math, phys, stat, benchmark, leaderboard] = await Promise.all([
                     fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=1`, authToken, navigate),
                     fetchWithAuth(`http://localhost:3001/api/coursePerformance?divisionId=2`, authToken, navigate),
@@ -102,8 +78,8 @@ function usePerformanceDepartmentData() {
                     fetchWithAuth(`http://localhost:3001/api/benchmark?currMonth=${new Date().getMonth() + 1}`, authToken, navigate),
                     fetchWithAuth(`http://localhost:3001/api/deptLeaderBoard`, authToken, navigate),
                 ]);
-
-                const sortedBenchmark = benchmark.people.sort((a, b) => b.shortage - a.shortage);
+                setCurrentTerm(getTermString(cosc.currentTerm)); // set currentTerm using getTermString, 20244 => 2024 Summer Term 2
+                const sortedBenchmark = benchmark.people.sort((a, b) => b.shortage - a.shortage); // sort benchmark based on the shortage, desending order (from many to less)
                 const newData = {
                     cosc: cosc.courses,
                     math: math.courses,
@@ -112,32 +88,37 @@ function usePerformanceDepartmentData() {
                     benchmark: sortedBenchmark,
                     leaderboard: leaderboard
                 };
-
-                setAllData(newData);
+                setAllData(newData); // set all relative datas into allData
             } catch (error) {
                 console.error('Error fetching all data:', error);
             }
         };
-
         fetchAllData();
     }, [authToken, accountLogInType, navigate]);
 
-    return allData;
+    return { // return allData to render, currentTerm to exportToCSV
+        allData, 
+        currentTerm
+    };
 }
 
+// main component to render each tables data
 function PerformanceDepartmentPage() {
-    const allData = usePerformanceDepartmentData();
+    const {
+        allData, 
+        currentTerm
+    } = usePerformanceDepartmentData(); // use custom hook for datas
 
     return (
         <div className="dp-container">
-            <CreateSideBar sideBarType="Department" />
+            <SideBar sideBarType="Department" /> 
 
             <div className="container">
-                <CreateTopBar />
+                <TopBar />
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
-                        <button className='icon-button' onClick={() => exportAllToPDF(allData)}>
+                        <button className='icon-button' onClick={() => exportAllToCSV(allData, currentTerm)}>
                             <Download size={20} color="black" />
                         </button>
                     </div>

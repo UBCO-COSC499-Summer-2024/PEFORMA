@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { fillEmptyItems, handlePageClick, pageCount, currentItems, handleSearchChange, checkAccess, filterItems, toggleStatus} from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 
+// handler function when member status change, update data
 function handleStatusChange(authToken, member, newStatus, memberData, setMemberData) {
   toggleStatus(authToken, member, newStatus, memberData, setMemberData, 'adminStatusChangeMembers');
 };
@@ -23,21 +22,22 @@ function AdminStatusChangeMember() {
   const [search, setSearch] = useState('');
 
 	useEffect(() => {
-		checkAccess(accountLogInType, navigate, 'admin', authToken); 		
+		checkAccess(accountLogInType, navigate, 'admin', authToken); // check access with accountLogInType and authToken if valid
 		if (location.state.memberData) {
-				const filledMembers = fillEmptyItems(location.state.memberData.members, location.state.memberData.perPage);
-				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 });
-		}
+				const filledMembers = fillEmptyItems(location.state.memberData.members, location.state.memberData.perPage); // fill empty rows
+				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 }); // set member data with filled rows member list
+		} // state management for member list 
 	}, [accountLogInType, navigate, location.state.memberData]);
 
+	// filter member by search function and set all results into filteredMembers and to currentMembers for render
 	const filteredMembers = filterItems(memberData.members, 'member', search);
   const currentMembers = currentItems(filteredMembers, memberData.currentPage, memberData.perPage);
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Admin" />
+			<SideBar sideBarType="Admin" />
 			<div className="container">
-				<CreateTopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); handleSearchChange(setMemberData); }} />
+				<TopBar searchListType={'DeptMemberList'} onSearch={(newSearch) => { setSearch(newSearch); handleSearchChange(setMemberData); }} />
 
 				<div className="srlist-main" id="admin-status-controller-test-content">
 					<div className="subtitle-member">

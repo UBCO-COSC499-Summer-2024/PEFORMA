@@ -1,28 +1,16 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AdminStatusChangeMember from '../../../app/frontend/src/JS/Admin/AdminStatusChangeMember';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
+// mocking axios
 jest.mock('axios');
 jest.mock('../../../app/frontend/src/JS/common/AuthContext');
-jest.mock('react-router-dom', () => ({
+jest.mock('react-router-dom', () => ({ // mocking useLocation for receiving state
   ...jest.requireActual('react-router-dom'),
   useLocation: jest.fn(),
-}));
-
-jest.mock('../../../app/frontend/src/JS/common/commonImports', () => ({
-  __esModule: true,
-  default: jest.fn(({ sideBarType }) => (
-    <div>{`Mock Sidebar ${sideBarType}`}</div>
-  )),
-  CreateTopBar: jest.fn(({ onSearch }) => (
-    <div className="topbar-search">
-      <input type="text" placeholder="Search member" onChange={e => onSearch(e.target.value)} />
-      <div className="logout">Logout</div>
-    </div>
-  )),
 }));
 
 describe('AdminStatusChangeMember', () => {
@@ -31,7 +19,6 @@ describe('AdminStatusChangeMember', () => {
 	beforeEach(() => {
 		useAuth.mockReturnValue({
 			authToken: { token: 'mocked-token' },
-      profileId: { profileId: 'mocked-profileId'}
 		});
 
     // Mock useLocation to return state with memberData
@@ -61,7 +48,7 @@ describe('AdminStatusChangeMember', () => {
         }
       }
     });
-    axios.post.mockResolvedValue({ status: 200 });
+    axios.post.mockResolvedValue({ status: 200 }); // set status to 200 for axios.post
     render(
 			<MemoryRouter>
 				<AdminStatusChangeMember />
@@ -71,8 +58,8 @@ describe('AdminStatusChangeMember', () => {
 	});
 
   test('Testing rendering with mock data member list', async () => { 
-    // expect to be 0 times called because its using location.state to receive datas 0 times of calling axios
-    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(0));
+    // expect to be 1 time called because its using location.state to receive data 0 time of calling axios (except topbar is calling 1 axios.get)
+    await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
 		await waitFor(() => {
       expect(element).toHaveTextContent("List of Members (15 in Database)")
       // expect only first page members to be in screen
@@ -128,8 +115,8 @@ describe('AdminStatusChangeMember', () => {
 
       // Click the active button
       fireEvent.click(toggleButton);
-      
     });
+
     await waitFor(() => {
       // Request kim status changing to true
       expect(axios.post).toHaveBeenCalledWith(
@@ -138,6 +125,7 @@ describe('AdminStatusChangeMember', () => {
           { headers: { Authorization: 'Bearer mocked-token' } }
       );
     });
+
     await waitFor(() => {
       // Check if the status has been updated
       const rows = element.querySelectorAll('tbody tr');
@@ -165,6 +153,7 @@ describe('AdminStatusChangeMember', () => {
               memberRow = row;
           }
       });
+
       // expect row Su contains right information
       expect(memberRow.textContent).toContain('Su');
       expect(memberRow.textContent).toContain('23095734');
@@ -176,14 +165,12 @@ describe('AdminStatusChangeMember', () => {
       const toggleButton = memberRow.querySelector('button:nth-child(2)');
       expect(toggleButton.textContent).toContain('Inactive'); // expect its inactive button
   
-
       // Su has true, so active button should have disabled (it means button is not clickable)
       const activeButton = memberRow.querySelector('button.active-button');
       expect(activeButton).toBeDisabled();
 
       // Click the inactive button
       fireEvent.click(toggleButton);
-      
     });
   
     await waitFor(() => {
@@ -204,6 +191,7 @@ describe('AdminStatusChangeMember', () => {
               memberRow = row;
           }
       });
+      
       // deactive is requested, so inative button is not having disabled property making button unclickable
       const inactiveButton = memberRow.querySelector('button.inactive-button');
       expect(inactiveButton).toBeDisabled();
