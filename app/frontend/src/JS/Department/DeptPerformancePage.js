@@ -103,7 +103,6 @@ function PerformanceDepartmentPage() {
 
     const handleTermChange = (newTerm) => {
         setCurrentTerm(newTerm);
-        console.log(currentTerm);
     };
 
     return (
