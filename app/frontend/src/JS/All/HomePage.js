@@ -13,6 +13,8 @@ function HomePage () {
     navigate('/Login');
   };
 
+  
+
   return (
       <div className="home-container">
         <header className="homepage-header">
