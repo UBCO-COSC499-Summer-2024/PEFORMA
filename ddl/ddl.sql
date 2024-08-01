@@ -14,12 +14,12 @@ DROP TABLE IF EXISTS "AccountType" CASCADE;
 DROP TABLE IF EXISTS "ServiceRoleByYear" CASCADE;
 DROP TABLE IF EXISTS "SurveyQuestionResponse" CASCADE;
 DROP TABLE IF EXISTS "Image" CASCADE;
-
 DROP TABLE IF EXISTS "CourseEvaluation" CASCADE;
 DROP TABLE IF EXISTS "CurrentTerm" CASCADE;
 DROP TABLE IF EXISTS "TaAssignmentTable" CASCADE;
 DROP TABLE IF EXISTS "MeetingLog" CASCADE;
 DROP TABLE IF EXISTS "MeetingAttendance" CASCADE;
+
 -- Create divisions
 CREATE TABLE "Division" (
   "divisionId"  SERIAL PRIMARY KEY,
@@ -191,6 +191,7 @@ CREATE TABLE "CourseEvaluation" (
   "SEIQ3"    double precision,
   "SEIQ4"    double precision,
   "SEIQ5"    double precision,
+  "SEIQ6"    double precision,
   "retentionRate" double precision,
   "failRate"   double precision,
   "enrolRate"double precision,
@@ -219,9 +220,10 @@ CREATE TABLE "TaAssignmentTable" (
 -- Create Meeting Log Table
 CREATE TABLE "MeetingLog" (
   "meetingId"     SERIAL PRIMARY KEY,
+  "meetingTitle"  VARCHAR(50),
   "location"      VARCHAR(30),
   "date"          DATE,
-  "time"          TIME,
+  "time"          TIME
 );
 ALTER SEQUENCE "MeetingLog_meetingId_seq" RESTART WITH 1;
 

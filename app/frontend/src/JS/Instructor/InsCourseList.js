@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import divisions from '../common/divisions.js';
-import '../common/divisions.js';
-import '../common/AuthContext.js';
-import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems } from '../common/utils.js';
+import { fillEmptyItems, currentItems, handlePageClick, checkAccess, pageCount, handleSearchChange, fetchWithAuth, filterItems, UserIcon } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Instructor/InsCourseList.css';
 
+// custom hook for fetching course data
 function useInsCourseList() {
     const { authToken, accountLogInType } = useAuth();
-    const params = new URLSearchParams(window.location.search);
-    const divisionCode = params.get('division') || 'COSC';
+    const params = new URLSearchParams(window.location.search); // parse url query parameters
+    const divisionCode = params.get('division') || 'COSC'; // get division parameter from url, default setting is COSC
 
     const navigate = useNavigate();
-    const divisionHandler = (e) => {
-        navigate('?division=' + e.target.value);
+    const divisionHandler = (e) => { // handler for changing division
+        navigate('?division=' + e.target.value); // when user click to different division, navigate to it
     };
 
     const [divisionData, setDivisionData] = useState({
@@ -32,10 +30,10 @@ function useInsCourseList() {
     useEffect(() => {
         const fetchCourses = async () => {
           try {
-            checkAccess(accountLogInType, navigate, 'instructor', authToken);
+            checkAccess(accountLogInType, navigate, 'instructor', authToken); // check access with accountloginType and authToken is valid
             const data = await fetchWithAuth(`http://localhost:3001/api/courses?division=${divisionCode}`, authToken, navigate);
-            const filledCourses = fillEmptyItems(data.courses, data.perPage);
-            setDivisionData({ ...data, courses: filledCourses });
+            const filledCourses = fillEmptyItems(data.courses, data.perPage); // fill empty items to keep the format of the table
+            setDivisionData({ ...data, courses: filledCourses }); // update state with fetched data
           } catch (error) {
             console.error('Error fetching courses:', error);
           }
@@ -43,8 +41,9 @@ function useInsCourseList() {
         fetchCourses();
       }, [authToken, divisionCode, accountLogInType, navigate]);
 
+    // filter the course based on a filterItem function in utils.js and set it into filteredCourses
     const filteredCourses = filterItems(divisionData.courses, 'insCourse', search);
-    const currentCourses = currentItems(filteredCourses, divisionData.currentPage, divisionData.perPage);
+    const currentCourses = currentItems(filteredCourses, divisionData.currentPage, divisionData.perPage); // set filteredCourses as our currentItems to render on page
 
     return {
         divisionCode,
@@ -56,6 +55,7 @@ function useInsCourseList() {
     }
 }
 
+// main component for rendering the list of courses
 function InsCourseList() {
     const {
         divisionCode,
@@ -64,13 +64,13 @@ function InsCourseList() {
         setDivisionData,
         setSearch,
         currentCourses
-    } = useInsCourseList();
+    } = useInsCourseList(); // use custom hook to fetch data
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType="Instructor" />
+            <SideBar sideBarType="Instructor" />
             <div className="container">
-                <CreateTopBar searchListType={'InsCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDivisionData);}} />
+                <TopBar searchListType={'InsCourseList'} onSearch={(newSearch) => {setSearch(newSearch);handleSearchChange(setDivisionData);}} />
 
                 <div className="courselist-main">
                     <header className="ListTitle" id="dropdown-test-content">
@@ -108,11 +108,10 @@ function InsCourseList() {
                                                     course.instructor.map((instructor, index) => (
                                                         <React.Fragment key={course.profileid[index]}>
                                                             <div className="instructor-container">
-                                                                <img 
-                                                                    className="instructor-image"
-                                                                    src={`http://localhost:3001/api/image/${course.profileid[index]}`} 
-                                                                    alt={instructor}
-                                                                    onError={(e) => { e.target.onerror = null }}
+                                                                <UserIcon 
+                                                                    userName={instructor}
+                                                                    profileId={course.profileid[index]}
+                                                                    size={30}
                                                                 />
                                                                 <Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
                                                                     {instructor}
@@ -123,11 +122,10 @@ function InsCourseList() {
                                                     ))
                                                 ) : (
                                                     <div className="single-instructor">
-                                                        <img 
-                                                            className="instructor-image"
-                                                            src={`http://localhost:3001/api/image/${course.profileid}`} 
-                                                            alt={course.instructor}
-                                                            onError={(e) => { e.target.onerror = null; e.target.src = '/path/to/default/image.jpg' }}
+                                                        <UserIcon 
+                                                            userName={course.instructor}
+                                                            profileId={course.profileid}
+                                                            size={10}
                                                         />
                                                         <Link to={`/InsProfilePage?ubcid=${course.ubcid}`}>
                                                             {course.instructor}

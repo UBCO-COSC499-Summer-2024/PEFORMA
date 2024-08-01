@@ -1,370 +1,266 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 import '../../CSS/All/UserProfile.css';
 
-const ProfilePage = () => {
+// Custom hook to fetch and manage user profile data
+function useUserProfileData() {
     const { accountType, accountLogInType, profileId, authToken } = useAuth();
     const navigate = useNavigate();
-    const fileInputRef = useRef(null);
-    const [profileData, setProfileData] = useState({
-        UBCId: 0,
-        current_courses: [],
-        current_service_roles: [],
-        division: 0,
-        email: "",
-        name: "",
-        office_location: "",
-        performance_score: 0,
-        phone_number: "",
-        profileId: 1,
-        working_hours: 0,
-        benchmark: 0,
-        image_type: "",
-        image_data: ""
+    const [allData, setAllData] = React.useState({
+        profileData: {
+            UBCId: 0,
+            current_courses: [],
+            current_service_roles: [],
+            division: 0,
+            email: "",
+            name: "",
+            office_location: "",
+            performance_score: 0,
+            phone_number: "",
+            profileId: 1,
+            working_hours: 0,
+            benchmark: 0,
+            image_type: "",
+            image_data: ""
+        },
+        isEditing: false,
+        editedData: {},
+        tempImage: null
     });
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedData, setEditedData] = useState({});
-    const [tempImage, setTempImage] = useState(null);
 
-    const isInstructor = accountType.includes(3);
-    const MAX_FILE_SIZE = 600 * 1024; // 600 KB
-
-    useEffect(() => {
+    React.useEffect(() => {
         fetchUserProfileData();
     }, [profileId, authToken]);
 
-    const fetchUserProfileData = async () => {
-        try {
-            if (!authToken) {
-                navigate('/Login');
-                return;
-            }
-            const res = await axios.get(`http://localhost:3001/api/profile/${profileId}`, {
-                headers: { Authorization: `Bearer ${authToken.token}` },
-            });
+    function fetchUserProfileData() {
+        if (!authToken) {
+            navigate('/Login');
+            return;
+        }
+        
+        axios.get(`http://localhost:3001/api/profile/${profileId}`, {
+            headers: { Authorization: `Bearer ${authToken.token}` },
+        })
+        .then(function(res) {
             const data = res.data;
-            setProfileData({
+            const updatedData = {
                 ...data,
                 image_data: data.image_data || '',
                 image_type: data.image_type || 'jpeg'
-            });
-            setEditedData({
-                ...data,
-                image_data: data.image_data || '',
-                image_type: data.image_type || 'jpeg'
-            });
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                localStorage.removeItem('authToken');
-                navigate('/Login');
-            } else {
-                console.error('Error fetching user profile:', error.response ? error.response.data : error.message);
+            };
+            setAllData(prevData => ({
+                ...prevData,
+                profileData: updatedData,
+                editedData: updatedData
+            }));
+        })
+        .catch(handleFetchError);
+    }
+
+    function handleFetchError(error) {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('authToken');
+            navigate('/Login');
+        } else {
+            console.error('Error fetching user profile:', error.response ? error.response.data : error.message);
+        }
+    }
+
+    function handleEdit() {
+        setAllData(prevData => ({
+            ...prevData,
+            isEditing: true,
+            editedData: { ...prevData.profileData },
+            tempImage: null
+        }));
+    }
+
+    function handleCancel() {
+        setAllData(prevData => ({
+            ...prevData,
+            isEditing: false,
+            editedData: { ...prevData.profileData },
+            tempImage: null
+        }));
+    }
+
+    function handleSave() {
+        if (!validateUserInput(allData.editedData)) return;
+
+        const formData = new FormData();
+        Object.keys(allData.editedData).forEach(function(key) {
+            formData.append(key, allData.editedData[key]);
+        });
+        if (allData.tempImage) {
+            formData.append('image', allData.tempImage);
+        }
+
+        axios.put(
+            `http://localhost:3001/api/profile/${profileId}`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${authToken.token}`,
+                    'Content-Type': 'multipart/form-data'
+                },
             }
-        }
-    };
+        )
+        .then(function() {
+            window.location.reload(); // Full page refresh
+        })
+        .catch(function(error) {
+            console.error('Error updating profile:', error);
+            alert("An error occurred while updating the profile. Please try again.");
+        });
+    }
 
-    const handleEdit = () => {
-        setIsEditing(true);
-        setEditedData({ ...profileData });
-        setTempImage(null);
-    };
-
-    const validateName = (name) => {
-        if (!name.trim().includes(' ')) {
-            alert("Please enter both first and last name separated by a space.");
-            return false;
-        }
-        return true;
-    };
-
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert("Please enter a valid email address.");
-            return false;
-        }
-        return true;
-    };
-
-    const validatePhoneNumber = (phoneNumber) => {
-        const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
-        if (!phoneRegex.test(phoneNumber)) {
-            alert("Please enter a valid phone number in the format xxx-xxx-xxxx.");
-            return false;
-        }
-        return true;
-    };
-
-    const handleSave = async () => {
-		if (!validateName(editedData.name) || 
-			!validateEmail(editedData.email) || 
-			!validatePhoneNumber(editedData.phone_number)) {
-			return;
-		}
-	
-		try {
-			const formData = new FormData();
-			Object.keys(editedData).forEach(key => {
-				formData.append(key, editedData[key]);
-			});
-			if (tempImage) {
-				formData.append('image', tempImage);
-			}
-			await axios.put(
-				`http://localhost:3001/api/profile/${profileId}`,
-				formData,
-				{
-					headers: {
-						Authorization: `Bearer ${authToken.token}`,
-						'Content-Type': 'multipart/form-data'
-					},
-				}
-			);
-			window.location.reload(); // Full page refresh
-		} catch (error) {
-			console.error('Error updating profile:', error);
-			alert("An error occurred while updating the profile. Please try again.");
-		}
-	};
-
-    const handleCancel = () => {
-        setIsEditing(false);
-        setEditedData({ ...profileData });
-        setTempImage(null);
-    };
-
-    const handleInputChange = (e) => {
+    function handleInputChange(e) {
         const { name, value } = e.target;
-        setEditedData({ ...editedData, [name]: value });
-    };
+        setAllData(prevData => ({
+            ...prevData,
+            editedData: { ...prevData.editedData, [name]: value }
+        }));
+    }
 
-    const handleImageClick = () => {
-        if (isEditing) {
-            fileInputRef.current.click();
-        }
-    };
-
-    const handleImageChange = (e) => {
+    function handleImageChange(e) {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+            const MAX_FILE_SIZE = 600 * 1024; // 600 KB
 
             if (file.size > MAX_FILE_SIZE) {
                 alert(`Image file is too large. Please choose an image smaller than 600 KB.`);
                 return;
             }
 
-            setTempImage(file);
+            setAllData(prevData => ({ ...prevData, tempImage: file }));
 
             const reader = new FileReader();
-            reader.onloadend = () => {
+            reader.onloadend = function() {
                 const result = reader.result;
                 const base64Data = result.split(',')[1];
-                setEditedData(prev => ({
-                    ...prev,
-                    image_data: base64Data,
-                    image_type: file.type.split('/')[1]
+                setAllData(prevData => ({
+                    ...prevData,
+                    editedData: {
+                        ...prevData.editedData,
+                        image_data: base64Data,
+                        image_type: file.type.split('/')[1]
+                    }
                 }));
             };
             reader.readAsDataURL(file);
         }
-    };
-
-    const renderNewlineSeparatedText = (text) => {
-        if (typeof text === 'string' && text.trim() !== '') {
-            return text.split('\n').map((item, index) => (
-                <p key={index} className="text-item">{item}</p>
-            ));
-        } else if (Array.isArray(text) && text.length > 0) {
-            return text.map((item, index) => (
-                <p key={index} className="text-item">{item}</p>
-            ));
-        } else {
-            return <p className="text-item">No data available</p>;
-        }
-    };
-
-    const renderFieldContent = (content) => {
-        if (content === null || content === undefined || content === '' || content === 0) {
-            return <p>No data available</p>;
-        }
-        return <p>{content}</p>;
-    };
-
-	// Function to determine sideBarType based on accountLogInType
-    const getSideBarType = () => {
-        if (accountLogInType === 1 || accountLogInType === 2) {
-            return "Department";
-        } else if (accountLogInType === 3) {
-            return "Instructor";
-        } else if (accountLogInType === 4) {
-            return "Admin";
-        }
-    };
-
-    if (!profileData) {
-        return <div>Loading...</div>;
     }
+
+    return {
+        ...allData,
+        handleEdit,
+        handleCancel,
+        handleSave,
+        handleInputChange,
+        handleImageChange,
+        isInstructor: accountType.includes(3),
+        accountLogInType
+    };
+}
+
+// Validation functions
+function validateUserInput(data) {
+    return validateName(data.name) && 
+           validateEmail(data.email) && 
+           validatePhoneNumber(data.phone_number);
+}
+
+function validateName(name) {
+    if (!name.trim().includes(' ')) {
+        alert("Please enter both first and last name separated by a space.");
+        return false;
+    }
+    return true;
+}
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+    }
+    return true;
+}
+
+function validatePhoneNumber(phoneNumber) {
+    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+        alert("Please enter a valid phone number in the format xxx-xxx-xxxx.");
+        return false;
+    }
+    return true;
+}
+
+// Utility functions
+function renderNewlineSeparatedText(text) {
+    if (typeof text === 'string' && text.trim() !== '') {
+        return text.split('\n').map(function(item, index) {
+            return <p key={index} className="text-item">{item}</p>;
+        });
+    } else if (Array.isArray(text) && text.length > 0) {
+        return text.map(function(item, index) {
+            return <p key={index} className="text-item">{item}</p>;
+        });
+    } else {
+        return <p className="text-item">No data available</p>;
+    }
+}
+
+function renderFieldContent(content) {
+    if (content === null || content === undefined || content === '' || content === 0) {
+        return <p>No data available</p>;
+    }
+    return <p>{content}</p>;
+}
+
+// Function to determine sideBarType based on accountLogInType
+function getSideBarType(accountLogInType) {
+    if (accountLogInType === 1 || accountLogInType === 2) return "Department";
+    if (accountLogInType === 3) return "Instructor";
+    if (accountLogInType === 4) return "Admin";
+}
+
+// Main component
+function ProfilePage() {
+    const fileInputRef = useRef(null);
+    const allData = useUserProfileData();
+
+    if (!allData.profileData) return <div>Loading...</div>;
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType={getSideBarType()} />
+            <CreateSideBar sideBarType={getSideBarType(allData.accountLogInType)} />
             <div className="container">
                 <CreateTopBar />
                 <div className="user-profilepage">
                     <div className="user-profilecard">
                         <div className="card-header">
                             <h2>My Profile</h2>
-                            {isInstructor && (
+                            {allData.isInstructor && (
                                 <div className="performance-score">
                                     <div>Performance Score</div>
-                                    <div>{profileData.performance_score || 'No data available'}</div>
+                                    <div>{allData.profileData.performance_score || 'No data available'}</div>
                                 </div>
                             )}
                         </div>
                         <div className="card-content">
-                            <div className="user-profileheader">
-                                <div className="user-profileheader-section">
-                                    <div className="user-profileimage-container" onClick={handleImageClick}>
-                                        {editedData.image_data ? (
-                                            <img
-                                                src={`data:image/${editedData.image_type};base64,${editedData.image_data}`}
-                                                alt="Profile"
-                                                className="user-profileimage"
-                                            />
-                                        ) : (
-                                            <div className="no-image">
-                                                <span>No Image</span>
-                                            </div>
-                                        )}
-                                        {isEditing && (
-                                            <div className="image-overlay">
-                                                <span>Click to upload</span>
-                                            </div>
-                                        )}
-                                        <input
-                                            type="file"
-                                            ref={fileInputRef}
-                                            onChange={handleImageChange}
-                                            className="hidden-input"
-                                            accept="image/*"
-                                        />
-                                    </div>
-                                    <div className="user-profileinfo">
-                                        {isEditing ? (
-                                            <input
-                                                name="name"
-                                                value={editedData.name}
-                                                onChange={handleInputChange}
-                                                className="edit-input name-input"
-                                                placeholder="First Last"
-                                            />
-                                        ) : (
-                                            <h3>{profileData.name || 'No data available'}</h3>
-                                        )}
-                                        {isEditing ? (
-                                            <input
-                                                name="email"
-                                                value={editedData.email}
-                                                onChange={handleInputChange}
-                                                className="edit-input email-input"
-                                                placeholder="email@example.com"
-                                            />
-                                        ) : (
-                                            <p className="email">{profileData.email || 'No data available'}</p>
-                                        )}
-                                        {profileData.UBCId !== 0 && profileData.UBCId !== null && (
-                                            <p className="ubc-id">UBC ID: {profileData.UBCId}</p>
-                                        )}
-                                    </div>
-                                </div>
-                                {isEditing ? (
-                                    <div className="edit-buttons">
-                                        <button className="user-profile-save-button" onClick={handleSave}>
-                                            Save
-                                        </button>
-                                        <button className="cancel-button" onClick={handleCancel}>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <button className="user-profile-edit-button" onClick={handleEdit}>
-                                        Edit
-                                    </button>
-                                )}
-                            </div>
-
-                            <div className={isInstructor ? "user-profiledetails-grid" : ""}>
-                                <div className="personal-info">
-                                    <h4>Personal Information</h4>
-                                    <hr />
-                                    <div className={isInstructor ? "info-grid" : "info-row"}>
-                                        <div>
-                                            <h4>Office Location</h4>
-                                            {isEditing ? (
-                                                <input
-                                                    name="office_location"
-                                                    value={editedData.office_location}
-                                                    onChange={handleInputChange}
-                                                    className="edit-input"
-                                                />
-                                            ) : renderFieldContent(profileData.office_location)}
-                                        </div>
-                                        <div>
-                                            <h4>Phone Number</h4>
-                                            {isEditing ? (
-                                                <input
-                                                    name="phone_number"
-                                                    value={editedData.phone_number}
-                                                    onChange={handleInputChange}
-                                                    className="edit-input"
-                                                    placeholder="xxx-xxx-xxxx"
-                                                />
-                                            ) : renderFieldContent(profileData.phone_number)}
-                                        </div>
-                                        {(profileData.division !== 0 && profileData.division !== null) && (
-                                            <div>
-                                                <h4>Division</h4>
-                                                {renderFieldContent(profileData.division)}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                                {isInstructor && (
-                                    <div className="teaching-service">
-                                        <div className="teaching">
-                                            <h4>Teaching</h4>
-                                            <hr />
-                                            <div className="info-grid">
-                                                <div>
-                                                    <h4>Current Course(s)</h4>
-                                                    <div>{renderNewlineSeparatedText(profileData.current_courses)}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="service">
-                                            <h4>Service</h4>
-                                            <hr />
-                                            <div className="info-grid">
-                                                <div>
-                                                    <h4>Current Service Role(s)</h4>
-                                                    <div>{renderNewlineSeparatedText(profileData.current_service_roles)}</div>
-                                                </div>
-                                                <div>
-                                                    <h4>Hours Completed</h4>
-                                                    <p>
-                                                        {profileData.working_hours !== 0 || profileData.benchmark !== 0
-                                                            ? `${profileData.working_hours} / ${profileData.benchmark} Hours`
-                                                            : 'No data available'}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <ProfileHeader 
+                                allData={allData}
+                                fileInputRef={fileInputRef}
+                            />
+                            <div className={allData.isInstructor ? "user-profiledetails-grid" : ""}>
+                                <PersonalInfo allData={allData} />
+                                {allData.isInstructor && (
+                                    <TeachingServiceInfo profileData={allData.profileData} />
                                 )}
                             </div>
                         </div>
@@ -373,6 +269,165 @@ const ProfilePage = () => {
             </div>
         </div>
     );
-};
+}
+
+// ProfileHeader component
+function ProfileHeader({ allData, fileInputRef }) {
+    function handleImageClick() {
+        if (allData.isEditing) {
+            fileInputRef.current.click();
+        }
+    }
+
+    return (
+        <div className="user-profileheader">
+            <div className="user-profileheader-section">
+                <div className="user-profileimage-container" onClick={handleImageClick}>
+                    {allData.editedData.image_data ? (
+                        <img
+                            src={`data:image/${allData.editedData.image_type};base64,${allData.editedData.image_data}`}
+                            alt="Profile"
+                            className="user-profileimage"
+                        />
+                    ) : (
+                        <div className="no-image">
+                            <span>No Image</span>
+                        </div>
+                    )}
+                    {allData.isEditing && (
+                        <div className="image-overlay">
+                            <span>Click to upload</span>
+                        </div>
+                    )}
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={allData.handleImageChange}
+                        className="hidden-input"
+                        accept="image/*"
+                    />
+                </div>
+                <div className="user-profileinfo">
+                    {allData.isEditing ? (
+                        <input
+                            name="name"
+                            value={allData.editedData.name}
+                            onChange={allData.handleInputChange}
+                            className="edit-input name-input"
+                            placeholder="First Last"
+                        />
+                    ) : (
+                        <h3>{allData.profileData.name || 'No data available'}</h3>
+                    )}
+                    {allData.isEditing ? (
+                        <input
+                            name="email"
+                            value={allData.editedData.email}
+                            onChange={allData.handleInputChange}
+                            className="edit-input email-input"
+                            placeholder="email@example.com"
+                        />
+                    ) : (
+                        <p className="email">{allData.profileData.email || 'No data available'}</p>
+                    )}
+                    {allData.profileData.UBCId !== 0 && allData.profileData.UBCId !== null && (
+                        <p className="ubc-id">UBC ID: {allData.profileData.UBCId}</p>
+                    )}
+                </div>
+            </div>
+            {allData.isEditing ? (
+                <div className="edit-buttons">
+                    <button className="user-profile-save-button" onClick={allData.handleSave}>
+                        Save
+                    </button>
+                    <button className="cancel-button" onClick={allData.handleCancel}>
+                        Cancel
+                    </button>
+                </div>
+            ) : (
+                <button className="user-profile-edit-button" onClick={allData.handleEdit}>
+                    Edit
+                </button>
+            )}
+        </div>
+    );
+}
+
+// PersonalInfo component
+function PersonalInfo({ allData }) {
+    return (
+        <div className="personal-info">
+            <h4>Personal Information</h4>
+            <hr />
+            <div className={allData.isInstructor ? "info-grid" : "info-row"}>
+                <div>
+                    <h4>Office Location</h4>
+                    {allData.isEditing ? (
+                        <input
+                            name="office_location"
+                            value={allData.editedData.office_location}
+                            onChange={allData.handleInputChange}
+                            className="edit-input"
+                        />
+                    ) : renderFieldContent(allData.profileData.office_location)}
+                </div>
+                <div>
+                    <h4>Phone Number</h4>
+                    {allData.isEditing ? (
+                        <input
+                            name="phone_number"
+                            value={allData.editedData.phone_number}
+                            onChange={allData.handleInputChange}
+                            className="edit-input"
+                            placeholder="xxx-xxx-xxxx"
+                        />
+                    ) : renderFieldContent(allData.profileData.phone_number)}
+                </div>
+                {(allData.profileData.division !== 0 && allData.profileData.division !== null) && (
+                    <div>
+                        <h4>Division</h4>
+                        {renderFieldContent(allData.profileData.division)}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+// TeachingServiceInfo component
+function TeachingServiceInfo({ profileData }) {
+    return (
+        <div className="teaching-service">
+            <div className="teaching">
+                <h4>Teaching</h4>
+                <hr />
+                <div className="info-grid">
+                    <div>
+                        <h4>Current Course(s)</h4>
+                        <div>{renderNewlineSeparatedText(profileData.current_courses)}</div>
+                    </div>
+                </div>
+            </div>
+            <div className="service">
+                <h4>Service</h4>
+                <hr />
+                <div className="info-grid">
+                    <div>
+                        <h4>Current Service Role(s)</h4>
+                        <div>{renderNewlineSeparatedText(profileData.current_service_roles)}</div>
+                    </div>
+                    <div>
+                        <h4>Hours Completed</h4>
+                        <p>
+                            {profileData.working_hours !== 0 || profileData.benchmark !== 0
+                                ? `${profileData.working_hours} / ${profileData.benchmark} Hours`
+                                : 'No data available'}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default ProfilePage;

@@ -11,7 +11,7 @@ useAuth.mockReturnValue({
   accountType: { accountType: 'mocked-accountType' },
 });
 
-const cardNum = 7;
+const cardNum = 8;
 test('Ensure all cards are listed', () => {
     render(<MemoryRouter><DeptDashboard /></MemoryRouter>);
     const cards = screen.getAllByRole("gridcell");

@@ -2,16 +2,16 @@ import React from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 import { getCurrentMonthName } from '../../common/utils.js';
 
-
+// function to format minutes into hours and minutes
 function formatTime(minutes) {
-	const totalMinutes = Math.round(minutes);
-	const hours = Math.floor(totalMinutes / 60);
-	const remainingMinutes = totalMinutes % 60;
+	const totalMinutes = Math.round(minutes); // round minutes
+	const hours = Math.floor(totalMinutes / 60); // calculate hours from total minutes
+	const remainingMinutes = totalMinutes % 60; // calculate remaining minutes
 
-	const hourText = hours === 1 ? 'Hour' : 'Hours';
-	const minuteText = remainingMinutes === 1 ? 'Minute' : 'Minutes';
+	const hourText = hours === 1 ? 'Hour' : 'Hours'; // determine unit for hours
+	const minuteText = remainingMinutes === 1 ? 'Minute' : 'Minutes'; // determine unit for minutes
 
-	if (hours > 0 && remainingMinutes > 0) {
+	if (hours > 0 && remainingMinutes > 0) { // return formatted time for each case
 		return `${hours} ${hourText} ${remainingMinutes} ${minuteText}`;
 	} else if (hours > 0) {
 		return `${hours} ${hourText}`;
@@ -20,8 +20,9 @@ function formatTime(minutes) {
 	}
 }
 
-function DeptBenchMark({ benchmark }) {
-	const currentMonth = getCurrentMonthName();
+// define the bench mark component 
+function DeptBenchMark({ benchmark }) { // receive benchmark data to render
+	const currentMonth = getCurrentMonthName(); // get current month name
 
 	return (
 		<div className="benchmark-table" id="benchmark-test-content">

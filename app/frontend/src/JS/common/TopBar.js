@@ -1,291 +1,236 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { UserIcon, fetchWithAuth, postWithAuth, getTermString } from './utils.js';
 import { useAuth } from './AuthContext';
 import '../../CSS/common.css';
-import Select from 'react-select';
-import axios from 'axios';
 
-function TopBar({ searchListType, onSearch }) {
-	const navigate = useNavigate();
-	const [showDropdown, setShowDropdown] = useState(false);
-	const [activeMenu, setActiveMenu] = useState('main'); // 'main' or 'switch'
-	const { authToken, accountType, accountLogInType, setAccountLogInType, profileId } = useAuth();
-	const [imageError, setImageError] = useState(false);
-	const [initials, setInitials] = useState('');
-	const [bgColor, setBgColor] = useState('');
-	const [userName, setUserName] = useState('');
-	const [terms, setTerms] = useState([]);
-	const [currentTerm, setCurrentTerm] = useState(null);
+// Custom hook to manage TopBar state and side effects
+function useTopBarController(authToken, profileId, onTermChange) {
+    const navigate = useNavigate();
+    const [allData, setAllData] = React.useState({
+        userName: 'User',
+        terms: [],
+        currentTerm: null,
+        showDropdown: false,
+        activeMenu: 'main',
+    });
 
+    React.useEffect(function () {
+        // Fetches user data and available terms from the server
+        async function fetchAllData() {
+            try {
+                // Parallel API calls for efficiency
+                const [userData, termsData] = await Promise.all([
+                    fetchWithAuth(`http://localhost:3001/api/user/${profileId}`, authToken, navigate),
+                    fetchWithAuth('http://localhost:3001/api/terms', authToken, navigate)
+                ]);
 
-	useEffect(() => {
-		fetchUserName();
-	}, [profileId]);
+                // Process and sort terms for the dropdown
+                const termsOptions = termsData.terms
+                    .sort(function (a, b) { return b - a; }) // Sort in descending order
+                    .map(function (term) {
+                        return {
+                            value: String(term),
+                            label: getTermString(String(term)),
+                        };
+                    });
 
-	useEffect(() => {
-		if (userName) {
-			generateInitialsAndColor();
-		}
-	}, [userName]);
+                const currentTerm = {
+                    value: String(termsData.currentTerm),
+                    label: getTermString(String(termsData.currentTerm)),
+                };
 
-	useEffect(() => {
-    const fetchTerms = async () => {
+                // Update state with fetched data
+                setAllData(function (prev) {
+                    return {
+                        ...prev,
+                        userName: `${userData.firstName} ${userData.lastName}`,
+                        terms: termsOptions,
+                        currentTerm: currentTerm,
+                    };
+                });
+
+                // Notify parent component of the current term only if onTermChange is provided
+                if (typeof onTermChange === 'function') {
+                    onTermChange(currentTerm.value);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Only fetch data if we have necessary authentication info
+        if (profileId && authToken) {
+            fetchAllData();
+        }
+    }, [profileId, authToken, navigate, onTermChange]);
+
+    // Toggles the visibility of the user dropdown menu
+    function toggleDropdown() {
+        setAllData(function (prev) {
+            return {
+                ...prev,
+                showDropdown: !prev.showDropdown,
+                activeMenu: 'main'
+            };
+        });
+    }
+
+    // Changes the active menu in the dropdown
+    function setActiveMenu(menu) {
+        setAllData(function (prev) {
+            return { ...prev, activeMenu: menu };
+        });
+    }
+
+    // Updates the current term and notifies the server
+    async function setNewCurrentTerm(term) {
         try {
-            const response = await axios.get(`http://localhost:3001/api/terms`, {
-                headers: { Authorization: `Bearer ${authToken.token}` },
+            await postWithAuth(
+                'http://localhost:3001/api/setCurrentTerm',
+                authToken,
+                navigate,
+                { term: term.value }
+            );
+            setAllData(function (prev) {
+                return { ...prev, currentTerm: term };
             });
-            const data = response.data;
-            const sortedTerms = data.terms.sort((a, b) => b - a);
-            const termsOptions = sortedTerms.map(term => ({
-							value: String(term), 
-							label: getTermLabel(String(term)), 
-					}));
-            setTerms(termsOptions);
-            setCurrentTerm({
-							value: String(data.currentTerm), 
-							label: getTermLabel(String(data.currentTerm)), 
-					});
-        } catch (error) {
-            console.error('Error fetching terms:', error);
-        }
-    };
-
-    fetchTerms();
-}, [authToken]);
-
-	const fetchUserName = async () => {
-		try {
-			const response = await fetch(`http://localhost:3001/api/user/${profileId}`);
-			if (!response.ok) {
-				throw new Error('Failed to fetch user data');
-			}
-			const userData = await response.json();
-			setUserName(`${userData.firstName} ${userData.lastName}`);
-		} catch (error) {
-			console.error('Error fetching user name:', error);
-			setUserName('User');  // Fallback name if fetch fails
-		}
-	};
-
-	const generateInitialsAndColor = () => {
-		const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
-		setInitials(initials);
-
-		const hue = Math.floor(Math.random() * 360);
-		const pastelColor = `hsl(${hue}, 70%, 80%)`;
-		setBgColor(pastelColor);
-	};
-
-	const handleImageError = () => {
-		setImageError(true);
-	};
-
-	const renderProfileImage = () => {
-		if (imageError) {
-			return (
-				<div
-					className="profile-initials"
-					style={{
-						backgroundColor: bgColor,
-						width: '40px',
-						height: '40px',
-						borderRadius: '50%',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						fontWeight: 'bold',
-						color: '#000',
-						cursor: 'pointer'
-					}}
-					onClick={toggleDropdown}
-				>
-					{initials}
-				</div>
-			);
-		} else {
-			return (
-				<img
-					src={`http://localhost:3001/api/image/${profileId}`}
-					alt="Profile"
-					onClick={toggleDropdown}
-					style={{ cursor: 'pointer', width: '40px', height: '40px', borderRadius: '50%' }}
-					onError={handleImageError}
-				/>
-			);
-		}
-	};
-
-	const handleLogOut = () => {
-		localStorage.removeItem('token');
-		localStorage.removeItem('profileId');
-		localStorage.removeItem('accountType');
-		localStorage.removeItem('accountLogInType');
-		alert('Log out successfully\n\nRedirecting to Home Page');
-		navigate('/');
-	};
-
-	const handleSwitchAccount = (type) => {
-		if (type === accountLogInType) return;
-
-		setAccountLogInType(type);
-		localStorage.setItem('accountLogInType', JSON.stringify(type));
-		alert(`Switching to ${type === 1 || type === 2 ? 'Department' : type === 3 ? 'Instructor' : 'Admin'} account`);
-		setShowDropdown(false);
-		setActiveMenu('main');
-		switch (type) {
-			case 1:
-			case 2:
-				navigate('/DeptPerformancePage');
-				break;
-			case 3:
-				navigate('/InsPerformancePage');
-				break;
-			case 4:
-				navigate('/AdminMemberList');
-				break;
-			default:
-				break;
-		}
-	};
-
-	const getAccountTypeLabel = (type) => {
-		switch (type) {
-			case 1:
-			case 2:
-				return 'Department';
-			case 3:
-				return 'Instructor';
-			case 4:
-				return 'Admin';
-			default:
-				return '';
-		}
-	}
-	
-	const getTermLabel = (term) => {
-    const year = term.slice(0, 4);
-    const termCode = term.slice(4);
-    switch (termCode) {
-        case '1':
-            return `${year} Winter Term 1`;
-        case '2':
-            return `${year} Winter Term 2`;
-        case '3':
-            return `${year} Summer Term 1`;
-        case '4':
-            return `${year} Summer Term 2`;
-        default:
-            return term;
-    }
-	}
-
-	const renderAccountSwitcher = () => {
-        return (
-            <div className="account-switcher">
-                {renderProfileImage()}
-                {showDropdown && (
-                    <ul className="dropdown-menu">
-                        {activeMenu === 'main' ? (
-                            <>
-                                <li onClick={() => navigate('/UserProfile')}>My profile</li>
-                                <li onClick={() => setActiveMenu('account')}>My account</li>
-                                {accountType.length > 1 && (
-                                    <li onClick={() => setActiveMenu('switch')}>Switch account</li>
-                                )}
-                            </>
-                        ) : activeMenu === 'switch' ? (
-                            <>
-                                <li onClick={() => setActiveMenu('main')} style={{ fontWeight: 'bold' }}>
-                                    ← Back
-                                </li>
-                                {accountType.map((type) => (
-                                    <li key={type} onClick={() => handleSwitchAccount(type)}>
-                                        {getAccountTypeLabel(type)}
-                                    </li>
-                                ))}
-                            </>
-                        ) : activeMenu === 'account' ? (
-                            <>
-                                <li onClick={() => setActiveMenu('main')} style={{ fontWeight: 'bold' }}>
-                                    ← Back
-                                </li>
-                                <li onClick={() => navigate('/ChangePassword')}>Change password</li>
-                            </>
-                        ) : null}
-                    </ul>
-                )}
-            </div>
-        );
-    };
-
-    const toggleDropdown = () => {
-        setShowDropdown(!showDropdown);
-        setActiveMenu('main');
-    };
-
-	let placeHolderText = '';
-	switch (searchListType) {
-		case 'InsCourseList':
-			placeHolderText = 'Search by Subject (e.g. COSC 111), Title (e.g. Computer Programming I), Instructor (e.g. John Doe)';
-			break;
-		case 'DeptCourseList':
-			placeHolderText = 'Search by Subject (e.g. COSC 111), Title (e.g. Computer Programming I)';
-			break;
-		case 'DeptMemberList':
-			placeHolderText = 'Search by UBC ID (e.g. 78233419), Name (e.g. John Doe), Service Role (e.g. Advisor)';
-			break;
-		case 'DeptTeachingAssignmentDetail':
-			placeHolderText = 'Search by Instructor (e.g. John Doe), Course Code (e.g. COSC 222), Course Name (e.g. Data Structures)';
-			break;
-		default:
-			placeHolderText = 'Search ...';
-	}
-
-	const setNewCurTerm = async (term) => {
-    console.log(term.value)
-    try {
-        const response = await axios.post(
-            'http://localhost:3001/api/setCurrentTerm',
-            { term: term.value },
-            { headers: { Authorization: `Bearer ${authToken.token}` }}
-        );
-        if (response.status === 200) {
+            if (typeof onTermChange === 'function') {
+                onTermChange(term.value);
+            }
             console.log('Term set successfully');
-        } else {
-            console.error('Error setting current term:', response.statusText);
+        } catch (error) {
+            console.error('Error setting current term:', error);
         }
-    } catch (error) {
-        console.error('Error setting current term:', error);
     }
-};
 
-	return (
-    <div className={searchListType && onSearch ? "topbar-search" : "topbar"}>
-			{searchListType && onSearch ? (
-				<input
-					type="text"
-					placeholder={placeHolderText}
-					onChange={(e) => onSearch(e.target.value)}
-				/>
-			) : (accountLogInType === 1 || accountLogInType === 2) ? (
-				<Select className='term-select'
-					options={terms}
-					value={currentTerm}
-					onChange={(selectedOption) => {
-						setCurrentTerm(selectedOption);
-						setNewCurTerm(selectedOption); 
-					}}
-				/>
-			) : null}
-			{renderAccountSwitcher()}
-			<div className="account-type">
-				{getAccountTypeLabel(accountLogInType)}
-			</div>
-			<div className="logout" onClick={handleLogOut}>
-				Logout
-			</div>
-    </div>
-	);
+    return { allData, toggleDropdown, setActiveMenu, setNewCurrentTerm };
+}
+
+// Converts account type code to a readable label
+function getAccountTypeLabel(type) {
+    switch (type) {
+        case 1:
+            return 'Department Head'
+        case 2:
+            return 'Department Staff';
+        case 3:
+            return 'Instructor';
+        case 4:
+            return 'Admin';
+        default:
+            return '';
+    }
+}
+
+// Returns appropriate placeholder text for search input based on the list type
+function getPlaceholderText(searchListType) {
+    const placeholderMap = {
+        'InsCourseList': 'Search by Subject (e.g. COSC 111), Title (e.g. Computer Programming I), Instructor (e.g. John Doe)',
+        'DeptCourseList': 'Search by Subject (e.g. COSC 111), Title (e.g. Computer Programming I)',
+        'DeptMemberList': 'Search by UBC ID (e.g. 78233419), Name (e.g. John Doe), Service Role (e.g. Advisor)',
+        'DeptTeachingAssignmentDetail': 'Search by Instructor (e.g. John Doe), Course Code (e.g. COSC 222), Course Name (e.g. Data Structures)',
+    };
+    return placeholderMap[searchListType] || 'Search ...';
+}
+
+// Handles user logout
+function handleLogOut(navigate) {
+    // Clear all authentication-related items from localStorage
+    ['token', 'profileId', 'accountType', 'accountLogInType'].forEach(function (item) {
+        localStorage.removeItem(item);
+    });
+    alert('Log out successfully\n\nRedirecting to Home Page');
+    navigate('/');
+}
+
+// Handles switching between different account types
+function handleSwitchAccount(type, accountLogInType, setAccountLogInType, navigate) {
+    if (type === accountLogInType) return;
+    setAccountLogInType(type);
+    localStorage.setItem('accountLogInType', JSON.stringify(type));
+    alert(`Switching to ${getAccountTypeLabel(type)} account`);
+    // Navigate to appropriate page based on account type
+    navigate(type <= 2 ? '/DeptPerformancePage' : type === 3 ? '/InsPerformancePage' : '/AdminMemberList');
+}
+
+// Component for the account switcher dropdown
+function AccountSwitcher({ allData, accountType, handleSwitchAccount, navigate, toggleDropdown, setActiveMenu, profileId }) {
+    return (
+        <div className="account-switcher">
+            <UserIcon
+                userName={allData.userName}
+                profileId={profileId}
+                size={40}
+                onClick={toggleDropdown}
+            />
+            {allData.showDropdown && (
+                <ul className="dropdown-menu">
+                    {/* Conditional rendering based on active menu */}
+                    {allData.activeMenu === 'main' ? (
+                        <>
+                            <li onClick={function () { navigate('/UserProfile'); }}>My profile</li>
+                            <li onClick={function () { setActiveMenu('account'); }}>My account</li>
+                            {accountType.length > 1 && (
+                                <li onClick={function () { setActiveMenu('switch'); }}>Switch account</li>
+                            )}
+                        </>
+                    ) : allData.activeMenu === 'switch' ? (
+                        <>
+                            <li onClick={function () { setActiveMenu('main'); }} style={{ fontWeight: 'bold' }}>← Back</li>
+                            {accountType.map(function (type) {
+                                return (
+                                    <li key={type} onClick={function () { handleSwitchAccount(type); }}>{getAccountTypeLabel(type)}</li>
+                                );
+                            })}
+                        </>
+                    ) : (
+                        <>
+                            <li onClick={function () { setActiveMenu('main'); }} style={{ fontWeight: 'bold' }}>← Back</li>
+                            <li onClick={function () { navigate('/ChangePassword'); }}>Change password</li>
+                        </>
+                    )}
+                </ul>
+            )}
+        </div>
+    );
+}
+
+// Main TopBar component
+function TopBar({ searchListType, onSearch, onTermChange }) {
+    const navigate = useNavigate();
+    const { authToken, accountType, accountLogInType, setAccountLogInType, profileId } = useAuth();
+    const { allData, toggleDropdown, setActiveMenu, setNewCurrentTerm } = useTopBarController(authToken, profileId, onTermChange);
+
+    return (
+        <div className={searchListType && onSearch ? "topbar-search" : "topbar"}>
+            {searchListType && onSearch ? (
+                <input
+                    type="text"
+                    placeholder={getPlaceholderText(searchListType)}
+                    onChange={function (e) { onSearch(e.target.value); }}
+                />
+            ) : (accountLogInType == 1) ? (
+                <Select className='term-select'
+                    options={allData.terms}
+                    value={allData.currentTerm}
+                    onChange={setNewCurrentTerm}
+                />
+            ) : null}
+            <AccountSwitcher
+                allData={allData}
+                accountType={accountType}
+                handleSwitchAccount={(type) => handleSwitchAccount(type, accountLogInType, setAccountLogInType, navigate)}
+                navigate={navigate}
+                toggleDropdown={toggleDropdown}
+                setActiveMenu={setActiveMenu}
+                profileId={profileId}
+            />
+            <div className="account-type">{getAccountTypeLabel(accountLogInType)}</div>
+            <div className="logout" onClick={() => handleLogOut(navigate)}>Logout</div>
+        </div>
+    );
 }
 
 export default TopBar;

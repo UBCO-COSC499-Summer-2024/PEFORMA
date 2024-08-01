@@ -109,10 +109,6 @@ beforeEach(async() => {
 });
 
 test('Checks profile data is rendered properly', async () => {
-  //console.log = jest.fn();
-  //const logspy = jest.spyOn(global.console, 'log');
-
-  //console.log(logspy);
   await act(async () => {
     ({getByTestId} = render(<MemoryRouter><DeptProfilePage/></MemoryRouter>)); 
   });
