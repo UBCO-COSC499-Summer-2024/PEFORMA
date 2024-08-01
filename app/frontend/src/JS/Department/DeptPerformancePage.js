@@ -118,7 +118,7 @@ function PerformanceDepartmentPage() {
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
-                        <button className='icon-button' onClick={() => exportAllToCSV(allData, currentTerm)}>
+                        <button className='icon-button' data-testid="download-button" onClick={() => exportAllToCSV(allData, currentTerm)}>
                             <Download size={20} color="black" />
                         </button>
                     </div>

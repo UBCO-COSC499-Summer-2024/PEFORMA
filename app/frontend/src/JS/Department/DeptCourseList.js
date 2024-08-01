@@ -96,7 +96,7 @@ function DeptCourseList() {
                                     <Edit size={20} color="black" />
                                 </button>
                             </Link>
-                            <button className='icon-button' onClick={() => exportToCSV(deptCourseList.courses, currentTerm)}>
+                            <button className='icon-button' data-testid="download-button" onClick={() => exportToCSV(deptCourseList.courses, currentTerm)}>
                                 <Download size={20} color="black" />
                             </button>
                         </div>
