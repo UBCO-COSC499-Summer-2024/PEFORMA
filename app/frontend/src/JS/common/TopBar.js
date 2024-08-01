@@ -138,7 +138,7 @@ function getPlaceholderText(searchListType) {
 // Handles user logout
 function handleLogOut(navigate) {
     // Clear all authentication-related items from localStorage
-    ['token', 'profileId', 'accountType', 'accountLogInType'].forEach(function (item) {
+    ['authToken', 'profileId', 'accountType', 'accountLogInType'].forEach(function (item) {
         localStorage.removeItem(item);
     });
     alert('Log out successfully\n\nRedirecting to Home Page');
