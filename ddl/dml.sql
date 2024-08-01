@@ -524,23 +524,31 @@ INSERT INTO public."TaAssignmentTable" ("term", "UBCId", "firstName", "middleNam
 (20243, '01234567', 'Jack', 'Michael', 'Thomas', 'jack.thomas@student.ubc.ca', 5);
 
 -- MeetingLog DML
-INSERT INTO public."MeetingLog" ("location", "date", "time") VALUES
-('SCI 234', '2024-08-01', '10:00:00'),
-('Online', '2024-08-02', '14:00:00'),
-('ASC 215', '2024-08-03', '09:00:00');
+INSERT INTO public."MeetingLog" ("meetingTitle", "location", "date", "time") VALUES
+('Statistics department meeting', 'EME 123', '2024-07-25', '13:00:00'),
+('Mathematics department meeting', 'APS 456', '2024-07-28', '15:30:00'),
+('Physics department meeting', 'SCI 234', '2024-08-01', '10:00:00'),
+('Daily meeting', 'Online', '2024-08-02', '14:00:00'),
+('Computer Science course adjustment meeting', 'ASC 215', '2024-08-03', '09:00:00');
 
 -- MeetingAttendance DML
 INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId", "attendance") VALUES
--- Meeting 1: SCI 234
-(1, '11111111', true),  -- John Doe
-(1, '11111112', true),  -- Jane Smith
-(1, '11111113', false), -- Robert Brown
--- Meeting 2: Online
-(2, '11111111', true),  -- John Doe
-(2, '11111114', true),  -- Emily Davis
+-- Meeting 1: EME 123 (>3 days ago)
+(1, '58738923', true),  -- Ava Martinez
+(1, '23454245', true), -- Ethan Anderson
+-- Meeting 2: APS 456
 (2, '11111115', true),  -- David Kim
-(2, '11111116', false), -- Sarah Chen
--- Meeting 3: ASC 215
-(3, '11111117', true),  -- Michael Nguyen
-(3, '11111118', true),  -- Olivia Rodriguez
-(3, '11111119', false); -- Daniel Taylor
+(2, '11111116', true),  -- Sarah Chen
+-- Meeting 3: SCI 234
+(3, '11111111', true),  -- John Doe
+(3, '11111112', true),  -- Jane Smith
+(3, '11111113', false), -- Robert Brown
+-- Meeting 4: Online
+(4, '11111111', true),  -- John Doe
+(4, '11111114', true),  -- Emily Davis
+(4, '11111115', true),  -- David Kim
+(4, '11111116', false), -- Sarah Chen
+-- Meeting 5: ASC 215
+(5, '11111117', true),  -- Michael Nguyen
+(5, '11111118', true),  -- Olivia Rodriguez
+(5, '11111119', false); -- Daniel Taylor

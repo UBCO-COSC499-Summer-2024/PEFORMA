@@ -88,8 +88,14 @@ function Dashboard() {
 							<div className="cardDesc">Evaluate course and instructor.</div>
 						</div>
 					</Link>
-					
-					
+					<Link to={'/DeptMeetingManagement'}>
+						<div className="card" role="gridcell">
+							<div className="cardTitleBox">
+								<div className="cardTitle">Meeting log</div>
+							</div>
+							<div className="cardDesc">Export todays meeting</div>
+						</div>
+					</Link>
 				</div>
 			</div>
 		</div>

@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { checkAccess, fetchWithAuth } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext';
 import '../../CSS/Instructor/InsProfilePage.css';
 
+// custom hook for fetching instructor profile data
 function useInstructorProfilePage() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
-	const params = new URLSearchParams(window.location.search);
-	const ubcid = params.get('ubcid');
-	const initProfile = { roles: [], teachingAssignments: [] };
+	const params = new URLSearchParams(window.location.search); // parse url query parameters
+	const ubcid = params.get('ubcid'); // get ubcid parameter from url
+	const initProfile = { roles: [], teachingAssignments: [] }; // initial profile state
 	const [profile, setProfile] = useState(initProfile);
 
-	useEffect(() => {
+	useEffect(() => { // fetch data when components in dependency array changes
 		const fetchData = async () => {
-			checkAccess(accountLogInType, navigate, 'instructor', authToken);
+			checkAccess(accountLogInType, navigate, 'instructor', authToken); // check access with accountLogInType and authToken is valid
 			try {
 				const response = await fetchWithAuth(`http://localhost:3001/api/instructorProfile`, authToken, navigate, { ubcid: ubcid });
 				setProfile(response);
@@ -28,22 +29,23 @@ function useInstructorProfilePage() {
 	
 		fetchData();
 	}, [accountLogInType, authToken, ubcid, navigate]);
-	return {
+	return { // return profile data 
 		profile
 	}
 }
 
+// main component for rendering instructor's profile data
 function InstructorProfilePage() {
 	const {
 		profile
-	} = useInstructorProfilePage();
+	} = useInstructorProfilePage(); // use custom hook to receive profile data
 	
 
 	return (
 		<div className="dashboard-container">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor" />
 			<div className="container">
-				<CreateTopBar />
+				<TopBar />
 				<div className="main-content" id="profile-test-content">
 					<section className="information">
 						<h1>{profile.name}'s Profile</h1>

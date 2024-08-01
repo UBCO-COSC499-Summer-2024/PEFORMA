@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import '../../../CSS/Department/PerformanceImports/PerformanceDeptTables.css';
 import { filterYearLevelCourses } from '../../common/utils';
 
+// function to filter based on the course level
 function filterCourses(courses, identifier, prefix) {
 	return filterYearLevelCourses(courses, identifier, prefix);
 }
 
+// define the courses based on the course code
 function DeptDivisionTable({ departmentName, courses, prefix }) {
 	const [courseTable, setCourseTable] = useState(courses);
 
-	useEffect(() => {
+	useEffect(() => { // update courseTable state when courses prop change
 		setCourseTable(courses);
 	}, [courses]);
 
