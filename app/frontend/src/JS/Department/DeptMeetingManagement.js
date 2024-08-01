@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { checkAccess, fetchWithAuth, downloadCSV } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptSEIPage.css';
@@ -76,7 +76,7 @@ function useDeptMeetingManagement() {
     const fetchMeetings = async () => {
       checkAccess(accountLogInType, navigate, 'department', authToken); // check access with logintype and authToken
       try {
-        const data = await fetchWithAuth('http://localhost:3000/meetingData.json', authToken, navigate);
+        const data = await fetchWithAuth('http://localhost:3001/meetings', authToken, navigate);
   
         const today = new Date(); // get todays date
         const threeDaysAgo = new Date(); // get 3 days agos date
@@ -127,9 +127,9 @@ function DeptMeetingManagement() {
 
   return (
     <div className="dashboard">
-      <CreateSideBar sideBarType="Department" />
+      <SideBar sideBarType="Department" />
       <div className='container'>
-        <CreateTopBar />
+        <TopBar />
         <div className='SEI-form' id='meeting-test-content'>
           <div className="form-header">
             <h1 className='meeting-form-title'>Meeting Management</h1>
