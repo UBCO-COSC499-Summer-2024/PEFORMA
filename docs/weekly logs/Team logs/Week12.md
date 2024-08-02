@@ -75,7 +75,13 @@ Our goal for the next cycle is to wrap up programming entirely, including implem
 ## Project Cycle Features
 
 | Feature Name        | Owner                                   |
-| -------------------- | --------------------------------------------- |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+
 
 ### Cycle Reflection
 
@@ -84,8 +90,11 @@ Our goal for the next cycle is to wrap up programming entirely, including implem
 
 | Task Name             | Owner         | 
 | ----------------------- | -------------- | 
-| Code refactoring & testing | Kevin & Subaru & Jeremy & Zhiheng |
-| Implement of new feature | Zhiheng |
-| Fixing bugs in FE & BE | Jeremy & Kevin & Subaru |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
 
 ### Next Cycle Goal
