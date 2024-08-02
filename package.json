@@ -12,7 +12,7 @@
     "test": "jest"
   },
   "jest": {
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "transform": {
       "^.+\\.(js|jsx)$": "babel-jest",
       ".+\\.(svg|css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
