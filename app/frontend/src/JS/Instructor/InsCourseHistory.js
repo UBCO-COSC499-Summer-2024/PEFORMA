@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Instructor/InsCourseHistory.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentInstructor } from '../common/utils.js';
+import { checkAccess, getCurrentTerm, fillEmptyItems, handlePageClick, currentItems } from '../common/utils.js';
 
-function CourseHistory() {
+const fetchCourseData = async(courseId, authToken) => {
+	const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
+		params: { courseId: courseId },
+		headers: { Authorization: `Bearer ${authToken.token}` },
+	});
+	return res.data;
+}
+
+function useCourseHistory() {
 	const [historyData, setHistoryData] = useState({
 		history: [{}],
 		entryCount: 0,
 		perPage: 10,
 		currentPage: 1,
+		tainfo:[{}]
 	});
 	const navigate = useNavigate();
 	const { authToken, accountLogInType } = useAuth();
@@ -25,81 +34,41 @@ function CourseHistory() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
-			const numericAccountType = Number(accountLogInType);
-			if (numericAccountType !== 3) {
-				alert('No Access, Redirecting to department view');
-				navigate('/DeptDashboard');
-			}
-			const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
-				params: { courseId: courseId },
-				headers: { Authorization: `Bearer ${authToken.token}` },
-			});
-			const data = res.data;
-			const filledEntries = fillEmptyEntries(data.history, data.perPage);
-			setHistoryData({ ...data, history: filledEntries });
-			data.latestTerm = getCurrentTerm();
-			setCurrentInstructor(data.history.filter((entry)=>entry.term_num == data.latestTerm));
-			setNumInstructors(data.history.length);
+			checkAccess(accountLogInType, navigate, 'instructor', authToken);
+			const courseData = await fetchCourseData(courseId, authToken);
+			const filledEntries = fillEmptyItems(courseData.history, courseData.perPage);
+			courseData.latestTerm = getCurrentTerm();
+			setHistoryData({ ...courseData, history: filledEntries });
+			setCurrentInstructor(courseData.history.filter((entry)=>entry.term_num == courseData.latestTerm));
+			setNumInstructors(courseData.history.length);
 		};
 		fetchData();
 	}, []);
+	return {
+		historyData, setHistoryData,
+		navigate,
+		currentInstructor,
+		numInstructors
+	}
+}
 
-	const fillEmptyEntries = (history, perPage) => {
-		const filledEntries = [...history];
-		const currentCount = history.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledEntries.push({});
-			}
-		}
-		return filledEntries;
-	};
-	const getCurrentTerm = () => {
-		const now = new Date();
-		let year = now.getFullYear();
-		const month = now.getMonth() + 1; // getMonth() returns 0-11
-		let term;
-	
-		if (month >= 9 && month <= 12) { // Sep-Dec Winter Term 1 -> T1
-		  term = `${year}1`; } 
-		else if (month >=1 && month <= 4){//Jan-Apr Winter Term 2 -> T2
-		  year -= 1;
-		  term = `${year}2`; }
-		else if (month >=5 && month <= 6){// May-Jun Summer Term 1 -> T3
-		  year -= 1;
-		  term = `${year}3`; }
-		else if (month >=7 && month <= 8){// Jul-Aug Summer Term 2 -> T4
-		  year -= 1;
-		  term = `${year}4`; }
-		return term;
-	  };
-
-	const handlePageClick = (data) => {
-		setHistoryData((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
+function CourseHistory() {
+	const {
+		historyData, setHistoryData,
+		navigate,
+		currentInstructor,
+		numInstructors
+	} = useCourseHistory();
 
 	const pageCount = Math.ceil(historyData.entryCount / historyData.perPage);
-
-	const currentEntries = historyData.history.slice(
-		(historyData.currentPage - 1) * historyData.perPage,
-		historyData.currentPage * historyData.perPage
-	);
-	let i = 0;
+	const currentEntries = currentItems(historyData.history, historyData.currentPage, historyData.perPage);
+	
 	return (
 		<div className="dashboard coursehistory">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor"/>
 			<div className="container">
-				<CreateTopBar />
-
-				<div className="courseinfo-main">
+				<TopBar />
+				<div className="courseinfo-main" data-testid="courseinfo-main">
 				<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
 					<h1 className="courseName" role="contentinfo">
 						{historyData.courseCode}: {historyData.courseName}
@@ -123,10 +92,31 @@ function CourseHistory() {
 							})
 						)}
 							</p>
+							{currentInstructor.length !== 0 && (
+							<div className='assignmentInfo'>
+							{currentInstructor[0].location !== null && (
+							<p>Room: <strong>{currentInstructor[0].location}</strong></p>
+							)}
+							{currentInstructor[0].enrollment !== null && (
+							<p>Number of Students: <strong>{currentInstructor[0].enrollment}</strong></p>
+							)}
+							{currentInstructor[0].meetingPattern !== null && (
+							<p>Schedule: <strong>{currentInstructor[0].meetingPattern}</strong></p>
+							)}
+							</div>
+          				)}
 					</div>
+					{historyData.tainfo.length !== 0 && (
+					historyData.tainfo.map((ta, index) => {
+						return (
+						<div key={index}>
+							- <span><strong>{ta.taname}</strong>, {ta.taemail}</span>
+						</div>
+						);
+					})
+            		)}
 					<div id="history">
 						<p className="bold">Course History ({numInstructors} Entries)</p>
-
 						<table id="historyTable">
 							<thead>
 								<tr>
@@ -136,11 +126,9 @@ function CourseHistory() {
 								</tr>
 							</thead>
 							<tbody>
-								{currentEntries.map((entry) => {
-									i++;
-
+								{currentEntries.map((entry, index) => {
 									return (
-										<tr key={i}>
+										<tr key={index}>
 											<td>
 												<Link to={`/InsProfilePage?ubcid=${entry.ubcid}`}>
 													{entry.instructorName}
@@ -162,7 +150,7 @@ function CourseHistory() {
 											pageCount={pageCount}
 											marginPagesDisplayed={3}
 											pageRangeDisplayed={0}
-											onPageChange={handlePageClick}
+											onPageChange={(data)=>handlePageClick(data, setHistoryData)}
 											containerClassName={'pagination'}
 											activeClassName={'active'}
 										/>

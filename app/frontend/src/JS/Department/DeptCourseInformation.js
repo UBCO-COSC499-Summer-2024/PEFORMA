@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/DeptCourseInformation.css';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-import { getTermString, checkAccess, fillEmptyItems, getCurrentTerm, currentItems } from '../common/utils.js';
+import { getTermString, checkAccess, fillEmptyItems, getCurrentTerm, currentItems, handlePageClick } from '../common/utils.js';
 
 const fetchCourseHistory = async(courseId, authToken) => {
   const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
@@ -49,6 +49,7 @@ function useCourseInformation() {
   const params = new URLSearchParams(window.location.search);
   const courseId = params.get('courseid');
   const [isEditing, setIsEditing] = useState(false);
+  const [active, setActive] = useState(true);
   const [editDescription, setEditDescription] = useState('');
   const [courseData, setCourseData] = useState({
     history: [{}],
@@ -87,6 +88,10 @@ function useCourseInformation() {
       const currentTerm = getCurrentTerm();
       setTimeState(currentTerm, termData.currentTerm, setPastState, setFutureState);
       setTermString(getTermString(termData.currentTerm));
+      // Set active state to false if course is inactive
+      if (!courseHistoryData.exists) {
+        setActive(false);
+      }
       // Fetch latest term
       /*
       const termRes = await axios.get(`http://localhost:3001/api/latestCourseTerm`, {
@@ -117,7 +122,9 @@ function useCourseInformation() {
     reactUpdate,
     authToken,
     courseId,
-    navigate
+    navigate,
+    fetchData,
+    active
   }
 }
 
@@ -148,13 +155,6 @@ const handleChange = (e, setEditDescription) => {
   setEditDescription(value);
   e.target.style.height = 'auto';
   e.target.style.height = e.target.scrollHeight + 'px';
-};
-
-const handlePageClick = (data, setCourseData) => {
-  setCourseData((prevState) => ({
-    ...prevState,
-    currentPage: data.selected + 1,
-  }));
 };
 
 const fetchInstructors = async(authToken, setInstructorData) => {
@@ -194,7 +194,7 @@ const handleShowInstructorModal = async (prevInstructors, authToken, setInstruct
   await fetchInstructors(authToken, setInstructorData);
 };
 
-const handleCloseInstructorModal = (save, [instructorData, setInstructorData, courseData, setShowInstructorModal, prevInstructors, authToken, currentInstructor, courseId]) => {
+const handleCloseInstructorModal = (save, [instructorData, setInstructorData, courseData, setShowInstructorModal, prevInstructors, authToken, currentInstructor, courseId, fetchData]) => {
   if (!save) {
     if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
       setInstructorData(JSON.parse(prevInstructors.current));
@@ -202,7 +202,7 @@ const handleCloseInstructorModal = (save, [instructorData, setInstructorData, co
       return;
     }
   } else {
-    updateAssignees(instructorData, courseData, authToken, currentInstructor, courseId);
+    updateAssignees(instructorData, courseData, authToken, currentInstructor, courseId, fetchData);
   }
   setShowInstructorModal(false);
 };
@@ -223,7 +223,7 @@ function getAssignedInstructors(instructorData, courseData) {
   return assignedInstructors;
 }
 
-const sendAssignees = async(assignedInstructors, courseData, authToken, currentInstructor, courseId) => {
+const sendAssignees = async(assignedInstructors, courseData, authToken, currentInstructor, courseId, fetchData) => {
   const term = courseData.latestTerm;
   for (let i = 0; i < assignedInstructors.length; i++) {
     var newAssigneeList = {
@@ -249,9 +249,9 @@ const sendAssignees = async(assignedInstructors, courseData, authToken, currentI
   }
 }
 
-const updateAssignees = async (instructorData, courseData, authToken, currentInstructor, courseId) => {
+const updateAssignees = async (instructorData, courseData, authToken, currentInstructor, courseId, fetchData) => {
   let assignedInstructors = getAssignedInstructors(instructorData, courseData);
-  await sendAssignees(assignedInstructors, courseData, authToken, currentInstructor, courseId);
+  await sendAssignees(assignedInstructors, courseData, authToken, currentInstructor, courseId, fetchData);
 };
 
 function removeInstructorFromCourseData(index, id, instructorData, currentInstructor, reactUpdate) {
@@ -265,7 +265,7 @@ function removeInstructorFromCourseData(index, id, instructorData, currentInstru
   reactUpdate();
 }
 
-const sendRemovedInstructor = async(courseId, id, authToken) => {
+const sendRemovedInstructor = async(courseId, id, authToken, courseData) => {
   try {
     await axios.post('http://localhost:3001/api/removeInstructorCourse', 
      { profileId: id, courseId: courseId, term: courseData.latestTerm }, {
@@ -276,9 +276,9 @@ const sendRemovedInstructor = async(courseId, id, authToken) => {
  }
 }
 
-const removeInstructor = async (id, index, courseId, currentInstructor, reactUpdate) => {
+const removeInstructor = async (id, index, courseId, currentInstructor, reactUpdate, courseData, instructorData, authToken) => {
   removeInstructorFromCourseData(index, id, instructorData, currentInstructor, reactUpdate);
-  await sendRemovedInstructor(courseId, id, courseData, authToken);
+  await sendRemovedInstructor(courseId, id, courseData, authToken, courseData);
 }
 
 function CourseInformation() {
@@ -296,18 +296,20 @@ function CourseInformation() {
     reactUpdate,
     authToken,
     courseId,
-    navigate
+    navigate,
+    fetchData,
+    active
   } = useCourseInformation();
 
   const pageCount = Math.ceil(courseData.entryCount / courseData.perPage);
-  const closeModalVars = [instructorData, setInstructorData, courseData, setShowInstructorModal, prevInstructors, authToken, currentInstructor, courseId];
+  const closeModalVars = [instructorData, setInstructorData, courseData, setShowInstructorModal, prevInstructors, authToken, currentInstructor, courseId, fetchData];
   const currentEntries = currentItems(courseData.history, courseData.currentPage, courseData.perPage);
- 
+
   return (
     <div className="dashboard coursehistory">
-      <CreateSideBar sideBarType="Department" />
+      <SideBar sideBarType="Department" />
       <div className="container">
-        <CreateTopBar />
+        <TopBar />
         <div className="courseinfo-main" data-testid="courseinfo-main">
           <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
           <h1 className="courseName" role="contentinfo">
@@ -356,7 +358,7 @@ function CourseInformation() {
                   <div key={instructor.instructorID}>
                     - <Link to={`/DeptProfilePage?ubcid=${instructor.ubcid}`}><strong>{instructor.instructorName}</strong></Link>
                     {!pastState && (
-                    <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.instructorID, index) }}>X</button>
+                    <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.instructorID, index, courseId, currentInstructor, reactUpdate, courseData, instructorData, authToken) }}>X</button>
                     )}
                   </div>
                 );
@@ -414,7 +416,7 @@ function CourseInformation() {
                 <button id="edit" data-testid="edit" role="button" onClick={()=>handleEditClick(setIsEditing)}>
                   Edit Course
                 </button>
-                {!pastState && (
+                {(!pastState && active) && (
                   <button
                   type="button"
                   data-testid="assign-button"
@@ -424,7 +426,11 @@ function CourseInformation() {
                   <span className="plus">+</span> Assign Instructor(s)
                 </button>
                 )}
-                
+                {!active && (
+                  <button className='assign-button inactive'>
+                    <span>Course inactive</span>
+                  </button>
+                )}
               </>
             )}
           </div>
