@@ -109,6 +109,41 @@ const taAssignmentSchema = Joi.object({
     email: Joi.string().email().required(),
     courseId: Joi.number().integer().required()
 });
+/*
+async function importData(files) {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        
+        let importedCount = 0;
+        let errors = [];
+        
+        for (const file of files) {
+            try {
+                const fileData = await processFile(file, client);
+                importedCount += fileData.length;
+            } catch (error) {
+                console.error(`Error processing file: ${file.originalname}\n`, error.message);
+                errors.push({ file: file.originalname, error: error.message });
+            }
+        }
+        
+        await client.query('COMMIT');
+
+        return { 
+            success: errors.length === 0,
+            importedCount, 
+            errors
+        };
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Transaction failed and rolled back:', error.message);
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+*/
 
 async function importData(files) {
     const maxRetries = files.length+1;
@@ -646,7 +681,7 @@ async function processMeetingAttendanceData(row, client) {
         await client.query(`
             INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId")
             VALUES ($1, $2)
-            ON CONFLICT ("meetingId", "UBCId") DO UPDATE SET "attendance" = EXCLUDED."attendance"
+            ON CONFLICT ("meetingId", "UBCId")
         `, Object.values(meetingAttendanceData));
     } catch (err) {
         console.error('Error inserting/updating meeting attendance data:', err.message);
