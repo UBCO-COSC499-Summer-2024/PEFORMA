@@ -68,13 +68,12 @@ so that we can make even better progress.
 ## Friday (8/02/2024)
 
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-12-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W12_C2.png)
 
 ### Current Tasks
-  * #1: 
-  * #2: 
-  * #3:
-### Progress Update (since 7/24/2024)
+  * #1: Add comments on my code
+  * #2: Individual report
+### Progress Update (since 7/31/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
@@ -84,31 +83,31 @@ so that we can make even better progress.
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td> 
+        <td> Bug fix for service info 
         </td>
         <!-- Status -->
-        <td> 
+        <td> Complete
         </td>
     </tr>
     <tr>
-       <td> 
+       <td> Code refactor for the newly added files
         </td>
         <!-- Status -->
-        <td> 
+        <td> Complete
         </td>
     </tr>
      <tr>
-       <td> 
+       <td> Adjustment in the edit status
         </td>
         <!-- Status -->
-        <td> 
+        <td> Complete
         </td>
     </tr>
        <tr>
-       <td> 
+       <td> Adjustment in data entry
         </td>
         <!-- Status -->
-        <td> 
+        <td> Complete
         </td>
     </tr>
 
@@ -116,8 +115,8 @@ so that we can make even better progress.
 </table>
 
 ### Weekly Goal Review
-
+This cycle was chill because I was already 99% done with my implementation and code refactoring. We ran a demo today and the bugs that needed to be fixed were not big so it did not take much time to fix them. I am very content with the system we have now because it is working! In the last cycle review, I brought up an issue of how PRs getting stacked. I tried to solve it but then, we encountered an issue of approved PRs not getting merged. I think the only way to solve this is to be persistent in telling the team members to approve, and merge. However, as I said, I am happy with the system we have now, and we are ready for the peer testing tomorrow. 
 
 ### Next Cycle Goals
-  * 
-  * 
+  * Finish adding comments
+  * Finish documentation
