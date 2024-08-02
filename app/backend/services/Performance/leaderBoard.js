@@ -1,9 +1,11 @@
 const  pool = require('../../db/index.js'); 
 const {getLatestTerm} = require('../latestTerm.js');
+//For instructor page
 async function getLeaderBoard() {
     try {
 
         const latestTerm = await getLatestTerm();
+        //Get the good instructors
         let query = `
         SELECT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, AVG(stp."score") AS average_score
         FROM "Profile" p

@@ -15,6 +15,7 @@ async function getServiceInfo(req){
 
         let result = await pool.query(query, [serviceRoleId]);
         const { stitle, description, dname } = result.rows[0];
+        //Check if the service role exists in the year
         query = `SELECT * FROM "ServiceRoleByYear" WHERE "serviceRoleId" = $1 AND "year" = $2;`
         result = await pool.query(query,[serviceRoleId,latestYear]);
         let exists;
@@ -24,6 +25,7 @@ async function getServiceInfo(req){
         else{
             exists = true;
         }
+        //Get the instructors with the service role
         query = `
             SELECT p."UBCId", sra."year",
             TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name
@@ -34,13 +36,13 @@ async function getServiceInfo(req){
         `;
         result = await pool.query(query, [serviceRoleId, latestYear]);
         const assigneeCount = result.rows.length;
-        
+        //Format assignees
         const assignees = result.rows.map(row => ({
             instructorID: row.UBCId || '',
             name: row.full_name || '',
             year: row.year
         }));
-
+        //Format the overall output
         const output = {
             currentPage: 1,
             perPage: 5,

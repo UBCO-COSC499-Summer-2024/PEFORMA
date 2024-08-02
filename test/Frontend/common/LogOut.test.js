@@ -39,7 +39,7 @@ describe('LogOut', () => {
   test('Testing logout and see if localStorage has been removed', async () => {
     fireEvent.click(screen.getByText('Logout'));
 
-    expect(localStorage.removeItem).toHaveBeenCalledWith('token');
+    expect(localStorage.removeItem).toHaveBeenCalledWith('authToken');
     expect(localStorage.removeItem).toHaveBeenCalledWith('profileId');
     expect(localStorage.removeItem).toHaveBeenCalledWith('accountType');
     expect(localStorage.removeItem).toHaveBeenCalledWith('accountLogInType');

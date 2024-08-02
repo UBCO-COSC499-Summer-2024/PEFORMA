@@ -5,9 +5,10 @@ const {getLatestTerm} = require('../latestTerm.js');
 async function getCoursePerformance(req){
 
     const divisionId = parseInt(req.query.divisionId);
-    
+    var query,result;
     try {
         await updateAllCourses();
+        //Get the average score for each score
         const term = await getLatestTerm();
         query = `SELECT d."dcode" || ' ' || c."courseNum" AS "DivisionAndCourse",
                     COALESCE(AVG(stp."score"), 0) AS "AverageScore"
@@ -34,6 +35,7 @@ async function getCoursePerformance(req){
     } catch (error) {
         throw error;
     }
+    //Based on the score, rank based on A to F. If it is 0, N/A
     function calculateRank(score) {
         if (score >= 90) {
             return 'A';

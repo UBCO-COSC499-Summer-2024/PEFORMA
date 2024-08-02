@@ -532,23 +532,23 @@ INSERT INTO public."MeetingLog" ("meetingTitle", "location", "date", "time") VAL
 ('Computer Science course adjustment meeting', 'ASC 215', '2024-08-03', '09:00:00');
 
 -- MeetingAttendance DML
-INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId", "attendance") VALUES
+INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId") VALUES
 -- Meeting 1: EME 123 (>3 days ago)
-(1, '58738923', true),  -- Ava Martinez
-(1, '23454245', true), -- Ethan Anderson
+(1, '58738923'),  -- Ava Martinez
+(1, '23454245'), -- Ethan Anderson
 -- Meeting 2: APS 456
-(2, '11111115', true),  -- David Kim
-(2, '11111116', true),  -- Sarah Chen
+(2, '11111115'),  -- David Kim
+(2, '11111116'),  -- Sarah Chen
 -- Meeting 3: SCI 234
-(3, '11111111', true),  -- John Doe
-(3, '11111112', true),  -- Jane Smith
-(3, '11111113', false), -- Robert Brown
+(3, '11111111'),  -- John Doe
+(3, '11111112'),  -- Jane Smith
+(3, '11111113'), -- Robert Brown
 -- Meeting 4: Online
-(4, '11111111', true),  -- John Doe
-(4, '11111114', true),  -- Emily Davis
-(4, '11111115', true),  -- David Kim
-(4, '11111116', false), -- Sarah Chen
+(4, '11111111'),  -- John Doe
+(4, '11111114'),  -- Emily Davis
+(4, '11111115'),  -- David Kim
+(4, '11111116'), -- Sarah Chen
 -- Meeting 5: ASC 215
-(5, '11111117', true),  -- Michael Nguyen
-(5, '11111118', true),  -- Olivia Rodriguez
-(5, '11111119', false); -- Daniel Taylor
+(5, '11111117'),  -- Michael Nguyen
+(5, '11111118'),  -- Olivia Rodriguez
+(5, '11111119'); -- Daniel Taylor
