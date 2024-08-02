@@ -5,50 +5,104 @@ global.TextDecoder = TextDecoder;
 const { getStatusChangeCourse } = require('../../../app/backend/services/UpdateStatus/statusChangeCourse');
 const pool = require('../../../app/backend/db/index');
 const { getAllCourses } = require('../../../app/backend/services/ShowList/allCoursesService');
+const { getLatestTerm } = require('../../../app/backend/services/latestTerm');
 
 jest.mock('../../../app/backend/db/index');
 jest.mock('../../../app/backend/services/ShowList/allCoursesService');
+jest.mock('../../../app/backend/services/latestTerm.js');
 
 describe('getStatusChangeCourse', () => {
-    let req;
-
     beforeEach(() => {
-        req = {
+        pool.query.mockClear();
+        getAllCourses.mockClear();
+        getLatestTerm.mockClear();
+    });
+
+    it('should insert a new course by term if status is true', async () => {
+        const req = {
             body: {
                 courseid: 1,
                 newStatus: true
             }
         };
-        pool.query = jest.fn();
-    });
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
-    it('should update the status of the course and return all courses', async () => {
-        pool.query.mockResolvedValueOnce({ rows: [{ courseId: 1, isActive: true }] });
-        getAllCourses.mockResolvedValueOnce('all courses data');
+        getLatestTerm.mockResolvedValue('2024');
+        pool.query.mockResolvedValueOnce();
+        getAllCourses.mockResolvedValue([
+            { courseId: 1, courseName: 'Course 1' },
+            { courseId: 2, courseName: 'Course 2' }
+        ]);
 
         const result = await getStatusChangeCourse(req);
 
-        expect(pool.query).toHaveBeenCalledWith(
-            'UPDATE "Course" SET "isActive" = $1 WHERE "courseId" = $2 RETURNING *;',
-            [true, 1]
-        );
-        expect(getAllCourses).toHaveBeenCalled();
-        expect(result).toBe('all courses data');
+        expect(result).toEqual([
+            { courseId: 1, courseName: 'Course 1' },
+            { courseId: 2, courseName: 'Course 2' }
+        ]);
     });
 
-    it('should throw an error if no course data is found', async () => {
-        pool.query.mockResolvedValueOnce({ rows: [] });
+    it('should delete course data if status is false', async () => {
+        const req = {
+            body: {
+                courseid: 1,
+                newStatus: false
+            }
+        };
 
-        await expect(getStatusChangeCourse(req)).rejects.toThrow('No course data found');
+        getLatestTerm.mockResolvedValue('2024');
+        pool.query.mockResolvedValueOnce();
+        getAllCourses.mockResolvedValue([
+            { courseId: 1, courseName: 'Course 1' },
+            { courseId: 2, courseName: 'Course 2' }
+        ]);
+
+        const result = await getStatusChangeCourse(req);
+
+        expect(result).toEqual([
+            { courseId: 1, courseName: 'Course 1' },
+            { courseId: 2, courseName: 'Course 2' }
+        ]);
     });
 
-    it('should handle database query errors', async () => {
-        pool.query.mockRejectedValueOnce(new Error('Test error'));
+    it('should throw an error if getLatestTerm fails', async () => {
+        const req = {
+            body: {
+                courseid: 1,
+                newStatus: true
+            }
+        };
 
-        await expect(getStatusChangeCourse(req)).rejects.toThrow('Test error');
+        getLatestTerm.mockRejectedValue(new Error('Failed to get latest term'));
+
+        await expect(getStatusChangeCourse(req)).rejects.toThrow('Failed to get latest term');
+    });
+
+    it('should throw an error if pool.query fails during insertion', async () => {
+        const req = {
+            body: {
+                courseid: 1,
+                newStatus: true
+            }
+        };
+
+        getLatestTerm.mockResolvedValue('2024');
+        pool.query.mockRejectedValueOnce(new Error('Database query failed'));
+
+        await expect(getStatusChangeCourse(req)).rejects.toThrow('Error updating course status.');
+    });
+
+    it('should throw an error if pool.query fails during deletion', async () => {
+        const req = {
+            body: {
+                courseid: 1,
+                newStatus: false
+            }
+        };
+
+        getLatestTerm.mockResolvedValue('2024');
+        pool.query.mockResolvedValueOnce();
+        pool.query.mockRejectedValueOnce(new Error('Database query failed'));
+
+        await expect(getStatusChangeCourse(req)).rejects.toThrow('Error updating course status.');
     });
 });
