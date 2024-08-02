@@ -1,17 +1,18 @@
 const pool = require('../../db/index.js');
-const {getLatestTerm} = require('../latestTerm.js');
+const {getLatestYear} = require('../latestYear.js');
 const {updateAllMembers} = require('../UpdateStatus/updateAllMembers.js');
-
+const {getLatestTerm} = require('../latestTerm.js')
 async function getAllInstructors()  {
     try {
         await updateAllMembers();
-        const currentTerm = await getLatestTerm();
+        const currentYear = await getLatestYear();
+        const currentTerm = getLatestTerm();
         let query = `
             SELECT p."UBCId", 
                    TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, 
                    d."dname" AS department,
-                   ARRAY_AGG(sra."serviceRoleId") AS roleid,
-                   ARRAY_AGG(sr."stitle") AS serviceRole,
+                   ARRAY_AGG(sra."serviceRoleId") FILTER (WHERE sra."year" = $1) AS roleid,
+                   ARRAY_AGG(sr."stitle") FILTER (WHERE sra."year" = $1) AS serviceRole,
                    p."email",
                    a."isActive"
             FROM "Profile" p
@@ -21,7 +22,7 @@ async function getAllInstructors()  {
             LEFT JOIN "Account" a ON a."profileId" = p."profileId"
             GROUP BY p."UBCId", p."firstName", p."middleName", p."lastName", d."dname", p."email", a."isActive";
         `;
-        const result = await pool.query(query);
+        const result = await pool.query(query,[currentYear]);
         const members = result.rows.map(row => ({
             ubcid: row.UBCId || '',
             name: row.full_name || '',

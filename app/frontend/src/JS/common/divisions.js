@@ -3,7 +3,7 @@ const divisions = [
     {"code":"MATH", "label":"Mathmatics"},
     {"code":"PHYS", "label":"Physics"},
     {"code":"STAT", "label":"Statistics"},
-    {"code":"ALL", "label":"All"}
+    {"code":"N/A", "label":"N/A"}
 ];
 
 export default divisions;
