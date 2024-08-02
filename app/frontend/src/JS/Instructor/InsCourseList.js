@@ -113,9 +113,13 @@ function InsCourseList() {
                                                                     profileId={course.profileid[index]}
                                                                     size={30}
                                                                 />
-                                                                <Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
-                                                                    {instructor}
-                                                                </Link>
+                                                                {instructor !== "Not Assigned" ? (
+                                                                    <Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
+                                                                        {instructor}
+                                                                    </Link>
+                                                                ) : (
+                                                                    instructor
+                                                                )}
                                                             </div>
                                                             {index < course.instructor.length - 1 ? <br /> : null}
                                                         </React.Fragment>
