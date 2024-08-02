@@ -268,3 +268,14 @@ hr {
   border-color: transparent;
 }
 
+.info-grid .text-item a,
+.info-row .text-item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.info-grid .text-item a:hover,
+.info-row .text-item a:hover {
+  text-decoration: underline;
+}
+

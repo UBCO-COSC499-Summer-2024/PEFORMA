@@ -1,77 +1,108 @@
-import { render, waitFor } from '@testing-library/react';
+import React from 'react';
 import '@testing-library/jest-dom';
-import InsProfilePage from '../../../app/frontend/src/JS/Instructor/InsProfilePage';
+import { render, screen, waitFor } from '@testing-library/react';
+import ProfilePage from '../../../app/frontend/src/JS/Instructor/InsProfilePage';
+import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 
-// mocking axios
+// Mock dependencies
+jest.mock('../../../app/frontend/src/JS/common/AuthContext', () => ({
+  useAuth: jest.fn(),
+}));
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
+
 jest.mock('axios');
-jest.mock('../../../app/frontend/src/JS/common/AuthContext');
 
-beforeAll(() => {
-	global.alert = jest.fn(); // mock global alert function
-});
+// Mock sidebar and topbar components
+jest.mock('../../../app/frontend/src/JS/common/commonImports.js', () => ({
+  __esModule: true,
+  default: () => <div data-testid="mock-sidebar"></div>,
+  CreateTopBar: () => <div data-testid="mock-topbar"></div>,
+}));
 
-afterAll(() => {
-	jest.restoreAllMocks(); // restore all mocks to original state
-});
+// Sample profile data for testing
+const mockProfileData = {
+  UBCId: 12345,
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  performance_score: 85,
+  office_location: 'Room 101',
+  phone_number: '123-456-7890',
+  division: 'Computer Science',
+  current_courses: [['COSC 111', 0], ['COSC 222', 1]],
+  current_service_roles: [['Undergraduate Advisor', 0], ['Curriculum Committee', 1]],
+  working_hours: 40,
+  benchmark: 60,
+  image_data: '',
+  image_type: 'jpeg',
+};
+
+// Helper function to set up the test environment
+const setupTest = (profileData = mockProfileData, accountType = [3]) => {
+  useAuth.mockReturnValue({
+    accountType: accountType,
+    accountLogInType: accountType.includes(3) ? 3 : (accountType[0] || 1),
+    profileId: 1,
+    authToken: { token: 'dummyToken' },
+  });
+
+  axios.get.mockResolvedValue({ data: profileData });
+
+  return render(
+    <MemoryRouter>
+      <ProfilePage />
+    </MemoryRouter>
+  );
+};
 
 describe('InsProfilePage', () => {
-	beforeEach(() => {
-		useAuth.mockReturnValue({ // mocking authToken for axios.get
-			authToken: { token: 'mocked-token' },
-		});
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-		axios.get.mockResolvedValue({
-			data: { // mocking data with ubcid 18592831
-				name: 'Billy Guy',
-				ubcid: '18592831',
-				benchmark: '1300',
-				roles: [
-					{ roleTitle: 'Role1', roleId: 1 },
-					{ roleTitle: 'Role2', roleId: 2 }
-				],
-				email: 'billyGuy@instructor.ubc.ca',
-				phone: '778-333-2222',
-				office: 'SCI 300',
-				teachingAssignments: [
-					{ assign: 'COSC 211', courseId: 1 },
-					{ assign: 'COSC 304', courseId: 2 }
-				],
-			}
-		});
-	});
+  test('renders all profile information correctly for instructors', async () => {
+    setupTest(mockProfileData, [3]);
 
-	test('Check if context shows correctly', async () => {
-    render( // render InsProfilePage with url path ubcid 18593821 that mocked before
-			<MemoryRouter initialEntries={['/somepath?ubcid=18592831']}>
-				<InsProfilePage />
-			</MemoryRouter>
-    );
+    await waitFor(() => expect(screen.getByText('Instructor Profile')).toBeInTheDocument());
 
-		await waitFor(() => { // waiting for axios.get to be called with correct parameter
-			expect(axios.get).toHaveBeenCalledWith(
-				"http://localhost:3001/api/instructorProfile",
-				expect.objectContaining({
-					headers: {
-						Authorization: 'Bearer mocked-token'
-					},
-					params: { ubcid: null } 
-				})
-			);
-		});
+    // Check for header
+    expect(screen.getByText('Instructor Profile')).toBeInTheDocument();
 
-		await waitFor(() => { // check if the profile content is rendered properly from mock data
-			const element = document.getElementById('profile-test-content');
-			expect(element).toHaveTextContent("Billy Guy's Profile");
-			expect(element).toHaveTextContent('Name: Billy Guy');
-			expect(element).toHaveTextContent("UBC ID: 18592831");
-			expect(element).toHaveTextContent("Service Roles: Role1, Role2");
-			expect(element).toHaveTextContent("Monthly Hours Benchmark: 1300");
-			expect(element).toHaveTextContent("Phone Number: 778-333-2222");
-			expect(element).toHaveTextContent("Email: billyGuy@instructor.ubc.ca");
-			expect(element).toHaveTextContent("Office Location: SCI 300");
-		});
-	});
+    // Check for top section
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
+    expect(screen.getByText('UBC ID: 12345')).toBeInTheDocument();
+
+    // Check for Personal Information section
+    expect(screen.getByText('Personal Information')).toBeInTheDocument();
+    expect(screen.getByText('Office Location')).toBeInTheDocument();
+    expect(screen.getByText('Room 101')).toBeInTheDocument();
+    expect(screen.getByText('Phone Number')).toBeInTheDocument();
+    expect(screen.getByText('123-456-7890')).toBeInTheDocument();
+    expect(screen.getByText('Division')).toBeInTheDocument();
+    expect(screen.getByText('Computer Science')).toBeInTheDocument();
+
+    // Check for Teaching section
+    expect(screen.getByText('Teaching')).toBeInTheDocument();
+    expect(screen.getByText('Current Course(s)')).toBeInTheDocument();
+    expect(screen.getByText('COSC 111')).toBeInTheDocument();
+    expect(screen.getByText('COSC 222')).toBeInTheDocument();
+
+    // Check for Service section
+    expect(screen.getByText('Service')).toBeInTheDocument();
+    expect(screen.getByText('Current Service Role(s)')).toBeInTheDocument();
+    expect(screen.getByText('Undergraduate Advisor')).toBeInTheDocument();
+    expect(screen.getByText('Curriculum Committee')).toBeInTheDocument();
+    expect(screen.getByText('Annual Service Hours')).toBeInTheDocument();
+    expect(screen.getByText('60 Hours')).toBeInTheDocument();
+
+    // Verify that CreateSideBar and CreateTopBar are rendered (as mocks)
+    expect(screen.getByTestId('mock-sidebar')).toBeInTheDocument();
+    expect(screen.getByTestId('mock-topbar')).toBeInTheDocument();
+  });
 });

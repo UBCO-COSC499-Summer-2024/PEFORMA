@@ -114,7 +114,7 @@ function InsCourseList() {
                                                                     size={30}
                                                                 />
                                                                 {instructor !== "Not Assigned" ? (
-                                                                    <Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
+                                                                    <Link to={`/InsProfilePage?profileid=${course.profileid[index]}`}>
                                                                         {instructor}
                                                                     </Link>
                                                                 ) : (
@@ -131,7 +131,7 @@ function InsCourseList() {
                                                             profileId={course.profileid}
                                                             size={10}
                                                         />
-                                                        <Link to={`/InsProfilePage?ubcid=${course.ubcid}`}>
+                                                        <Link to={`/InsProfilePage?profileid=${course.profileid}`}>
                                                             {course.instructor}
                                                         </Link>
                                                     </div>

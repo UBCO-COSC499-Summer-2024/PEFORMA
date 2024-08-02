@@ -1,7 +1,7 @@
 const pool = require('../../db/index.js');
 const {getLatestTerm} = require('../latestTerm.js');
 const divisionMap = {
-    'ALL': 0,
+    'All': 0,
     'COSC': 1, 
     'MATH': 2,
     'PHYS': 3,
