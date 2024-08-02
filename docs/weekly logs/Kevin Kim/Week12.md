@@ -1,6 +1,60 @@
 
 # Week 12
 
+## Friday (8/1/2024)
+
+### Timesheet
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.31-8.1/12.2.1.png)
+![alt text](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Kevin-weekly-logs/docs/weekly%20logs/Kevin%20Kim/Clockify%20images/7.31-8.1/12.2.2.png)
+
+
+### Current Tasks
+  * Documentation
+
+### Progress Update (since 7/26/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+        <td><strong>NOTES</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#559: comments on utils.js 
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Add brief comments on utils.js 
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>#601: Fix checkAccess
+        </td>
+        <!-- Status -->
+        <td>Complete
+        </td>
+        <!-- Notes -->
+        <td>Fixed now user cant directly go by changing path after logging out
+        </td>
+    </tr>
+</table>
+
+### Weekly Goal Review
+This short cycle, I have finished until commenting on utils.js which was my final step of writing code in regarding this project. I have fixed some bugs that are not working as intended, also fixed back checkAccess which one of our main feature in terms of security. After that, as a team, we run a demo getting ready for peer testing. I think I made decent progress.
+
+### Next Cycle Goals
+  * Start wiriting up the documentation and planning to finish document by next Wednesday
+
+
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
 ## Wednesday (7/31/2024)
 
 ### Timesheet
@@ -160,58 +214,4 @@ Week 12 first cycle for me was very productive. I have updated ddl and dml, impl
 
 ### Next Cycle Goals
   * Finish writing comments on utils.js file, the function I refactored, start writing up the documentation.
-
-<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-## Friday (8/2/2024)
-
-### Timesheet
-![alt text](image_url_here)
-
-### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
-
-### Progress Update (since 7/31/2024)
-<table>
-    <tr>
-        <td><strong>TASK/ISSUE #</strong>
-        </td>
-        <td><strong>STATUS</strong>
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task A
-        </td>
-        <!-- Status -->
-        <td>Complete
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task B
-        </td>
-        <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task C
-        </td>
-        <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-</table>
-
-### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
-
-### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
-
 
