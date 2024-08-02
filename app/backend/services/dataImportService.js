@@ -89,9 +89,9 @@ const CoursePerformanceDataSchema = Joi.object({
 });
 
 const meetingLogSchema = Joi.object({
-    title: Joi.string().required(),
+    meetingTitle: Joi.string().required(),
     location: Joi.string().required(),
-    date: Joi.date().required(),
+    date: Joi.string().required(),
     time: Joi.string().required()
 });
 
@@ -641,9 +641,9 @@ async function processTeachingAssignmentData(row, client) {
 
 async function processMeetingLogData(row, client) {
     const meetingLogData = {
-        title: row.title || null,
+        meetingTitle: row.title || null,
         location: row.location || null,
-        date: Date(row.date) || null,
+        date: row.date || null,
         time: row.time || null
     };
 
@@ -655,7 +655,7 @@ async function processMeetingLogData(row, client) {
 
     try {
         await client.query(`
-            INSERT INTO public."MeetingLog" ("title", "location", "date", "time")
+            INSERT INTO public."MeetingLog" ("meetingTitle", "location", "date", "time")
             VALUES ($1, $2, $3, $4)
             ON CONFLICT DO NOTHING
         `, Object.values(meetingLogData));
