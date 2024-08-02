@@ -96,13 +96,13 @@ I returned from disspearing for 10 days. Since tasks were already assigned for t
 ## Friday (8/2/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](./Clockify%20images/Clockify_Aug_2_1.jpg)
+![alt text](./Clockify%20images/Clockify_Aug_2_2.jpg)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
-
+  * #589: Test import modal
+  * #610: Add import modal to SEI page
+  
 ### Progress Update (since 7/31/2024)
 <table>
     <tr>
@@ -113,7 +113,7 @@ I returned from disspearing for 10 days. Since tasks were already assigned for t
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>#588: Test user profile page
         </td>
         <!-- Status -->
         <td>Complete
@@ -121,28 +121,19 @@ I returned from disspearing for 10 days. Since tasks were already assigned for t
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>#589: Test exportCSV
         </td>
         <!-- Status -->
-        <td>In Progress
-        </td>
-    </tr>
-    <tr>
-        <!-- Task/Issue # -->
-        <td>Task C
-        </td>
-        <!-- Status -->
-        <td>In Progress
+        <td>Complete
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+Testing proves to still be a struggle for me as I find it very difficult to trace where the issue is being raised with the terminal error messages. I'm currently on the last part of the FE testing and will hopefully finish tomorrow. 
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Documentation
+  * Client & Requirement demo preparation
 
 
