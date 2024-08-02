@@ -84,9 +84,9 @@ Our goal for the next cycle is to wrap up programming entirely, including implem
 | BE Documentation | Zhiheng |
 | Fix BE Tests | Zhiheng |
 | Fix BE code based on test | Zhiheng |
-|  |  |
-|  |  |
-|  |  |
+| Fix service info BE |Subaru |
+| Code refactor for newly added files | Subaru |
+| Adjustments in data entry and edit status | Subaru |
 | Test user profile page  | Adams |
 | Test exportCSV | Adams |
 
