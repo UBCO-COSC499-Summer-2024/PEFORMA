@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import '../../CSS/Department/DeptRoleInformation.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,6 @@ import { useAuth } from '../common/AuthContext.js';
 function InsRoleInformation() {
 	const { authToken, accountLogInType } = useAuth();
 	const navigate = useNavigate();
-
 	const [roleData, setRoleData] = useState({
 		assignees: [{}],
 		assigneeCount: 0,
@@ -23,12 +22,7 @@ function InsRoleInformation() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
-			
-			checkAccess(accountLogInType, navigate, 'instructor');
+			checkAccess(accountLogInType, navigate, 'instructor', authToken);
 			const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
 				params: { serviceRoleId: serviceRoleId },
 				headers: { Authorization: `Bearer ${authToken.token}` },
@@ -41,9 +35,9 @@ function InsRoleInformation() {
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor" />
 			<div className="container">
-				<CreateTopBar />
+				<TopBar />
                 <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
 				<div className="ri-main" data-testid="ri-main">
 					<h1 className="roleName">{roleData.roleName}</h1>

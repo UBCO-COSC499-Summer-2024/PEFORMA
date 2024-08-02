@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-import { getCurrentTerm, getTermString, checkAccess, filterItems, currentItems } from '../common/utils.js';
+import { getCurrentTerm, getTermString, checkAccess, filterItems, currentItems, handlePageClick } from '../common/utils.js';
 
 const fetchRoleData = async(authToken, serviceRoleId) => {
   const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
@@ -75,10 +75,6 @@ function useRoleInformation() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!authToken) {
-        navigate('/Login');
-        return;
-      }
       checkAccess(accountLogInType, navigate, 'department', authToken);
       try {
         const roleData = await fetchRoleData(authToken, serviceRoleId);
@@ -152,13 +148,6 @@ const handleChange = (e, setEditData) => {
 
 const handleSwitchChange = (isActive, setIsActive) => {
   setIsActive(!isActive);
-};
-
-const handlePageClick = (data, setRoleData) => {
-  setRoleData((prevState) => ({
-    ...prevState,
-    currentPage: data.selected + 1,
-  }));
 };
 
 const fetchInstructors = async(authToken, setInstructorData) => {
@@ -321,9 +310,9 @@ function RoleInformation() {
 
   return (
     <div className="dashboard">
-      <CreateSideBar sideBarType="Department" />
+      <SideBar sideBarType="Department" />
       <div className="container">
-        <CreateTopBar />
+        <TopBar />
         <div className="ri-main" data-testid="ri-main">
           <h1 className="roleName">
             {isEditing ? (
