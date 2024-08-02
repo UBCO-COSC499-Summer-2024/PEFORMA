@@ -5,7 +5,7 @@ const {getLatestTerm} = require('../latestTerm.js');
 async function getCoursePerformance(req){
 
     const divisionId = parseInt(req.query.divisionId);
-    
+    var query,result;
     try {
         await updateAllCourses();
         //Get the average score for each score
