@@ -1,6 +1,6 @@
 # Team Progress Dashboard
 
-**Date Range:** [07/30/2024] - [08/01/2024]
+**Date Range:** [07/31/2024] - [08/01/2024]
 
 
 ## Task Breakdown
