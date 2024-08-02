@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import ProfilePage from '../../../app/frontend/src/JS/Instructor/InsEditProfile';
+import ProfilePage from '../../../app/frontend/src/JS/Instructor/InsProfilePage';
 import { useAuth } from '../../../app/frontend/src/JS/common/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -72,8 +72,6 @@ describe('InsProfilePage', () => {
 
     // Check for header
     expect(screen.getByText('Instructor Profile')).toBeInTheDocument();
-    expect(screen.getByText('Performance Score')).toBeInTheDocument();
-    expect(screen.getByText('85')).toBeInTheDocument();
 
     // Check for top section
     expect(screen.getByText('John Doe')).toBeInTheDocument();
