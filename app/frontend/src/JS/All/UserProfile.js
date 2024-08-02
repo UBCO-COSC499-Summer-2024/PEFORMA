@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import CreateSideBar from '../common/commonImports.js';
 import { CreateTopBar } from '../common/commonImports.js';
 import { useAuth } from '../common/AuthContext.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import '../../CSS/All/UserProfile.css';
 
@@ -41,24 +41,24 @@ function useUserProfileData() {
             navigate('/Login');
             return;
         }
-        
+
         axios.get(`http://localhost:3001/api/profile/${profileId}`, {
             headers: { Authorization: `Bearer ${authToken.token}` },
         })
-        .then(function(res) {
-            const data = res.data;
-            const updatedData = {
-                ...data,
-                image_data: data.image_data || '',
-                image_type: data.image_type || 'jpeg'
-            };
-            setAllData(prevData => ({
-                ...prevData,
-                profileData: updatedData,
-                editedData: updatedData
-            }));
-        })
-        .catch(handleFetchError);
+            .then(function (res) {
+                const data = res.data;
+                const updatedData = {
+                    ...data,
+                    image_data: data.image_data || '',
+                    image_type: data.image_type || 'jpeg'
+                };
+                setAllData(prevData => ({
+                    ...prevData,
+                    profileData: updatedData,
+                    editedData: updatedData
+                }));
+            })
+            .catch(handleFetchError);
     }
 
     function handleFetchError(error) {
@@ -92,7 +92,7 @@ function useUserProfileData() {
         if (!validateUserInput(allData.editedData)) return;
 
         const formData = new FormData();
-        Object.keys(allData.editedData).forEach(function(key) {
+        Object.keys(allData.editedData).forEach(function (key) {
             formData.append(key, allData.editedData[key]);
         });
         if (allData.tempImage) {
@@ -109,13 +109,13 @@ function useUserProfileData() {
                 },
             }
         )
-        .then(function() {
-            window.location.reload(); // Full page refresh
-        })
-        .catch(function(error) {
-            console.error('Error updating profile:', error);
-            alert("An error occurred while updating the profile. Please try again.");
-        });
+            .then(function () {
+                window.location.reload(); // Full page refresh
+            })
+            .catch(function (error) {
+                console.error('Error updating profile:', error);
+                alert("An error occurred while updating the profile. Please try again.");
+            });
     }
 
     function handleInputChange(e) {
@@ -139,7 +139,7 @@ function useUserProfileData() {
             setAllData(prevData => ({ ...prevData, tempImage: file }));
 
             const reader = new FileReader();
-            reader.onloadend = function() {
+            reader.onloadend = function () {
                 const result = reader.result;
                 const base64Data = result.split(',')[1];
                 setAllData(prevData => ({
@@ -169,9 +169,9 @@ function useUserProfileData() {
 
 // Validation functions
 function validateUserInput(data) {
-    return validateName(data.name) && 
-           validateEmail(data.email) && 
-           validatePhoneNumber(data.phone_number);
+    return validateName(data.name) &&
+        validateEmail(data.email) &&
+        validatePhoneNumber(data.phone_number);
 }
 
 function validateName(name) {
@@ -201,15 +201,17 @@ function validatePhoneNumber(phoneNumber) {
 }
 
 // Utility functions
-function renderNewlineSeparatedText(text) {
-    if (typeof text === 'string' && text.trim() !== '') {
-        return text.split('\n').map(function(item, index) {
-            return <p key={index} className="text-item">{item}</p>;
-        });
-    } else if (Array.isArray(text) && text.length > 0) {
-        return text.map(function(item, index) {
-            return <p key={index} className="text-item">{item}</p>;
-        });
+function renderNewlineSeparatedText(items, type) {
+    if (Array.isArray(items) && items.length > 0) {
+        return items.map((item, index) => (
+            <p key={index} className="text-item">
+                <Link 
+                    to={`/${type === 'course' ? 'DeptCourseInformation' : 'DeptRoleInformation'}?${type === 'course' ? 'courseid' : 'roleid'}=${item[1]}`}
+                >
+                    {item[0]}
+                </Link>
+            </p>
+        ));
     } else {
         return <p className="text-item">No data available</p>;
     }
@@ -253,7 +255,7 @@ function ProfilePage() {
                             )}
                         </div>
                         <div className="card-content">
-                            <ProfileHeader 
+                            <ProfileHeader
                                 allData={allData}
                                 fileInputRef={fileInputRef}
                             />
@@ -404,7 +406,7 @@ function TeachingServiceInfo({ profileData }) {
                 <div className="info-grid">
                     <div>
                         <h4>Current Course(s)</h4>
-                        <div>{renderNewlineSeparatedText(profileData.current_courses)}</div>
+                        <div>{renderNewlineSeparatedText(profileData.current_courses, 'course')}</div>
                     </div>
                 </div>
             </div>
@@ -414,7 +416,7 @@ function TeachingServiceInfo({ profileData }) {
                 <div className="info-grid">
                     <div>
                         <h4>Current Service Role(s)</h4>
-                        <div>{renderNewlineSeparatedText(profileData.current_service_roles)}</div>
+                        <div>{renderNewlineSeparatedText(profileData.current_service_roles, 'role')}</div>
                     </div>
                     <div>
                         <h4>Hours Completed</h4>
