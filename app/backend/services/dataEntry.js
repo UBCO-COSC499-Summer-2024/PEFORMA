@@ -18,7 +18,7 @@ async function saveDataToDatabase(data) {
         query = `SELECT * FROM "ServiceRole" WHERE "divisionId" = ANY($1) AND "stitle" = $2;`;
         result = await pool.query(query,[division,serviceRoleTitle]);
         if(result.rows.length > 0){
-            throw new Error;
+            throw new Error("Service Role already exist");
         }
         await pool.query('BEGIN');
         for(let div of division){
@@ -49,7 +49,7 @@ async function saveDataToDatabase(data) {
         query = `SELECT * FROM "Course" WHERE "divisionId" = $1 AND "courseNum" = $2; `;
         result = await pool.query(query, [division, courseCode]);
         if(result.rows.length > 0){
-            throw new Error;
+            throw new Error("Course already exist");
         }
         query = `SELECT setval(pg_get_serial_sequence('"Course"', 'courseId'), COALESCE((SELECT MAX("courseId") FROM "Course"), 0) + 1, false);`;
         await pool.query(query);
