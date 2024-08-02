@@ -36,7 +36,7 @@ describe('queryAccount', () => {
 
     // Assert the result
     expect(result).toEqual(expectedOutput);
-    expect(client.query).toHaveBeenCalledWith('SELECT * FROM public."Account"');
+    expect(client.query).toHaveBeenCalledWith('SELECT * FROM public."Account" WHERE "isActive" = TRUE');
     expect(client.release).toHaveBeenCalled();
   });
 
