@@ -1,3 +1,4 @@
+/* Root variables for consistent theming */
 :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -21,25 +22,25 @@
     --radius: 0.5rem;
   }
   
+  /* Base body styles */
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
   
+  /* Dashboard layout */
   .dashboard {
     display: flex;
   }
   
-  .container {
-    flex-grow: 1;
-  }
-  
+  /* Profile page container */
   .user-profilepage {
     background-color: hsl(0, 0%, 100%);
     padding: 1rem;
     height: auto;
   }
   
+  /* Profile card styles */
   .user-profilecard {
     width: 95%;
     height: auto;
@@ -49,6 +50,7 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
   
+  /* Card header styles */
   .card-header {
     display: flex;
     justify-content: space-between;
@@ -56,51 +58,47 @@
     padding: 1.5rem;
     border-top-left-radius: 0.75rem;
     border-top-right-radius: 0.75rem;
-    background-image: linear-gradient(to right, #dbeafe, #fef3c7);
+    background-image: linear-gradient(to right, #135394, #cf5c5a); /* Navy blue to gold gradient */
   }
   
   .card-header h2 {
     font-size: 2.25rem;
     font-weight: 700;
-    color: hsl(var(--card-foreground));
+    color: white; /* Changed to white for better visibility on the new gradient */
     padding-left: 0.5rem;
   }
   
-  .performance-score {
-    text-align: right;
-  }
-  
-  .performance-score div:first-child {
-    font-size: 1.125rem;
-    color: hsl(215.4 16.3% 46.9%);
-  }
-  
-  .performance-score div:last-child {
-    font-size: 2.25rem;
-    font-weight: 700;
-  }
-  
+  /* Card content styles */
   .card-content {
     padding: 2rem 3rem;
   }
   
+  /* Profile header styles */
   .user-profileheader {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
   }
   
   .user-profileheader-section {
     display: flex;
   }
   
+  /* Profile image styles */
   .user-profileimage-container {
+    position: relative;
     width: 10rem;
     height: 10rem;
     border-radius: 9999px;
     margin-right: 2.5rem;
     overflow: hidden;
+  }
+  
+  .user-profileimage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   
   .no-image {
@@ -117,6 +115,7 @@
     font-size: 1.125rem;
   }
   
+  /* Profile info styles */
   .user-profileinfo h3 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -135,13 +134,15 @@
     color: hsl(var(--muted-foreground));
   }
   
-  .user-profiledetails-grid {
+  /* Grid layout for profile details */
+  .user-profiledetails-grid, .info-row {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     margin-top: 2rem;
   }
   
+  /* Styles for personal info, teaching, and service sections */
   .personal-info,
   .teaching,
   .service {
@@ -162,13 +163,14 @@
     margin-bottom: 1rem;
   }
   
+  /* Grid layout for information display */
   .info-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .info-grid h4 {
+  .info-grid h4, .info-row h4 {
     font-size: 1.25rem;
     font-weight: 500;
     color: hsl(var(--muted-foreground));
@@ -176,17 +178,21 @@
   }
   
   .info-grid p,
+  .info-row p,
   .info-grid .text-item {
     font-size: 1.25rem;
     font-weight: 500;
     color: hsl(var(--card-foreground));
-  }
+  } 
   
-  .info-grid a {
-    color: hsl(var(--primary));
+  /* Styles for course links */
+  .info-grid .text-item a,
+  .info-row .text-item a {
     text-decoration: none;
+    color: inherit;
   }
   
-  .info-grid a:hover {
+  .info-grid .text-item a:hover,
+  .info-row .text-item a:hover {
     text-decoration: underline;
   }
