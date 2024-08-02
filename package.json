@@ -49,6 +49,7 @@
     "react-paginate": "^8.2.0",
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
-    "sinon": "^12.0.1"
+    "sinon": "^12.0.1",
+    "xlsx": "^0.17.0"
   }
 }
