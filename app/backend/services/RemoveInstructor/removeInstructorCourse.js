@@ -5,6 +5,7 @@ const currentTerm = await getLatestTerm();
 
   const { profileId, courseId} = req.body;
   try {
+    //Remove instructor from Instrutor Teaching Assignment table
     const result = await pool.query(
       'DELETE FROM "InstructorTeachingAssignment" WHERE "profileId" = $1 AND "courseId" = $2 AND "term" = $3 RETURNING *',
       [profileId, courseId, currentTerm]

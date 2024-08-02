@@ -1,6 +1,6 @@
 const pool = require('../../db/index.js');
 const { getLatestTerm } = require('../latestTerm.js');
-
+//function to get the courses and the instructors for the current term
 async function getCourseInformation() {
   try {
     const latestTerm = await getLatestTerm(); 

@@ -2,7 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const { queryAccount } = require('./queryAccount');
-
+//Put the username and password in the local storage
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'

@@ -7,6 +7,7 @@ async function getAllInstructors()  {
         await updateAllMembers();
         const currentYear = await getLatestYear();
         const currentTerm = getLatestTerm();
+        //Get instructors with their service role assignment
         let query = `
             SELECT p."UBCId", 
                    TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, 
@@ -23,6 +24,7 @@ async function getAllInstructors()  {
             GROUP BY p."UBCId", p."firstName", p."middleName", p."lastName", d."dname", p."email", a."isActive";
         `;
         const result = await pool.query(query,[currentYear]);
+        //Format the members
         const members = result.rows.map(row => ({
             ubcid: row.UBCId || '',
             name: row.full_name || '',
@@ -32,7 +34,7 @@ async function getAllInstructors()  {
             email: row.email || '',
             status: row.isActive || ''
         }));
-
+        //Format the overall output
         const output = {
             currentPage: 1,
             perPage: 10,

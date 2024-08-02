@@ -1,6 +1,7 @@
 const pool = require('../../db/index');
 const {getLatestYear} = require('../latestYear');
 async function getServiceHour(profileId){
+    //Get the service hour worked for the instructor
     const year = await getLatestYear();
     try{
         let query = `

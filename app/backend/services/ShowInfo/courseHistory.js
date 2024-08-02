@@ -6,6 +6,7 @@ async function getCourseHistory(req) {
     const latestTermResult = await getLatestTerm();
     const courseId = req.query.courseId;  
     try {
+        //Get the course list
         let query = `
         SELECT 
             c."ctitle", 

@@ -3,6 +3,7 @@ const {getLatestTerm} = require('../latestTerm.js');
 async function getDeptLeaderBoard(){
     try {
         const latestTerm = await getLatestTerm();
+        //Get instructors with good performance
           let topPerformers = await pool.query(`
             SELECT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, AVG(stp."score") AS average_score
             FROM "Profile" p
@@ -11,7 +12,7 @@ async function getDeptLeaderBoard(){
             GROUP BY p."profileId"
             ORDER BY average_score DESC
             LIMIT 5;`, [latestTerm]);
-
+        //Get users with bad performance
         let bottomPerformers = await pool.query(`
             SELECT TRIM(p."firstName" || ' ' || COALESCE(p."middleName" || ' ', '') || p."lastName") AS full_name, AVG(stp."score") AS average_score
             FROM "Profile" p
@@ -24,7 +25,7 @@ async function getDeptLeaderBoard(){
         if (topPerformers.rows.length === 0 && bottomPerformers.rows.length === 0) {
             throw new Error("No data found");
         }
-
+        //Format data
         const output = {
             top: topPerformers.rows.map(row => ({
                 name: row.full_name,
