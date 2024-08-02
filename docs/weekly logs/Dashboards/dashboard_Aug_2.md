@@ -14,7 +14,7 @@
 
 ## Time Tracking
 
-![Clockify Summary](./Clockify%20images/Clockify_Aug_2.jpg)
+![Clockify Summary](./Clockify%20images/Clockify_Aug_2_1.jpg)
 ![Clockify Summary](./Clockify%20images/Clockify_Aug_2_2.jpg)
 ![Clockify Summary](./Clockify%20images/Clockify_Aug_2_3.jpg)
 ![Clockify Summary](./Clockify%20images/Clockify_Aug_2_4.jpg)
