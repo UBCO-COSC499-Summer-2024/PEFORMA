@@ -75,17 +75,35 @@ Our goal for the next cycle is to wrap up programming entirely, including implem
 ## Project Cycle Features
 
 | Feature Name        | Owner                                   |
-| -------------------- | --------------------------------------------- |
+| ----------------------- | -------------- | 
+| Comment on utils.js | Kevin |
+| Fix checkAccess | Kevin |
+| Test and refactored role info pages | Jeremy |
+| Test and refactored course info pages | Jeremy |
+| Removed monthly hours from data entry | Jeremy |
+| FE Documentation | Zhiheng |
+| BE Documentation | Zhiheng |
+| Fix BE Tests | Zhiheng |
+| Fix BE code based on test | Zhiheng |
+| Fix service info BE | Subaru |
+| Code refactor for newly added files | Subaru |
+| Adjustments in data entry and edit status | Subaru |
+| Test user profile page  | Adams |
+| Test exportCSV | Adams |
 
 ### Cycle Reflection
 
+This cycle involved a lot of fixing and updating things. All members continued to work on their respective tasks (e.g. refactoring, testing, commenting, documentation), but everyone also helped fix minior issues here and there after and during our 4-hour team meeting on Thursday. During the meeting, we did a comprehensive system walk through and developed a professional questionnaire for Peer Testing #2.
 
 ## Next Cycle Planning
 
 | Task Name             | Owner         | 
 | ----------------------- | -------------- | 
-| Code refactoring & testing | Kevin & Subaru & Jeremy & Zhiheng |
-| Implement of new feature | Zhiheng |
-| Fixing bugs in FE & BE | Jeremy & Kevin & Subaru |
+| Final touch-up | Jeremy, Subaru, Adams |
+| Documention | Kevin, Jeremy, Zhiheng, Subaru, Adams |
+| Prepare for client demo | Kevin, Jeremy, Zhiheng, Subaru, Adams |
+| Prepare for requirements review | Kevin, Jeremy, Zhiheng, Subaru, Adams |
 
 ### Next Cycle Goal
+
+Beside some minor fixes and last-minute touch-up, we hope to finish documenting by Wednesday. Individual reports will also be worked on during this time. On Friday, we'll having a team meeting to discuss about total system features, as well as diagrams for the individual report (only discuss, we won't be actually creating the diagrams). We will also be preparing for the final presentation, client demo and requirements review.
