@@ -1,13 +1,13 @@
 const pool = require('../../db/index.js'); 
 const { getAllServiceRoles } = require('../ShowList/serviceRoleService.js');
-
+const {getLatestYear} = require('../latestYear.js');
 async function getStatusChangeServiceRole(req) {
     const serviceRoleId = req.body.roleId; 
-    const status = req.body.newStatus;
 
     try{
-        let query = `UPDATE "ServiceRole" SET "isActive" = $1 WHERE "serviceRoleId" = $2 RETURNING *;`;
-        let result = await pool.query(query, [status, serviceRoleId]);
+        const currentYear = await getLatestYear();
+        let query = `INSERT "ServiceRole" ("serviceRoleId", "year") VALUES($1,$2) RETURNING *;`;
+        let result = await pool.query(query, [serviceRoleId, currentYear]);
         if (result.rows.length === 0) {
             throw new Error("No service role data found");
         } else {

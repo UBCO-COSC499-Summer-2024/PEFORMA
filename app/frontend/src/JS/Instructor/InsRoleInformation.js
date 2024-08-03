@@ -29,7 +29,7 @@ function InsRoleInformation() {
 				return;
 			}
 			
-			checkAccess(accountLogInType, navigate, 'instructor');
+			checkAccess(accountLogInType, navigate, 'instructor',authToken);
 			const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
 				params: { serviceRoleId: serviceRoleId },
 				headers: { Authorization: `Bearer ${authToken.token}` },
