@@ -8,11 +8,14 @@ async function getStatusChangeCourse(req) {
     const status = req.body.newStatus;
     
     try {
+        //If the new status is true
         if (status) {
+            //Insert the course into coursebyterm
             const query = `INSERT INTO "CourseByTerm" ("courseId", "term") VALUES ($1, $2) ON CONFLICT DO NOTHING`;
             await pool.query(query, [courseId, currentTerm]);
         } else {
             await pool.query('BEGIN');
+            //List up the tables to delete
             const tablesToDeleteFrom = ["CourseByTerm", "InstructorTeachingAssignment", "SingleTeachingPerformance", "CourseEvaluation", "SurveyQuestionResponse", "TaAssignmentTable"];
             for (const table of tablesToDeleteFrom) {
                 const query = `DELETE FROM "${table}" WHERE "courseId" = $1 AND "term" = $2`;
@@ -20,6 +23,7 @@ async function getStatusChangeCourse(req) {
             }
             await pool.query('COMMIT');
         }
+        //Get all courses with the status
         const courseData = await getAllCourses();
         return courseData;
     } catch (error) {
