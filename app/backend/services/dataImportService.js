@@ -63,7 +63,6 @@ const teachingAssignmentSchema = Joi.object({
 });
 
 const SEIDataSchema = Joi.object({
-    // sQResponseId : Joi.number().integer().required(),
      surveyTypeId : Joi.number().integer().required(),
      surveyQuestionId: Joi.number().integer().required(),
      courseId: Joi.number().integer().required(),
@@ -471,7 +470,6 @@ async function processCoursePerformanceData (row,client){
     const coursePerformanceData = {
         courseId: Number(row.CourseId),
         term:Number(row.Term),
-        //profileId:Joi.number().integer().required(),
         SEIQ1:Number(row.SEIQ1),
         SEIQ2:Number(row.SEIQ2),
         SEIQ3:Number(row.SEIQ3),
