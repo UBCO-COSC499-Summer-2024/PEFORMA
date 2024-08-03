@@ -15,7 +15,6 @@ import ChangePassword from './JS/All/ChangePassword';
 //Instructor
 import InsDashboard from './JS/Instructor/InsDashboard';
 import InsCourseList from './JS/Instructor/InsCourseList';
-import InsEditProfile from './JS/Instructor/InsEditProfile';
 import InsPerformancePage from './JS/Instructor/InsPerformancePage';
 import InsCourseHistory from './JS/Instructor/InsCourseHistory';
 import InsProfilePage from './JS/Instructor/InsProfilePage';
@@ -67,7 +66,6 @@ function App() {
 						}
 					/>
 					<Route path="/InsCourseList" element={<InsCourseList />} />
-					<Route path="/InsEditProfile" element={<InsEditProfile />} />
 					<Route path="/InsPerformancePage" element={<InsPerformancePage />} />
 					<Route path="/InsProfilePage" element={<InsProfilePage />} />
 					<Route path="/InsCourseHistory" element={<InsCourseHistory />} />

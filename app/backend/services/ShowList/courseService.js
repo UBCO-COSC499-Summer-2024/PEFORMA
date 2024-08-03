@@ -1,7 +1,7 @@
 const pool = require('../../db/index.js');
 const {getLatestTerm} = require('../latestTerm.js');
 const divisionMap = {
-    'ALL': 0,
+    'All': 0,
     'COSC': 1, 
     'MATH': 2,
     'PHYS': 3,
@@ -21,6 +21,7 @@ async function getFormattedCourseData(divisionCode) {
     const divisionId = divisionMap[divisionCode];
     const divisionLabel = divisionLabelMap[divisionId];
     const latestTerm = await getLatestTerm();
+    //Get all the courses with their status
     let query = `SELECT d."dcode" || ' ' || c."courseNum" AS "courseCode", c."courseId", c."ctitle", 
                 array_agg(
                     CASE 
@@ -45,6 +46,7 @@ async function getFormattedCourseData(divisionCode) {
                 ORDER BY 
                     c."courseId"`;
     const result = await pool.query(query,[latestTerm,divisionId]);
+    //Format courses
     const courses = result.rows.map(row =>{
         return{
             id: row.courseCode,
@@ -56,7 +58,7 @@ async function getFormattedCourseData(divisionCode) {
             profileid: row.profileid
         }
     });
-
+    //Format overall data
     const formattedData = {
         division: divisionCode,
         divisionLabel: divisionLabel,

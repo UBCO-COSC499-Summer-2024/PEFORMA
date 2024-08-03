@@ -113,7 +113,7 @@ function CourseHistory() {
 							currentInstructor.map((instructor, index) => {
 								return (
 								<span>
-								<Link to={"/InsProfilePage?ubcid="+instructor.ubcid}><strong>{instructor.instructorName}</strong></Link>
+								<Link to={"/InsProfilePage?profileid="+instructor.instructorID}><strong>{instructor.instructorName}</strong></Link>
 								{index !== currentInstructor.length - 1 && (
 									<span>, </span>
 								)}
@@ -142,7 +142,7 @@ function CourseHistory() {
 									return (
 										<tr key={i}>
 											<td>
-												<Link to={`/InsProfilePage?ubcid=${entry.ubcid}`}>
+												<Link to={`/InsProfilePage?profileid=${entry.instructorID}`}>
 													{entry.instructorName}
 												</Link>
 											</td>

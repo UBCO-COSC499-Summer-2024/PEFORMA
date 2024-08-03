@@ -42,14 +42,12 @@ export const handleSearchChange = (setStateFunction) => {
 
 // check user access based on accountLogInType and accessView
 export const checkAccess = (accountLogInType, navigate, accessView, authToken) => {
-  // if (!authToken) {
-  //   alert('No Access, Redirecting to login');
-  //   navigate('/Login');
-  //   return;
-  // }
-
+  if (!authToken) {
+    alert('No Access, Redirecting to login');
+    navigate('/Login');
+    return;
+  }
   const numericAccountType = Number(accountLogInType);
-
   // if your accLogInType is 1 or 2 = dept view only and trying to access Instructor? deny access
   if ((numericAccountType === 1 || numericAccountType === 2) && (accessView === 'instructor' || accessView === 'admin')) {
     alert('No Access, Redirecting to department view');

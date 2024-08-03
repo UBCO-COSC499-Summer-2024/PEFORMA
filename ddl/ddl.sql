@@ -223,14 +223,13 @@ CREATE TABLE "MeetingLog" (
   "meetingTitle"  VARCHAR(50),
   "location"      VARCHAR(30),
   "date"          DATE,
-  "time"          TIME
+  "time"          TEXT
 );
 ALTER SEQUENCE "MeetingLog_meetingId_seq" RESTART WITH 1;
 
 CREATE TABLE "MeetingAttendance" (
   "meetingId"     integer REFERENCES "MeetingLog" ("meetingId") ON UPDATE CASCADE ON DELETE CASCADE,
   "UBCId"         VARCHAR(8) REFERENCES "Profile" ("UBCId") ON UPDATE CASCADE ON DELETE CASCADE,
-  "attendance"    BOOLEAN,
   PRIMARY KEY ("meetingId", "UBCId")
 );
 

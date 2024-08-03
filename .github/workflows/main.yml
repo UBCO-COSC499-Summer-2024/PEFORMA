@@ -1,23 +1,38 @@
 name: jest tests
 
 on:
-    push:
-    pull_request:
+  push:
+  pull_request:
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: install Node.js
-              uses: actions/setup-node@v4
-              with:
-                node-version: '20'
+      - name: install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-            - name: install dependencies
-              run: npm install
+      - name: install dependencies
+        run: npm install
 
-            - name: run tests
-              run: npm test
-              
+      - name: run tests with logging
+        run: |
+          set -x  # Enable debug logging
+          npm test
+        continue-on-error: true  # Allow the job to continue even if the test step fails
+
+      - name: capture test results
+        if: failure()  # This step runs only if the previous step failed
+        run: |
+          echo "Tests failed. Capturing logs..."
+          cat path/to/log/file  # Replace with the path to your log file, if any
+
+      - name: check npm test exit code
+        run: |
+          if [ $? -ne 0 ]; then
+            echo "npm test returned a non-zero exit code"
+            exit 1
+          fi

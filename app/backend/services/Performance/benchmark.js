@@ -212,6 +212,7 @@ async function getBenchmark(){
             throw new Error("No benchmark data");
         }
         result = await pool.query(query,[year]);
+        //Get the number of months starting from September to currentMonth
         let countMonth = 0;
         switch(currentMonth){
             case 9: countMonth = 0; break;

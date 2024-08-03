@@ -113,9 +113,13 @@ function InsCourseList() {
                                                                     profileId={course.profileid[index]}
                                                                     size={30}
                                                                 />
-                                                                <Link to={`/InsProfilePage?ubcid=${course.ubcid[index]}`}>
-                                                                    {instructor}
-                                                                </Link>
+                                                                {instructor !== "Not Assigned" ? (
+                                                                    <Link to={`/InsProfilePage?profileid=${course.profileid[index]}`}>
+                                                                        {instructor}
+                                                                    </Link>
+                                                                ) : (
+                                                                    instructor
+                                                                )}
                                                             </div>
                                                             {index < course.instructor.length - 1 ? <br /> : null}
                                                         </React.Fragment>
@@ -127,7 +131,7 @@ function InsCourseList() {
                                                             profileId={course.profileid}
                                                             size={10}
                                                         />
-                                                        <Link to={`/InsProfilePage?ubcid=${course.ubcid}`}>
+                                                        <Link to={`/InsProfilePage?profileid=${course.profileid}`}>
                                                             {course.instructor}
                                                         </Link>
                                                     </div>

@@ -97,8 +97,7 @@ const meetingLogSchema = Joi.object({
 
 const meetingAttendanceSchema = Joi.object({
     meetingId: Joi.number().integer().required(),
-    UBCId: Joi.string().length(8).required(),
-    attendance: Joi.boolean().allow(null, '')
+    UBCId: Joi.string().length(8).required()
 });
 
 const taAssignmentSchema = Joi.object({
@@ -644,7 +643,7 @@ async function processMeetingLogData(row, client) {
     const meetingLogData = {
         title: row.title || null,
         location: row.location || null,
-        date: row.date || null,
+        date: Date(row.date) || null,
         time: row.time || null
     };
 
@@ -669,8 +668,7 @@ async function processMeetingLogData(row, client) {
 async function processMeetingAttendanceData(row, client) {
     const meetingAttendanceData = {
         meetingId: row.meetingId || null,
-        UBCId: String(row.UBCId) || null,
-        attendance: row.attendance || false
+        UBCId: String(row.UBCId) || null
     };
 
     const { error } = meetingAttendanceSchema.validate(meetingAttendanceData);
@@ -681,9 +679,9 @@ async function processMeetingAttendanceData(row, client) {
 
     try {
         await client.query(`
-            INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId", "attendance")
-            VALUES ($1, $2, $3)
-            ON CONFLICT ("meetingId", "UBCId") DO UPDATE SET "attendance" = EXCLUDED."attendance"
+            INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId")
+            VALUES ($1, $2)
+            ON CONFLICT ("meetingId", "UBCId")
         `, Object.values(meetingAttendanceData));
     } catch (err) {
         console.error('Error inserting/updating meeting attendance data:', err.message);

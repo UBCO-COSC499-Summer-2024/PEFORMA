@@ -314,6 +314,8 @@ function RoleInformation() {
       <div className="container">
         <TopBar />
         <div className="ri-main" data-testid="ri-main">
+          <button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
+
           <h1 className="roleName">
             {isEditing ? (
               <input
