@@ -14,7 +14,8 @@ useAuth.mockReturnValue({
 });
 
 function mockData() {
-  axios.get.mockImplementation(() => {
+  axios.get.mockImplementation((url) => {
+    if (url == 'http://localhost:3001/api/courseHistory') {
 return Promise.resolve({"data":{perPage: 5, currentPage: 1, courseID:1, entryCount:7, exists:true, courseCode:"COSC 123", courseName:"Cheese", courseDescription: "Fish",
                                       division:"Computer Science", avgScore:50, latestTerm:20234,
                                       history:[
@@ -30,6 +31,9 @@ return Promise.resolve({"data":{perPage: 5, currentPage: 1, courseID:1, entryCou
                                         {taname:"Mister Test Jr.1", taemail:"mistertestjr1@ubc.ca",taUBCId:"43214321", taterm:20234},
                                         {taname:"Mister Test Jr.2", taemail:"mistertestjr2@ubc.ca",taUBCId:"43214322", taterm:20234}
                                     ]}});
+                                  } else if (url == "http://localhost:3001/api/terms") {
+                                    return Promise.resolve({"data": {currentTerm:20234}}); }
+                  return;
   });
 }
 
