@@ -155,6 +155,9 @@
     font-size: large;
     transition: background-color 0.1s;
     margin: 1em 0 1em 0;
+    height: 2.7em;
+    position: relative;
+    left: 0em;
 }
 
 
@@ -172,7 +175,8 @@
 }
 
 .coursehistory .inactive {
-    width: 10em;
+    width: 11em;
+    height: 2.7em;
 }
 
 .coursehistory .inactive:hover {

@@ -420,7 +420,7 @@ function CourseInformation() {
                 )}
                 {!active && (
                   <button className='assign-button inactive'>
-                    <span>Course inactive</span>
+                    <span>Assign Unavailable</span>
                   </button>
                 )}
               </>

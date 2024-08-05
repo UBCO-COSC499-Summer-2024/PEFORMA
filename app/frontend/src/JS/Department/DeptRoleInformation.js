@@ -397,7 +397,6 @@ function RoleInformation() {
                 {isActive ? 'Active' : 'De-active'}
               </label>
             )}
-          </div>
             {(!pastState && active) && (
               <>
             {showInstructorModal ? (
@@ -422,9 +421,11 @@ function RoleInformation() {
             )}
             {!active && (
                   <button className='assign-button inactive'>
-                    <span>Role inactive</span>
+                    <span>Assign Unavailable</span>
                   </button>
                 )}
+          </div>
+            
           {pastState || futureState ? (
             <p>Assignees for {termString}</p>
           ) : (
