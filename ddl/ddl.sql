@@ -222,8 +222,8 @@ CREATE TABLE "MeetingLog" (
   "meetingId"     SERIAL PRIMARY KEY,
   "meetingTitle"  VARCHAR(50),
   "location"      VARCHAR(30),
-  "date"          DATE,
-  "time"          TEXT
+  "date"          VARCHAR(10),
+  "time"          VARCHAR(5)
 );
 ALTER SEQUENCE "MeetingLog_meetingId_seq" RESTART WITH 1;
 

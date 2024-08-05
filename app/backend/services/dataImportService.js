@@ -63,7 +63,6 @@ const teachingAssignmentSchema = Joi.object({
 });
 
 const SEIDataSchema = Joi.object({
-    // sQResponseId : Joi.number().integer().required(),
      surveyTypeId : Joi.number().integer().required(),
      surveyQuestionId: Joi.number().integer().required(),
      courseId: Joi.number().integer().required(),
@@ -89,9 +88,9 @@ const CoursePerformanceDataSchema = Joi.object({
 });
 
 const meetingLogSchema = Joi.object({
-    title: Joi.string().required(),
+    meetingTitle: Joi.string().required(),
     location: Joi.string().required(),
-    date: Joi.date().required(),
+    date: Joi.string().required(),
     time: Joi.string().required()
 });
 
@@ -109,41 +108,6 @@ const taAssignmentSchema = Joi.object({
     email: Joi.string().email().required(),
     courseId: Joi.number().integer().required()
 });
-/*
-async function importData(files) {
-    const client = await pool.connect();
-    try {
-        await client.query('BEGIN');
-        
-        let importedCount = 0;
-        let errors = [];
-        
-        for (const file of files) {
-            try {
-                const fileData = await processFile(file, client);
-                importedCount += fileData.length;
-            } catch (error) {
-                console.error(`Error processing file: ${file.originalname}\n`, error.message);
-                errors.push({ file: file.originalname, error: error.message });
-            }
-        }
-        
-        await client.query('COMMIT');
-
-        return { 
-            success: errors.length === 0,
-            importedCount, 
-            errors
-        };
-    } catch (error) {
-        await client.query('ROLLBACK');
-        console.error('Transaction failed and rolled back:', error.message);
-        throw error;
-    } finally {
-        client.release();
-    }
-}
-*/
 
 async function importData(files) {
     const maxRetries = files.length+1;
@@ -463,7 +427,6 @@ async function processSEIData(row,client) {
         UBCId: String(row.UBCId),
         response: String(row.Response),
     };
-    //console.log("SEI data:\n",SEIData);
     const { error } = SEIDataSchema.validate(SEIData);
     if (error) {
         console.log(`Validation Error: ${error.message}`);
@@ -507,7 +470,6 @@ async function processCoursePerformanceData (row,client){
     const coursePerformanceData = {
         courseId: Number(row.CourseId),
         term:Number(row.Term),
-        //profileId:Joi.number().integer().required(),
         SEIQ1:Number(row.SEIQ1),
         SEIQ2:Number(row.SEIQ2),
         SEIQ3:Number(row.SEIQ3),
@@ -641,9 +603,9 @@ async function processTeachingAssignmentData(row, client) {
 
 async function processMeetingLogData(row, client) {
     const meetingLogData = {
-        title: row.title || null,
+        meetingTitle: row.title || null,
         location: row.location || null,
-        date: Date(row.date) || null,
+        date: row.date || null,
         time: row.time || null
     };
 
@@ -655,7 +617,7 @@ async function processMeetingLogData(row, client) {
 
     try {
         await client.query(`
-            INSERT INTO public."MeetingLog" ("title", "location", "date", "time")
+            INSERT INTO public."MeetingLog" ("meetingTitle", "location", "date", "time")
             VALUES ($1, $2, $3, $4)
             ON CONFLICT DO NOTHING
         `, Object.values(meetingLogData));
