@@ -109,6 +109,14 @@
     width: 100%;
 }
 
+.ri-main .inactive {
+    width: 8em;
+}
+
+.ri-main .inactive:hover {
+    cursor:default;
+}
+
 .assign-button {
     background-color: var(--darkestishGrey);
     border: 1px solid var(--black);

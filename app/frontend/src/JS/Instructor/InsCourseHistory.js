@@ -113,7 +113,11 @@ function CourseHistory() {
 							</div>
           				)}
 					</div>
-					<p>Current TA(s) ({termString}): </p>
+					<p>Current TA(s) ({termString}):
+						{historyData.tainfo.length === 0 && (
+							<strong> N/A</strong>
+						)}
+					</p>
 					{historyData.tainfo.length !== 0 && (
 					historyData.tainfo.map((ta, index) => {
 						return (

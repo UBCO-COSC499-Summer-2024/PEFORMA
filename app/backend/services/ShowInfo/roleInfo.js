@@ -19,7 +19,7 @@ async function getServiceInfo(req){
         query = `SELECT * FROM "ServiceRoleByYear" WHERE "serviceRoleId" = $1 AND "year" = $2;`
         result = await pool.query(query,[serviceRoleId,latestYear]);
         let exists;
-        if(result.length == 0){
+        if(result.rows.length == 0){
             exists = false;
         }
         else{
