@@ -7,6 +7,8 @@ import TopBar from '../common/TopBar.js';
 import { checkAccess, fetchWithAuth, handleCancelForm, submitFormData } from '../common/utils.js';
 import { useAuth } from '../common/AuthContext.js';
 import '../../CSS/Department/DeptSEIPage.css'
+import ImportModal from './DataImportImports/DeptImportModal.js';
+import { FaFileImport } from 'react-icons/fa';
 
 const initialFormData = { // initialFormData that will be used in SEI page
   courseId: '',
@@ -98,7 +100,7 @@ function useDeptSEIPage({ authToken, accountLogInType, setCourseOptions, navigat
         console.error('Error fetching courses:', error);
       }
     };
-  
+
     fetchCourses();
   }, [authToken, accountLogInType, navigate, setCourseOptions]);
 }
@@ -107,16 +109,19 @@ function useDeptSEIPage({ authToken, accountLogInType, setCourseOptions, navigat
 function DeptSEIPage() {
   const { authToken, accountLogInType } = useAuth();
   const navigate = useNavigate();
-  const { 
-    formData, 
-    setFormData, 
-    courseOptions, 
-    setCourseOptions, 
-    instructorOptions, 
-    handleChange, 
-    handleCourseChange, 
-    handleInstructorChange 
+  const {
+    formData,
+    setFormData,
+    courseOptions,
+    setCourseOptions,
+    instructorOptions,
+    handleChange,
+    handleCourseChange,
+    handleInstructorChange
   } = useFormState();
+
+  // initialize state to control visibility of import modal
+  const [showImportModal, setShowImportModal] = useState(false);
 
   // handle course fetching and access 
   useDeptSEIPage({ authToken, accountLogInType, setCourseOptions, navigate });
@@ -138,49 +143,64 @@ function DeptSEIPage() {
       enrollmentRate: formData.enrollmentRate,
       failedPercentage: formData.failedPercentage
     };
-    
+
     // use submitFormData with api url, set to initialFormData when SEI data is submitted successfully
     await submitFormData('http://localhost:3001/api/courseEvaluation', postData, authToken, initialFormData, setFormData, 'SEI data submitted successfully.');
   };
-  
+
   return (
     <div className="dashboard">
       <SideBar sideBarType="Department" />
       <div className='container'>
         <TopBar />
         <div className='SEI-form' id='SEI-test-content'>
-          <h1>SEI Data Entry</h1>
+          <div className='SEI-version'>
+            <div className="form-header">
+              <h1>SEI Data Entry</h1>
+              <button
+                className="import-button"
+                onClick={() => setShowImportModal(true)}
+                aria-label="Import data"
+              >
+                <FaFileImport className='import-icon' />Import
+              </button>
+            </div>
+          </div>
           <form onSubmit={handleSubmit}>
             <label>
               Select Course:
-              <Select name="course" options={courseOptions} onChange={handleCourseChange} isClearable placeholder="Select course"/>
+              <Select name="course" options={courseOptions} onChange={handleCourseChange} isClearable placeholder="Select course" />
             </label>
             {formData.courseId && (
-            <label>
-              Select Instructor:
-              <Select name="instructor" options={instructorOptions} onChange={handleInstructorChange} isClearable placeholder="Select instructor"/>
-            </label>
-          )}
+              <label>
+                Select Instructor:
+                <Select name="instructor" options={instructorOptions} onChange={handleInstructorChange} isClearable placeholder="Select instructor" />
+              </label>
+            )}
             {formData.profileId && (
               <>
                 {Array.from({ length: 6 }, (_, i) => (
                   <label key={i + 1}>
-                    Q {i + 1} Average Score:<input type="number" name={`Q${i + 1}`} placeholder='0 ~ 100' value={formData[`Q${i + 1}`]} onChange={handleChange} required min="0" max="100" step="0.01"/>
+                    Q {i + 1} Average Score:<input type="number" name={`Q${i + 1}`} placeholder='0 ~ 100' value={formData[`Q${i + 1}`]} onChange={handleChange} required min="0" max="100" step="0.01" />
                   </label>
                 ))}
-                <label>Retention Rate of {formData.course}<input type="number" name="retentionRate" placeholder='0 ~ 100' value={formData.retentionRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label>Average Grade of {formData.course}<input type="number" name="averageGrade" placeholder='0 ~ 100' value={formData.averageGrade} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label>Enrollment Rate of {formData.course}<input type="number" name="enrollmentRate" placeholder='0 ~ 100' value={formData.enrollmentRate} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
-                <label>Failed Percentage of {formData.course}<input type="number" name="failedPercentage" placeholder='0 ~ 100' value={formData.failedPercentage} onChange={handleChange} required min="0" max="100" step="0.01"/></label>
+                <label>Retention Rate of {formData.course}<input type="number" name="retentionRate" placeholder='0 ~ 100' value={formData.retentionRate} onChange={handleChange} required min="0" max="100" step="0.01" /></label>
+                <label>Average Grade of {formData.course}<input type="number" name="averageGrade" placeholder='0 ~ 100' value={formData.averageGrade} onChange={handleChange} required min="0" max="100" step="0.01" /></label>
+                <label>Enrollment Rate of {formData.course}<input type="number" name="enrollmentRate" placeholder='0 ~ 100' value={formData.enrollmentRate} onChange={handleChange} required min="0" max="100" step="0.01" /></label>
+                <label>Failed Percentage of {formData.course}<input type="number" name="failedPercentage" placeholder='0 ~ 100' value={formData.failedPercentage} onChange={handleChange} required min="0" max="100" step="0.01" /></label>
                 <div className='submit-button-align'>
                   <button type="submit">Submit</button>
                   <button type="button" className="cancel-button" onClick={() => handleCancelForm(setFormData, initialFormData)}>Cancel</button>
                 </div>
-              </> 
-            )}    
+              </>
+            )}
           </form>
         </div>
       </div>
+      <ImportModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+      />
     </div>
   );
 }
