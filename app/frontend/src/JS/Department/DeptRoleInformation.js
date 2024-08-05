@@ -93,6 +93,7 @@ function useRoleInformation() {
           roleDescription: roleData.roleDescription,
           department: roleData.department,
         });
+        setIsActive(roleData.isActive);
       // Set active state to false if role is inactive
       if (!roleData.exists) {
         setActive(false);
