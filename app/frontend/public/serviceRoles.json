@@ -1,0 +1,25 @@
+{"currentPage":1, "perPage": 10, "rolesCount":21,
+  "roles":[
+    {"id": 1, "name":"Undergraduate Advisor", "department":"I dont know", "description":"Advises undergraduate students on academic matters", "status":true},
+    {"id": 2, "name":"2", "department":"C", "description":"Testing", "status":true},
+    {"id": 3, "name":"3", "department":"C", "description":"Testing", "status":false},
+    {"id": 1, "name":"4", "department":"C", "description":"Testing", "status":true},
+    {"id": 2, "name":"5", "department":"C", "description":"Testing", "status":true},
+    {"id": 6, "name":"6", "department":"C", "description":"Testing", "status":true},
+    {"id": 5, "name":"7", "department":"C", "description":"Testing", "status":true},
+    {"id": 7, "name":"8", "department":"C", "description":"Testing", "status":false},
+    {"id": 4, "name":"9", "department":"C", "description":"Testing", "status":true},
+    {"id": 6, "name":"10", "department":"C", "description":"Testing", "status":true},
+    {"id": 8, "name":"Grad advisor", "department":"C", "description":"Testing", "status":true},
+    {"id": 6, "name":"12", "department":"C", "description":"Testing", "status":true},
+    {"id": 3, "name":"13", "department":"C", "description":"Testing", "status":true},
+    {"id": 2, "name":"14", "department":"C", "description":"Testing", "status":true},
+    {"id": 4, "name":"15", "department":"C", "description":"Testing", "status":false},
+    {"id": 5, "name":"16", "department":"C", "description":"Testing", "status":false},
+    {"id": 2, "name":"17", "department":"C", "description":"Testing", "status":false},
+    {"id": 6, "name":"18", "department":"C", "description":"Testing", "status":true},
+    {"id": 1, "name":"19", "department":"C", "description":"Testing", "status":true},
+    {"id": 2, "name":"20", "department":"C", "description":"Testing", "status":false},
+    {"id": 6, "name":"21", "department":"C", "description":"Testing", "status":true}
+  ]
+}

@@ -1,0 +1,177 @@
+
+
+.courseinfo-main {
+    margin-top: 1.5em;
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-left: 2em;
+}
+
+.courseName {
+    text-decoration: underline;
+}
+
+.coursehistory p {
+
+    font-size: large;
+    margin-bottom: 0.3em;
+    margin-top: 0.3em;
+    
+    width: 66%;
+}
+
+.courseinfo-main .assignmentInfo {
+    margin-left: 0.5em;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.score {
+    margin-top: 1em;
+    font-size: larger;
+    background-color: var(--green);
+    padding: 0.75em;
+    border-radius: 1em;
+    margin-bottom: 1em;
+}
+
+.score span {
+    margin-left: 0.5em;
+    padding-bottom: 0.15em;
+    font-weight: bolder;
+}
+
+.buttons {
+    margin-left: 1em;
+    margin-bottom: 1em;
+}
+
+.coursehistory .buttons button {
+    color: var(--black);
+    padding: 0.75em;
+    font-size: larger;
+    margin-right: 1em;
+    transition: background-color 0.1s;
+    margin-bottom: 2em;
+}
+
+.coursehistory #edit {
+    background-color: var(--darkestGrey);
+}
+
+#edit:hover {
+    background-color: var(--darkestestGrey);
+}
+
+#deactivate {
+    background-color: var(--red);
+}
+
+#deactivate:hover {
+    background-color: var(--darkRed);
+}
+
+#history {
+    margin-top: 1.5em;
+    width: 66%;
+    margin-left: 10em;
+}
+
+#historyTable {
+    border: 1px solid var(--darkestGrey);
+    border-radius: 1em;
+    width: 100%;
+    margin-bottom: 2.5em;
+}
+
+
+#historyTable tfoot .pagination {
+    display: flex;
+    padding: 0em 0.5em 0 0.5em;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.coursehistory .pagination li.active a {
+
+    background-color: var(--blue);
+    color: white;
+  }
+
+
+.coursehistory .pagination li a {
+
+    padding: 0.5em 1em;
+    border: 1px solid var(--white);
+    color: var(--black);
+    text-decoration: none;
+}
+
+  
+  #historyTable tfoot .pagination li:hover {
+    cursor: pointer;
+  }
+
+#historyTable tfoot tr td {
+    border: 0;
+}
+
+.coursehistory .remove-instructor {
+    background-color: var(--red);
+    color: var(--black);
+    margin-left: 0.5em;
+    height: 2.25em;
+    width: 2.25em;
+    transition: background-color 0.1s;
+    border-radius: 40%;
+}
+
+.coursehistory td, .coursehistory th {
+    border-bottom: 1px solid var(--darkestGrey);
+    text-align: center;
+    height: 1.5em;
+    width: 0em;
+}
+
+.coursehistory th {
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.coursehistory .assign-button {
+    background-color: var(--darkestishGrey);
+    border: 1px solid var(--black);
+    color: var(--black);
+    height: 3em;
+    width: 15em;
+    text-align: left;
+    font-weight: normal;
+    font-size: large;
+    transition: background-color 0.1s;
+    margin: 1em 0 1em 0;
+}
+
+
+.back-to-prev-button {
+    background-color: var(--blue); 
+    border: none; 
+    color: white; 
+    padding: 10px 20px; 
+    text-align: center; 
+    text-decoration: none; 
+    font-size: 16px; 
+    cursor: pointer; 
+    border-radius: 10px;
+    transition: background-color 0.3s ease; 
+}
+
+
+.current-instructor {
+    width: 100%;
+}

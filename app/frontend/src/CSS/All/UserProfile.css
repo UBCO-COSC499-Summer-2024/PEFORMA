@@ -1,0 +1,281 @@
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.dashboard {
+  display: flex;
+}
+
+/* @media (min-width: 1400px) {
+    .container {
+      max-width: 1400px;
+    }
+  } */
+
+.user-profilepage {
+  background-color: hsl(0, 0%, 100%);
+  padding: 1rem;
+  height: auto;
+}
+
+.user-profilecard {
+  width: 95%;
+  height: auto;
+  margin: 1rem auto;
+  background-color: hsl(var(--card));
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  background-image: linear-gradient(to right, #dbeafe, #fef3c7);
+}
+
+.card-header h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--card-foreground));
+  padding-left: 0.5rem;
+}
+
+.performance-score {
+  text-align: right;
+}
+
+.performance-score div:first-child {
+  font-size: 1.125rem;
+  color: hsl(215.4 16.3% 46.9%);
+}
+
+.performance-score div:last-child {
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+.card-content {
+  padding: 2rem 3rem;
+}
+
+.user-profileheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.user-profileheader-section {
+  display: flex;
+}
+
+.user-profileimage-container {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 9999px;
+  margin-right: 2.5rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user-profileimage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image {
+  width: 100%;
+  height: 100%;
+  background-color: hsl(var(--muted));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-image span {
+  color: hsl(var(--muted-foreground));
+  font-size: 1.125rem;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-overlay span {
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.user-profileinfo h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: hsl(var(--card-foreground));
+}
+
+.ubc-id {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.25rem;
+}
+
+.email {
+  font-size: 1.125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.user-profile-edit-button,
+.user-profile-save-button,
+.cancel-button {
+  height: 2.82rem;
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.user-profile-edit-button,
+.user-profile-save-button {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.user-profile-edit-button:hover,
+.user-profile-save-button:hover {
+  background-color: hsl(var(--primary) / 0.9);
+}
+
+.cancel-button {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+}
+
+.cancel-button:hover {
+  background-color: hsl(var(--secondary) / 0.8);
+}
+
+.user-profiledetails-grid, .info-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.personal-info,
+.teaching,
+.service {
+  margin-bottom: 2rem;
+}
+
+.personal-info h4,
+.teaching h4,
+.service h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--card-foreground));
+  margin-bottom: 1rem;
+}
+
+hr {
+  border-top: 1px solid hsl(var(--border));
+  margin-bottom: 1rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.info-grid h4, .info-row h4 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 0.5rem;
+}
+
+.info-grid p,
+.info-row p,
+.info-grid .text-item {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: hsl(var(--card-foreground));
+} 
+
+.edit-input {
+  width: 70%;
+  padding: 0.75rem;
+  font-size: 1.25rem;
+  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.15s ease-in-out;
+}
+
+.user-profileheader .edit-input {
+  margin-bottom: 0.5rem;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: transparent;
+}
+
+.info-grid .text-item a,
+.info-row .text-item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.info-grid .text-item a:hover,
+.info-row .text-item a:hover {
+  text-decoration: underline;
+}
+

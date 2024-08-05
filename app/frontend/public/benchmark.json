@@ -1,0 +1,12 @@
+{
+  "people":[
+    {"name":"ASD","shortage":100},
+    {"name":"Hello","shortage":45},
+    {"name":"Test","shortage":60},
+    {"name":"Subaru","shortage":170},
+    {"name":"Lee","shortage":10},
+    {"name":"A","shortage":27},
+    {"name":"B","shortage":20},
+    {"name":"C","shortage":5}
+  ]
+}
