@@ -114,9 +114,9 @@ function DeptProfilePage() {
                 
                 allCourses.courses = formatListData(allCourses.courses, profileData.teachingAssignments)
                 setSelectedCourses(allCourses.courses.filter((course) => course.assigned));
-                
-                const filledCourses = fillEmptyItems(allCourses.courses, allCourses.perPage);
-                setCourseData({...allCourses, courses:filledCourses});
+
+                const filledCourses = fillEmptyItems(allCourses.courses.filter((course) => course.status), allCourses.perPage);
+                setCourseData({...allCourses, courseCount: filledCourses.length, courses: filledCourses});
                 
                 // Set up Role assignments
                 let allRoles = await fetchAllRoles();
@@ -124,8 +124,8 @@ function DeptProfilePage() {
                 allRoles.roles = formatListData(allRoles.roles, profileData.roles);
 
                 setSelectedRoles(allRoles.roles.filter((role) => role.assigned));
-                const filledRoles = fillEmptyItems(allRoles.roles, allRoles.perPage);
-                setRoleData({...allRoles, roles:filledRoles});
+                const filledRoles = fillEmptyItems(allRoles.roles.filter((role) => role.status), allRoles.perPage);
+                setRoleData({...allRoles, roleCount: filledRoles.length, roles: filledRoles});
 
             } catch (error) {
                 
