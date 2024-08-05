@@ -1,7 +1,8 @@
 const pool = require('../../db/index'); 
-
+//Fetches all the instructors to assign
 async function instructorFetch(){
     try {
+        //Get all the instructors from the db
         const result = await pool.query(
             `
              SELECT "profileId", "UBCId" AS "id",

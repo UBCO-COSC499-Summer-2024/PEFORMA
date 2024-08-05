@@ -5,6 +5,7 @@ async function removeInstructorRole(req)  {
   const currentYear = await getLatestYear();
   
   try {
+    //Remove instructor from service role
     const profileResult = await pool.query('SELECT "profileId" FROM "Profile" WHERE "UBCId" = $1', [String(id)]);
     if (profileResult.rowCount === 0) {
       throw new Error( `Instructor not found for ${id}` );

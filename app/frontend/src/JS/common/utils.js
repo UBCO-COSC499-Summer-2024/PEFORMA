@@ -178,6 +178,16 @@ export const filterItems = (items, itemType, search) => {
          instructor.toLowerCase().includes(search.toLowerCase())
        ))
     );
+  } else if (itemType === 'instructor') {
+    return items.filter((instructor) =>
+      (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
+      (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
+    );
+  } else if (itemType == 'assignee') {
+    return items.filter((assignee)=>
+      (assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
+      (assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())
+);
   } else if (itemType === 'taCourse') { // // if type is taCourse, filtering based on the logic
     return items.filter((item)=>
       (item.instructor?.toLowerCase() ?? '').includes(search.toLowerCase()) ||
@@ -464,3 +474,4 @@ export const submitFormData = async (url, postData, authToken, initialFormData, 
       }
   }
 };
+

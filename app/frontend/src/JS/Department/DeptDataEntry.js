@@ -120,7 +120,6 @@ function useDataEntryComponent() {
 	const [serviceRoleTitle, setServiceRoleTitle] = useState('');
 	const [serviceRoleDepartment, setServiceRoleDepartment] = useState('COSC');
 	const [serviceRoleDescription, setServiceRoleDescription] = useState('');
-	const [monthlyHours, setMonthlyHours] = useState({ january: 0, february: 0, march: 0, april: 0, may: 0, june: 0, july: 0, august: 0, september: 0, october: 0, november: 0, december: 0 });
 	const [showFileUploadModal, setShowFileUploadModal] = useState(false);
 	useEffect(() => {
 
@@ -145,7 +144,6 @@ function useDataEntryComponent() {
 		serviceRoleTitle, setServiceRoleTitle,
 		serviceRoleDepartment, setServiceRoleDepartment,
 		serviceRoleDescription, setServiceRoleDescription,
-		monthlyHours, setMonthlyHours,
 		showFileUploadModal, setShowFileUploadModal,
 		navigate
 	}
@@ -161,13 +159,12 @@ function DataEntryComponent() {
 		serviceRoleTitle, setServiceRoleTitle,
 		serviceRoleDepartment, setServiceRoleDepartment,
 		serviceRoleDescription, setServiceRoleDescription,
-		monthlyHours, setMonthlyHours,
 		showFileUploadModal, setShowFileUploadModal,
 		navigate
 	} = useDataEntryComponent();
 
 	const courseFormData = {selection, courseTitle, courseDepartment, courseCode, courseDescription};
-	const roleFormData = {selection, serviceRoleTitle, serviceRoleDepartment, serviceRoleDescription, monthlyHours};
+	const roleFormData = {selection, serviceRoleTitle, serviceRoleDepartment, serviceRoleDescription};
 	
 	return (
 		<div className="DataEntry-page">
@@ -301,63 +298,7 @@ function DataEntryComponent() {
 										})}
 									</select>
 								</div>
-								<label>Estimated hours per month:</label>
-								<div className="monthlyHours">
-									<div className='monthlyHoursRow formInput'>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.january = e.target.value }}/>
-											<div>January</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.february = e.target.value }}/>
-											<div>February</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.march = e.target.value }}/>
-											<div>March</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.april = e.target.value }}/>
-											<div>April</div>
-										</span>
-									</div>
-									<div className='monthlyHoursRow formInput'>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.may = e.target.value }}/>
-											<div>May</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.june = e.target.value }}/>
-											<div>June</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.july = e.target.value }}/>
-											<div>July</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.august = e.target.value }}/>
-											<div>August</div>
-										</span>
-									</div>
-									<div className='monthlyHoursRow formInput'>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.september = e.target.value }}/>
-											<div>September</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.october = e.target.value }} />
-											<div>October</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.november = e.target.value }} />
-											<div>November</div>
-										</span>
-										<span>
-											<input type="number" placeholder='hours' min="0" onChange={(e) => { monthlyHours.december = e.target.value }} />
-											<div>December</div>
-										</span>
-									</div>
-								</div>
+								
 								<label htmlFor="service-role-description">Service Role Description:</label>
 								<textarea
 									id="service-role-description"

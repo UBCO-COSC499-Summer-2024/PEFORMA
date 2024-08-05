@@ -5,6 +5,7 @@ async function getAllCourses() {
   try {
     const currentterm = await getLatestTerm();
     await updateAllCourses();
+    //Get all the courses
     let result = await pool.query(`
       SELECT c."courseId",
              c."ctitle",
@@ -15,7 +16,7 @@ async function getAllCourses() {
       FROM public."Course" c
       JOIN public."Division" d ON c."divisionId" = d."divisionId"
       ORDER BY c."divisionId" ASC, c."courseNum" ASC;
-    `); // Removed LIMIT and OFFSET
+    `);
 
     // Reformat the data
     const formattedData = {

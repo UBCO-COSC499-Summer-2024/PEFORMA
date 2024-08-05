@@ -1,41 +1,198 @@
-.dashboard-container {
+/* Root variables for consistent theming */
+:root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+  
+  /* Base body styles */
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+  
+  /* Dashboard layout */
+  .dashboard {
     display: flex;
-    height: 100vh;
-}
-
-.content {
-    flex: 1;
-    padding: 20px;
-    background-color: #f4f4f4;
+  }
+  
+  /* Profile page container */
+  .user-profilepage {
+    background-color: hsl(0, 0%, 100%);
+    padding: 1rem;
+    height: auto;
+  }
+  
+  /* Profile card styles */
+  .user-profilecard {
+    width: 95%;
+    height: auto;
+    margin: 1rem auto;
+    background-color: hsl(var(--card));
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Card header styles */
+  .card-header {
     display: flex;
-    flex-direction: column;
-}
-
-.information h1 {
-    font-size: 3em;
-}
-
-.information p {
-    font-size: 1.7vh;
-}
-
-.information a {
-    color: #3498db;
-    text-decoration: none;
-}
-
-.information a:hover {
-    text-decoration: underline;
-}
-
-.service-roles label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.service-roles select {
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    background-image: linear-gradient(to right, #135394, #cf5c5a); /* Navy blue to gold gradient */
+  }
+  
+  .card-header h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: white; /* Changed to white for better visibility on the new gradient */
+    padding-left: 0.5rem;
+  }
+  
+  /* Card content styles */
+  .card-content {
+    padding: 2rem 3rem;
+  }
+  
+  /* Profile header styles */
+  .user-profileheader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  
+  .user-profileheader-section {
+    display: flex;
+  }
+  
+  /* Profile image styles */
+  .user-profileimage-container {
+    position: relative;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 9999px;
+    margin-right: 2.5rem;
+    overflow: hidden;
+  }
+  
+  .user-profileimage {
     width: 100%;
-    padding: 1vh;
-    border: 1px solid #000000;
-    border-radius: 5px;
-}
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .no-image {
+    width: 100%;
+    height: 100%;
+    background-color: hsl(var(--muted));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .no-image span {
+    color: hsl(var(--muted-foreground));
+    font-size: 1.125rem;
+  }
+  
+  /* Profile info styles */
+  .user-profileinfo h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: hsl(var(--card-foreground));
+  }
+  
+  .ubc-id {
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+    margin-top: 0.25rem;
+  }
+  
+  .email {
+    font-size: 1.125rem;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  /* Grid layout for profile details */
+  .user-profiledetails-grid, .info-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  /* Styles for personal info, teaching, and service sections */
+  .personal-info,
+  .teaching,
+  .service {
+    margin-bottom: 2rem;
+  }
+  
+  .personal-info h4,
+  .teaching h4,
+  .service h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--card-foreground));
+    margin-bottom: 1rem;
+  }
+  
+  hr {
+    border-top: 1px solid hsl(var(--border));
+    margin-bottom: 1rem;
+  }
+  
+  /* Grid layout for information display */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .info-grid h4, .info-row h4 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 0.5rem;
+  }
+  
+  .info-grid p,
+  .info-row p,
+  .info-grid .text-item {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: hsl(var(--card-foreground));
+  } 
+  
+  /* Styles for course links */
+  .info-grid .text-item a,
+  .info-row .text-item a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .info-grid .text-item a:hover,
+  .info-row .text-item a:hover {
+    text-decoration: underline;
+  }
