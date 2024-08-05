@@ -15,9 +15,9 @@ async function createAccount(req) {
          if (emailCheckResult.rows.length > 0) {
              throw new Error('Email already exists');
          }
-         const ubcCheckQuery = `SELECT "UBCId" FROM "Profile" WHERE "UBCID" = $1;`;
+         const ubcCheckQuery = `SELECT "UBCId" FROM "Profile" WHERE "UBCId" = $1;`;
          const ubcCheckResult = await client.query(ubcCheckQuery,[ubcId]);
-         if(ubcCheckQuery.rows.length > 0){
+         if(ubcCheckResult.rows.length > 0){
             throw new Error('UBCID already exists');
          }
         const hashedPassword = await bcrypt.hash(password, 12);
