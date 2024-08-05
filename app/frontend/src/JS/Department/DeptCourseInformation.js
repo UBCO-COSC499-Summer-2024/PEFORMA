@@ -26,7 +26,7 @@ const fetchTermResponse = async() => {
 function filterCourseData(courseHistoryData, setCourseData, setCurrentInstructor) {
   if (courseHistoryData.history.length !== 0) {
     const filledEntries = fillEmptyItems(courseHistoryData.history, courseHistoryData.perPage);
-    setCourseData({ ...courseHistoryData, history: filledEntries });
+    setCourseData({ ...courseHistoryData, history: filledEntries.filter((entry)=>entry.term_num < courseHistoryData.latestTerm) });
     setCurrentInstructor(courseHistoryData.history.filter((entry)=>entry.term_num == courseHistoryData.latestTerm));
   } else {
     setCourseData(courseHistoryData);
@@ -92,14 +92,6 @@ function useCourseInformation() {
       if (!courseHistoryData.exists) {
         setActive(false);
       }
-      // Fetch latest term
-      /*
-      const termRes = await axios.get(`http://localhost:3001/api/latestCourseTerm`, {
-        params: { courseId: courseId },
-        headers: { Authorization: `Bearer ${authToken.token}` },
-      });
-      setLatestTerm(termRes.data.latestTerm); // Set latest term
-      */
     } catch (error) {
       console.error('Error fetching data:', error);
     }
