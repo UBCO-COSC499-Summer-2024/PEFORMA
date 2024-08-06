@@ -84,16 +84,16 @@ return {
 function formatCourses(allCourses, profileData, setSelectedCourses, setCourseData) {
     allCourses.courses = formatListData(allCourses.courses, profileData.teachingAssignments)
     setSelectedCourses(allCourses.courses.filter((course) => course.assigned));
-    const filledCourses = fillEmptyItems(allCourses.courses, allCourses.perPage);
-    setCourseData({...allCourses, courses:filledCourses});
+    const filledCourses = fillEmptyItems(allCourses.courses.filter((course) => course.status), allCourses.perPage);
+    setCourseData({...allCourses, courseCount: filledCourses.length, courses: filledCourses});
     return;
 }
 
 function formatRoles(allRoles, profileData, setSelectedRoles, setRoleData) {
     allRoles.roles = formatListData(allRoles.roles, profileData.roles);
     setSelectedRoles(allRoles.roles.filter((role) => role.assigned));
-    const filledRoles = fillEmptyItems(allRoles.roles, allRoles.perPage);
-    setRoleData({...allRoles, roles:filledRoles});
+    const filledRoles = fillEmptyItems(allRoles.roles.filter((role) => role.status), allRoles.perPage);
+    setRoleData({...allRoles, roleCount: filledRoles.length, roles: filledRoles});
     return;
 }
 
@@ -138,24 +138,24 @@ function formatListData(list, assignedItems) {
 }
 
 const fetchProfileData = async(authToken, ubcid, setProfile, setBenchmark) => {
-    const response = await axios.get(`http://localhost:3001/api/instructorProfile`, {
+    const profileResponse = await axios.get(`http://localhost:3001/api/instructorProfile`, {
         params: { ubcid: ubcid },
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
-    response.data = handleNullData(response.data);
-    if (response.data) {
-        setProfile(response.data);
-        setBenchmark(response.data.benchmark);
+    let profileData = handleNullData(profileResponse.data);
+    if (profileData) {
+        setProfile(profileData);
+        setBenchmark(profileData.benchmark);
     }
-    return response.data;
+    return profileData;
 }
 
 const fetchAllCourses = async(authToken) => {
-    const response2 = await axios.get(`http://localhost:3001/api/all-courses`, {
+    const coursesResponse = await axios.get(`http://localhost:3001/api/all-courses`, {
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
-    response2.data.perPage = 8;
-    return response2.data;
+    coursesResponse.data.perPage = 8;
+    return coursesResponse.data;
 }
 
     
@@ -166,6 +166,7 @@ const updateBenchmark = async(authToken, ubcid, benchmark, profile) => {
     }, {
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
+    // Set profile benchmark
     profile.benchmark = benchmark;
 }
 
