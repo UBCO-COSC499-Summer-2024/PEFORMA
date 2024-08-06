@@ -5,7 +5,7 @@ import { fetchWithAuth } from '../../common/utils';
 import { useAuth } from '../../common/AuthContext';
 
 // custom hook for fetching service hour progress data
-function useServiceHoursProgress( authToken, navigate ) {
+function useServiceHoursProgress(authToken, navigate) {
 	const { profileId } = useAuth();
 	const [progress, setProgress] = useState({ // format of chart
 		series: [],
@@ -86,15 +86,19 @@ function useServiceHoursProgress( authToken, navigate ) {
 	useEffect(() => { // fetch data when profileId or authToken changes
 		const currentMonth = new Date().getMonth() + 1;
 		const fetchData = async () => {
-			const data = await fetchWithAuth('http://localhost:3001/api/progressRoutes', authToken, navigate, {
-				profileId: profileId,
-				currentMonth: currentMonth,
-			});
-			if (data) {
-				setProgress((prevState) => ({ // set progress data in chart
-					...prevState,
-					series: data.series,
-				}));
+			try {
+				const data = await fetchWithAuth('http://localhost:3001/api/progressRoutes', authToken, navigate, {
+					profileId: profileId,
+					currentMonth: currentMonth,
+				});
+				if (data) {
+					setProgress((prevState) => ({ // set progress data in chart
+						...prevState,
+						series: data.series,
+					}));
+				}
+			} catch (error) {
+				console.error('Error fetching data:', error);
 			}
 		};
 		fetchData();
@@ -104,8 +108,8 @@ function useServiceHoursProgress( authToken, navigate ) {
 }
 
 // main component for render progress chart
-function ServiceHoursProgressChart( authToken, navigate ) {
-	const progress = useServiceHoursProgress( authToken, navigate ); // use custom hook for progress chart data
+function ServiceHoursProgressChart(authToken, navigate) {
+	const progress = useServiceHoursProgress(authToken, navigate); // use custom hook for progress chart data
 
 	return (
 		<div className="App">
