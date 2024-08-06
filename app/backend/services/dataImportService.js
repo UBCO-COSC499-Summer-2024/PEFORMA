@@ -605,7 +605,7 @@ async function processMeetingLogData(row, client) {
     const meetingLogData = {
         meetingTitle: row.title || null,
         location: row.location || null,
-        date: row.date || null,
+        date: String(row.date) || null,
         time: row.time || null
     };
 
