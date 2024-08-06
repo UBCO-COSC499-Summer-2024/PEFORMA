@@ -48,25 +48,12 @@ function useDeptProfilePage() {
             }
             checkAccess(accountLogInType, navigate, 'department', authToken);
             let profileData = await fetchProfileData(authToken, ubcid, setProfile, setBenchmark);
-            
             // Set up Course assignments
             let allCourses = await fetchAllCourses(authToken);
-            
-            allCourses.courses = formatListData(allCourses.courses, profileData.teachingAssignments)
-            setSelectedCourses(allCourses.courses.filter((course) => course.assigned));
-            
-            const filledCourses = fillEmptyItems(allCourses.courses, allCourses.perPage);
-            setCourseData({...allCourses, courses:filledCourses});
-            
+            formatCourses(allCourses, profileData, setSelectedCourses, setCourseData);
             // Set up Role assignments
             let allRoles = await fetchAllRoles(authToken);
-
-            allRoles.roles = formatListData(allRoles.roles, profileData.roles);
-
-            setSelectedRoles(allRoles.roles.filter((role) => role.assigned));
-            const filledRoles = fillEmptyItems(allRoles.roles, allRoles.perPage);
-            setRoleData({...allRoles, roles:filledRoles});
-
+            formatRoles(allRoles, profileData, setSelectedRoles, setRoleData);
         } catch (error) {
             
             if (error.response && error.response.status === 401) {
@@ -97,6 +84,21 @@ return {
     showCoursesModal, setShowCoursesModal,
     prevRoles, prevCourses
 }
+}
+
+function formatCourses(allCourses, profileData, setSelectedCourses, setCourseData) {
+    allCourses.courses = formatListData(allCourses.courses, profileData.teachingAssignments)
+    setSelectedCourses(allCourses.courses.filter((course) => course.assigned));
+    const filledCourses = fillEmptyItems(allCourses.courses, allCourses.perPage);
+    setCourseData({...allCourses, courses:filledCourses});
+    return;
+}
+
+function formatRoles(allRoles, profileData, setSelectedRoles, setRoleData) {
+    allRoles.roles = formatListData(allRoles.roles, profileData.roles);
+    setSelectedRoles(allRoles.roles.filter((role) => role.assigned));
+    const filledRoles = fillEmptyItems(allRoles.roles, allRoles.perPage);
+    setRoleData({...allRoles, roles:filledRoles});
 }
 
 const fetchAllRoles = async(authToken) => {
@@ -239,8 +241,6 @@ const submitChanges = async(event, authToken, ubcid, benchmark, profile, roleDat
             await updateCourses(courseData, ubcid, authToken, setCourseData, setSelectedCourses);
             
             setEditState(false);
-            
-            alert('Profile updated successfully!');
         } catch (error) {
             console.error('Error updating profile:', error.response?.data || error.message);
             alert('Failed to update profile. Please check the console for more details.');
@@ -363,6 +363,7 @@ function DeptProfilePage() {
         prevRoles, prevCourses
     } = useDeptProfilePage();
     
+    // Variable lists for use with the modals
     const closeCourseModalVars = [setCourseData, setSelectedCourses, courseData, setShowCoursesModal];
     const closeRoleModalVars = [setRoleData, setSelectedRoles, roleData, setShowRolesModal];
 
