@@ -1,4 +1,4 @@
-const pool = require('../db/index.js');
+const pool = require('../../db/index.js');
 
 const getImageById = async (id) => {
   const result = await pool.query(`SELECT file_type, image_data 
