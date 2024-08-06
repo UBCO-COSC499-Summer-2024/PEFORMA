@@ -42,10 +42,6 @@ function useDeptProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            if (!authToken) {
-                navigate('/Login');
-                return;
-            }
             checkAccess(accountLogInType, navigate, 'department', authToken);
             let profileData = await fetchProfileData(authToken, ubcid, setProfile, setBenchmark);
             // Set up Course assignments
@@ -55,7 +51,6 @@ function useDeptProfilePage() {
             let allRoles = await fetchAllRoles(authToken);
             formatRoles(allRoles, profileData, setSelectedRoles, setRoleData);
         } catch (error) {
-            
             if (error.response && error.response.status === 401) {
                 localStorage.removeItem('authToken');
                 navigate('/Login');
@@ -99,13 +94,13 @@ function formatRoles(allRoles, profileData, setSelectedRoles, setRoleData) {
     setSelectedRoles(allRoles.roles.filter((role) => role.assigned));
     const filledRoles = fillEmptyItems(allRoles.roles, allRoles.perPage);
     setRoleData({...allRoles, roles:filledRoles});
+    return;
 }
 
 const fetchAllRoles = async(authToken) => {
     const response3 = await axios.get(`http://localhost:3001/api/service-roles`, {
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
-
     response3.data.perPage = 8;
     return response3.data;
 }
