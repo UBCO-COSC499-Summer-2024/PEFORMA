@@ -34,7 +34,7 @@ const AssignCoursesModal = (props) => {
             <div className="assignModal" data-testid="assignModal">
                 <div className='assignModalTop'>
                     <div className="modalTitle">Assign <span className='bold'>Courses(s)</span></div>
-                    <button className="close-button" data-testid="close-button" onClick={() => props.handleCloseCoursesModal(false)}>X</button>
+                    <button className="close-button" data-testid="close-button" onClick={() => props.handleCloseCoursesModal(false, props.closeCourseModalVars)}>X</button>
                 </div>
                 <input type="text" placeholder="Search for courses to assign" onChange={e => onSearch(e.target.value)} />
                 <table>
@@ -83,7 +83,7 @@ const AssignCoursesModal = (props) => {
                         </tr>
                     </tfoot>
                 </table>
-                <button className="save-button" data-testid="modalsave-button" onClick={() => props.handleCloseCoursesModal(true)}>Save</button>
+                <button className="save-button" data-testid="modalsave-button" onClick={() => props.handleCloseCoursesModal(true, props.closeCourseModalVars)}>Save</button>
             </div>
         </div>
     );
