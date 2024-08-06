@@ -223,7 +223,7 @@ CREATE TABLE "MeetingLog" (
   "meetingTitle"  VARCHAR(50),
   "location"      VARCHAR(30),
   "date"          VARCHAR(10),
-  "time"          VARCHAR(5)
+  "time"          VARCHAR(8)
 );
 ALTER SEQUENCE "MeetingLog_meetingId_seq" RESTART WITH 1;
 
