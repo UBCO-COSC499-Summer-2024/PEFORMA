@@ -35,11 +35,16 @@
   border-radius: 0.5em;
   font-weight:500;
   background-color: var(--red);
+  padding-bottom: 1em;
+  transition: background-color 0.1s;
 }
 
 .logout:hover {
   cursor: pointer;
+  background-color: var(--darkRed);
 }
+
+
 
 .container {
   flex-grow: 1;

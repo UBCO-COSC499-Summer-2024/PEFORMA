@@ -17,7 +17,7 @@ function mockData() {
   axios.get.mockImplementation((url) => {
     if (url == 'http://localhost:3001/api/roleInfo') {
       return Promise.resolve({"data":{perPage: 5, currentPage: 1, roleID:1, assigneeCount:7, roleName:"Cheese", roleDescription: "Fish",
-                                      department:"Computer Science", benchmark:0, latestYear:20234,
+                                      department:"Computer Science", benchmark:0, latestYear:20234, exists:true,
                                       assignees:[
                                         {instructorID: '12341234', name:"Mister Test1", year:2023},
                                         {instructorID: '12341235', name:"Mister Test2", year:2023},
@@ -50,7 +50,7 @@ function mockPast() {
   axios.get.mockImplementation((url) => {
     if (url == 'http://localhost:3001/api/roleInfo') {
       return Promise.resolve({"data":{perPage: 5, currentPage: 1, roleID:1, assigneeCount:7, roleName:"Cheese", roleDescription: "Fish",
-                                      department:"Computer Science", benchmark:0, latestYear:20234,
+                                      department:"Computer Science", benchmark:0, latestYear:20234, exists:true,
                                       assignees:[
                                         {instructorID: '12341234', name:"Mister Test1", year:2023},
                                         {instructorID: '12341235', name:"Mister Test2", year:2023},

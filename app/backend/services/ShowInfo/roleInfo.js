@@ -7,19 +7,19 @@ async function getServiceInfo(req){
         const latestYear = await getLatestYear();
         //Get the service role info 
         let query = `
-            SELECT sr."stitle", sr."description", d."dname"
+            SELECT sr."stitle", sr."description", d."dname", sr."isActive"
             FROM "ServiceRole" sr
             JOIN "Division" d ON d."divisionId" = sr."divisionId"
             WHERE sr."serviceRoleId" = $1;
         `;
 
         let result = await pool.query(query, [serviceRoleId]);
-        const { stitle, description, dname } = result.rows[0];
+        const { stitle, description, dname, isActive } = result.rows[0];
         //Check if the service role exists in the year
         query = `SELECT * FROM "ServiceRoleByYear" WHERE "serviceRoleId" = $1 AND "year" = $2;`
         result = await pool.query(query,[serviceRoleId,latestYear]);
         let exists;
-        if(result.length == 0){
+        if(result.rows.length == 0){
             exists = false;
         }
         else{
@@ -53,7 +53,8 @@ async function getServiceInfo(req){
             roleDescription: description || "",
             department: dname || "",
             assignees: assignees,
-            latestYear: latestYear
+            latestYear: latestYear,
+            isActive: isActive
         };
         return output;
     } catch (error) {
