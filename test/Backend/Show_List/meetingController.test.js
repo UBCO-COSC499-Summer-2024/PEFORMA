@@ -1,10 +1,10 @@
 const { TextEncoder } = require('util');
 global.TextEncoder = TextEncoder;
-const meetingController = require('../../app/backend/controllers/meetingController');
-const meetingService = require('../../app/backend/services/meetingService');
+const meetingController = require('../../../app/backend/controllers/ShowList/meetingController');
+const meetingService = require('../../../app/backend/services/ShowList/meetingService');
 
 // Mock the meeting service
-jest.mock('../../app/backend/services/meetingService');
+jest.mock('../../../app/backend/services/ShowList/meetingService');
 
 describe('Meeting Controller', () => {
   let mockRequest;
