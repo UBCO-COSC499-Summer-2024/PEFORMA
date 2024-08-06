@@ -2,10 +2,10 @@ const { TextEncoder, TextDecoder } = require('util');
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-const { getImageById } = require('../../app/backend/services/imageService.js');
-const pool = require('../../app/backend/db/index.js');
+const { getImageById } = require('../../../app/backend/services/ShowInfo/imageService.js');
+const pool = require('../../../app/backend/db/index.js');
 
-jest.mock('../../app/backend/db/index.js');
+jest.mock('../../../app/backend/db/index.js');
 
 describe('getImageById', () => {
     let mockClient;

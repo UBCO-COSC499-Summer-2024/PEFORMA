@@ -85,7 +85,13 @@
   margin-bottom: 20px;
 }
 
-.form-header h1 {
+.SEI-version .form-header h1 {
+  margin: 0;
+  margin-right: 6rem; /* Add some space between the title and the button */
+  margin-left: 13rem;
+}
+
+.meeting-version .form-header h1 {
   margin: 0;
   margin-right: 3rem; /* Add some space between the title and the button */
   margin-left: 9.5rem;

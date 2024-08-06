@@ -1,4 +1,4 @@
-const imageService = require('../services/imageService');
+const imageService = require('../../services/ShowInfo/imageService');
 
 const getImageById = async (req, res) => {
   try {

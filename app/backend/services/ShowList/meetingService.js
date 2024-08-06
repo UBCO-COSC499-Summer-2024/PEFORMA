@@ -1,4 +1,4 @@
-const pool = require('../db/index');
+const pool = require('../../db/index');
 
 /**
  * Fetches recent meetings (within the last 3 days) along with their attendees.

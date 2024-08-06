@@ -26,7 +26,7 @@ const AssignRolesModal = (props) => {
         reactUpdate();
     };
 
-    const pageCount = Math.ceil(props.roleData.rolesCount / props.roleData.perPage);
+    const pageCount = Math.ceil(props.roleData.roleCount / props.roleData.perPage);
 
     return (
         <div className="modal-overlay">

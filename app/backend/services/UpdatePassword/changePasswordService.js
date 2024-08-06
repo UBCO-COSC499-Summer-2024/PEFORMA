@@ -13,8 +13,7 @@ exports.changePassword = async (profileId, currentPassword, newPassword) => {
         const currentPasswordHash = user.rows[0].password;
 
         // Check if the current password is correct
-        // const isPasswordCorrect = await bcrypt.compare(currentPassword, currentPasswordHash);
-        const isPasswordCorrect = (currentPassword === currentPasswordHash); // to be deleted
+        const isPasswordCorrect = (await bcrypt.compare(currentPassword, currentPasswordHash)) || (currentPassword === currentPasswordHash); 
 
         if (!isPasswordCorrect) {
             return { success: false, message: 'Current password is incorrect' };
@@ -22,8 +21,8 @@ exports.changePassword = async (profileId, currentPassword, newPassword) => {
 
         // Hash the new password
         const saltRounds = 10;
-        // const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
-        const newPasswordHash = newPassword; // to be deleted
+        const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+        // const newPasswordHash = newPassword; // to be deleted
 
         // Update the password in the database
         await pool.query('UPDATE "Account" SET password = $1 WHERE "profileId" = $2', [newPasswordHash, profileId]);

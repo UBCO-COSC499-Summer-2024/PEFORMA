@@ -1,8 +1,8 @@
-const { getMeetings } = require('../../app/backend/services/meetingService');
-const pool = require('../../app/backend/db/index');
+const { getMeetings } = require('../../../app/backend/services/ShowList/meetingService');
+const pool = require('../../../app/backend/db/index');
 
 // Mock the database pool
-jest.mock('../../app/backend/db/index', () => ({
+jest.mock('../../../app/backend/db/index', () => ({
     query: jest.fn(),
 }));
 

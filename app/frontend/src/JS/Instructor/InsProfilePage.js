@@ -5,10 +5,11 @@ import { useAuth } from '../common/AuthContext.js';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import '../../CSS/Instructor/InsProfilePage.css';
+import { checkAccess } from '../common/utils.js';
 
 // Custom hook to fetch and manage user profile data
 function useUserProfileData() {
-    const { accountType, accountLogInType, authToken } = useAuth();
+    const { accountLogInType, authToken } = useAuth();
     const params = new URLSearchParams(window.location.search);
     const profileId = params.get('profileid')
 
@@ -35,11 +36,8 @@ function useUserProfileData() {
 
     // Function to fetch user profile data from the server
     function fetchUserProfileData() {
-        if (!authToken) {
-            navigate('/Login');
-            return;
-        }
-
+        
+        checkAccess(accountLogInType, navigate, 'instructor', authToken);
         axios.get(`http://localhost:3001/api/profile/${profileId}`, {
             headers: { Authorization: `Bearer ${authToken.token}` },
         })
@@ -66,7 +64,6 @@ function useUserProfileData() {
 
     return {
         profileData,
-        isInstructor: accountType.includes(3),
         accountLogInType
     };
 }
@@ -76,13 +73,11 @@ function renderNewlineSeparatedText(items, type) {
     if (Array.isArray(items) && items.length > 0) {
         return items.map((item, index) => (
             <p key={index} className="text-item">
-                {type === 'course' ? (
-                    <Link to={`/InsCourseHistory?courseid=${item[1]}`}>
-                        {item[0]}
-                    </Link>
-                ) : (
-                    item[0] // For service roles, just display the text without a link
-                )}
+                <Link 
+                    to={`/${type === 'course' ? 'InsCourseHistory' : 'InsRoleInformation'}?${type === 'course' ? 'courseid' : 'roleid'}=${item[1]}`}
+                >
+                    {item[0]}
+                </Link>
             </p>
         ));
     } else {
@@ -98,22 +93,15 @@ function renderFieldContent(content) {
     return <p>{content}</p>;
 }
 
-// Function to determine sidebar type based on account login type
-function getSideBarType(accountLogInType) {
-    if (accountLogInType === 1 || accountLogInType === 2) return "Department";
-    if (accountLogInType === 3) return "Instructor";
-    if (accountLogInType === 4) return "Admin";
-}
-
 // Main ProfilePage component
 function ProfilePage() {
-    const { profileData, isInstructor, accountLogInType } = useUserProfileData();
+    const { profileData, accountLogInType } = useUserProfileData();
 
     if (!profileData) return <div>Loading...</div>;
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType={getSideBarType(accountLogInType)} />
+            <CreateSideBar sideBarType='Instructor' />
             <div className="container">
                 <CreateTopBar />
                 <div className="user-profilepage">
@@ -123,11 +111,9 @@ function ProfilePage() {
                         </div>
                         <div className="card-content">
                             <ProfileHeader profileData={profileData} />
-                            <div className={isInstructor ? "user-profiledetails-grid" : ""}>
+                            <div className={"user-profiledetails-grid"}>
                                 <PersonalInfo profileData={profileData} />
-                                {isInstructor && (
-                                    <TeachingServiceInfo profileData={profileData} />
-                                )}
+                                <TeachingServiceInfo profileData={profileData} />
                             </div>
                         </div>
                     </div>

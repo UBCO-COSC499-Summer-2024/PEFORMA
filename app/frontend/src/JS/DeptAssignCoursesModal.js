@@ -26,9 +26,8 @@ const AssignCoursesModal = (props) => {
         reactUpdate();
     };
 
-    const pageCount = Math.ceil(props.courseData.coursesCount / props.courseData.perPage);
-
-
+    const pageCount = Math.ceil(props.courseData.courseCount / props.courseData.perPage);
+    
     return (
         <div className="modal-overlay">
             <div className="assignModal" data-testid="assignModal">
