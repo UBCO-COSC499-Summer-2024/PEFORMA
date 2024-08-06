@@ -4,6 +4,7 @@ const { getLatestTerm } = require('../latestTerm.js');
 async function getTeachingAssignment() {
   try {
     const currTerm = await getLatestTerm();
+    //Retrieve the instructor info including the courses they teach
     const result = await pool.query(`
       SELECT 
         p."profileId",

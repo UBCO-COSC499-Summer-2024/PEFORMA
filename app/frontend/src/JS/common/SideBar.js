@@ -67,7 +67,7 @@ function SideBar({ sideBarType }) {
 					</li>
 					<li>
 						<Link to={`/DeptSEIPage`}>
-							<FaDatabase className="icon" size={30} /> SEI Data Entry
+							<FaDatabase className="icon" size={30} /> Course Evaluation
 						</Link>
 					</li>
 					<li>

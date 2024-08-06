@@ -75,7 +75,7 @@ function Dashboard() {
 					<Link to={'/DeptDataEntry'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
-								<div className="cardTitle">Creation</div>
+								<div className="cardTitle">Create New Course/Role</div>
 							</div>
 							<div className="cardDesc">Create a new course, service role, import files</div>
 						</div>

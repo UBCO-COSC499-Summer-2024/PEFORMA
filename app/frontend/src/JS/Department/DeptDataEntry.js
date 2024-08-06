@@ -96,7 +96,7 @@ const sendData = async(formData, navigate) => {
 	.catch(error => {
 		// Handling errors here
 		if (error.response) {
-			alert(`Failed to enter data. Server responded with status: ${error.response.status}`);
+			alert(`Failed to enter data. Server responded with error message: ${error.message}`);
 		} else if (error.request) {
 			alert('Failed to enter data. No response from server.');
 		} else {

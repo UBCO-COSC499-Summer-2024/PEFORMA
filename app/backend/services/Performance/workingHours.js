@@ -24,8 +24,8 @@ async function getWorkingHours(req) {
 
         //Formatting the data to designated format
         const currentMonth = parseInt(req.query.currentMonth)-1;
-        console.log("CurrentMonth: ", currentMonth);
         let formattedData = [];
+        //Based on the currentMonth, add the total working hours to formatteddata
         switch(currentMonth){
       case 9:
         formattedData.push({ x: "September", y: totals.SEPHour });
