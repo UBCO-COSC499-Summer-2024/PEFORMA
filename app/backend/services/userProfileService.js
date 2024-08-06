@@ -1,7 +1,6 @@
 const pool = require('../db/index.js');
 
 exports.getUserProfileById = async (profileId) => {
-  console.log('Service handler for profile GET reached. ProfileId:', profileId);
   const query = `
   SELECT 
     p."profileId",
@@ -84,7 +83,6 @@ exports.updateUserProfile = async (profileId, updatedData) => {
         VALUES ($1, $2)
         RETURNING "imageId"
       `;
-      console.log(image.contentType.split('/')[1]);
       const imageResult = await client.query(imageQuery, [
         image.contentType.split('/')[1],
         image.data

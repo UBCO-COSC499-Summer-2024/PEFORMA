@@ -111,13 +111,14 @@ function CreateAccount() {
 
         // custom error handling message for form submission
         const errorMessageHandler = (error) => {
-            if (error.response && error.response.status === 400 && error.response.data.message === 'Email already exists') {
+            if (error.response && error.response.status === 409 && error.response.data.error === 'Email already exists') {
                 alert('Error: Email already exists');
-            } else {
+            } else if(error.response && error.response.status === 409 && error.response.data.error === 'UBCID already exists'){
+                alert('Error: UBCID already exists');
+            }else {
                 alert('Error creating account: ' + error.message);
             }
         };
-
         // submuit for data to server and handle responses and erros
         await submitFormData('http://localhost:3001/api/create-account', postData, authToken, initialFormData, setFormData, 'Account created successfully.', errorMessageHandler);
     };

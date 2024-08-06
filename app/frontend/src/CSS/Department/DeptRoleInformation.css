@@ -109,6 +109,15 @@
     width: 100%;
 }
 
+.ri-main .inactive {
+    width: 11em;
+    height: 2.7em;
+}
+
+.ri-main .inactive:hover {
+    cursor:default;
+}
+
 .assign-button {
     background-color: var(--darkestishGrey);
     border: 1px solid var(--black);
@@ -120,6 +129,9 @@
     font-size: large;
     transition: background-color 0.1s;
     margin: 1em 0 1em 0;
+    height: 2.7em;
+    position: relative;
+    left: 2em;
 }
 
 .plus {

@@ -63,7 +63,7 @@
 
   .footer {
     /* bottom column container setting */
-    background-color: var(--darkerGrey);
+    background-color: var(--white);
     text-align: right;
     padding: 3em 0 0 0;
   }

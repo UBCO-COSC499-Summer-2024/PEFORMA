@@ -1,5 +1,5 @@
-const pool = require('../db/index');
-const { getLatestTerm } = require('./latestTerm.js');
+const pool = require('../../db/index');
+const { getLatestTerm } = require('../latestTerm.js');
 
 class DeptProfileService {
     async updateBenchmark(ubcId, benchmark) {

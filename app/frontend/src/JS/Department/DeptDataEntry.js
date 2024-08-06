@@ -96,11 +96,11 @@ const sendData = async(formData, navigate) => {
 	.catch(error => {
 		// Handling errors here
 		if (error.response) {
-			alert(`Failed to enter data. Server responded with status: ${error.response.status}`);
+			alert(`Failed to enter data. Server responded with error message: ${error.message}`);
 		} else if (error.request) {
-			alert('Failed to enter data. No response from server.');
+			alert('Failed to enter data. No response from server. Request is invalid.');
 		} else {
-			alert('Error: ' + error.message);
+			alert('Unknown Error: ' + error.message);
 		}
 	});
 }
@@ -130,11 +130,10 @@ function useDataEntryComponent() {
 				divisions[4].code = "N/A";
 				divisions[4].label = "N/A";
 			} catch (error) {
-				console.error('Error occurs when fetching people.\nDetail message:\n', error);
+				alert('Error accured when checking access', error.message);
 			}
 		};
 		fetchData();
-
 	}, []);
 	return {
 		selection, setSelection,

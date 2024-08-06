@@ -3,6 +3,7 @@ const pool = require('../../db/index.js');
 async function updateRoleInfo(req)  {
     const newServiceRole = req.body;
     var divisionid=0;
+    //Convert the user input to corresponding divisionId
     switch(newServiceRole.department){
         case "Computer Science": divisionid=1;break;
         case "Mathematics": divisionid=2;break;
@@ -10,7 +11,7 @@ async function updateRoleInfo(req)  {
         case "Statistics": divisionid=4;break;
         default: divisionid=0;
     }
-
+    //Prep the soon to be inserted data
     const data = [
         newServiceRole.roleName, 
         newServiceRole.roleDescription,
@@ -18,7 +19,7 @@ async function updateRoleInfo(req)  {
         divisionid,
         newServiceRole.roleID
     ];
-
+    //Update service role info
     const query = `
     UPDATE "ServiceRole"
     SET "stitle" = $1,

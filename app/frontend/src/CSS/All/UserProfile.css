@@ -51,7 +51,7 @@ body {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.card-header {
+.user-profilecard .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,7 +61,7 @@ body {
   background-image: linear-gradient(to right, #dbeafe, #fef3c7);
 }
 
-.card-header h2 {
+.user-profilecard .card-header h2 {
   font-size: 2.25rem;
   font-weight: 700;
   color: hsl(var(--card-foreground));

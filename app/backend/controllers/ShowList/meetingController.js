@@ -1,4 +1,4 @@
-const meetingService = require('../services/meetingService');
+const meetingService = require('../../services/ShowList/meetingService');
 
 class MeetingController {
   async getMeetings(req, res) {

@@ -170,6 +170,7 @@ const updateBenchmark = async(authToken, ubcid, benchmark, profile) => {
     profile.benchmark = benchmark;
 }
 
+
 const sendRoles = async(ubcid, roleChanges, authToken) => {
     await axios.put('http://localhost:3001/api/dept-profile/service-roles', {
         ubcId: ubcid,
@@ -177,8 +178,8 @@ const sendRoles = async(ubcid, roleChanges, authToken) => {
     }, {
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
-
 }
+
 
 const updateRoles = async(roleData, ubcid, authToken, setRoleData, setSelectedRoles) => {
     const roleChanges = roleData.roles
@@ -198,6 +199,7 @@ const updateRoles = async(roleData, ubcid, authToken, setRoleData, setSelectedRo
     }));
     setSelectedRoles(roleData.roles.filter(role => role.assigned));
 }
+
 
 const sendCourses = async(ubcid, authToken, courseChanges) => {
     await axios.put('http://localhost:3001/api/dept-profile/course-assignments', {

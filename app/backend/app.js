@@ -29,22 +29,19 @@ const courseRoutes = require('./routes/ShowList/courses.js');
 const teachingAssignment = require('./routes/ShowList/teachingAssignment.js');
 
 const instructorFetch = require('./routes/AssignInstructor/instructorFetch.js');
-const deptProfileRoutes = require('./routes/deptProfileRoutes');
+const deptProfileRoutes = require('./routes/UpdateInfo/deptProfileRoutes');
 
 //Update Status Router
 const deptStatusChangeCourseRoutes = require('./routes/UpdateStatus/deptStatusChangeCourseRouters.js');
 const adminStatusChangeMembers = require('./routes/UpdateStatus/adminStatusChangeMembersRoutes.js');
 const deptStatusChangeServiceRoutes = require('./routes/UpdateStatus/deptStatusChangeServiceRoleRoutes.js');
 
-
-const imageRoutes = require('./routes/imageRoutes');
-const userProfileRoutes = require('./routes/userProfileRoutes');
-const userRoutes = require('./routes/userRoutes');
-
-
 //Show Information Router
 const courseHistoryRouter = require('./routes/ShowInfo/courseHistoryRoutes.js');
 const roleInfoRoutes = require('./routes/ShowInfo/roleInfoRoutes');
+const imageRoutes = require('./routes/ShowInfo/imageRoutes.js');
+const userProfileGetRoutes = require('./routes/ShowInfo/userProfileGetRoutes');
+const userRoutes = require('./routes/ShowInfo/userRoutes.js');
 
 //Update Password Router
 const changePasswordRoutes = require('./routes/UpdatePassword/changePasswordRoutes.js');
@@ -58,6 +55,7 @@ const courseEvaluationForm = require('./routes/CourseEvaluation/courseEvaluation
 //Update Info Router
 const updateRoleInfo = require('./routes/UpdateInfo/updateRoleInfo.js');
 const updateCourseInfo = require('./routes/UpdateInfo/updateCourseInfo.js');
+const userProfileUpdateRoutes = require('./routes/UpdateInfo/userProfileUpdateRoutes');
 
 //Assign Instructor Router
 const AssignInstructor = require('./routes/AssignInstructor/AssignInstructorServiceRole.js');
@@ -69,7 +67,7 @@ const removeInstructorCourse = require('./routes/RemoveInstructor/removeInstruct
 
 const setTerm = require('./routes/setCurrentTermRoutes.js')
 
-const meetingRoutes = require('./routes/meetingRoutes');
+const meetingRoutes = require('./routes/ShowList/meetingRoutes.js');
 
 const app = express();
 
@@ -110,12 +108,6 @@ app.use('/api/image', imageRoutes);
 
 app.use('/api/change-password', changePasswordRoutes);
 
-// User profile
-app.use('/api/profile', (req, res, next) => {
-    console.log('Profile route hit:', req.url);
-    next();
-  }, userProfileRoutes);
-
 // Meeting retrieval process
 app.use('/meetings', meetingRoutes);
   
@@ -144,7 +136,9 @@ app.use('/api/adminStatusChangeMembers',adminStatusChangeMembers);
 app.use('/api/DeptStatusChangeServiceRole',deptStatusChangeServiceRoutes);
 app.use('/api/DeptStatusChangeCourse',deptStatusChangeCourseRoutes);
 
-
+// User profile
+app.use('/api/profile', userProfileGetRoutes);
+app.use('/api/profile', userProfileUpdateRoutes);
 
 //reset password
 

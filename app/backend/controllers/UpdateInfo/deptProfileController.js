@@ -1,4 +1,4 @@
-const deptProfileService = require('../services/deptProfileService');
+const deptProfileService = require('../../services/UpdateInfo/deptProfileService');
 
 class DeptProfileController {
     async updateBenchmark(req, res) {

@@ -2,10 +2,10 @@ const { TextEncoder, TextDecoder } = require('util');
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-const { getUserById } = require('../../app/backend/services/userService');
-const pool = require('../../app/backend/db/index');
+const { getUserById } = require('../../../app/backend/services/ShowInfo/userService');
+const pool = require('../../../app/backend/db/index');
 
-jest.mock('../../app/backend/db/index');
+jest.mock('../../../app/backend/db/index');
 
 describe('getUserById', () => {
     let profileId;

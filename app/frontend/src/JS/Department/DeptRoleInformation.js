@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
-import { getCurrentTerm, getTermString, checkAccess, filterItems, currentItems, handlePageClick } from '../common/utils.js';
+import { getCurrentTerm, checkAccess, filterItems, currentItems, handlePageClick } from '../common/utils.js';
 
 const fetchRoleData = async(authToken, serviceRoleId) => {
   const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
@@ -42,6 +42,7 @@ function useRoleInformation() {
   const serviceRoleId = params.get('roleid');
   const { authToken, accountLogInType } = useAuth();
   const navigate = useNavigate();
+  const [active, setActive] = useState(true);
   const prevInstructors = useRef({});
   const [roleData, setRoleData] = useState({
     assignees: [{}],
@@ -85,13 +86,18 @@ function useRoleInformation() {
         setTimeState(currentTerm, termData.currentTerm, setPastState, setFutureState);
         
         roleData.assignees = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear); // Set assignees to only show ones for the selected term
-        setTermString(getTermString(termData.currentTerm));
+        setTermString(roleData.latestYear);
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
           roleName: roleData.roleName,
           roleDescription: roleData.roleDescription,
           department: roleData.department,
         });
+        setIsActive(roleData.isActive);
+      // Set active state to false if role is inactive
+      if (!roleData.exists) {
+        setActive(false);
+      }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -114,7 +120,8 @@ function useRoleInformation() {
     navigate,
     authToken,
     prevInstructors,
-    serviceRoleId
+    serviceRoleId,
+    active, setActive
   }
 }
 
@@ -300,14 +307,15 @@ function RoleInformation() {
       navigate,
       authToken,
       prevInstructors,
-      serviceRoleId
+      serviceRoleId,
+      active, setActive
   } = useRoleInformation();
 
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
   const filteredAssignees = filterItems(roleData.assignees, 'assignee', search);
   const currentAssignees = currentItems(filteredAssignees, roleData.currentPage, roleData.perPage);
   const closeModalVars = [instructorData, setInstructorData, roleData, setShowInstructorModal, prevInstructors, authToken];
-
+  
   return (
     <div className="dashboard">
       <SideBar sideBarType="Department" />
@@ -389,8 +397,7 @@ function RoleInformation() {
                 {isActive ? 'Active' : 'De-active'}
               </label>
             )}
-          </div>
-            {!pastState && (
+            {(!pastState && active) && (
               <>
             {showInstructorModal ? (
               <AssignInstructorsModal
@@ -410,7 +417,15 @@ function RoleInformation() {
             </button>
           )}
               </>
+              
             )}
+            {!active && (
+                  <button className='assign-button inactive'>
+                    <span>Assign Unavailable</span>
+                  </button>
+                )}
+          </div>
+            
           {pastState || futureState ? (
             <p>Assignees for {termString}</p>
           ) : (

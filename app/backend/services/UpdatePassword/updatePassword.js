@@ -12,14 +12,16 @@ async function updatePassword(req)  {
 
   try {
     const client = await pool.connect();
+    //Check if account exists
     const result = await client.query('SELECT * FROM public."Account" WHERE email = $1', [email]);
     
     if (result.rows.length === 0) {
       client.release();
       throw new Error('User not found');
     }
-
+    //Hash new password for security
     const hashedPassword = await bcrypt.hash(password, 10);
+    //Update the password
     await client.query('UPDATE public."Account" SET password = $1 WHERE email = $2', [hashedPassword, email]);
     client.release();
 

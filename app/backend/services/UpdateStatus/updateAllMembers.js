@@ -28,17 +28,18 @@ async function updateAllMembers() {
                 currentInstructors.push(row.profileId);
             }
         });
-        
+        //Get missinginstructors 
         const missingInstructors = instructorsList.filter(profileId => !currentInstructors.includes(profileId));
+        //Get assignedinstructors
         const assignedInstructors = instructorsList.filter(profileId => currentInstructors.includes(profileId));
 
         await pool.query('BEGIN');
-
+        //Update the status for the instructors in the assigned array
         if (assignedInstructors.length > 0) {
             const activateQuery = `UPDATE "Account" SET "isActive" = true WHERE "profileId" = ANY($1)`;
             await pool.query(activateQuery, [assignedInstructors]);
         }
-        
+        //Update the status for the instructors in the missing array
         if (missingInstructors.length > 0) {
             const deactivateQuery = `UPDATE "Account" SET "isActive" = false WHERE "profileId" = ANY($1)`;
             await pool.query(deactivateQuery, [missingInstructors]);

@@ -1,112 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import ReactPaginate from 'react-paginate';
 import '../../CSS/Instructor/InsCourseHistory.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentInstructor } from '../common/utils.js';
+import { checkAccess, fillEmptyItems, handlePageClick, currentItems, getTermString } from '../common/utils.js';
 
-function CourseHistory() {
+const fetchCourseData = async(courseId, authToken) => {
+	const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
+		params: { courseId: courseId },
+		headers: { Authorization: `Bearer ${authToken.token}` },
+	});
+	return res.data;
+}
+
+const fetchTermResponse = async() => {
+	const termResponse = await axios.get("http://localhost:3001/api/terms");
+	return termResponse.data;
+  }
+  
+
+function useCourseHistory() {
 	const [historyData, setHistoryData] = useState({
 		history: [{}],
 		entryCount: 0,
 		perPage: 10,
 		currentPage: 1,
+		tainfo:[{}]
 	});
 	const navigate = useNavigate();
+	const [termString, setTermString] = useState('');
 	const { authToken, accountLogInType } = useAuth();
 	const params = new URLSearchParams(window.location.search);
 	const courseId = params.get('courseid');
 	const [currentInstructor, setCurrentInstructor] = useState([]);
-	const [numInstructors, setNumInstructors] = useState(0);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
-			const numericAccountType = Number(accountLogInType);
-			if (numericAccountType !== 3) {
-				alert('No Access, Redirecting to department view');
-				navigate('/DeptDashboard');
-			}
-			const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
-				params: { courseId: courseId },
-				headers: { Authorization: `Bearer ${authToken.token}` },
-			});
-			const data = res.data;
-			const filledEntries = fillEmptyEntries(data.history, data.perPage);
-			setHistoryData({ ...data, history: filledEntries });
-			data.latestTerm = getCurrentTerm();
-			setCurrentInstructor(data.history.filter((entry)=>entry.term_num == data.latestTerm));
-			setNumInstructors(data.history.length);
+			checkAccess(accountLogInType, navigate, 'instructor', authToken);
+			const courseData = await fetchCourseData(courseId, authToken);
+			const filledEntries = fillEmptyItems(courseData.history, courseData.perPage);
+			const termData = await fetchTermResponse();
+			courseData.latestTerm = termData.currentTerm.toString();
+			setTermString(getTermString(termData.currentTerm));
+			setHistoryData({ ...courseData, history: filledEntries.filter((entry)=>entry.term_num < courseData.latestTerm) });
+			setCurrentInstructor(courseData.history.filter((entry)=>entry.term_num == courseData.latestTerm));
 		};
 		fetchData();
 	}, []);
+	return {
+		historyData, setHistoryData,
+		navigate,
+		currentInstructor,
+		termString, setTermString
+	}
+}
 
-	const fillEmptyEntries = (history, perPage) => {
-		const filledEntries = [...history];
-		const currentCount = history.length;
-		const fillCount = perPage - (currentCount % perPage);
-		if (fillCount < perPage) {
-			for (let i = 0; i < fillCount; i++) {
-				filledEntries.push({});
-			}
-		}
-		return filledEntries;
-	};
-	const getCurrentTerm = () => {
-		const now = new Date();
-		let year = now.getFullYear();
-		const month = now.getMonth() + 1; // getMonth() returns 0-11
-		let term;
+function CourseHistory() {
+	const {
+		historyData, setHistoryData,
+		navigate,
+		currentInstructor,
+		termString, setTermString
+	} = useCourseHistory();
 	
-		if (month >= 9 && month <= 12) { // Sep-Dec Winter Term 1 -> T1
-		  term = `${year}1`; } 
-		else if (month >=1 && month <= 4){//Jan-Apr Winter Term 2 -> T2
-		  year -= 1;
-		  term = `${year}2`; }
-		else if (month >=5 && month <= 6){// May-Jun Summer Term 1 -> T3
-		  year -= 1;
-		  term = `${year}3`; }
-		else if (month >=7 && month <= 8){// Jul-Aug Summer Term 2 -> T4
-		  year -= 1;
-		  term = `${year}4`; }
-		return term;
-	  };
-
-	const handlePageClick = (data) => {
-		setHistoryData((prevState) => ({
-			...prevState,
-			currentPage: data.selected + 1,
-		}));
-	};
-
 	const pageCount = Math.ceil(historyData.entryCount / historyData.perPage);
-
-	const currentEntries = historyData.history.slice(
-		(historyData.currentPage - 1) * historyData.perPage,
-		historyData.currentPage * historyData.perPage
-	);
-	let i = 0;
+	const currentEntries = currentItems(historyData.history, historyData.currentPage, historyData.perPage);
+	console.log(currentEntries);
 	return (
 		<div className="dashboard coursehistory">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor"/>
 			<div className="container">
-				<CreateTopBar />
-
-				<div className="courseinfo-main">
+				<TopBar />
+				<div className="courseinfo-main" data-testid="courseinfo-main">
 				<button className='back-to-prev-button' onClick={() => navigate(-1)}>&lt; Back to Previous Page</button>
 					<h1 className="courseName" role="contentinfo">
 						{historyData.courseCode}: {historyData.courseName}
 					</h1>
 					<p role="contentinfo">{historyData.courseDescription}</p>
 					<div className="current-instructor">
-						<p>Current Instructor(s): {currentInstructor.length === 0 && (
+						<p>Current Instructor(s) ({termString}): {currentInstructor.length === 0 && (
 							<strong>N/A</strong>
 						)}
 						{currentInstructor.length !== 0 && (
@@ -123,10 +99,36 @@ function CourseHistory() {
 							})
 						)}
 							</p>
+							{currentInstructor.length !== 0 && (
+							<div className='assignmentInfo'>
+							{currentInstructor[0].location !== null && (
+							<p>Room: <strong>{currentInstructor[0].location}</strong></p>
+							)}
+							{currentInstructor[0].enrollment !== null && (
+							<p>Number of Students: <strong>{currentInstructor[0].enrollment}</strong></p>
+							)}
+							{currentInstructor[0].meetingPattern !== null && (
+							<p>Schedule: <strong>{currentInstructor[0].meetingPattern}</strong></p>
+							)}
+							</div>
+          				)}
 					</div>
+					<p>Current TA(s) ({termString}):
+						{historyData.tainfo.length === 0 && (
+							<strong> N/A</strong>
+						)}
+					</p>
+					{historyData.tainfo.length !== 0 && (
+					historyData.tainfo.map((ta, index) => {
+						return (
+						<div key={index}>
+							- <span><strong>{ta.taname}</strong>, {ta.taemail}</span>
+						</div>
+						);
+					})
+            		)}
 					<div id="history">
-						<p className="bold">Course History ({numInstructors} Entries)</p>
-
+						<p className="bold">Course History</p>
 						<table id="historyTable">
 							<thead>
 								<tr>
@@ -136,11 +138,12 @@ function CourseHistory() {
 								</tr>
 							</thead>
 							<tbody>
-								{currentEntries.map((entry) => {
-									i++;
-
+							{(currentEntries.length === 0 || currentEntries[0].instructorID === "") && (
+                  				<tr><td colSpan={4}>There are no past instructors for this course.</td></tr>
+                			)}
+								{currentEntries.map((entry, index) => {
 									return (
-										<tr key={i}>
+										<tr key={index}>
 											<td>
 												<Link to={`/InsProfilePage?profileid=${entry.instructorID}`}>
 													{entry.instructorName}
@@ -162,7 +165,7 @@ function CourseHistory() {
 											pageCount={pageCount}
 											marginPagesDisplayed={3}
 											pageRangeDisplayed={0}
-											onPageChange={handlePageClick}
+											onPageChange={(data)=>handlePageClick(data, setHistoryData)}
 											containerClassName={'pagination'}
 											activeClassName={'active'}
 										/>

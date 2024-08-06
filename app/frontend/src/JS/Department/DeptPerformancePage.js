@@ -18,24 +18,27 @@ function formatTime(minutes) {
     return `${hours} hours ${remainingMinutes} minutes`;
 }
 
+
 function convertToCSV(data) {
+    if (!data || data.length === 0) { // return empty string if data is null or empty array
+        return '';
+    }
     const array = [Object.keys(data[0])].concat(data);
     return array.map(it => {
         return Object.values(it).toString();
     }).join('\n');
 }
 
-function exportAllToCSV(data) {
-    const termString = getTermString(20244); // will reaplce to curterm from db ######
+function exportAllToCSV(data, currentTerm) {
     
     // create csv files for each tables
-    const coscCSV = convertToCSV(data.cosc);
-    const mathCSV = convertToCSV(data.math);
-    const physCSV = convertToCSV(data.phys);
-    const statCSV = convertToCSV(data.stat);
-    const benchmarkCSV = convertToCSV(data.benchmark.map(item => ({ name: item.name, shortage: formatTime(item.shortage) })));
-    const topInstructorsCSV = convertToCSV(data.leaderboard.top);
-    const bottomInstructorsCSV = convertToCSV(data.leaderboard.bottom);
+    const coscCSV = convertToCSV(data.cosc || []);
+    const mathCSV = convertToCSV(data.math || []);
+    const physCSV = convertToCSV(data.phys || []);
+    const statCSV = convertToCSV(data.stat || []);
+    const benchmarkCSV = convertToCSV((data.benchmark || []).map(item => ({ name: item.name, shortage: formatTime(item.shortage) })));
+    const topInstructorsCSV = convertToCSV(data.leaderboard.top || []);
+    const bottomInstructorsCSV = convertToCSV(data.leaderboard.bottom || []);
 
     // make into one csv data file in order to generate the table and download
     const allCSVData = `Computer Science Courses:\n${coscCSV}\n\n` + 
@@ -46,7 +49,7 @@ function exportAllToCSV(data) {
         `Top 5 Instructors:\n${topInstructorsCSV}\n\n` +
         `Bottom 5 Instructors:\n${bottomInstructorsCSV}`;
         
-    downloadCSV (allCSVData, `${termString} Performance Overview.csv`) // download csv with content and file name
+    downloadCSV (allCSVData, `${getTermString(currentTerm)} Performance Overview.csv`) // download csv with content and file name
 }
 
 function usePerformanceDepartmentData(currentTerm) {
@@ -114,7 +117,7 @@ function PerformanceDepartmentPage() {
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>
-                        <button className='icon-button' data-testid="download-button" onClick={() => exportAllToCSV(allData)}>
+                        <button className='icon-button' data-testid="download-button" onClick={() => exportAllToCSV(allData, currentTerm)}>
                             <Download size={20} color="black" />
                         </button>
                     </div>

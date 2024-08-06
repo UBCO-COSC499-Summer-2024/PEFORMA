@@ -13,8 +13,18 @@ async function createAccount(req) {
          const emailCheckQuery = `SELECT "email" FROM "Account" WHERE "email" = $1;`;
          const emailCheckResult = await client.query(emailCheckQuery, [email]);
          if (emailCheckResult.rows.length > 0) {
-             throw new Error('Email already exists');
+            const error = new Error('Email already exists');
+            error.status = 409; 
+            throw error;
          }
+         const ubcCheckQuery = `SELECT "UBCId" FROM "Profile" WHERE "UBCId" = $1;`;
+         const ubcCheckResult = await client.query(ubcCheckQuery,[ubcId]);
+         if (ubcCheckResult.rows.length > 0) {
+            const error = new Error('UBCID already exists');
+            error.message = "UBCID already exists";
+            error.status = 409; 
+            throw error;
+        }
         const hashedPassword = await bcrypt.hash(password, 12);
         let query = `SELECT setval(pg_get_serial_sequence('"Profile"', 'profileId'), MAX("profileId")) FROM "Profile";`;
         await client.query(query);

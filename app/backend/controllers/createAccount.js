@@ -7,7 +7,11 @@ async function createAccount(req, res) {
 
   } catch (error) {
     console.error('Error creating account:', error);
-    res.status(500).json({ error: 'Failed to create account' });
+    if (error.status) {
+      res.status(error.status).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'Failed to create account' });
+    }
   }
 }
 

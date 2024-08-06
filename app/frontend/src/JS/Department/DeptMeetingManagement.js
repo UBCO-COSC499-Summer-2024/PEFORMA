@@ -77,11 +77,11 @@ function useDeptMeetingManagement() {
       checkAccess(accountLogInType, navigate, 'department', authToken); // check access with logintype and authToken
       try {
         const data = await fetchWithAuth('http://localhost:3001/meetings', authToken, navigate);
-  
+
         const today = new Date(); // get todays date
         const threeDaysAgo = new Date(); // get 3 days agos date
         threeDaysAgo.setDate(today.getDate() - 3); // set date to 3 days ago
-  
+
         const formattedData = data.meetings
           .filter(meeting => {
             const meetingDate = new Date(meeting.date);
@@ -92,16 +92,16 @@ function useDeptMeetingManagement() {
             label: `${meeting.date} | ${meeting.time} | ${meeting.location} | ${meeting.meetingTitle}`,
             participants: meeting.participants.map(p => ({ value: p.ubcid, label: p.name }))
           }));
-  
+
         setMeetingData(formattedData);
       } catch (error) {
         console.error('Error fetching meetings:', error);
       }
     };
-  
+
     fetchMeetings();
   }, [authToken, accountLogInType, navigate]);
-  
+
   return {
     meetingData,
     selectedMeeting,
@@ -123,6 +123,7 @@ function DeptMeetingManagement() {
     currentDateTime
   } = useDeptMeetingManagement();
 
+  // initialize state to control visibility of import modal\
   const [showImportModal, setShowImportModal] = useState(false);
 
   return (
@@ -131,15 +132,17 @@ function DeptMeetingManagement() {
       <div className='container'>
         <TopBar />
         <div className='SEI-form' id='meeting-test-content'>
-          <div className="form-header">
-            <h1 className='meeting-form-title'>Meeting Management</h1>
-            <button 
-              className="import-button" 
-              onClick={() => setShowImportModal(true)}
-              aria-label="Import data"
-            >
-              <FaFileImport className='import-icon'/>Import
-            </button>
+          <div className='meeting-version'>
+            <div className="form-header">
+              <h1 className='meeting-form-title'>Meeting Management</h1>
+              <button
+                className="import-button"
+                onClick={() => setShowImportModal(true)}
+                aria-label="Import data"
+              >
+                <FaFileImport className='import-icon' />Import
+              </button>
+            </div>
           </div>
           <form>
             <p className="current-date-time">Current Time: {currentDateTime}</p>

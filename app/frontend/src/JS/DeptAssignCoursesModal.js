@@ -28,7 +28,6 @@ const AssignCoursesModal = (props) => {
 
     const pageCount = Math.ceil(props.courseData.courseCount / props.courseData.perPage);
 
-
     return (
         <div className="modal-overlay">
             <div className="assignModal" data-testid="assignModal">
