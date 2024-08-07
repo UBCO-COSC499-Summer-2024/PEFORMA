@@ -211,7 +211,7 @@ function TopBar({ searchListType, onSearch, onTermChange }) {
                     placeholder={getPlaceholderText(searchListType)}
                     onChange={function (e) { onSearch(e.target.value); }}
                 />
-            ) : (accountLogInType == 1) ? (
+            ) : (accountLogInType === 1) ? (
                 <Select className='term-select'
                     options={allData.terms}
                     value={allData.currentTerm}

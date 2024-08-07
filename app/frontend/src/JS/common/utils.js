@@ -183,7 +183,7 @@ export const filterItems = (items, itemType, search) => {
       (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
       (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
     );
-  } else if (itemType == 'assignee') {
+  } else if (itemType === 'assignee') {
     return items.filter((assignee)=>
       (assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
       (assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())

@@ -30,7 +30,7 @@ function Dashboard() {
 		};
 
 		checkAuth();
-	}, [authToken, navigate]);
+	}, [authToken, accountLogInType, navigate]);
 
 	return (
 		<div className="dashboard">

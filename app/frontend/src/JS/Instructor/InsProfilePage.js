@@ -32,7 +32,7 @@ function useUserProfileData() {
 
     React.useEffect(() => {
         fetchUserProfileData();
-    }, [profileId, authToken]);
+    }, [profileId, authToken, accountLogInType]);
 
     // Function to fetch user profile data from the server
     function fetchUserProfileData() {
