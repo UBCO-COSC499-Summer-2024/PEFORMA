@@ -82,29 +82,29 @@ INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "is
 
 -- AccountType (assuming 1 = Department Head, 2 = Department Staff, 3 = Instructor, 4 = Admin)
 INSERT INTO public."AccountType" ("accountId", "accountType") VALUES
-(1, 1), (1, 3), -- John Doe: Department Head, Instructor
-(2, 3),         -- Jane Smith: Instructor
-(4, 3),         -- Emily Davis: Instructor
-(5, 3), (5, 4), -- David Kim: Instructor, Admin
-(6, 3),         -- Sarah Chen: Instructor
-(7, 3),         -- Michael Nguyen: Instructor
-(8, 3),         -- Olivia Rodriguez: Instructor
-(9, 3),         -- Daniel Taylor: Instructor
-(10, 3),        -- Sophia Wilson: Instructor
-(11, 3),        -- William Anderson: Instructor
-(12, 3),        -- Aiden Moore: Instructor
-(13, 3),        -- Ava Martinez: Instructor
-(14, 3),        -- Ava Martinez: Instructor
-(15, 3),        -- Ethan Anderson: Instructor
-(16, 2),        -- Alice Johnson: Department Staff
-(17, 2),        -- Bob Lee: Department Staff
-(18, 4),        -- Kevin: Admin
-(19, 4),        -- Jeremy: Admin
-(20, 4),        -- Zhiheng: Admin
-(21, 4),        -- Subaru: Admin
-(22, 4),        -- Adams: Admin
-(23, 4),        -- Carol Wilson: Admin
-(24, 4);        -- Amelia Young: Admin
+(1, 1), (1, 3), (1, 4)  -- John Doe: Department Head, Instructor
+(2, 3),                 -- Jane Smith: Instructor
+(4, 3),                 -- Emily Davis: Instructor
+(5, 3),                 -- David Kim: Instructor, Admin
+(6, 3),                 -- Sarah Chen: Instructor
+(7, 3),                 -- Michael Nguyen: Instructor
+(8, 3),                 -- Olivia Rodriguez: Instructor
+(9, 3),                 -- Daniel Taylor: Instructor
+(10, 3),                -- Sophia Wilson: Instructor
+(11, 3),                -- William Anderson: Instructor
+(12, 3),                -- Aiden Moore: Instructor
+(13, 3),                -- Ava Martinez: Instructor
+(14, 3),                -- Ava Martinez: Instructor
+(15, 3),                -- Ethan Anderson: Instructor
+(16, 2),                -- Alice Johnson: Department Staff
+(17, 2),                -- Bob Lee: Department Staff
+(18, 4),                -- Kevin: Admin
+(19, 4),                -- Jeremy: Admin
+(20, 4),                -- Zhiheng: Admin
+(21, 4),                -- Subaru: Admin
+(22, 4),                -- Adams: Admin
+(23, 4),                -- Carol Wilson: Admin
+(24, 4);                -- Amelia Young: Admin
 
 -- ServiceRole
 INSERT INTO public."ServiceRole" ("stitle", "description", "isActive", "divisionId") VALUES
@@ -526,10 +526,10 @@ INSERT INTO public."TaAssignmentTable" ("term", "UBCId", "firstName", "middleNam
 -- MeetingLog DML
 INSERT INTO public."MeetingLog" ("meetingTitle", "location", "date", "time") VALUES
 ('Statistics department meeting', 'EME 123', '2024-07-25', '13:00:00'),
-('Mathematics department meeting', 'APS 456', '2024-07-28', '15:30:00'),
-('Physics department meeting', 'SCI 234', '2024-08-01', '10:00:00'),
-('Daily meeting', 'Online', '2024-08-02', '14:00:00'),
-('Computer Science course adjustment meeting', 'ASC 215', '2024-08-03', '09:00:00');
+('Mathematics department meeting', 'APS 456', '2024-08-05', '15:30:00'),
+('Physics department meeting', 'SCI 234', '2024-08-07', '10:00:00'),
+('Daily meeting', 'Online', '2024-08-10', '14:00:00'),
+('Computer Science course adjustment meeting', 'ASC 215', '2024-08-11', '09:00:00');
 
 -- MeetingAttendance DML
 INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId") VALUES
