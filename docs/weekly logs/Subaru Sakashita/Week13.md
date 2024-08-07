@@ -9,7 +9,7 @@
 ![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-13-Cycle1/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/COSC499_Clockify_W13_C1.png)
 ### Current Tasks
   * #1: Indiividua report
-### Progress Update (since 7/26/2024)
+### Progress Update (since 8/02/2024)
 <table>
     <tr>
         <td><strong>TASK/ISSUE #</strong>
