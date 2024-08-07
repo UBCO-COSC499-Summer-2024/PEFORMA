@@ -82,7 +82,7 @@ INSERT INTO public."Account" ("accountId", "profileId", "email", "password", "is
 
 -- AccountType (assuming 1 = Department Head, 2 = Department Staff, 3 = Instructor, 4 = Admin)
 INSERT INTO public."AccountType" ("accountId", "accountType") VALUES
-(1, 1), (1, 3), (1, 4)  -- John Doe: Department Head, Instructor
+(1, 1), (1, 3),  -- John Doe: Department Head, Instructor
 (2, 3),                 -- Jane Smith: Instructor
 (4, 3),                 -- Emily Davis: Instructor
 (5, 3),                 -- David Kim: Instructor, Admin
