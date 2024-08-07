@@ -30,7 +30,9 @@ async function StatusChangeMembers(req) {
                 }
             });
             if (errors.length > 0) {
-                throw new Error(errors.join(" "));
+                const error = new Error('Update Instructor Status is Not Allowed');
+                error.status = 409; 
+                throw error;
             }
             //Update the status of account
             query = `UPDATE "Account" SET "isActive" = $1 WHERE "profileId" = $2 RETURNING *;`;

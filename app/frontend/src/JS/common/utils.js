@@ -343,7 +343,12 @@ export const toggleStatus = async (authToken, item, newStatus, itemList, setItem
       console.error('Error updating item status:', response.statusText);
     }
   } catch (error) {
-    console.error('Error updating item status:', error);
+    if(error.response.status === 409 && error.response.data.error === 'Update Instructor Status is Not Allowed'){
+      alert('Update Instructor Status is Not Allowed');
+    }
+    else{
+      console.error('Error updating item status:', error);
+    }
   }
 };
 

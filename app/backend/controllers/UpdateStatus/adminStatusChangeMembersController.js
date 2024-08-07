@@ -5,8 +5,13 @@ async function StatusChangeMembers(req, res) {
     const statusChange = await adminStatusChangeService.StatusChangeMembers(req);
     res.json(statusChange);
   } catch (error) {
-    console.error('Error uploading course evaluation:', error);
-    res.status(500).json({ error: 'Failed to upload course evaluation' });
+    if (error.status) {
+      res.status(error.status).json({ error: error.message });
+    }
+    else{
+      res.status(500).json({ error: 'Failed to update status' });
+    }
+    
   }
 }
 
