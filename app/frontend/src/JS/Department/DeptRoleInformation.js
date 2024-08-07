@@ -397,35 +397,27 @@ function RoleInformation() {
                 {isActive ? 'Active' : 'De-active'}
               </label>
             )}
-            {(!pastState && active) && (
-              <>
-            {showInstructorModal ? (
-              <AssignInstructorsModal
-                instructorData={instructorData}
-                setInstructorData={setInstructorData}
-                handleCloseInstructorModal={handleCloseInstructorModal}
-                closeModalVars={closeModalVars}
-              />
-            ) : (
-            <button
-              type="button"
-              data-testid="assign-button"
-              className="assign-button"
-              onClick={()=>handleShowInstructorModal(instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors)}
-            >
-              <span className="plus">+</span> Assign Instructor(s)
-            </button>
-          )}
-              </>
+            <button type="button" data-testid="assign-button" className="assign-button"
+                  onClick={()=>handleShowInstructorModal(instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors)}
+                >
+                <span className="plus">+</span> Assign Instructor(s)
+                </button>
+            {/*{(!pastState && active) && (*/}
               
-            )}
             {!active && (
                   <button className='assign-button inactive'>
                     <span>Assign Unavailable</span>
                   </button>
                 )}
           </div>
-            
+          {!pastState && active && showInstructorModal && (
+            <AssignInstructorsModal
+              instructorData={instructorData}
+              setInstructorData={setInstructorData}
+              handleCloseInstructorModal={handleCloseInstructorModal}
+              closeModalVars={closeModalVars}
+            />
+          )}  
           {pastState || futureState ? (
             <p>Assignees for {termString}</p>
           ) : (
