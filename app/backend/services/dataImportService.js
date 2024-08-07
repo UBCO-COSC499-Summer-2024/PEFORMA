@@ -86,7 +86,7 @@ const CoursePerformanceDataSchema = Joi.object({
     enrolRate:Joi.number().precision(2).required(),
     averageGrade:Joi.number().precision(2).required(),
 });
-
+/*
 const meetingLogSchema = Joi.object({
     meetingTitle: Joi.string().required(),
     location: Joi.string().required(),
@@ -97,6 +97,14 @@ const meetingLogSchema = Joi.object({
 const meetingAttendanceSchema = Joi.object({
     meetingId: Joi.number().integer().required(),
     UBCId: Joi.string().length(8).required()
+});
+*/
+const meetingUploadSchema = Joi.object({
+    title: Joi.string().required(),
+    location: Joi.string().required(),
+    date: Joi.string().required(),
+    time: Joi.string().required(),
+    expected: Joi.string().required()
 });
 
 const taAssignmentSchema = Joi.object({
@@ -118,11 +126,12 @@ async function importData(files) {
         let importedCount = 0;
         let errors = [];
         let retries = 0;
-
+        let remainingFiles = [];
+        
         console.log("\n\nStart importing.");
 
         while (files.length > 0 && retries < maxRetries) {
-            let remainingFiles = [];
+            
             for (const file of files) {
                 try {
                     const fileData = await processFile(file, client);
@@ -229,6 +238,8 @@ async function processRow(row, client) {
     else if ( 'CourseId' in row && 'Term' in row && 'SEIQ1' in row) {
          await processCoursePerformanceData(row,client);
     } 
+
+    /*
     else if ('location' in row && 'date' in row && 'time' in row) {
         console.log("Process Meeting Log.");  
         await processMeetingLogData(row, client);
@@ -236,7 +247,12 @@ async function processRow(row, client) {
     else if ('meetingId' in row && 'UBCId' in row && 'attendance' in row) {
         console.log("Process Meeting Attendance.");  
         await processMeetingAttendanceData(row, client);
-    } 
+    } */
+    else if( 'location' in row && 'date' in row && 'time' in row && "expected" in row){
+        console.log('Process Meeting upload.');
+        await processUploadMeetingData(row,client);
+    }
+    
     else if ('TA_Term' in row && 'UBCId' in row && 'firstName' in row && 'lastName' in row && 'email' in row && 'courseId' in row) {
         console.log("Process TA assign.");  
         await processTaAssignmentData(row, client);
@@ -680,6 +696,57 @@ async function processTaAssignmentData(row, client) {
     } catch (err) {
         console.error('Error inserting/updating TA assignment data:', err.message);
         throw err;
+    }
+}
+
+async function processUploadMeetingData(row, client) {
+    var res1 = await client.query(`SELECT * FROM "MeetingLog"`);
+    console.log("All meetingLogs\n",res1);
+    const meetingLogData = {
+        title: row.title || null,
+        location: row.location || null,
+        date: String(row.date) || null,
+        time: String(row.time) || null,
+        expected: row.expected || null
+    };
+    const { error } = meetingUploadSchema.validate(meetingLogData);
+    if (error) {
+        console.error('Meeting log data validation error:', error.message);
+        throw new Error(`Meeting log data validation error: ${error.message}`);
+    }
+    var meetingId;
+    try {
+        // create meeting in meetingLog table
+        var result = await client.query(`
+            INSERT INTO public."MeetingLog" ("meetingTitle", "location", "date", "time")
+            VALUES ($1, $2, $3, $4)
+        `, [meetingLogData.title,meetingLogData.location,meetingLogData.date,meetingLogData.time]);
+        meetingId = await client.query(`
+            SELECT "meetingId" FROM "MeetingLog"
+            WHERE   "meetingTitle" = $1
+                AND "location" = $2
+                AND "date" = $3
+                AND "time" = $4
+        `, [meetingLogData.title,meetingLogData.location,meetingLogData.date,meetingLogData.time]);
+        console.log("\n\nResult of inserting meeting log.\n",result,"\nMeeting id=",meetingId);
+    } catch (err) {
+        console.error('Error inserting meeting log data:', err.message);
+        throw err;
+    }
+    console.log('Meeting created successfully for ',meetingLogData.title,"\nMeeting id: ",meetingId);
+    var expected_people = String(meetingLogData.expected).split(',')
+    try{
+        for(let i=0;i<expected_people.length;i++){
+            console.log('Insert UBCID: ',expected_people[i],' into meetingId: ',meetingId.rows[0].meetingId);
+            // this is the i-th object for ubcid person
+            await client.query(`
+                INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId")
+                VALUES ($1, $2)
+                ON CONFLICT ("meetingId", "UBCId") DO NOTHING
+            `,[meetingId.rows[0].meetingId,expected_people[i]]);
+        }
+    }catch(err){
+        console.log('Error inserting meeting attandence data:',err.message);
     }
 }
 

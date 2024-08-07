@@ -21,16 +21,17 @@ async function getMeetings() {
           WHERE ma."meetingId" = ml."meetingId"),
           '[]'
         ) as participants
-      FROM 
-        "MeetingLog" ml
-      WHERE 
-        -- Filter for meetings within the last 3 days
-        ml."date" >= CURRENT_DATE - INTERVAL '3 days'
-      GROUP BY 
-        ml."meetingId", ml."meetingTitle", ml."location", ml."date", ml."time"
-      -- Order by most recent meetings first
-      ORDER BY 
-        ml."date" ASC, ml."time" ASC
+          FROM 
+                  "MeetingLog" ml
+          WHERE 
+                  -- Filter for meetings within the last 3 days
+                  ml."date"::date >= CURRENT_DATE - INTERVAL '3 days'
+          GROUP BY 
+                  ml."meetingId", ml."meetingTitle", ml."location", ml."date", ml."time"
+          -- Order by most recent meetings first
+          ORDER BY 
+              ml."date"::date DESC, ml."time" DESC;
+
     `;
 
     try {
@@ -40,7 +41,7 @@ async function getMeetings() {
         // Format the date and time in the results
         return result.rows.map(row => ({
             ...row,
-            date: row.date.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+            date: row.date, // Format date as YYYY-MM-DD
             time: row.time.slice(0, 5) // Format time as HH:MM
         }));
     } catch (error) {
