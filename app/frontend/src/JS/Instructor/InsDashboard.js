@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Instructor/InsDashboard.css';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import divisions from '../common/divisions.js';
 import cardImages from '../common/cardImages.js';
 import { Link } from 'react-router-dom';
@@ -34,9 +34,9 @@ function Dashboard() {
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor" />
 			<div className="container">
-				<CreateTopBar />
+				<TopBar />
 
 				<div className="card-container">
 					{divisions.map((division) => {

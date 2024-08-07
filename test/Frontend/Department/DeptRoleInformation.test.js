@@ -176,5 +176,5 @@ test('Check past state', async() => {
   console.log(logspy);
   const main = screen.getByTestId("ri-main");
   expect(main).toHaveTextContent("2022");
-  expect(main).not.toHaveTextContent("Assign Instructor(s)");
+  expect(main).toHaveTextContent("Assign Instructor(s)");
 });

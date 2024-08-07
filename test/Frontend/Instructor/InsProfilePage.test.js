@@ -18,11 +18,25 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('axios');
 
-// Mock sidebar and topbar components
-jest.mock('../../../app/frontend/src/JS/common/commonImports.js', () => ({
+// Mocking sidebar
+jest.mock('../../../app/frontend/src/JS/common/SideBar.js', () => ({
   __esModule: true,
-  default: () => <div data-testid="mock-sidebar"></div>,
-  CreateTopBar: () => <div data-testid="mock-topbar"></div>,
+  default: jest.fn(() => <div>Mock Sidebar</div>),
+}));
+
+// Mocking topbar for testing search function
+jest.mock('../../../app/frontend/src/JS/common/TopBar.js', () => ({
+  __esModule: true,
+  default: jest.fn(({ onSearch }) => (
+    <div className="topbar-search">
+      <input
+        type="text"
+        placeholder="Search by Subject and Title"
+        onChange={(e) => onSearch(e.target.value)}
+      />
+      <div className="logout">Logout</div>
+    </div>
+  )),
 }));
 
 // Sample profile data for testing
@@ -102,7 +116,7 @@ describe('InsProfilePage', () => {
     expect(screen.getByText('60 Hours')).toBeInTheDocument();
 
     // Verify that CreateSideBar and CreateTopBar are rendered (as mocks)
-    expect(screen.getByTestId('mock-sidebar')).toBeInTheDocument();
-    expect(screen.getByTestId('mock-topbar')).toBeInTheDocument();
+    expect(screen.getByText('Mock Sidebar')).toBeInTheDocument();
+    expect(screen.getByText('Logout')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -101,9 +101,9 @@ function ProfilePage() {
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType='Instructor' />
+            <SideBar sideBarType='Instructor' />
             <div className="container">
-                <CreateTopBar />
+                <TopBar />
                 <div className="user-profilepage">
                     <div className="user-profilecard">
                         <div className="card-header">

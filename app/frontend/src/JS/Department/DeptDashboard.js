@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Department/DeptDashboard.css';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
@@ -27,9 +27,9 @@ function Dashboard() {
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Department" />
+			<SideBar sideBarType="Department" />
 			<div className="container">
-				<CreateTopBar />
+				<TopBar />
 
 				<div className="card-container">
 					<Link to={'/DeptPerformancePage'}>
