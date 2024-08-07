@@ -38,7 +38,7 @@ async function insertCourseEvaluation(courseId, term, profileId, Q1, Q2, Q3, Q4,
 };
 //function to update course evaluation
 async function updateCourseEvaluation(courseId, term, profileId, Q1, Q2, Q3, Q4, Q5, Q6, retentionRate, failRate, enrolRate, averageGrade) {
-    const query = `UPDATE "CourseEvaluation" SET "SEIQ1" = $1, "SEIQ2" = $2, "SEIQ3" = $3, "SEIQ4" = $4, "SEIQ5" = $5, "SEIQ6" = $6
+    const query = `UPDATE "CourseEvaluation" SET "SEIQ1" = $1, "SEIQ2" = $2, "SEIQ3" = $3, "SEIQ4" = $4, "SEIQ5" = $5, "SEIQ6" = $6,
                 "retentionRate" = $7, "failRate" = $8, "enrolRate" = $9, "averageGrade" = $10
                 WHERE "courseId" = $11 AND "term" = $12 AND "profileId" = $13 RETURNING *`;
     await pool.query(query, [Q1, Q2, Q3, Q4, Q5, Q6, retentionRate, failRate, enrolRate, averageGrade, courseId, term, profileId]);
