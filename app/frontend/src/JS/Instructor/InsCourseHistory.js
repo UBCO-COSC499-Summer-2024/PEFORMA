@@ -9,6 +9,7 @@ import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import { checkAccess, fillEmptyItems, handlePageClick, currentItems, getTermString } from '../common/utils.js';
 
+// Function for requesting the course information from the backend
 const fetchCourseData = async(courseId, authToken) => {
 	const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
 		params: { courseId: courseId },
@@ -17,13 +18,19 @@ const fetchCourseData = async(courseId, authToken) => {
 	return res.data;
 }
 
+// Function for requesting the currently active term from the backend
 const fetchTermResponse = async() => {
 	const termResponse = await axios.get("http://localhost:3001/api/terms");
 	return termResponse.data;
   }
   
-
 function useCourseHistory() {
+	const navigate = useNavigate(); // For navigating to different pages
+	const { authToken, accountLogInType } = useAuth();
+	// Get the courseid from the URL
+	const params = new URLSearchParams(window.location.search);
+	const courseId = params.get('courseid');
+	// State variables
 	const [historyData, setHistoryData] = useState({
 		history: [{}],
 		entryCount: 0,
@@ -31,22 +38,26 @@ function useCourseHistory() {
 		currentPage: 1,
 		tainfo:[{}]
 	});
-	const navigate = useNavigate();
 	const [termString, setTermString] = useState('');
-	const { authToken, accountLogInType } = useAuth();
-	const params = new URLSearchParams(window.location.search);
-	const courseId = params.get('courseid');
 	const [currentInstructor, setCurrentInstructor] = useState([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			checkAccess(accountLogInType, navigate, 'instructor', authToken);
 			const courseData = await fetchCourseData(courseId, authToken);
+			// courseData contains: {currentPage, perPage, courseID, entryCount, exists, courseCode, latestTerm, courseName, courseDescription, division, avgScore, history, tainfo}
+			// history contains an array of: {instructorID, instructorName, session, term, score, term_num (year then term), ubcid, location, enrollment, meetingPattern}
+      			// tainfo contains an array of: {taname, taemail, taUBCId, taterm}
 			const filledEntries = fillEmptyItems(courseData.history, courseData.perPage);
+			// Get currently active term
 			const termData = await fetchTermResponse();
+			// Set the latestTerm attribute in courseData to be the currently active term
 			courseData.latestTerm = termData.currentTerm.toString();
+			// Set the name of the term to be displayed to the user
 			setTermString(getTermString(termData.currentTerm));
+			// Set the history table to only show instructors from previous terms
 			setHistoryData({ ...courseData, history: filledEntries.filter((entry)=>entry.term_num < courseData.latestTerm) });
+			// Set the current instructors section to only show instructors with assignments matching the current term
 			setCurrentInstructor(courseData.history.filter((entry)=>entry.term_num == courseData.latestTerm));
 		};
 		fetchData();
@@ -60,6 +71,7 @@ function useCourseHistory() {
 }
 
 function CourseHistory() {
+	// Get state variables
 	const {
 		historyData, setHistoryData,
 		navigate,
@@ -69,7 +81,6 @@ function CourseHistory() {
 	
 	const pageCount = Math.ceil(historyData.entryCount / historyData.perPage);
 	const currentEntries = currentItems(historyData.history, historyData.currentPage, historyData.perPage);
-	console.log(currentEntries);
 	return (
 		<div className="dashboard coursehistory">
 			<SideBar sideBarType="Instructor"/>
