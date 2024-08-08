@@ -81,7 +81,7 @@ function Dashboard() {
 					<Link to={'/DeptSEIPage'}>
 						<div className="card" role="gridcell">
 							<div className="cardTitleBox">
-								<div className="cardTitle">SEI Data Entry</div>
+								<div className="cardTitle">Course Evaluation</div>
 							</div>
 							<div className="cardDesc">Evaluate course and instructor.</div>
 						</div>
