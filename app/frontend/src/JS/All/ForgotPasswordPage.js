@@ -4,20 +4,24 @@ import axios from 'axios';
 import '../../CSS/All/ForgotPasswordPage.css';
 
 function ForgotPasswordPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Function for navigating to different page
+  // State variables
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
 
+  // Function that's called when form is submitted
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(email);
+    // Set 'sent' state of page to true, changing the send button and removing the email input
     setSent(true);
+    // Send email to the backend, to be sent an email
     axios.post("http://localhost:3001/api/reset-password", {email});
   };
 
+  // Function for taking the user to the login page after clicking the login button
   const handleLogin = () => {
-    // add login jump-to-page logic here
-    console.log('Login button clicked');
+    // Send user to login page
     navigate('/Login');
   };
 
