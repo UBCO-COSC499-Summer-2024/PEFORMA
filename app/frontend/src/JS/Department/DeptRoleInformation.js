@@ -5,28 +5,25 @@ import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { getCurrentTerm, checkAccess, filterItems, currentItems, handlePageClick } from '../common/utils.js';
 
-// Function for recieving role information and assignment data
 const fetchRoleData = async(authToken, serviceRoleId) => {
   const roleRes = await axios.get(`http://localhost:3001/api/roleInfo`, {
     params: { serviceRoleId: serviceRoleId },
     headers: { Authorization: `Bearer ${authToken.token}` },
   });
-  roleRes.data.perPage -=1; // Page length is too long so this is to reduce it by 1
+  roleRes.data.perPage -= 1; // Page length is too long so this is to reduce it by 1
   return roleRes.data;
 }
 
-// Function for recieving the currently active term
 const fetchTermResponse = async() => {
   const termResponse = await axios.get("http://localhost:3001/api/terms");
   return termResponse.data;
 }
 
-// Function for setting the time state of the page, i.e. if it's term is before the currently active term, set pastState to true,
-// if it's after the currently active term, set futureState to true. If it's the same term, both remain false.
 function setTimeState(actualTerm, selectedTerm, setPastState, setFutureState) {
   if (parseInt(actualTerm) > selectedTerm) {
     setPastState(true);
@@ -35,29 +32,27 @@ function setTimeState(actualTerm, selectedTerm, setPastState, setFutureState) {
   }
 }
 
-// Function to be called when the user clicks the edit button
 const handleEditClick = (setIsEditing, setShowDeactivate) => {
-  setIsEditing(true); // Set edit state to true
+  setIsEditing(true);
   setShowDeactivate(true); // Show deactivate button when editing
 };
 
 function useRoleInformation() {
-// Get role id from the URL
   const params = new URLSearchParams(window.location.search);
   const serviceRoleId = params.get('roleid');
   const { authToken, accountLogInType } = useAuth();
-  const navigate = useNavigate(); // For navigating to different pages
-// State variables
+  const navigate = useNavigate();
   const [active, setActive] = useState(true);
   const prevInstructors = useRef({});
   const [roleData, setRoleData] = useState({
-    assignees: [{}],
+    assignees: [],
     assigneeCount: 0,
     perPage: 5,
     currentPage: 1,
     roleName: '',
     roleDescription: '',
     department: '',
+    currentInstructors: [], // Add this line to store current instructor information
   });
   const [pastState, setPastState] = useState(false);
   const [futureState, setFutureState] = useState(false);
@@ -70,7 +65,7 @@ function useRoleInformation() {
   });
   const [search, setSearch] = useState('');
   const [instructorData, setInstructorData] = useState({
-    instructors: [{}],
+    instructors: [],
     instructorCount: 0,
     perPage: 8,
     currentPage: 1,
@@ -78,7 +73,6 @@ function useRoleInformation() {
   const [showInstructorModal, setShowInstructorModal] = useState(false);
   const [showDeactivate, setShowDeactivate] = useState(false);
   const [isActive, setIsActive] = useState(true);
-// For forcing the page to update
   const [, reactUpdate] = useReducer(i => i + 1, 0);
 
   useEffect(() => {
@@ -86,35 +80,33 @@ function useRoleInformation() {
       checkAccess(accountLogInType, navigate, 'department', authToken);
       try {
         const roleData = await fetchRoleData(authToken, serviceRoleId);
-	// roleData contains : {currentPage, perPage, roleID, assigneeCount, exists, roleName, roleDescription, department, assignees, latestYear, isActive}
-	// roleData.assignees is an array containing : {instructorID, name, year}
-	// Get actual current term
         const currentTerm = getCurrentTerm();
-	// Get currently active term
         const termData = await fetchTermResponse();
-        roleData.latestYear = termData.currentTerm.toString().slice(0,4); // Set latestYear to proper value
+        roleData.latestYear = termData.currentTerm.toString().slice(0, 4); // Set latestYear to proper value
         setTimeState(currentTerm, termData.currentTerm, setPastState, setFutureState);
-        roleData.assignees = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear); // Set assignees to only show ones for the selected term
-        setTermString(roleData.latestYear); // Set term string for currently active term to be displayed to the user
-        setRoleData((prevData) => ({ ...prevData, ...roleData })); // Set role information
+        
+        // Separate current and past instructors
+        roleData.currentInstructors = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear);
+        roleData.assignees = roleData.assignees.filter((assignee) => assignee.year != roleData.latestYear);
+        
+        setTermString(roleData.latestYear);
+        setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
           roleName: roleData.roleName,
           roleDescription: roleData.roleDescription,
           department: roleData.department,
-        }); // Set edit information to be equal to current role information
-	// For clarification, isActive is determined by the isActive column of the ServiceRole table. Active is determined
-	// by the presence of role assignments.
-        setIsActive(roleData.isActive); 
-      // Set active state to false if role is inactive
-      if (!roleData.exists) {
-        setActive(false);
-      }
+        });
+        setIsActive(roleData.isActive);
+        if (!roleData.exists) {
+          setActive(false);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
   }, [authToken, accountLogInType, navigate, serviceRoleId]);
+
   return {
     roleData, setRoleData,
     pastState, setPastState,
@@ -136,13 +128,11 @@ function useRoleInformation() {
   }
 }
 
-// Function to be called when the user clicks the save button. Sends a request to the backend to update that role's information
 const handleSaveClick = async (setIsEditing, setShowDeactivate, roleData, setRoleData, editData, isActive, authToken) => {
-  setIsEditing(false); // Set edit state to false
+  setIsEditing(false);
   setShowDeactivate(false); // Hide deactivate button after saving
   const updatedRoleData = { ...roleData, ...editData, isActive };
-  setRoleData(updatedRoleData); // Set current role info to newly changed role info
-// Send new info the the backend
+  setRoleData(updatedRoleData);
   try {
     await axios.post('http://localhost:3001/api/updateRoleInfo', updatedRoleData, {
       headers: { Authorization: `Bearer ${authToken.token}` },
@@ -152,15 +142,12 @@ const handleSaveClick = async (setIsEditing, setShowDeactivate, roleData, setRol
   }
 };
 
-// Function to be called when the user changes a value when editing.
 const handleChange = (e, setEditData) => {
   const { name, value } = e.target;
-// Change edited data to reflect the new change
   setEditData((prevData) => ({
     ...prevData,
     [name]: value,
   }));
-// Depending on the changed section, alter the styling of the edit boxes to match
   if (name === 'roleName') {
     e.target.style.width = (value.length + 1) * 8 + 'px';
   } else if (name === 'roleDescription') {
@@ -169,21 +156,17 @@ const handleChange = (e, setEditData) => {
   }
 };
 
-// Function to be called when the 'active' checkbox is changed.
 const handleSwitchChange = (isActive, setIsActive) => {
-  setIsActive(!isActive); // Sets isActive variable to the opposite boolean
+  setIsActive(!isActive);
 };
 
-// Function for recieving all instructors from the backend
 const fetchInstructors = async(authToken, setInstructorData) => {
   try {
-// Get all instructors
     const res = await axios.get('http://localhost:3001/api/instructors', {
       headers: { Authorization: `Bearer ${authToken.token}` },
     });
-// res.data contains: {instructors, instructorCount, perPage, currentPage}
     const professors = res.data.instructors;
-    // Handle different possible backend responses, if a good response is recieved, set the instructor list to the received data
+    // Handle different possible backend responses
     if (Array.isArray(professors)) {
       setInstructorData((prevData) => ({
         ...prevData,
@@ -208,42 +191,28 @@ const fetchInstructors = async(authToken, setInstructorData) => {
   }
 }
 
-// Function to be called when the user clicks the assign instructors button
 const handleShowInstructorModal = async (instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors) => {
-// Save currently assigned instructors in the case of the user cancelling    
-prevInstructors.current = JSON.stringify(instructorData);
-// Show modal
+    prevInstructors.current = JSON.stringify(instructorData);
     setShowInstructorModal(true);
-// fetch all instructors
     await fetchInstructors(authToken, setInstructorData);
 };
 
-// Function to be called when the user attempts to close the assign modal
-// The parameters are formatted as [] so it can be used easily by the InsAssignInstructorsModal file
 const handleCloseInstructorModal = (save, [instructorData, setInstructorData, roleData, setShowInstructorModal, prevInstructors, authToken]) => {
-    // If cancel button was clicked, show a confirmation message
-	if (!save) {
+    if (!save) {
       if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
-	// If yes, set currently assigned instructors back to the previously assigned ones
         setInstructorData(JSON.parse(prevInstructors.current));
       } else {
-	// If no, return to the modal
         return;
       }
     } else {
-	// If save was clicked, call the updateAssignees function, a helper function for updating the UI and sending a backend request
       updateAssignees(instructorData, roleData, authToken);
     }
-// Close the modal
     setShowInstructorModal(false);
 };
 
-// function for finding all currently assigned instructors
 function getAssignedInstructors(instructorData, roleData) {
-// Create necessary variables
   let assignedInstructors = [];
   roleData.assignees = [];
-// For each instructor in the list, check if the assigned attribute is true. If it is, add that instructor to the assignedInstructors array and the roleData.assignees array
   for (let i = 0; i < instructorData.instructors.length; i++) {
     if (instructorData.instructors[i].assigned === true) {
       assignedInstructors.push(instructorData.instructors[i]);
@@ -256,7 +225,6 @@ function getAssignedInstructors(instructorData, roleData) {
   return assignedInstructors;
 }
 
-// Function for getting the Digit (1, 2, 3, or 4) associated with the department 
 function getDivisionDigit(roleData) {
   let div = 0;
   switch (roleData.department) {
@@ -269,11 +237,8 @@ function getDivisionDigit(roleData) {
   return div;
 }
 
-// Function to be called during the assigning process. Sends the newly assigned instructors to the backend to be added to the database
 const sendAssignees = async(assignedInstructors, roleData, authToken, div) => {
-// For each newly assigned instructor send them to the backend to be assigned
   for (let i = 0; i < assignedInstructors.length; i++) {
-// Format data
     var newAssigneeList = {
       profileId: assignedInstructors[i].profileId,
       serviceRole: roleData.roleName,
@@ -290,38 +255,30 @@ const sendAssignees = async(assignedInstructors, roleData, authToken, div) => {
   }
 }
 
-// Helper function for updating the currently assigned instructors
 const updateAssignees = async (instructorData, roleData, authToken) => {
-// Get assigned instructors, the division digit, then send them to the backend
   let assignedInstructors = getAssignedInstructors(instructorData, roleData);
   let div = getDivisionDigit(roleData);
   await sendAssignees(assignedInstructors, roleData, authToken, div);
-  window.location.reload(); // Reload the page so the changes are reflected
+  window.location.reload();
 };
 
-// Function to be called when the user enters a search query for the table
 const onSearch = (newSearch, setSearch, setRoleData) => {
-// Set search to newly entered string
     setSearch(newSearch);
-// Set currently selected page to 1
     setRoleData((prevState) => ({ ...prevState, currentPage: 1 }));
 };
 
-// Function to be called when the user clicks the 'x' button next to a currently assigned instructor
 function removeInstructorFromRoleData(roleData, instructorData, index, id, reactUpdate) {
-// Remove the instructor at the index that the user clicked
-  roleData.assignees.splice(index, 1);
-// For each instructor in the instructors list, check if their id matches the one of the removed instructor. If it does, set that instructor's assign attribute to false
+  // Remove instructor from currentInstructors
+  roleData.currentInstructors.splice(index, 1);
   for (let i = 0; i < instructorData.instructors.length; i++) {
     if (id === instructorData.instructors[i].id) {
       instructorData.instructors[i].assigned = false;
       break;
     }
   }
-  reactUpdate(); // Force the page to update
+  reactUpdate();
 }
 
-// Function for sending a newly un-assigned instructor to the backend to be reflected in the database
 const sendRemovedInstructor = async(serviceRoleId, id, authToken) => {
   try {
     await axios.post('http://localhost:3001/api/removeInstructorRole', {serviceRoleId, id}, {
@@ -332,15 +289,12 @@ const sendRemovedInstructor = async(serviceRoleId, id, authToken) => {
   }
 }
 
-// Helper function for removing an instructor. Called when the user clicks the 'x' next to an assigned instructor's name
 const removeInstructor = async (id, index, roleData, instructorData, authToken, reactUpdate, serviceRoleId) => {
-// Removes the instructor from the UI, then sends a backend request to unassign them in the database
     removeInstructorFromRoleData(roleData, instructorData, index, id, reactUpdate);
     await sendRemovedInstructor(serviceRoleId, id, authToken);
 }
 
 function RoleInformation() {
-// Get necessary variables
   const {
       roleData, setRoleData,
       pastState, setPastState,
@@ -364,7 +318,6 @@ function RoleInformation() {
   const pageCount = Math.ceil(roleData.assigneeCount / roleData.perPage);
   const filteredAssignees = filterItems(roleData.assignees, 'assignee', search);
   const currentAssignees = currentItems(filteredAssignees, roleData.currentPage, roleData.perPage);
-// Variables to be used with the assign modal
   const closeModalVars = [instructorData, setInstructorData, roleData, setShowInstructorModal, prevInstructors, authToken];
   
   return (
@@ -405,7 +358,7 @@ function RoleInformation() {
             )}
           </div>
           <p>
-            Department:{' '}
+            Department: 
             {isEditing ? (
               <select
                 data-testid="department"
@@ -418,7 +371,7 @@ function RoleInformation() {
                 <option value="Computer Science">Computer Science (COSC)</option>
                 <option value="Mathematics">Mathematics (MATH)</option>
                 <option value="Physics">Physics (PHYS)</option>
-				        <option value="Statistics">Statistics (STAT)</option>
+                <option value="Statistics">Statistics (STAT)</option>
               </select>
             ) : (
               <span className="bold" role="contentinfo">
@@ -448,92 +401,97 @@ function RoleInformation() {
                 {isActive ? 'Active' : 'De-active'}
               </label>
             )}
-            <button type="button" data-testid="assign-button" className="assign-button"
-                  onClick={()=>handleShowInstructorModal(instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors)}
-                >
+            {(!pastState && active) && (
+              <button
+                type="button"
+                data-testid="assign-button"
+                className="assign-button"
+                onClick={()=>handleShowInstructorModal(instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors)}
+              >
                 <span className="plus">+</span> Assign Instructor(s)
-                </button>
-            {/*{(!pastState && active) && (*/}
-              
+              </button>
+            )}
             {!active && (
-                  <button className='assign-button inactive'>
-                    <span>Assign Unavailable</span>
-                  </button>
-                )}
+              <button className='assign-button inactive'>
+                <span>Assign Unavailable</span>
+              </button>
+            )}
           </div>
-          {!pastState && active && showInstructorModal && (
-            <AssignInstructorsModal
-              instructorData={instructorData}
-              setInstructorData={setInstructorData}
-              handleCloseInstructorModal={handleCloseInstructorModal}
-              closeModalVars={closeModalVars}
+          <div className="current-instructors">
+            <p>Current Instructors: </p>
+            {roleData.currentInstructors.length === 0 && (
+              <strong>N/A</strong>
+            )}
+            {roleData.currentInstructors.length !== 0 && (
+              roleData.currentInstructors.map((instructor, index) => {
+                return (
+                  <div key={instructor.instructorID}>
+                    - <Link to={`/DeptProfilePage?ubcid=${instructor.instructorID}`}><strong>{instructor.name}</strong></Link>
+                    <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.instructorID, index, roleData, instructorData, authToken, reactUpdate, serviceRoleId) }}>X</button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+          <div id="history">
+            <p className="bold">Instructor History</p>
+            <input
+              type="text"
+              id="search"
+              placeholder="Search for past instructors."
+              onChange={(e) => onSearch(e.target.value, setSearch, setRoleData)}
             />
-          )}  
-          {pastState || futureState ? (
-            <p>Assignees for {termString}</p>
-          ) : (
-            <p>Current Assignees ({termString})</p>
-          )}
-          <input
-            type="text"
-            id="search"
-            placeholder="Search for people assigned to this role."
-            onChange={(e) => onSearch(e.target.value, setSearch, setRoleData)}
-          />
-          <div className="assigneeTable">
-            <table>
-              <tbody>
-              <tr><th>Instructor</th><th>UBC ID</th></tr>
-              {currentAssignees.length === 0 && (
-                <tr><td colSpan={3}>There are no assigned instructors for this year</td></tr>
-              )}
-                {currentAssignees.map((assignee, index) => {
-										if (assignee.instructorID == '' || assignee.instructorID == null) {
-											return (
-												<tr key={index}>
-													<td colSpan={3}>There are no currently assigned instructors.</td>
-												</tr>
-											);
-										} else {
-                      if (assignee.year == roleData.latestYear) {
-											return (
-												<tr key={assignee.instructorID}>
-													<td>
-														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-															{assignee.name}
-														</Link>
-                            {!pastState && (
-                              <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(assignee.instructorID, index, roleData, instructorData, authToken, reactUpdate, serviceRoleId) }}>X</button>
-                            )}
-													</td>
-													<td>{assignee.instructorID}</td>
-												</tr>
-											);
-										}
-                  }
-								})}
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colSpan="3">
-										<ReactPaginate
-											previousLabel={'<'}
-											nextLabel={'>'}
-											breakLabel={'...'}
-											pageCount={pageCount}
-											marginPagesDisplayed={3}
-											pageRangeDisplayed={0}
-											onPageChange={(data)=>handlePageClick(data, setRoleData)}
-											containerClassName={'pagination'}
-											activeClassName={'active'}
-										/>
-									</td>
-								</tr>
-							</tfoot>
-            </table>
+            <div className="assigneeTable">
+              <table>
+                <thead>
+                  <tr><th>Instructor</th><th>UBC ID</th><th>Year</th></tr>
+                </thead>
+                <tbody>
+                  {currentAssignees.length === 0 && (
+                    <tr><td colSpan={3}>There are no past instructors for this role.</td></tr>
+                  )}
+                  {currentAssignees.map((assignee, index) => (
+                    <tr key={assignee.instructorID}>
+                      <td>
+                        <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+                          {assignee.name}
+                        </Link>
+                      </td>
+                      <td>{assignee.instructorID}</td>
+                      <td>{assignee.year}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="3">
+                      <ReactPaginate
+                        previousLabel={'<'}
+                        nextLabel={'>'}
+                        breakLabel={'...'}
+                        pageCount={pageCount}
+                        marginPagesDisplayed={3}
+                        pageRangeDisplayed={0}
+                        onPageChange={(data) => handlePageClick(data, setRoleData)}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                      />
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      {showInstructorModal && (
+        <AssignInstructorsModal
+          instructorData={instructorData}
+          setInstructorData={setInstructorData}
+          handleCloseInstructorModal={handleCloseInstructorModal}
+          closeModalVars={closeModalVars}
+        />
+      )}
     </div>
   );
 }
