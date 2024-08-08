@@ -1,7 +1,7 @@
 const assignCourseController = require('../../services/AssignInstructor/assignCourse');
 async function assignCourse (req, res) {
   try {
-    const result = await assignCourseController.assignCourse(req);
+    const result = await assignCourseController.assignCourse(req); //Execute service
     res.status(201).json(result);
   } catch (error) {
     console.error('Error assigning instructor to course:', error);
