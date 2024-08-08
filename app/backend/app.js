@@ -5,11 +5,14 @@ const loginRouter = require('./routes/Login/logincheck.js');
 const profileRoutes = require('./routes/profileRoutes');
 
 const authenticateRouter = require('./Manager/authenticate');
+
+//Account related Routes
+const createAccount = require('./routes/createAccount');
 const AccountTypeRouter = require('./routes/Login/accountTypeRoutes.js');
+
+//Data imports and course/service role creation
 const dataImportRoutes = require('./routes/dataImportRoutes');
 const saveDataToDatabase = require('./routes/DataEntry');
-
-const createAccount = require('./routes/createAccount');
 
 //Performance Routers
 const workingHoursRoutes = require('./routes/Performance/workingHoursRoutes.js');
@@ -65,8 +68,10 @@ const assignInstructorCourse = require('./routes/AssignInstructor/assignInstruct
 const removeInstructorRoleRouter = require('./routes/RemoveInstructor/removeInstructorRoleRouter.js');
 const removeInstructorCourse = require('./routes/RemoveInstructor/removeInstructorCourseRout.js');
 
+//Set Term
 const setTerm = require('./routes/setCurrentTermRoutes.js')
 
+//Meeting routes
 const meetingRoutes = require('./routes/ShowList/meetingRoutes.js');
 
 const app = express();
@@ -79,7 +84,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 console.log('before:');
 
 //login pprocess
-// app.use('/',queryAccountRouter);//serach account in db
 app.use('/logincheck', loginRouter);//check for login
 app.use('/api',authenticateRouter);//login account authenticate
 app.use('/accountType',AccountTypeRouter);//check account type
@@ -123,10 +127,8 @@ app.use('/api/service-roles',serviceRoleRoutes);
 
 //reset password
 app.use('/api/reset', resetPasswordRouter);
-// app.use('/api', updatePasswordRouter);
 
-//reset password
-// app.use('/api', resetPasswordRouter);
+//update password
 app.use('/api/update-password', updatePasswordRouter);
 
 
@@ -144,10 +146,8 @@ app.use('/api/profile', userProfileUpdateRoutes);
 
 app.use('/api/reset-password', resetPasswordRouter);
 
-//app.use('/api', updatePasswordRouter);
 
 app.use('/api/roleInfo', roleInfoRoutes);
-//app.use('/api',ResetPassword);
 
 app.use('/api/upload', dataImportRoutes);
 
@@ -156,18 +156,23 @@ app.use('/api/courseEvaluationForm',courseEvaluationForm);
 app.use('/api/courseEvaluation',courseEvaluation);
 app.use('/api/assignInstructorCourse',assignInstructorCourse);
 
+//Term related routers
 app.use('/api/terms',allTerms);
 app.use('/api/setCurrentTerm', setTerm)
 
+//Data Entry 
 app.use('/enter',saveDataToDatabase);
 
-
+//Fetch instructor
 app.use('/api/instructors',instructorFetch);
 
+//Update info
 app.use('/api/updateRoleInfo',updateRoleInfo);
 app.use('/api/updateCourseInfo',updateCourseInfo);
+//Assign
 app.use('/api/assignInstructorServiceRole',AssignInstructor);
 
+//Remove instructor
 app.use('/api/removeInstructorRole',removeInstructorRoleRouter);
 app.use('/api/removeInstructorCourse',removeInstructorCourse);
 
