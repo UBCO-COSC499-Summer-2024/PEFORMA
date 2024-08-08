@@ -19,7 +19,7 @@ const AssignCoursesModal = (props) => {
 
     // function to be called when the user clicks the add or remove button on the modal
     const toggleCourseAssigned = (id) => {
-        // Set selected instructor's assigned attribute to the opposite boolean.
+        // Set selected course's assigned attribute to the opposite boolean.
         props.setCourseData(prevData => ({
             ...prevData,
             courses: prevData.courses.map(course => 
