@@ -19,7 +19,7 @@ const AssignRolesModal = (props) => {
 
     // function to be called when the user clicks the add or remove button on the modal
     const toggleRoleAssigned = (id) => {
-        // Set selected instructor's assigned attribute to the opposite boolean.
+        // Set selected role's assigned attribute to the opposite boolean.
         props.setRoleData(prevData => ({
             ...prevData,
             roles: prevData.roles.map(role => 
