@@ -205,11 +205,7 @@ function renderNewlineSeparatedText(items, type) {
     if (Array.isArray(items) && items.length > 0) {
         return items.map((item, index) => (
             <p key={index} className="text-item">
-                <Link 
-                    to={`/${type === 'course' ? 'DeptCourseInformation' : 'DeptRoleInformation'}?${type === 'course' ? 'courseid' : 'roleid'}=${item[1]}`}
-                >
-                    {item[0]}
-                </Link>
+                {item[0]}
             </p>
         ));
     } else {
