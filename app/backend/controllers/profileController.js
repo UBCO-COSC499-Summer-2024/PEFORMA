@@ -1,5 +1,4 @@
-const  pool = require('../db/index.js'); // Adjust the path as necessary for your db connection
-console.log(pool); // See what pool actually is
+const  pool = require('../db/index.js'); 
 const { getLatestTerm } = require('../services/latestTerm.js');
 const { getLatestYear } = require('../services/latestYear.js');
 
@@ -7,14 +6,11 @@ exports.getUserProfile = async (req, res) => {
 
     let ubcId = req.query.ubcid;
     let profileId = req.query.profileId;
-    console.log(profileId);  
-    console.log("Received ubcId:", ubcId); // Log the received ubcId for debugging 
     try {
         let query;
         let result;
         if(profileId == null){
             query = `SELECT * FROM "Profile" WHERE "UBCId" = $1;`;
-            //let result = await pool.query(query, [id]);
             result = await pool.query(query,[ubcId]);
             console.log("Executing query:", query);
             console.log("With parameters:", [ubcId]);
@@ -25,10 +21,7 @@ exports.getUserProfile = async (req, res) => {
         }
         else if(ubcId == null){
             query = `SELECT * FROM "Profile" WHERE "profileId" = $1;`;
-            //let result = await pool.query(query, [id]);
             result = await pool.query(query,[profileId]);
-            console.log("Executing query:", query);
-            console.log("With parameters:", [profileId]);
             if (result.rows.length === 0) {
                 return res.status(404).json({ message: 'User not found' });
             }
@@ -69,13 +62,10 @@ exports.getUserProfile = async (req, res) => {
             JOIN "Division" "d" ON "c"."divisionId" = "d"."divisionId"
             WHERE "ita"."profileId" = $1 AND "ita"."term" = $2;
         `; 
-        //result = await pool.query(query, [id]);
         result = await pool.query(query,[profileId, latestTerm]);
 
-        //const courses = result.rows;
         const teachingRoles = result.rows.map(row => ({ courseid:row.courseId, assign: row.DivisionAndCourse }));  // Mapping ctitle to roles
 
-        // Build the profile data object
         const profileData = {
             name: name,
             ubcid: ubcId,
@@ -88,7 +78,6 @@ exports.getUserProfile = async (req, res) => {
             profileId:profileId
         };    
         // Send response
-        console.log("profile data: ", profileData);
         res.json(profileData);
     } catch (error) {
         console.error('Database query error:', error);
