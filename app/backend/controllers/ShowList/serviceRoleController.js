@@ -2,7 +2,7 @@ const serviceRoleService = require('../../services/ShowList/serviceRoleService')
 
 async function getAllServiceRoles(req, res) {
   try {
-    const serviceRoles = await serviceRoleService.getAllServiceRoles(); 
+    const serviceRoles = await serviceRoleService.getAllServiceRoles(); //Execute service
     res.json(serviceRoles);
   } catch (error) {
     console.error('Error fetching service roles:', error);

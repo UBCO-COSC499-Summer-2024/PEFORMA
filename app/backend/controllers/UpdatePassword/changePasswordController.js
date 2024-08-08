@@ -5,7 +5,7 @@ exports.changePassword = async (req, res) => {
         const { profileId } = req.params;
         const { currentPassword, newPassword } = req.body;
 
-        const result = await changePasswordService.changePassword(profileId, currentPassword, newPassword);
+        const result = await changePasswordService.changePassword(profileId, currentPassword, newPassword);//Execute service
 
         if (result.success) {
             res.status(200).json({ message: 'Password changed successfully' });

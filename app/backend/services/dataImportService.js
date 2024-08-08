@@ -86,19 +86,7 @@ const CoursePerformanceDataSchema = Joi.object({
     enrolRate:Joi.number().precision(2).required(),
     averageGrade:Joi.number().precision(2).required(),
 });
-/*
-const meetingLogSchema = Joi.object({
-    meetingTitle: Joi.string().required(),
-    location: Joi.string().required(),
-    date: Joi.string().required(),
-    time: Joi.string().required()
-});
 
-const meetingAttendanceSchema = Joi.object({
-    meetingId: Joi.number().integer().required(),
-    UBCId: Joi.string().length(8).required()
-});
-*/
 const meetingUploadSchema = Joi.object({
     title: Joi.string().required(),
     location: Joi.string().required(),
@@ -116,12 +104,12 @@ const taAssignmentSchema = Joi.object({
     email: Joi.string().email().required(),
     courseId: Joi.number().integer().required()
 });
-
+// Main function to import data from multiple files
 async function importData(files) {
-    const maxRetries = files.length+1;
+    const maxRetries = files.length+1; // Max retries based on number of files
     const client = await pool.connect();
     try {
-        await client.query('BEGIN');
+        await client.query('BEGIN'); //Begin db connection
         
         let importedCount = 0;
         let errors = [];
@@ -131,7 +119,7 @@ async function importData(files) {
         console.log("\n\nStart importing.");
 
         while (files.length > 0 && retries < maxRetries) {
-            
+        // Process each file in the files array
             for (const file of files) {
                 try {
                     const fileData = await processFile(file, client);
@@ -141,11 +129,11 @@ async function importData(files) {
                     remainingFiles.push({ file: file, error: error.message });
                 }
             }
-            files = remainingFiles.map(f => f.file);
+            files = remainingFiles.map(f => f.file);  // Update files array with remaining files
             retries++;
         }
 
-        await client.query('COMMIT');
+        await client.query('COMMIT'); //Commit if successful
 
         if (files.length > 0) {
             errors = remainingFiles;
@@ -157,14 +145,14 @@ async function importData(files) {
             errors
         };
     } catch (error) {
-        await client.query('ROLLBACK');
+        await client.query('ROLLBACK'); // Rollback transaction if error occurs
         console.error('Transaction failed and rolled back:', error.message);
         throw error;
     } finally {
         client.release();
     }
 }
-
+// Function to process a  file
 async function processFile(file, client) {
     const filePath = file.path;
     const fileExtension = file.originalname.split('.').pop().toLowerCase();
@@ -239,15 +227,6 @@ async function processRow(row, client) {
          await processCoursePerformanceData(row,client);
     } 
 
-    /*
-    else if ('location' in row && 'date' in row && 'time' in row) {
-        console.log("Process Meeting Log.");  
-        await processMeetingLogData(row, client);
-    } 
-    else if ('meetingId' in row && 'UBCId' in row && 'attendance' in row) {
-        console.log("Process Meeting Attendance.");  
-        await processMeetingAttendanceData(row, client);
-    } */
     else if( 'location' in row && 'date' in row && 'time' in row && "expected" in row){
         console.log('Process Meeting upload.');
         await processUploadMeetingData(row,client);
@@ -261,7 +240,7 @@ async function processRow(row, client) {
         throw new Error('Unknown data type');
     }
 }
-
+// Function to process service role data
 async function processProfileData(row, client) {
     const profileData = {
         firstName: row.firstName || null,
@@ -300,13 +279,13 @@ async function processProfileData(row, client) {
                 "divisionId" = EXCLUDED."divisionId",
                 "serviceHourCompleted" = EXCLUDED."serviceHourCompleted",
                 "sRoleBenchmark" = EXCLUDED."sRoleBenchmark"
-        `, Object.values(profileData));
+        `, Object.values(profileData)); //insert into profile table
     } catch (err) {
         console.error('Error inserting/updating profile data:', err.message);
         throw err;
     }
 }
-
+//Function to process course data
 async function processCourseData(row, client) {
     const courseData = {
         ctitle: row.ctitle || null,
@@ -321,7 +300,7 @@ async function processCourseData(row, client) {
         throw new Error(`Course data validation error: ${error.message}`);
     }
 
-    try {
+    try { 
         await client.query(`
             INSERT INTO public."Course" ("ctitle", "description", "divisionId", "courseNum")
             VALUES ($1, $2, $3, $4)
@@ -329,13 +308,13 @@ async function processCourseData(row, client) {
                 "description" = EXCLUDED."description",
                 "divisionId" = EXCLUDED."divisionId",
                 "courseNum" = EXCLUDED."courseNum"
-        `, Object.values(courseData));
+        `, Object.values(courseData)); //Insert into course table
     } catch (err) {
         console.error('Error inserting/updating course data:', err.message);
         throw err;
     }
 }
-
+//Function to process service role data
 async function processServiceRoleData(row, client) {
     const cleanedRow = {};
     for (const key in serviceRoleWithYearSchema.describe().keys) {
@@ -346,7 +325,7 @@ async function processServiceRoleData(row, client) {
     if (error) {
         throw new Error(`Service role data validation error: ${error.message}`);
     }
-
+    //Insert into service role table
     const serviceRoleResult = await client.query(`
         INSERT INTO public."ServiceRole" ("stitle", "description", "isActive", "divisionId")
         VALUES ($1, $2, $3, $4)
@@ -382,7 +361,7 @@ async function processServiceRoleData(row, client) {
         "DECHour" = EXCLUDED."DECHour"
     `, values);
 }
-
+//Function to process service role assignment data
 async function processServiceRoleAssignmentData(row, client) {
     console.log(row);
     const assignmentData = {
@@ -431,11 +410,9 @@ async function processServiceRoleAssignmentData(row, client) {
         throw err;
     }
 }
-
+//Function to process SEI data
 async function processSEIData(row,client) {
-    console.log("Row:",row);
     const SEIData = {
-        //sQResponseId : Number(row.QuestionNum),
         surveyTypeId : 1,
         surveyQuestionId: Number(row.QuestionNum),
         courseId: Number(row.CourseId),
@@ -455,7 +432,6 @@ async function processSEIData(row,client) {
             SELECT "profileId" FROM public."Profile" WHERE "UBCId" = $1
         `, [SEIData.UBCId]);
         if (profileResult.rows.length === 0) {
-            console.log(`Profile not found for UBCID ${SEIData.UBCId}`);
             throw new Error(`Profile not found for UBCID ${SEIData.UBCId}`);
         }
         const profileId = profileResult.rows[0].profileId;
@@ -480,7 +456,7 @@ async function processSEIData(row,client) {
         throw err;
     }
 }
-
+//Function to process course performance data
 async function processCoursePerformanceData (row,client){
     console.log("\n\n\nCourse Performance import data:",row);
     const coursePerformanceData = {
@@ -525,9 +501,6 @@ async function processCoursePerformanceData (row,client){
             coursePerformanceData.enrolRate,
             coursePerformanceData.averageGrade
         ]);
-
-        console.log(`Course Performance data import for profileId No. ${coursePerformanceData.profileId} success.`);
-
         await updateTeachingPerformance(coursePerformanceData.courseId,
             coursePerformanceData.term,
             coursePerformanceData.profileId,
@@ -547,7 +520,7 @@ async function processCoursePerformanceData (row,client){
         throw err;
     }
 }
-
+//Function to process teaching assignment data
 async function processTeachingAssignmentData(row, client) {
     const assignmentData = {
         term: row.term,
@@ -558,7 +531,6 @@ async function processTeachingAssignmentData(row, client) {
 
     const { error } = teachingAssignmentSchema.validate(assignmentData);
     if (error) {
-        console.log(`Validation Error: ${error.message}`);
         throw new Error(`Teaching assignment data validation error: ${error.message}`);
     }
 
@@ -580,7 +552,6 @@ async function processTeachingAssignmentData(row, client) {
         `, [divisionId, assignmentData.courseNum]);
 
         if (courseResult.rows.length === 0) {
-            console.log(`Course not found for division ${assignmentData.division} and courseNum ${assignmentData.courseNum}`);
             throw new Error(`Course not found for division ${assignmentData.division} and courseNum ${assignmentData.courseNum}`);
         }
         const courseId = courseResult.rows[0].courseId;
@@ -598,7 +569,6 @@ async function processTeachingAssignmentData(row, client) {
         `, [assignmentData.UBCID]);
 
         if (profileResult.rows.length === 0) {
-            console.log(`Profile not found for UBCID ${assignmentData.UBCID}`);
             throw new Error(`Profile not found for UBCID ${assignmentData.UBCID}`);
         }
         const profileId = profileResult.rows[0].profileId;
@@ -616,7 +586,7 @@ async function processTeachingAssignmentData(row, client) {
         throw err;
     }
 }
-
+//Function to process meeting log data
 async function processMeetingLogData(row, client) {
     const meetingLogData = {
         meetingTitle: row.title || null,
@@ -642,7 +612,7 @@ async function processMeetingLogData(row, client) {
         throw err;
     }
 }
-
+//function to process meeting attendance data
 async function processMeetingAttendanceData(row, client) {
     const meetingAttendanceData = {
         meetingId: row.meetingId || null,
@@ -660,13 +630,13 @@ async function processMeetingAttendanceData(row, client) {
             INSERT INTO public."MeetingAttendance" ("meetingId", "UBCId")
             VALUES ($1, $2)
             ON CONFLICT ("meetingId", "UBCId")
-        `, Object.values(meetingAttendanceData));
+        `, Object.values(meetingAttendanceData)); //Insert into meeting attendance table
     } catch (err) {
         console.error('Error inserting/updating meeting attendance data:', err.message);
         throw err;
     }
 }
-
+//Function to process ta assigment data
 async function processTaAssignmentData(row, client) {
     const taAssignmentData = {
         term: row.TA_Term,
@@ -692,13 +662,13 @@ async function processTaAssignmentData(row, client) {
                 "middleName" = EXCLUDED."middleName",
                 "lastName" = EXCLUDED."lastName",
                 "email" = EXCLUDED."email"
-        `, Object.values(taAssignmentData));
+        `, Object.values(taAssignmentData)); //Insert into TA assignment table
     } catch (err) {
         console.error('Error inserting/updating TA assignment data:', err.message);
         throw err;
     }
 }
-
+//Function to process meeting data
 async function processUploadMeetingData(row, client) {
     var res1 = await client.query(`SELECT * FROM "MeetingLog"`);
     console.log("All meetingLogs\n",res1);

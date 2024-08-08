@@ -38,7 +38,6 @@ import DeptSEIPage from './JS/Department/DeptSEIPage';
 import DeptMeetingManagement from './JS/Department/DeptMeetingManagement';
 
 //
-import DeptServiceRoleManagement from './JS/Department/DeptServiceRoleManagement';
 import { AuthProvider } from './JS/common/AuthContext';
 import PrivateRoute from './JS/PrivateRoute';
 
@@ -82,7 +81,6 @@ function App() {
 					<Route path="/DeptServiceRoleList" element={<DeptServiceRoleList />} />
 					<Route path="/DeptDashboard" element={<DeptDashboard />} />
 
-					<Route path="/DeptServiceRoleManagement" element={<DeptServiceRoleManagement />} />
 					<Route path="/DeptRoleInformation" element={<DeptRoleInformation />} />
 
 					<Route path="/DeptCourseList" element={<DeptCourseList />} />

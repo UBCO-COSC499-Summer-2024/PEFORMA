@@ -5,7 +5,8 @@ import ReactPaginate from 'react-paginate';
 import '../../CSS/Department/DeptRoleInformation.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';import { useAuth } from '../common/AuthContext.js';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../common/AuthContext.js';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { getCurrentTerm, checkAccess, filterItems, currentItems, handlePageClick } from '../common/utils.js';
 
@@ -14,7 +15,7 @@ const fetchRoleData = async(authToken, serviceRoleId) => {
     params: { serviceRoleId: serviceRoleId },
     headers: { Authorization: `Bearer ${authToken.token}` },
   });
-  roleRes.data.perPage -=1; // Page length is too long so this is to reduce it by 1
+  roleRes.data.perPage -= 1; // Page length is too long so this is to reduce it by 1
   return roleRes.data;
 }
 
@@ -26,7 +27,6 @@ const fetchTermResponse = async() => {
 function setTimeState(actualTerm, selectedTerm, setPastState, setFutureState) {
   if (parseInt(actualTerm) > selectedTerm) {
     setPastState(true);
-
   } else if (parseInt(actualTerm) < selectedTerm) {
     setFutureState(true);
   }
@@ -45,13 +45,14 @@ function useRoleInformation() {
   const [active, setActive] = useState(true);
   const prevInstructors = useRef({});
   const [roleData, setRoleData] = useState({
-    assignees: [{}],
+    assignees: [],
     assigneeCount: 0,
     perPage: 5,
     currentPage: 1,
     roleName: '',
     roleDescription: '',
     department: '',
+    currentInstructors: [], // Add this line to store current instructor information
   });
   const [pastState, setPastState] = useState(false);
   const [futureState, setFutureState] = useState(false);
@@ -64,7 +65,7 @@ function useRoleInformation() {
   });
   const [search, setSearch] = useState('');
   const [instructorData, setInstructorData] = useState({
-    instructors: [{}],
+    instructors: [],
     instructorCount: 0,
     perPage: 8,
     currentPage: 1,
@@ -80,12 +81,14 @@ function useRoleInformation() {
       try {
         const roleData = await fetchRoleData(authToken, serviceRoleId);
         const currentTerm = getCurrentTerm();
-        
         const termData = await fetchTermResponse();
-        roleData.latestYear = termData.currentTerm.toString().slice(0,4); // Set latestYear to proper value
+        roleData.latestYear = termData.currentTerm.toString().slice(0, 4); // Set latestYear to proper value
         setTimeState(currentTerm, termData.currentTerm, setPastState, setFutureState);
         
-        roleData.assignees = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear); // Set assignees to only show ones for the selected term
+        // Separate current and past instructors
+        roleData.currentInstructors = roleData.assignees.filter((assignee) => assignee.year == roleData.latestYear);
+        roleData.assignees = roleData.assignees.filter((assignee) => assignee.year != roleData.latestYear);
+        
         setTermString(roleData.latestYear);
         setRoleData((prevData) => ({ ...prevData, ...roleData }));
         setEditData({
@@ -94,16 +97,16 @@ function useRoleInformation() {
           department: roleData.department,
         });
         setIsActive(roleData.isActive);
-      // Set active state to false if role is inactive
-      if (!roleData.exists) {
-        setActive(false);
-      }
+        if (!roleData.exists) {
+          setActive(false);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
   }, [authToken, accountLogInType, navigate, serviceRoleId]);
+
   return {
     roleData, setRoleData,
     pastState, setPastState,
@@ -265,7 +268,8 @@ const onSearch = (newSearch, setSearch, setRoleData) => {
 };
 
 function removeInstructorFromRoleData(roleData, instructorData, index, id, reactUpdate) {
-  roleData.assignees.splice(index, 1);
+  // Remove instructor from currentInstructors
+  roleData.currentInstructors.splice(index, 1);
   for (let i = 0; i < instructorData.instructors.length; i++) {
     if (id === instructorData.instructors[i].id) {
       instructorData.instructors[i].assigned = false;
@@ -354,7 +358,7 @@ function RoleInformation() {
             )}
           </div>
           <p>
-            Department:{' '}
+            Department: 
             {isEditing ? (
               <select
                 data-testid="department"
@@ -367,7 +371,7 @@ function RoleInformation() {
                 <option value="Computer Science">Computer Science (COSC)</option>
                 <option value="Mathematics">Mathematics (MATH)</option>
                 <option value="Physics">Physics (PHYS)</option>
-				        <option value="Statistics">Statistics (STAT)</option>
+                <option value="Statistics">Statistics (STAT)</option>
               </select>
             ) : (
               <span className="bold" role="contentinfo">
@@ -397,92 +401,97 @@ function RoleInformation() {
                 {isActive ? 'Active' : 'De-active'}
               </label>
             )}
-            <button type="button" data-testid="assign-button" className="assign-button"
-                  onClick={()=>handleShowInstructorModal(instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors)}
-                >
+            {(!pastState && active) && (
+              <button
+                type="button"
+                data-testid="assign-button"
+                className="assign-button"
+                onClick={()=>handleShowInstructorModal(instructorData, setInstructorData, setShowInstructorModal, authToken, prevInstructors)}
+              >
                 <span className="plus">+</span> Assign Instructor(s)
-                </button>
-            {/*{(!pastState && active) && (*/}
-              
+              </button>
+            )}
             {!active && (
-                  <button className='assign-button inactive'>
-                    <span>Assign Unavailable</span>
-                  </button>
-                )}
+              <button className='assign-button inactive'>
+                <span>Assign Unavailable</span>
+              </button>
+            )}
           </div>
-          {!pastState && active && showInstructorModal && (
-            <AssignInstructorsModal
-              instructorData={instructorData}
-              setInstructorData={setInstructorData}
-              handleCloseInstructorModal={handleCloseInstructorModal}
-              closeModalVars={closeModalVars}
+          <div className="current-instructors">
+            <p>Current Instructors: </p>
+            {roleData.currentInstructors.length === 0 && (
+              <strong>N/A</strong>
+            )}
+            {roleData.currentInstructors.length !== 0 && (
+              roleData.currentInstructors.map((instructor, index) => {
+                return (
+                  <div key={instructor.instructorID}>
+                    - <Link to={`/DeptProfilePage?ubcid=${instructor.instructorID}`}><strong>{instructor.name}</strong></Link>
+                    <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(instructor.instructorID, index, roleData, instructorData, authToken, reactUpdate, serviceRoleId) }}>X</button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+          <div id="history">
+            <p className="bold">Instructor History</p>
+            <input
+              type="text"
+              id="search"
+              placeholder="Search for past instructors."
+              onChange={(e) => onSearch(e.target.value, setSearch, setRoleData)}
             />
-          )}  
-          {pastState || futureState ? (
-            <p>Assignees for {termString}</p>
-          ) : (
-            <p>Current Assignees ({termString})</p>
-          )}
-          <input
-            type="text"
-            id="search"
-            placeholder="Search for people assigned to this role."
-            onChange={(e) => onSearch(e.target.value, setSearch, setRoleData)}
-          />
-          <div className="assigneeTable">
-            <table>
-              <tbody>
-              <tr><th>Instructor</th><th>UBC ID</th></tr>
-              {currentAssignees.length === 0 && (
-                <tr><td colSpan={3}>There are no assigned instructors for this year</td></tr>
-              )}
-                {currentAssignees.map((assignee, index) => {
-										if (assignee.instructorID == '' || assignee.instructorID == null) {
-											return (
-												<tr key={index}>
-													<td colSpan={3}>There are no currently assigned instructors.</td>
-												</tr>
-											);
-										} else {
-                      if (assignee.year == roleData.latestYear) {
-											return (
-												<tr key={assignee.instructorID}>
-													<td>
-														<Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
-															{assignee.name}
-														</Link>
-                            {!pastState && (
-                              <button type="button" className='remove-instructor' onClick={(e) => { removeInstructor(assignee.instructorID, index, roleData, instructorData, authToken, reactUpdate, serviceRoleId) }}>X</button>
-                            )}
-													</td>
-													<td>{assignee.instructorID}</td>
-												</tr>
-											);
-										}
-                  }
-								})}
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colSpan="3">
-										<ReactPaginate
-											previousLabel={'<'}
-											nextLabel={'>'}
-											breakLabel={'...'}
-											pageCount={pageCount}
-											marginPagesDisplayed={3}
-											pageRangeDisplayed={0}
-											onPageChange={(data)=>handlePageClick(data, setRoleData)}
-											containerClassName={'pagination'}
-											activeClassName={'active'}
-										/>
-									</td>
-								</tr>
-							</tfoot>
-            </table>
+            <div className="assigneeTable">
+              <table>
+                <thead>
+                  <tr><th>Instructor</th><th>UBC ID</th><th>Year</th></tr>
+                </thead>
+                <tbody>
+                  {currentAssignees.length === 0 && (
+                    <tr><td colSpan={3}>There are no past instructors for this role.</td></tr>
+                  )}
+                  {currentAssignees.map((assignee, index) => (
+                    <tr key={assignee.instructorID}>
+                      <td>
+                        <Link to={`/DeptProfilePage?ubcid=${assignee.instructorID}`}>
+                          {assignee.name}
+                        </Link>
+                      </td>
+                      <td>{assignee.instructorID}</td>
+                      <td>{assignee.year}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="3">
+                      <ReactPaginate
+                        previousLabel={'<'}
+                        nextLabel={'>'}
+                        breakLabel={'...'}
+                        pageCount={pageCount}
+                        marginPagesDisplayed={3}
+                        pageRangeDisplayed={0}
+                        onPageChange={(data) => handlePageClick(data, setRoleData)}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                      />
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      {showInstructorModal && (
+        <AssignInstructorsModal
+          instructorData={instructorData}
+          setInstructorData={setInstructorData}
+          handleCloseInstructorModal={handleCloseInstructorModal}
+          closeModalVars={closeModalVars}
+        />
+      )}
     </div>
   );
 }

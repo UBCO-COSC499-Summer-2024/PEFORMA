@@ -1,5 +1,5 @@
 const passport = require('passport');
-require('../../services/Login/passport-config');
+require('../../services/Login/passport-config'); //Execute service
 const { generateToken, TOKEN_EXPIRY_SECONDS } = require('../../Manager/jwtManager');
 async function loginCheck (req, res, next)  {
     passport.authenticate('local', { session: false }, (err, user, info) => {
@@ -9,7 +9,7 @@ async function loginCheck (req, res, next)  {
         if (!user) {
             return res.json({ success: false, message: info.message });
         }
-        const token = generateToken(user);
+        const token = generateToken(user); //generate token for the user
         return res.json({
             success: true,
             token: token,

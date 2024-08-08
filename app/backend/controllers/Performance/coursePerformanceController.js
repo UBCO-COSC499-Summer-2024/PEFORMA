@@ -2,7 +2,7 @@ const coursePerformanceService = require('../../services/Performance/coursePerfo
 
 async function getCoursePerformance(req, res) {
   try {
-    const coursePerformance = await coursePerformanceService.getCoursePerformance(req);
+    const coursePerformance = await coursePerformanceService.getCoursePerformance(req);//Execute service
     res.send(coursePerformance);
 
   } catch (error) {

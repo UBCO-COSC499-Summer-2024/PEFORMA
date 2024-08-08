@@ -2,7 +2,7 @@ const allCoursesService = require('../../services/ShowList/allCoursesService');
 
 async function getAllCourses(req, res) {
   try {
-    const courses = await allCoursesService.getAllCourses();
+    const courses = await allCoursesService.getAllCourses(); //Execute service
     res.json(courses);
   } catch (error) {
     console.error('Error fetching courses:', error);

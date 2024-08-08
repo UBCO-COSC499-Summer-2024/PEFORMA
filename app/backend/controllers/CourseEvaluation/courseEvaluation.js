@@ -2,7 +2,7 @@ const courseEvaluationService = require('../../services/CourseEvaluation/courseE
 
 async function getCourseEvaluation(req, res) {
   try {
-    const courseEvaluation = await courseEvaluationService.getCourseEvaluation(req);
+    const courseEvaluation = await courseEvaluationService.getCourseEvaluation(req); //Execute service function
     res.json(courseEvaluation);
   } catch (error) {
     console.error('Error uploading course evaluation:', error);

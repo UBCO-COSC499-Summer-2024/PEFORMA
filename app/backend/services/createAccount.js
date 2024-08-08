@@ -17,6 +17,7 @@ async function createAccount(req) {
             error.status = 409; 
             throw error;
          }
+         //check if ubc id already exists
          const ubcCheckQuery = `SELECT "UBCId" FROM "Profile" WHERE "UBCId" = $1;`;
          const ubcCheckResult = await client.query(ubcCheckQuery,[ubcId]);
          if (ubcCheckResult.rows.length > 0) {
@@ -33,7 +34,7 @@ async function createAccount(req) {
             VALUES ($1, $2, $3, $4, $5)
             RETURNING "profileId";
         `;
-        let result = await client.query(query, [firstName, lastName, ubcId, division, email]);
+        let result = await client.query(query, [firstName, lastName, ubcId, division, email]); // Insert into Profile table
         const profileId = result.rows[0].profileId;
         query = `SELECT setval(pg_get_serial_sequence('"Account"', 'accountId'), MAX("accountId")) FROM "Account";`;
         await client.query(query);
@@ -42,7 +43,7 @@ async function createAccount(req) {
             VALUES ($1, $2, $3, $4)
             RETURNING "accountId";
         `;
-        result = await client.query(query, [profileId, email, hashedPassword, true]);
+        result = await client.query(query, [profileId, email, hashedPassword, true]); //Insert into account table
         await client.query('COMMIT');
         const accountId = result.rows[0].accountId;
 
@@ -50,7 +51,7 @@ async function createAccount(req) {
             query = `INSERT INTO "AccountType" ("accountId", "accountType")
                     VALUES ($1,$2)`;
             result = await client.query(query, [accountId, accountType[i]]);
-        }
+        } //Insert into account type 
         return true; 
     } catch (error) {
         await client.query('ROLLBACK');

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../common/AuthContext.js';
 import { Download } from 'lucide-react';
 
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import DeptDivisionTable from './PerformanceImports/DeptDivisionTable.js';
 import DeptGoodBadBoard from './PerformanceImports/DeptGoodBadBoard.js';
 import DeptBenchMark from './PerformanceImports/DeptBenchMark.js';
@@ -110,10 +110,10 @@ function PerformanceDepartmentPage() {
 
     return (
         <div className="dp-container">
-            <CreateSideBar sideBarType="Department" /> 
+            <SideBar sideBarType="Department" /> 
 
             <div className="container">
-                <CreateTopBar onTermChange={handleTermChange} />
+                <TopBar onTermChange={handleTermChange} />
                 <div className="main">
                     <div className="performanceD-title">
                         <h1>Department Performance Overview</h1>

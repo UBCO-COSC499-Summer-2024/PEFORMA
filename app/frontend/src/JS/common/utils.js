@@ -113,10 +113,10 @@ export const postWithAuth = async (url, authToken, navigate, data) => {
   }
 };
 
+// Function for getting the current instructor for a course
 export const getCurrentInstructor = (historyData) => {
   let history = historyData.history;
   let currentInstructor = [];
-  console.log(history);
   if (history[0].instructorID !== "") {
   for (let i = 0; i < history.length; i++) {
 
@@ -183,7 +183,7 @@ export const filterItems = (items, itemType, search) => {
       (instructor.name?.toString().toLowerCase() ?? "").includes(search.toLowerCase()) ||
       (instructor.id?.toString().toLowerCase() ?? "").includes(search.toLowerCase())
     );
-  } else if (itemType == 'assignee') {
+  } else if (itemType === 'assignee') {
     return items.filter((assignee)=>
       (assignee.name?.toString().toLowerCase() ?? '').includes(search.toLowerCase()) ||
       (assignee.instructorID?.toString().toLowerCase() ?? '').includes(search.toLowerCase())

@@ -3,7 +3,7 @@ const courseService = require('../../services/ShowList/courseService.js');
 async function getCourses(req, res) {
     try {
         const divisionCode = req.query.division;
-        const formattedData = await courseService.getFormattedCourseData(divisionCode);
+        const formattedData = await courseService.getFormattedCourseData(divisionCode); //Execute service
         res.json(formattedData);
     } catch (err) {
         console.error('Error fetching courses:', err);

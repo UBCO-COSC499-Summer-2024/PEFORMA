@@ -2,7 +2,7 @@ const createAccountService = require('../services/createAccount');
 
 async function createAccount(req, res) {
   try {
-    await createAccountService.createAccount(req);
+    await createAccountService.createAccount(req); //Execute service
     res.status(201).json({ message: 'Account Created Successfully' });
 
   } catch (error) {

@@ -3,11 +3,10 @@ const userProfileService = require('../services/userProfileService');
 exports.getUserProfile = async (req, res) => {
   const { profileId } = req.params;
   try {
-    const userProfile = await userProfileService.getUserProfileById(profileId);
+    const userProfile = await userProfileService.getUserProfileById(profileId); //Execute service
     if (userProfile) {
       res.json(userProfile);
     } else {
-      console.log("Profile not found");
       res.status(404).json({ error: 'User profile not found' });
     }
   } catch (error) {

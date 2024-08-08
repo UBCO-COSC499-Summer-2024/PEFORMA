@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import { useAuth } from '../common/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -120,9 +120,9 @@ const PasswordChangePage = () => {
 
     return (
         <div className="dashboard">
-            <CreateSideBar sideBarType={getSideBarType()} />
+            <SideBar sideBarType={getSideBarType()} />
             <div className="container">
-                <CreateTopBar />
+                <TopBar />
                 <div className="password-change-page">
                     <div className="password-change-card">
                         <h2 className="card-title">Change Password</h2>

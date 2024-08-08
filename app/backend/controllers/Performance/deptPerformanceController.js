@@ -2,11 +2,11 @@ const deptPerformanceService = require('../../services/Performance/deptPerforman
 
 async function getDepartPerformance(req, res) {
   try {
-    const deptPerformance = await deptPerformanceService.getDepartPerformance();
+    const deptPerformance = await deptPerformanceService.getDepartPerformance();//Execute service
     res.send(deptPerformance);
 
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch department leader board' });
+    res.status(500).json({ error: 'Failed to fetch department peformance' });
   }
 }
 

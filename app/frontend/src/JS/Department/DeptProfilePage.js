@@ -11,17 +11,21 @@ import AssignRolesModal from '../DeptAssignRolesModal.js';
 import { fillEmptyItems, checkAccess } from '../common/utils.js';
 
 function useDeptProfilePage() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // For navigating to different pages
+    // Get ubcid from the URL
     const params = new URLSearchParams(window.location.search);
     const ubcid = params.get('ubcid');
     const { authToken, accountLogInType } = useAuth();
+    // Variables containing original role and course assignments, in the case of the user clicking cancel on any form
+    const prevRoles = useRef({});
+    const prevCourses = useRef({});
+    // For forcing the page to update
+    const [, reactUpdate] = useReducer(i => i + 1, 0);
+    // State variables
     const initProfile = { roles: [], teachingAssignments: [], name:"N/A", ubcid:ubcid, benchmark:"N/A", phoneNum:"N/A", email:"N/A", office:"N/A" };
     const [profile, setProfile] = useState(initProfile);
     const [editState, setEditState] = useState(false);
-    const prevRoles = useRef({});
-    const prevCourses = useRef({});
     const [benchmark, setBenchmark] = useState(0);
-    const [, reactUpdate] = useReducer(i => i + 1, 0);
     const [courseData, setCourseData] = useState({
         courses: [{}],
         courseCount: 0,
@@ -44,6 +48,9 @@ function useDeptProfilePage() {
         try {
             checkAccess(accountLogInType, navigate, 'department', authToken);
             let profileData = await fetchProfileData(authToken, ubcid, setProfile, setBenchmark);
+            // profileData contains : {profileId, name, email, ubcid, benchmark, office, phoneNum, roles, teachingAssignments}
+            // profileData.roles is an array of : {roleTitle, roleid}
+            // teachingAssignments is an array of {courseid, assign}
             // Set up Course assignments
             let allCourses = await fetchAllCourses(authToken);
             formatCourses(allCourses, profileData, setSelectedCourses, setCourseData);
@@ -81,30 +88,40 @@ return {
 }
 }
 
+// Function for getting and formatting assigned courses
 function formatCourses(allCourses, profileData, setSelectedCourses, setCourseData) {
+    // Format all courses list
     allCourses.courses = formatListData(allCourses.courses, profileData.teachingAssignments)
+    // set selected courses to all courses that have assigned=true
     setSelectedCourses(allCourses.courses.filter((course) => course.assigned));
+    // Show only active courses for course modal
     const filledCourses = fillEmptyItems(allCourses.courses.filter((course) => course.status), allCourses.perPage);
     setCourseData({...allCourses, courseCount: filledCourses.length, courses: filledCourses});
     return;
 }
 
+// Function for getting and formatting assigned roles
 function formatRoles(allRoles, profileData, setSelectedRoles, setRoleData) {
+    // Format all roles list
     allRoles.roles = formatListData(allRoles.roles, profileData.roles);
+    // set selected roles to all courses that have assigned=true
     setSelectedRoles(allRoles.roles.filter((role) => role.assigned));
+    // Show only active roles for role modal
     const filledRoles = fillEmptyItems(allRoles.roles.filter((role) => role.status), allRoles.perPage);
     setRoleData({...allRoles, roleCount: filledRoles.length, roles: filledRoles});
     return;
 }
 
+// function for fetching all roles
 const fetchAllRoles = async(authToken) => {
-    const response3 = await axios.get(`http://localhost:3001/api/service-roles`, {
+    const rolesResponse = await axios.get(`http://localhost:3001/api/service-roles`, {
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
-    response3.data.perPage = 8;
-    return response3.data;
+    rolesResponse.data.perPage = 8; // Set amount of roles to be displayed per page in modal to 8
+    return rolesResponse.data;
 }
 
+// Function for handling any null profile data and setting it to N/A
 function handleNullData(data) {
     if (data.benchmark === null) {
         data.benchmark = "N/A";
@@ -118,6 +135,8 @@ function handleNullData(data) {
     return data;
 }
 
+// Function for properly formatting list of roles or courses to work with this page. Mainly by setting an 'assigned' attribute
+// to true if that item in the role or course list exists within the assignItems list
 function formatListData(list, assignedItems) {
     // Set all list items assigned value to false
     for (let i = 0; i < list.length; i++) {
@@ -137,12 +156,14 @@ function formatListData(list, assignedItems) {
     return list;
 }
 
+// Function for requesting profile info from backend
 const fetchProfileData = async(authToken, ubcid, setProfile, setBenchmark) => {
     const profileResponse = await axios.get(`http://localhost:3001/api/instructorProfile`, {
         params: { ubcid: ubcid },
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
     let profileData = handleNullData(profileResponse.data);
+    // If profileData exists, set corresponding state variables to the recieved data
     if (profileData) {
         setProfile(profileData);
         setBenchmark(profileData.benchmark);
@@ -150,15 +171,16 @@ const fetchProfileData = async(authToken, ubcid, setProfile, setBenchmark) => {
     return profileData;
 }
 
+// Function for requesting all courses from the backend
 const fetchAllCourses = async(authToken) => {
     const coursesResponse = await axios.get(`http://localhost:3001/api/all-courses`, {
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
-    coursesResponse.data.perPage = 8;
+    coursesResponse.data.perPage = 8; // Set amount of courses to be displayed per page in modal to 8
     return coursesResponse.data;
 }
 
-    
+// Function to be called when saving an edited profile. Sends a request to the backend to update the user's benchmark
 const updateBenchmark = async(authToken, ubcid, benchmark, profile) => {
     await axios.put('http://localhost:3001/api/dept-profile/benchmark', {
         ubcId: ubcid,
@@ -166,11 +188,11 @@ const updateBenchmark = async(authToken, ubcid, benchmark, profile) => {
     }, {
         headers: { Authorization: `Bearer ${authToken.token}` },
     });
-    // Set profile benchmark
+    // Set current benchmark to newly changed benchmark
     profile.benchmark = benchmark;
 }
 
-
+// Function for sending newly assigned roles to the backend to be updated
 const sendRoles = async(ubcid, roleChanges, authToken) => {
     await axios.put('http://localhost:3001/api/dept-profile/service-roles', {
         ubcId: ubcid,
@@ -180,7 +202,7 @@ const sendRoles = async(ubcid, roleChanges, authToken) => {
     });
 }
 
-
+// Helper function called when the user assigns new roles to this profile
 const updateRoles = async(roleData, ubcid, authToken, setRoleData, setSelectedRoles) => {
     const roleChanges = roleData.roles
     // Get list of newly assigned roles
@@ -197,10 +219,11 @@ const updateRoles = async(roleData, ubcid, authToken, setRoleData, setSelectedRo
         ...prevData,
         roles: prevData.roles.map(role => ({ ...role, originallyAssigned: role.assigned }))
     }));
+    // Set current role assignment list to be equal to all assigned roles
     setSelectedRoles(roleData.roles.filter(role => role.assigned));
 }
 
-
+// Function for sending newly assigned courses to the backend to be updated.
 const sendCourses = async(ubcid, authToken, courseChanges) => {
     await axios.put('http://localhost:3001/api/dept-profile/course-assignments', {
         ubcId: ubcid,
@@ -210,6 +233,7 @@ const sendCourses = async(ubcid, authToken, courseChanges) => {
     });
 }
 
+// Helper function called when the user assigns new roles to this profile
 const updateCourses = async(courseData, ubcid, authToken, setCourseData, setSelectedCourses) => {
     const courseChanges = courseData.courses
     // Get list of newly assigned courses
@@ -226,18 +250,22 @@ const updateCourses = async(courseData, ubcid, authToken, setCourseData, setSele
         ...prevData,
         courses: prevData.courses.map(course => ({ ...course, originallyAssigned: course.assigned }))
     }));
+    // Set current course assignment list to be equal to all assigned courses
     setSelectedCourses(courseData.courses.filter(course => course.assigned));
 }
 
+// Function to be called upon clicking the save button when editing a profile.
 const submitChanges = async(event, authToken, ubcid, benchmark, profile, roleData, setRoleData, setSelectedRoles, courseData, setCourseData, setSelectedCourses, setEditState) => {
     event.preventDefault();
+    // Ask the user to confirm their changes
     if(window.confirm("Confirm changes?")) {
+        // If yes:
         try {
             // Update all profile details
             await updateBenchmark(authToken, ubcid, benchmark, profile);
             await updateRoles(roleData, ubcid, authToken, setRoleData, setSelectedRoles);
             await updateCourses(courseData, ubcid, authToken, setCourseData, setSelectedCourses);
-            
+            // Set editing state to false
             setEditState(false);
         } catch (error) {
             console.error('Error updating profile:', error.response?.data || error.message);
@@ -246,8 +274,10 @@ const submitChanges = async(event, authToken, ubcid, benchmark, profile, roleDat
     }
 }
 
+// Function to be called when the user clicks the edit profile button
 const handleEditState = (edit, setEditState, prevRoles, prevCourses, selectedRoles, selectedCourses) => {
     if (edit) {
+        // If edit button was clicked, set edit state to true
         setEditState(true);
         // Save previously assigned roles and courses so it can easily be reset if the user cancels.
         prevRoles.current = JSON.stringify(selectedRoles);
@@ -255,18 +285,20 @@ const handleEditState = (edit, setEditState, prevRoles, prevCourses, selectedRol
     }
 }
 
+// Function to be called when the user clicks the cancel button when editing
 const cancelChanges = (profile, setBenchmark, setEditState, setRoleData, setSelectedRoles, setSelectedCourses, setCourseData, prevRoles, prevCourses) => {
-    // Set everything back to it's original state
+    // Set everything back to it's original state if the user clicks confirm
     if(window.confirm("Cancel changes?")) {
-        setBenchmark(profile.benchmark);
-        setEditState(false);
-        // Revert to original assignment state
+        setBenchmark(profile.benchmark); // Set benchmark back
+        setEditState(false); // Set edit state to false
+        // Revert role assignemnts back to their original state
         setRoleData(prevData => ({
             ...prevData,
             roles: prevData.roles.map(role => ({ ...role, assigned: role.originallyAssigned }))
         }));
-        setSelectedRoles(JSON.parse(prevRoles.current));
-        setSelectedCourses(JSON.parse(prevCourses.current));
+        setSelectedRoles(JSON.parse(prevRoles.current)); // Set selected role assignments back to its original state
+        setSelectedCourses(JSON.parse(prevCourses.current)); // Set selected course assignments back to its original state
+        // Set assigned courses back to it's original state
         setCourseData(prevData => ({
             ...prevData,
             courses: prevData.courses.map(course => ({ ...course, assigned: course.originallyAssigned }))
@@ -274,49 +306,66 @@ const cancelChanges = (profile, setBenchmark, setEditState, setRoleData, setSele
     }
 }
 
-
+// Function to be called when the user clicks 'assign courses'
 const handleShowCoursesModal = (setShowCoursesModal) => {
-    setShowCoursesModal(true);
+    setShowCoursesModal(true); // Display courses modal
 };
 
+// Function to be called when the user clicks 'assign roles'
 const handleShowRolesModal = (setShowRolesModal) => {
-    setShowRolesModal(true);
+    setShowRolesModal(true); // Display roles modal
 };
 
+// Function to be called when the user closes the course modal
 const handleCloseCoursesModal = (save, [setCourseData, setSelectedCourses, courseData, setShowCoursesModal]) => {
+    // If they clicked cancel, show a confirmation message
     if (!save) {
         if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
+            // If yes, set the assigned courses back to their original state
             setCourseData(prevData => ({
                 ...prevData,
                 courses: prevData.courses.map(course => ({ ...course, assigned: course.originallyAssigned }))
             }));
         } else {
+            // If no, return to the modal
             return;
         }
     } else {
+        // If they clicked save, set the newly assigned courses
         setSelectedCourses(courseData.courses.filter((course) => course.assigned));
     }
+    // Put the course modal back to page 1
     setCourseData(prevData => ({...prevData, currentPage: 1}));
+    // Close the modal
     setShowCoursesModal(false);
 };
 
+// Function to be called when the user closes the role modal
 const handleCloseRolesModal = (save, [setRoleData, setSelectedRoles, roleData, setShowRolesModal]) => {
     if (!save) {
+        // If they clicked cancel, show a confirmation message
         if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
+            // If yes, set the assigned roles back to their original state
             setRoleData(prevData => ({
                 ...prevData,
                 roles: prevData.roles.map(role => ({ ...role, assigned: role.originallyAssigned }))
             }));
         } else {
+            // If no, return to the modal
             return;
         }
     } else {
+        // If they clicked save, set the newly assigned roles
         setSelectedRoles(roleData.roles.filter((role) => role.assigned));
     }
+    // Put the role modal back to page 1
     setRoleData(prevData => ({...prevData, currentPage: 1}));
+    // Close the modal
     setShowRolesModal(false);
 };
 
+// Function to be called when the user clicks an 'x' button next to a course or role assignment.
+// Unassigns that course or role
 const unassign = async (id, index, type, selectedCourses, courseData, selectedRoles, roleData, reactUpdate) => {
     let dataList;
     // Depending on the item type, remove selected item from it's coresponding list 
@@ -340,10 +389,12 @@ const unassign = async (id, index, type, selectedCourses, courseData, selectedRo
       } else {
         roleData.roles = dataList;
       }
+    // Force the page to update
       reactUpdate();
 }
 
 function DeptProfilePage() {
+    // Get variables
     const {
         navigate,
         ubcid,

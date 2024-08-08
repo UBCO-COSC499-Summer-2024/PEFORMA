@@ -4,7 +4,7 @@ class DeptProfileController {
     async updateBenchmark(req, res) {
         try {
             const { ubcId, benchmark } = req.body;
-            const updatedProfile = await deptProfileService.updateBenchmark(ubcId, benchmark);
+            const updatedProfile = await deptProfileService.updateBenchmark(ubcId, benchmark); //Execute service
             res.json(updatedProfile);
         } catch (error) {
             console.error('Error in updateBenchmark:', error);
@@ -15,8 +15,7 @@ class DeptProfileController {
     async updateServiceRoles(req, res) {
         try {
             const { ubcId, serviceRoles } = req.body;
-            console.log('Received request:', { ubcId, serviceRoles }); // Log the received data
-            await deptProfileService.updateServiceRoles(ubcId, serviceRoles);
+            await deptProfileService.updateServiceRoles(ubcId, serviceRoles); //Execute service
             res.json({ message: 'Service roles updated successfully' });
         } catch (error) {
             console.error('Error in updateServiceRoles:', error);

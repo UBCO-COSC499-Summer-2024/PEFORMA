@@ -3,7 +3,7 @@ const userProfileGetService = require('../../services/ShowInfo/userProfileGetSer
 exports.getUserProfile = async (req, res) => {
   const { profileId } = req.params;
   try {
-    const userProfile = await userProfileGetService.getUserProfileById(profileId);
+    const userProfile = await userProfileGetService.getUserProfileById(profileId); //Execute service
     if (userProfile) {
       res.json(userProfile);
     } else {

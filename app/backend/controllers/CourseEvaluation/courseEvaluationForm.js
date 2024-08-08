@@ -1,7 +1,7 @@
 const courseEvaluationFormService = require('../../services/CourseEvaluation/courseEvaluationForm');
 async function getCourseInformation(req, res) {
   try {
-    const formData = await courseEvaluationFormService.getCourseInformation();
+    const formData = await courseEvaluationFormService.getCourseInformation(); //Execute service function
     res.json(formData);
   } catch (error) {
     console.error('Error uploading course evaluation:', error);

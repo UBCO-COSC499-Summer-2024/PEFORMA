@@ -27,7 +27,7 @@ function AdminStatusChangeMember() {
 				const filledMembers = fillEmptyItems(location.state.memberData.members, location.state.memberData.perPage); // fill empty rows
 				setMemberData({ ...location.state.memberData, members: filledMembers, currentPage: 1 }); // set member data with filled rows member list
 		} // state management for member list 
-	}, [accountLogInType, navigate, location.state.memberData]);
+	}, [accountLogInType, navigate, location.state.memberData, authToken]);
 
 	// filter member by search function and set all results into filteredMembers and to currentMembers for render
 	const filteredMembers = filterItems(memberData.members, 'member', search);

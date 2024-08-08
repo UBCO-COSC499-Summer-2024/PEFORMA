@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import AssignInstructorsModal from '../InsAssignInstructorsModal.js';
 import { getTermString, checkAccess, fillEmptyItems, getCurrentTerm, currentItems, handlePageClick } from '../common/utils.js';
 
+// Function for recieving course information and history related data
 const fetchCourseHistory = async(courseId, authToken) => {
   const res = await axios.get(`http://localhost:3001/api/courseHistory`, {
     params: { courseId: courseId },
@@ -18,15 +19,20 @@ const fetchCourseHistory = async(courseId, authToken) => {
   return res.data;
 }
 
+// Function for recieving the currently active term
 const fetchTermResponse = async() => {
   const termResponse = await axios.get("http://localhost:3001/api/terms");
   return termResponse.data;
 }
 
+// Function for filtering the Course History data so it can be properly displayed in the table
 function filterCourseData(courseHistoryData, setCourseData, setCurrentInstructor) {
+  // If there instructor data exists, set current instructors and past instructors
   if (courseHistoryData.history.length !== 0) {
     const filledEntries = fillEmptyItems(courseHistoryData.history, courseHistoryData.perPage);
+    // Set history table to only show instructors assigned from a term before the current term
     setCourseData({ ...courseHistoryData, history: filledEntries.filter((entry)=>entry.term_num < courseHistoryData.latestTerm) });
+    // Set the current instructor list to any instructors assigned to this course in the currently active term
     setCurrentInstructor(courseHistoryData.history.filter((entry)=>entry.term_num == courseHistoryData.latestTerm));
   } else {
     setCourseData(courseHistoryData);
@@ -34,20 +40,24 @@ function filterCourseData(courseHistoryData, setCourseData, setCurrentInstructor
   return;
 }
 
+// Function for setting the time state of the page, i.e. if it's term is before the currently active term, set pastState to true,
+// if it's after the currently active term, set futureState to true. If it's the same term, both remain false.
 function setTimeState(actualTerm, selectedTerm, setPastState, setFutureState) {
   if (parseInt(actualTerm) > selectedTerm) {
     setPastState(true);
-
   } else if (parseInt(actualTerm) < selectedTerm) {
     setFutureState(true);
   }
 }
 
 function useCourseInformation() {
+  // Authentication variables for various backend requests
   const { authToken, accountLogInType } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // For navigating to a different page
+  // Get courseId from the URL
   const params = new URLSearchParams(window.location.search);
   const courseId = params.get('courseid');
+  // State variables
   const [isEditing, setIsEditing] = useState(false);
   const [active, setActive] = useState(true);
   const [editDescription, setEditDescription] = useState('');
@@ -74,19 +84,29 @@ function useCourseInformation() {
     currentPage: 1,
   });
   const [showInstructorModal, setShowInstructorModal] = useState(false);
-  const prevInstructors = useRef({});
-  const [, reactUpdate] = useReducer(i => i + 1, 0);
+  const prevInstructors = useRef({}); // Variable for storing original instructor assignments if the user decides to click cancel on the modal
+  const [, reactUpdate] = useReducer(i => i + 1, 0); // Function for forcing the page to update
 
+  // Upon entering the page, get necessary data
   const fetchData = async () => {
     checkAccess(accountLogInType, navigate, 'department', authToken);
     try {
+      // Get course data
       const courseHistoryData = await fetchCourseHistory(courseId, authToken);
+      // courseHistoryData contains: {currentPage, perPage, courseID, entryCount, exists, courseCode, latestTerm, courseName, courseDescription, division, avgScore, history, tainfo}
+      // history contains an array of: {instructorID, instructorName, session, term, score, term_num (year then term), ubcid, location, enrollment, meetingPattern}
+      // tainfo contains an array of: {taname, taemail, taUBCId, taterm}
+
+      // Get currently active term
       const termData = await fetchTermResponse();
+      // Set the latestTerm attribute to the active term
       courseHistoryData.latestTerm = termData.currentTerm.toString();
       filterCourseData(courseHistoryData, setCourseData, setCurrentInstructor);
+      // Set the placeholder value of the description edit box to the current description
       setEditDescription(courseHistoryData.courseDescription);
       const currentTerm = getCurrentTerm();
       setTimeState(currentTerm, termData.currentTerm, setPastState, setFutureState);
+      // Set the name of the term to be displayed to the user
       setTermString(getTermString(termData.currentTerm));
       // Set active state to false if course is inactive
       if (!courseHistoryData.exists) {
@@ -120,40 +140,55 @@ function useCourseInformation() {
   }
 }
 
+// Function to be called after clicking the edit button
 const handleEditClick = (setIsEditing) => {
+  // Set edit state to true
   setIsEditing(true);
 };
 
+// Function for updating the description of the course
 const updateCourseData = async(courseId, editDescription, authToken, courseData, reactUpdate) => {
   const updatedCourseData = { courseId, courseDescription: editDescription };
+  // Send new description to backend to be updated
   try {
     await axios.post('http://localhost:3001/api/updateCourseInfo', updatedCourseData, {
       headers: { Authorization: `Bearer ${authToken.token}` },
     });
+    // Once complete, set the current description to the newly changed one
     courseData.courseDescription = editDescription;
+    // Force the page to update
     reactUpdate();
   } catch (error) {
     console.error('Error updating course info', error);
   }
 }
 
+// Function to be called after clicking the Save button
 const handleSaveClick = async (setIsEditing, courseId, editDescription, authToken, courseData, reactUpdate) => {
+  // Set edit state to false
   setIsEditing(false);
+  // Update course information
   await updateCourseData(courseId, editDescription, authToken, courseData, reactUpdate);
 };
 
+// Function to be called after editing the description
 const handleChange = (e, setEditDescription) => {
+  // Set current editDescription value to newly entered description
   const { value } = e.target;
   setEditDescription(value);
+  // Format the edit description area 
   e.target.style.height = 'auto';
   e.target.style.height = e.target.scrollHeight + 'px';
 };
 
+// function for getting all instructors upon clicking the assign button
 const fetchInstructors = async(authToken, setInstructorData) => {
+  // Request all instructors
   try {
     const res = await axios.get('http://localhost:3001/api/instructors', {
       headers: { Authorization: `Bearer ${authToken.token}` },
     });
+    // res.data contains: {instructors, instructorCount, perPage, currentPage}
     const professors = res.data.instructors;
     // Handle different possible backend responses
     if (Array.isArray(professors)) {
@@ -180,29 +215,40 @@ const fetchInstructors = async(authToken, setInstructorData) => {
   }
 }
 
+// Function to be called upon clicking the assign instructors button
 const handleShowInstructorModal = async (prevInstructors, authToken, setInstructorData, instructorData, setShowInstructorModal) => {
+  // Save currently assigned instructors in the case of the user cancelling
   prevInstructors.current = JSON.stringify(instructorData);
+  // Show modal
   setShowInstructorModal(true);
   await fetchInstructors(authToken, setInstructorData);
 };
 
+// Function to be called upon clicking the cancel or save button on the modal
+// The parameters are formatted as [] so it can be used easily by the InsAssignInstructorsModal file
 const handleCloseInstructorModal = (save, [instructorData, setInstructorData, courseData, setShowInstructorModal, prevInstructors, authToken, currentInstructor, courseId, fetchData]) => {
+  // If cancel button was clicked, show a confirmation message
   if (!save) {
     if (window.confirm('If you exit, your unsaved data will be lost. Are you sure?')) {
+      // If yes, set currently assigned instructors back to the previously assigned ones
       setInstructorData(JSON.parse(prevInstructors.current));
     } else {
+      // If no, return back to modal
       return;
     }
   } else {
+    // If save was clicked, call the updateAssignees function
     updateAssignees(instructorData, courseData, authToken, currentInstructor, courseId, fetchData);
   }
+  // Close modal
   setShowInstructorModal(false);
 };
 
+// function for finding all assigned instructors
 function getAssignedInstructors(instructorData, courseData) {
   let assignedInstructors = [];
   courseData.assignees = [];
-  // Find assigned instructors
+  // For every instructor, check if assigned is true. If it is, add that instructor to the assignedInstructors array and the courseData.assignees array
   for (let i = 0; i < instructorData.instructors.length; i++) {
     if (instructorData.instructors[i].assigned === true) {
       assignedInstructors.push(instructorData.instructors[i]);
@@ -215,8 +261,10 @@ function getAssignedInstructors(instructorData, courseData) {
   return assignedInstructors;
 }
 
+// Function for sending the newly assigned instructors to the backend to be saved in the database
 const sendAssignees = async(assignedInstructors, courseData, authToken, currentInstructor, courseId, fetchData) => {
-  const term = courseData.latestTerm;
+  const term = courseData.latestTerm; // Get latest term
+  // For every newly assigned Instructor, send them to the backend to be saved
   for (let i = 0; i < assignedInstructors.length; i++) {
     var newAssigneeList = {
       profileId: assignedInstructors[i].profileId,
@@ -241,22 +289,27 @@ const sendAssignees = async(assignedInstructors, courseData, authToken, currentI
   }
 }
 
+// Helper function to be called during the assigning process. It gets all currently assigned instructors then sends them to the backend
 const updateAssignees = async (instructorData, courseData, authToken, currentInstructor, courseId, fetchData) => {
   let assignedInstructors = getAssignedInstructors(instructorData, courseData);
   await sendAssignees(assignedInstructors, courseData, authToken, currentInstructor, courseId, fetchData);
 };
 
+// Function to be called when clicking the "x" next to an assigned instructor to remove them
 function removeInstructorFromCourseData(index, id, instructorData, currentInstructor, reactUpdate) {
-  currentInstructor.splice(index, 1);
+  currentInstructor.splice(index, 1); // Remove the instructor at the index that the user clicked
+  // For every instructor, check if their id matches the one that was removed, if it matches, set the assigned value of that instructor to false
   for (let i = 0; i < instructorData.instructors.length; i++) {
     if (id === instructorData.instructors[i].id) {
       instructorData.instructors[i].assigned = false;
       break;
     }
   }
+  // Force a page update
   reactUpdate();
 }
 
+// Function for removing an instructor. Sends a request to the backend with the instructor's data that needs to be removed
 const sendRemovedInstructor = async(courseId, id, authToken, courseData) => {
   try {
     await axios.post('http://localhost:3001/api/removeInstructorCourse', 
@@ -268,12 +321,14 @@ const sendRemovedInstructor = async(courseId, id, authToken, courseData) => {
  }
 }
 
+// Helper function for removing an instructor
 const removeInstructor = async (id, index, courseId, currentInstructor, reactUpdate, courseData, instructorData, authToken) => {
   removeInstructorFromCourseData(index, id, instructorData, currentInstructor, reactUpdate);
   await sendRemovedInstructor(courseId, id, courseData, authToken, courseData);
 }
 
 function CourseInformation() {
+  // Get all necessary variables
   const {
     isEditing, setIsEditing,
     editDescription, setEditDescription,
@@ -294,6 +349,7 @@ function CourseInformation() {
   } = useCourseInformation();
 
   const pageCount = Math.ceil(courseData.entryCount / courseData.perPage);
+  // closeModalVars are for the InsAssignInstructorsModal to know what variables to use when calling handleCloseInstructorModal
   const closeModalVars = [instructorData, setInstructorData, courseData, setShowInstructorModal, prevInstructors, authToken, currentInstructor, courseId, fetchData];
   const currentEntries = currentItems(courseData.history, courseData.currentPage, courseData.perPage);
 

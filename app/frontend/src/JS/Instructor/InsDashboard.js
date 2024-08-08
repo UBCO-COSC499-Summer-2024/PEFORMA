@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../../CSS/Instructor/InsDashboard.css';
-import CreateSideBar from '../common/commonImports.js';
-import { CreateTopBar } from '../common/commonImports.js';
+import SideBar from '../common/SideBar.js';
+import TopBar from '../common/TopBar.js';
 import divisions from '../common/divisions.js';
 import cardImages from '../common/cardImages.js';
 import { Link } from 'react-router-dom';
@@ -12,31 +12,25 @@ import { checkAccess } from '../common/utils.js'
 
 function Dashboard() {
 	const { profileId, accountLogInType, authToken } = useAuth();
-	const navigate = useNavigate();
-
+	const navigate = useNavigate(); // For navigating to different pages
+	// Upon entering the page, check if they're account type is instructor and if they're logged in. If not, send them away. 
 	useEffect(() => {
 		const checkAuth = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
 			try {
 				checkAccess(accountLogInType, navigate, 'instructor', authToken);
-
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
 			}
 		};
-
 		checkAuth();
-	}, [authToken, navigate]);
+	}, [authToken, accountLogInType, navigate]);
 
 	return (
 		<div className="dashboard">
-			<CreateSideBar sideBarType="Instructor" />
+			<SideBar sideBarType="Instructor" />
 			<div className="container">
-				<CreateTopBar />
+				<TopBar />
 
 				<div className="card-container">
 					{divisions.map((division) => {

@@ -3,17 +3,14 @@ import "../../CSS/common.css";
 import '../../CSS/All/HomePage.css';
 import { useNavigate } from 'react-router-dom';
 
-
 function HomePage () {
-  const navigate = useNavigate();
-  // process login button event
+  const navigate = useNavigate(); // To be used to navigate to different pages
+
+  // Function to be called when the user clicks the login button
   const handleLogin = () => {
-    // add login jump-to-page logic here
-    console.log('Login button clicked');
+    // Send the user to the login page
     navigate('/Login');
   };
-
-  
 
   return (
       <div className="home-container">
