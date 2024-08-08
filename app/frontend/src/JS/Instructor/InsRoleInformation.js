@@ -9,20 +9,21 @@ import { useAuth } from '../common/AuthContext.js';
 
 function InsRoleInformation() {
 	const { authToken, accountLogInType } = useAuth();
-	const navigate = useNavigate();
+	const navigate = useNavigate(); // For navigating to different pages
+	// state variable
 	const [roleData, setRoleData] = useState({
 		assignees: [{}],
 		assigneeCount: 0,
 		perPage: 5,
 		currentPage: 1,
 	});
-
+	// Get the roleid from the URL
 	const params = new URLSearchParams(window.location.search);
 	const serviceRoleId = params.get('roleid');
-
+	// Upon entering the page, get the role info from the backend
 	useEffect(() => {
 		  const fetchData = async () => {
-      checkAccess(accountLogInType, navigate, 'instructor', authToken);
+      			checkAccess(accountLogInType, navigate, 'instructor', authToken);
 			const res = await axios.get(`http://localhost:3001/api/roleInfo`, {
 				params: { serviceRoleId: serviceRoleId },
 				headers: { Authorization: `Bearer ${authToken.token}` },
