@@ -15,37 +15,45 @@ import {checkAccess} from '../common/utils.js';
 const titleLimit = 100;
 const descLimit = 1000;
 
+// Function for checking that the inputted string is less than its character limit
 function checkLength(input, limit, section, valid) {
+	// If already invalid, just return
 	if (!valid) {
 		return false;
 	}
+	// If the input is too long, alert the user and return a value of false
 	if (input.length > limit) {
 		alert(section + ' cannot exceed ' + limit + ' characters');
 		return false;
 	}
+	// If it's good, return true
 	return true;
 }
 
+// Function for checking the course code is valid
 function checkCourseCode(valid, courseCode) {
+	// If already invalid, just return
 	if (!valid) {
 		return false;
 	}
-	// Checks course code length
+	// Checks course code length, if it's not 3, return false
 	if (courseCode.length !== 3) {
 		alert('Course code should be 3 digits.');
 		return false;
 	}
-	// Checks course code is all digits
+	// Checks course code is all digits, if it's not, return false
 	for (let i = 0; i < courseCode.length; i++) {
 		if (!Number.isInteger(parseInt(courseCode.charAt(i)))) {
 			alert('Course code should be 3 digits.');
 			return false;
 		}
 	}
+	// If everything is good, then return true
 	return true;
 }
 
-// Helper function for checking course input fields
+// Helper function for checking course input fields, it sets valid to true, then goes through each check.
+// If any check returns false, then valid will become false
 function checkCourseValidity(courseTitle, titleLimit, courseDescription, descLimit, courseCode) {
 	let valid = true;
 	valid = checkLength(courseTitle, titleLimit, 'Title', valid);
@@ -54,37 +62,44 @@ function checkCourseValidity(courseTitle, titleLimit, courseDescription, descLim
 	return valid;
 }
 
-// Helper function for checking service role input fields
+// Helper function for checking service role input fields, it sets valid to true, then goes through each check.
+// If any check returns false, then valid will become false
 function checkServiceRoleValidity(serviceRoleTitle, titleLimit, serviceRoleDescription, descLimit) {
 	let valid = true;
 	valid = checkLength(serviceRoleTitle, titleLimit, 'Title', valid);
 	valid = checkLength(serviceRoleDescription, descLimit, 'Description', valid);
 	return valid;
 }
+
+// Helper function to be called upon pressing the submit button.
 const handleSubmit = async (event, formData, navigate) => {
 	event.preventDefault();
-	// Check validity of input and set confirm message
 	let valid = false;
 	let confirmMessage = '';
+	// If selected form is 'Course', check the validity of the entered data and set the confirm message
 	if (formData.selection === 'Course') {
 		valid = checkCourseValidity(formData.courseTitle, titleLimit, formData.courseDescription, descLimit, formData.courseCode);
 		confirmMessage = 'Confirm course creation?';
 	}
+	// If selected form is 'Role', check the validity of the entered data and set the confirm message
 	if (formData.selection === 'Service Role') {
 		valid = checkServiceRoleValidity(formData.serviceRoleTitle, titleLimit, formData.serviceRoleDescription, descLimit);
 		confirmMessage = 'Confirm service role creation?';
 	}
+	// If form is valid, ask for confirmation of submission
 	if (valid) {
 		if (window.confirm(confirmMessage) === true) {
+			// If yes, call the sendData function
 			sendData(formData, navigate);
 		}
 	}
 };
 
+// Function for sending inputted course or role data to the backend, to be appended into the database
 const sendData = async(formData, navigate) => {
-	// Send inputted data to backend to be added to database
 	axios.post('http://localhost:3001/enter', formData)
 	.then(() => {
+		// If request was a success, alert the user and send them to the appropriate list depending on their selection
 		if (formData.selection === 'Course') {
 			alert('Data entry successful. Navigating to course list.');
 			navigate('/DeptCourseList');
@@ -106,8 +121,9 @@ const sendData = async(formData, navigate) => {
 }
 
 function useDataEntryComponent() {
-	const navigate = useNavigate();
+	const navigate = useNavigate(); // For navigating to different pages
 	const { accountLogInType, authToken } = useAuth();
+	// Sets a warning message to be displayed to the user if they try to leave the page without saving
 	window.onbeforeunload = function () {
 		return 'Data will be lost if you leave this page. Are you sure?';
 	};
@@ -122,11 +138,11 @@ function useDataEntryComponent() {
 	const [serviceRoleDescription, setServiceRoleDescription] = useState('');
 	const [showFileUploadModal, setShowFileUploadModal] = useState(false);
 	useEffect(() => {
-
 		const fetchData = async () => {
 			try {
 				// Ensure account type is correct
 				checkAccess(accountLogInType, navigate, 'department', authToken);
+				// Set the division 'All' to 'N/A' to make more sense
 				divisions[4].code = "N/A";
 				divisions[4].label = "N/A";
 			} catch (error) {
@@ -150,6 +166,7 @@ function useDataEntryComponent() {
 }
 
 function DataEntryComponent() {
+	// Get state variables
 	const {
 		selection, setSelection,
 		courseTitle, setCourseTitle,
@@ -162,7 +179,7 @@ function DataEntryComponent() {
 		showFileUploadModal, setShowFileUploadModal,
 		navigate
 	} = useDataEntryComponent();
-
+	// Set format for each form's data
 	const courseFormData = {selection, courseTitle, courseDepartment, courseCode, courseDescription};
 	const roleFormData = {selection, serviceRoleTitle, serviceRoleDepartment, serviceRoleDescription};
 	
