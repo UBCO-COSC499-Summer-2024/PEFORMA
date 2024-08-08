@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import '../../CSS/All/NewPassword.css';
 
 const NewPassword = () => {
+  // State variables
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
 
+  // Get email from the URL upon entering the page
   React.useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const emailFromUrl = query.get('email');
@@ -16,14 +18,15 @@ const NewPassword = () => {
     }
   }, []);
 
-
+  // Function called upon clicking the submit button
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // If passwords don't match, alert the user and exit the function
     if (password !== confirmPassword) {
       alert("Passwords do not match.")
       return;
     }
-    
+    // Send the newly set password to the backend to be updated, then recieve a response with a status of success or failure
     const response = await fetch(`http://localhost:3001/api/update-password?email=${email}`, {
       method: 'POST',
       headers: {
@@ -32,6 +35,7 @@ const NewPassword = () => {
       body: JSON.stringify({ password }),
     });
     const data = await response.json();
+    // If request is successful, set the 'success' state of the page to true, removing the form and adding a button that sends the user back to the login screen
     if (data.message === "success") {
       setSuccess(true);
     } else {
