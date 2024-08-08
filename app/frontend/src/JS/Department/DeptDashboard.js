@@ -8,20 +8,18 @@ import { useAuth } from '../common/AuthContext.js';
 import { checkAccess } from '../common/utils.js';
 
 function Dashboard() {
-	const navigate = useNavigate();
+	const navigate = useNavigate(); // For navigating to different pages
 	const { authToken, accountLogInType } = useAuth();
-
+	// Upon entering the page, check if the user has access
 	useEffect(() => {
 		const checkAuth = async () => {
 			try {
 				checkAccess(accountLogInType, navigate, 'department', authToken);
-
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
 			}
 		};
-
 		checkAuth();
 	}, [authToken, navigate]);
 
