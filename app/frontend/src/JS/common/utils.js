@@ -113,10 +113,10 @@ export const postWithAuth = async (url, authToken, navigate, data) => {
   }
 };
 
+// Function for getting the current instructor for a course
 export const getCurrentInstructor = (historyData) => {
   let history = historyData.history;
   let currentInstructor = [];
-  console.log(history);
   if (history[0].instructorID !== "") {
   for (let i = 0; i < history.length; i++) {
 
