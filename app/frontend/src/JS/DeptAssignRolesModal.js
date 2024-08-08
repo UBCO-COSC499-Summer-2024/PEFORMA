@@ -3,27 +3,30 @@ import ReactPaginate from 'react-paginate';
 import '../CSS/Department/AssignInstructorModal.css';
 import { handlePageClick, currentItems, filterItems } from './common/utils';
 
+// This function is for displaying the assign roles modal. It's designed to be used in conjunction with the profile page to
+// assign that user to service roles. That's why props is used to access parent elements.
 const AssignRolesModal = (props) => {
+    const [, reactUpdate] = useReducer(i => i + 1, 0); // For forcing the modal to update
+    // State variables
     const [search, setSearch] = useState('');
-    const [, reactUpdate] = useReducer(i => i + 1, 0);
-    
     const onSearch = (newSearch) => {
         setSearch(newSearch);
         props.setRoleData(prevState => ({ ...prevState, currentPage: 1 }));
     };
 
     const filteredRoles = filterItems(props.roleData.roles, "role", search);
-
     const currentRoles = currentItems(filteredRoles, props.roleData.currentPage, props.roleData.perPage);
 
+    // function to be called when the user clicks the add or remove button on the modal
     const toggleRoleAssigned = (id) => {
+        // Set selected instructor's assigned attribute to the opposite boolean.
         props.setRoleData(prevData => ({
             ...prevData,
             roles: prevData.roles.map(role => 
                 role.id === id ? { ...role, assigned: !role.assigned } : role
             )
         }));
-        reactUpdate();
+        reactUpdate(); // Force the modal to update
     };
 
     const pageCount = Math.ceil(props.roleData.roleCount / props.roleData.perPage);
