@@ -3,7 +3,7 @@ const imageService = require('../../services/ShowInfo/imageService');
 const getImageById = async (req, res) => {
   try {
     const { id } = req.params;
-    const image = await imageService.getImageById(id);
+    const image = await imageService.getImageById(id); //Execute service
     
     if (image) {
       res.contentType(`image/${image.file_type}`);

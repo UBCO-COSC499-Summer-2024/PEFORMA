@@ -4,11 +4,7 @@ exports.updateUserProfile = async (req, res) => {
   const { profileId } = req.params;
   const updatedData = req.body;
   try {
-    console.log(req.user.profileId);
     // Ensure the user can only update their own profile
-    // if (req.user.profileId !== parseInt(profileId)) {
-    //   return res.status(403).json({ message: 'Forbidden: You can only update your own profile' });
-    // }
 
     // If a file was uploaded, add it to updatedData
     if (req.file) {
@@ -18,7 +14,7 @@ exports.updateUserProfile = async (req, res) => {
       };
     }
 
-    const updatedProfile = await userProfileUpdateService.updateUserProfile(profileId, updatedData);
+    const updatedProfile = await userProfileUpdateService.updateUserProfile(profileId, updatedData); //Execute service
     if (updatedProfile) {
       res.json(updatedProfile);
     } else {

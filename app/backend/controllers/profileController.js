@@ -57,10 +57,8 @@ exports.getUserProfile = async (req, res) => {
             JOIN "ServiceRole" "sr" ON "sra"."serviceRoleId" = "sr"."serviceRoleId"
             WHERE "sra"."profileId" = $1 AND "sra"."year" = $2;
         `; 
-        //result = await pool.query(query, [id]);
         result = await pool.query(query,[profileId, latestYear]);
 
-        //const serviceRoles = result.rows;
         const roles = result.rows.map(row => ({roleTitle : row.stitle, roleid : row.serviceRoleId}));
         const latestTerm = await getLatestTerm(); 
 

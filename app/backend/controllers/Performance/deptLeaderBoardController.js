@@ -2,7 +2,7 @@ const deptLeaderBoardService = require('../../services/Performance/deptLeaderBoa
 
 async function getDeptLeaderBoard(req, res) {
   try {
-    const leaderboard = await deptLeaderBoardService.getDeptLeaderBoard();
+    const leaderboard = await deptLeaderBoardService.getDeptLeaderBoard();//Execute service
     res.send(leaderboard);
 
   } catch (error) {

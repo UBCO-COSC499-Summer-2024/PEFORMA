@@ -5,10 +5,10 @@ const {updateAllMembers} = require('../services/UpdateStatus/updateAllMembers.js
 async function setCurrentTerm(req, res){
     try {
        
-        await setCurrentTermService.setCurrentTerm(req);
-        await updateAllCourses();
-        await updateAllServiceRoles();
-        await updateAllMembers();
+        await setCurrentTermService.setCurrentTerm(req); //Execute service
+        await updateAllCourses(); //update status course
+        await updateAllServiceRoles(); //update status service role
+        await updateAllMembers(); //update status members
         res.status(200).json({ message: 'Current term updated successfully' });
     } catch (error) {
         console.error('Error updating current term:', error);

@@ -2,7 +2,7 @@ const adminStatusChangeService = require('../../services/UpdateStatus/adminStatu
 
 async function StatusChangeMembers(req, res) {
   try {
-    const statusChange = await adminStatusChangeService.StatusChangeMembers(req);
+    const statusChange = await adminStatusChangeService.StatusChangeMembers(req); //Execute service
     res.json(statusChange);
   } catch (error) {
     if (error.status) {

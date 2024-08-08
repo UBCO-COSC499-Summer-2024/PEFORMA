@@ -3,7 +3,7 @@ const userService = require('../../services/ShowInfo/userService');
 exports.getUserById = async (req, res) => {
   try {
     const { profileId } = req.params;
-    const user = await userService.getUserById(profileId);
+    const user = await userService.getUserById(profileId); //Execute service
     if (user) {
       res.json(user);
     } else {

@@ -3,7 +3,7 @@ const updatePasswordService = require('../../services/UpdatePassword/updatePassw
 async function updatePassword(req, res)  {
   try {
    
-    await updatePasswordService.updatePassword(req);
+    await updatePasswordService.updatePassword(req); //Execute service
 
     return res.status(200).json({ message: 'success' });
   } catch (error) {
