@@ -12,23 +12,17 @@ import { checkAccess } from '../common/utils.js'
 
 function Dashboard() {
 	const { profileId, accountLogInType, authToken } = useAuth();
-	const navigate = useNavigate();
-
+	const navigate = useNavigate(); // For navigating to different pages
+	// Upon entering the page, check if they're account type is instructor and if they're logged in. If not, send them away. 
 	useEffect(() => {
 		const checkAuth = async () => {
-			if (!authToken) {
-				navigate('/Login');
-				return;
-			}
 			try {
 				checkAccess(accountLogInType, navigate, 'instructor', authToken);
-
 			} catch (error) {
 				console.error('Failed to fetch account type', error);
 				navigate('/Login');
 			}
 		};
-
 		checkAuth();
 	}, [authToken, accountLogInType, navigate]);
 
