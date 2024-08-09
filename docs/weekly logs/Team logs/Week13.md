@@ -48,15 +48,17 @@ Individually, we are trying to finish our individual reports. As a team, our goa
 
 | Feature Name        | Owner                                   |
 | ----------------------- | -------------- | 
-|  |  |
+| Null handling for performance export | Kevin |
+| Comment all my files | Jeremy |
+| Create user guide | Adams | 
+| Create final presentation slides | Adams |
 
 ### Cycle Reflection
+This cycle was mainly focused on finishing up our final reports as well as preparing for the presentation on Friday. There was also a little bit of last minute
+cleanup and comments on some code. On Wednesday we had a meeting with our client that went very successfully, and on Thursday night we had a group meeting discussing the final presentation.
+We went through the slides and talked about who's going to present what. With that said, this is the last team log for the project, so to anyone reading this: have a great rest of your summer!
 
 
 ## Next Cycle Planning
-
-| Task Name             | Owner         | 
-| ----------------------- | -------------- | 
-|  |  |
 
 Have a great summer!
