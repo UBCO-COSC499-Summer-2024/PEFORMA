@@ -61,3 +61,32 @@ of each user type so I guess we need to go over the system again and let them un
   * Presentation
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+## Friday (8/09/2024)
+### Timesheet
+![Details of hours worked from Clockify]()
+### Current Tasks
+  * #1: Indiividua report
+### Progress Update (since 8/09/2024)
+<table>
+    <tr>
+        <td><strong>TASK/ISSUE #</strong>
+        </td>
+        <td><strong>STATUS</strong>
+        </td>
+    </tr>
+    <tr>
+        <!-- Task/Issue # -->
+        <td>Individual Report
+        </td>
+        <!-- Status -->
+        <td>Almost finish
+        </td>
+    </tr>
+
+    </tr>
+   
+</table>
+
+### Weekly Goal Review
+
+This cycle was just writing up the individual reports and checking the system for the bugs. We also did a presentation to Scott and Raymon. We did presentation to Scott twice because we messed up the first one. This is because we did not help Kevin when he needed help when we should have. For tomorrow's presentation, I will try helping my teammates when they are stuck during the presentation.  
