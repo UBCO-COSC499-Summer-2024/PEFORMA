@@ -83,7 +83,7 @@ of each user type so I guess we need to go over the system again and let them un
         </td>
     </tr>
 
-    </tr>
+    
    
 </table>
 
