@@ -63,7 +63,7 @@ of each user type so I guess we need to go over the system again and let them un
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 ## Friday (8/09/2024)
 ### Timesheet
-![Details of hours worked from Clockify]()
+![Details of hours worked from Clockify](https://github.com/UBCO-COSC499-Summer-2024/team-6-capstone-team_6ix/blob/Subaru-weekly-logs-for-Week-13-Cycle2/docs/weekly%20logs/Subaru%20Sakashita/ClockifyImages/Clockify_COSC499_W13_C2.png)
 ### Current Tasks
   * #1: Indiividua report
 ### Progress Update (since 8/09/2024)
