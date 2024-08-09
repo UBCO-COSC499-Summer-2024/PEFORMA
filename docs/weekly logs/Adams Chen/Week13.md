@@ -39,12 +39,11 @@ This cycle resolved around creating the user guide for our product. I hope to ha
 ## Friday (8/9/2024)
 
 ### Timesheet
-![alt text](image_url_here)
+![alt text](./Clockify%20images/Clockify_Aug_9_1.jpg)
+![alt text](./Clockify%20images/Clockify_Aug_9_2.jpg)
 
 ### Current Tasks
-  * #1: Task 1
-  * #2: Task 2
-  * #3: Task 3
+  * #1: Finish inidividual report
 
 ### Progress Update (since 8/7/2024)
 <table>
@@ -56,7 +55,7 @@ This cycle resolved around creating the user guide for our product. I hope to ha
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task A
+        <td>Create user guide
         </td>
         <!-- Status -->
         <td>Complete
@@ -64,15 +63,15 @@ This cycle resolved around creating the user guide for our product. I hope to ha
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task B
+        <td>Create final presentation slides
         </td>
         <!-- Status -->
-        <td>In Progress
+        <td>Complete
         </td>
     </tr>
     <tr>
         <!-- Task/Issue # -->
-        <td>Task C
+        <td>Compose individual report
         </td>
         <!-- Status -->
         <td>In Progress
@@ -81,11 +80,9 @@ This cycle resolved around creating the user guide for our product. I hope to ha
 </table>
 
 ### Weekly Goal Review
-I completed Task A as planned, but Task B and C is taking longer than expected due to complexity in testing. 
+I finished the user guide. It's not perfect, but I believe it covers everything. I went through the system as I was making the user guide and confirm that 95% of the system works as designed. I started the individual report late, but I believe I'll be able to finish it online while upholding the quality I originally aim for. 
 
 ### Next Cycle Goals
-  * Goal 1
-  * Goal 2
-  * Goal 3
+  * Enjoy the freaking summer!
 
 
