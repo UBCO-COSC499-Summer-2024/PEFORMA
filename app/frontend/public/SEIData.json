@@ -1,0 +1,32 @@
+{
+  "courses":[
+    {"courseId": 1, "courseCode": "MATH 101", "instructor": [{"ubcid": 1, "name": "John Doe"}]},
+    {"courseId": 2, "courseCode": "STAT 111", "instructor": [{"ubcid": 2, "name": "Jane Smith"}, {"ubcid": 3, "name": "Robert Brown"}]},
+    {"courseId": 3, "courseCode": "COSC 122", "instructor": [{"ubcid": 4, "name": "Alice Johnson"}, {"ubcid": 5, "name": "Maria Garcia"}, {"ubcid": 6, "name": "William Lee"}]},
+    {"courseId": 4, "courseCode": "PHYS 304", "instructor": [{"ubcid": 7, "name": "Charles Miller"}]},
+    {"courseId": 5, "courseCode": "MATH 499", "instructor": [{"ubcid": 8, "name": "Emily Wilson"}, {"ubcid": 9, "name": "David Anderson"}]},
+    {"courseId": 6, "courseCode": "STAT 201", "instructor": [{"ubcid": 10, "name": "Nancy Taylor"}, {"ubcid": 11, "name": "Chris Moore"}]},
+    {"courseId": 7, "courseCode": "COSC 210", "instructor": [{"ubcid": 12, "name": "Brian Jackson"}]},
+    {"courseId": 8, "courseCode": "PHYS 220", "instructor": [{"ubcid": 13, "name": "Susan Martin"}, {"ubcid": 14, "name": "Barbara Thomas"}, {"ubcid": 15, "name": "James White"}]},
+    {"courseId": 9, "courseCode": "MATH 310", "instructor": [{"ubcid": 16, "name": "Sarah Harris"}]},
+    {"courseId": 10, "courseCode": "STAT 315", "instructor": [{"ubcid": 17, "name": "Frank Thompson"}, {"ubcid": 18, "name": "Jessica Garcia"}]},
+    {"courseId": 11, "courseCode": "COSC 320", "instructor": [{"ubcid": 19, "name": "Lisa Martinez"}, {"ubcid": 20, "name": "Jeffrey Clark"}]},
+    {"courseId": 12, "courseCode": "PHYS 330", "instructor": [{"ubcid": 21, "name": "Angela Rodriguez"}]},
+    {"courseId": 13, "courseCode": "MATH 401", "instructor": [{"ubcid": 22, "name": "Thomas Robinson"}, {"ubcid": 23, "name": "Sandra Lewis"}, {"ubcid": 24, "name": "Kevin Walker"}]},
+    {"courseId": 14, "courseCode": "STAT 402", "instructor": [{"ubcid": 25, "name": "Kenneth Allen"}]},
+    {"courseId": 15, "courseCode": "COSC 403", "instructor": [{"ubcid": 1, "name": "John Doe"}, {"ubcid": 27, "name": "Benjamin King"}]},
+    {"courseId": 16, "courseCode": "PHYS 404", "instructor": [{"ubcid": 28, "name": "Stephanie Wright"}, {"ubcid": 29, "name": "Dorothy Scott"}]},
+    {"courseId": 17, "courseCode": "MATH 405", "instructor": [{"ubcid": 30, "name": "Larry Harris"}]},
+    {"courseId": 18, "courseCode": "STAT 406", "instructor": [{"ubcid": 31, "name": "Joseph Adams"}, {"ubcid": 32, "name": "Patricia Perez"}, {"ubcid": 33, "name": "Diana Baker"}]},
+    {"courseId": 19, "courseCode": "COSC 407", "instructor": [{"ubcid": 34, "name": "George Gonzalez"}]},
+    {"courseId": 20, "courseCode": "PHYS 408", "instructor": [{"ubcid": 35, "name": "Amy Nelson"}, {"ubcid": 36, "name": "Ruth Campbell"}]},
+    {"courseId": 21, "courseCode": "MATH 409", "instructor": [{"ubcid": 37, "name": "Justin Rivera"}, {"ubcid": 38, "name": "Melissa Mitchell"}]},
+    {"courseId": 22, "courseCode": "STAT 410", "instructor": [{"ubcid": 39, "name": "Joshua Evans"}]},
+    {"courseId": 23, "courseCode": "COSC 411", "instructor": [{"ubcid": 40, "name": "Betty Roberts"}, {"ubcid": 41, "name": "Donald Jones"}, {"ubcid": 42, "name": "Laura Moore"}]},
+    {"courseId": 24, "courseCode": "PHYS 412", "instructor": [{"ubcid": 43, "name": "Timothy Taylor"}]},
+    {"courseId": 25, "courseCode": "MATH 413", "instructor": [{"ubcid": 44, "name": "Linda Green"}, {"ubcid": 45, "name": "Brandon Adams"}]},
+    {"courseId": 26, "courseCode": "STAT 414", "instructor": [{"ubcid": 46, "name": "Amanda Thompson"}, {"ubcid": 47, "name": "Matthew Martinez"}]},
+    {"courseId": 27, "courseCode": "COSC 415", "instructor": [{"ubcid": 48, "name": "Stephanie Anderson"}]},
+    {"courseId": 28, "courseCode": "PHYS 416", "instructor": [{"ubcid": 49, "name": "Gregory Harris"}, {"ubcid": 50, "name": "Shirley Phillips"}, {"ubcid": 51, "name": "Walter Clark"}]}
+  ]
+}

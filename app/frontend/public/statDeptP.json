@@ -1,0 +1,15 @@
+{
+  "courses":[
+    {"courseCode" : "STAT 101", "rank":"A", "score":92},
+    {"courseCode" : "STAT 111", "rank":"A", "score":90},
+    {"courseCode" : "STAT 122", "rank":"C", "score":75},
+    {"courseCode" : "STAT 304", "rank":"C", "score":72},
+    {"courseCode" : "STAT 499", "rank":"B", "score":88},
+    {"courseCode" : "STAT 322", "rank":"B", "score":86},
+    {"courseCode" : "STAT 222", "rank":"A", "score":95},
+    {"courseCode" : "STAT 405", "rank":"A", "score":94},
+    {"courseCode" : "STAT 425", "rank":"A", "score":90},
+    {"courseCode" : "STAT 205", "rank":"C", "score":71}
+  ]
+}
+

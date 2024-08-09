@@ -1,0 +1,16 @@
+{
+    "data": [
+        {"x": "January", "y": 150},
+        {"x": "February", "y": 120},
+        {"x": "March", "y": 130},
+        {"x": "April", "y": 80},
+        {"x": "May", "y": 80},
+        {"x": "June", "y": 70},
+        {"x": "July", "y": 60},
+        {"x": "August", "y": 100},
+        {"x": "September", "y": 100},
+        {"x": "October", "y": 150},
+        {"x": "November", "y": 170},
+        {"x": "December", "y": 120}
+    ]
+}

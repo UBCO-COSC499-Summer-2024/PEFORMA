@@ -1,11 +1,12 @@
-
 ## Key Features/Changes
 
 1. 
 2. 
 3. 
 
-## Type of features/changes
+Closes #
+
+## Type of change
 
 - [ ] Logs
 - [ ] Bug fix 
@@ -23,6 +24,4 @@
 ## Persisting Bugs
 
 1.
-2.
-
->Closes #
+2. 

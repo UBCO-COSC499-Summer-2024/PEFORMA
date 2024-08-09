@@ -1,0 +1,259 @@
+.DataEntry-page {
+    display: flex;
+    height: 100vh;
+}
+
+.DataEntry-page ::-webkit-outer-spin-button,
+.DataEntry-page ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.DataEntry-page .container {
+    display: flex;
+    flex-direction: column;
+}
+
+.DataEntry-page h1 {
+    text-decoration: underline;
+    width: 100%;
+}
+
+.DataEntry-page .main {
+    flex-grow: 1;
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    margin-left: 2em;
+}
+
+.create-new {
+    width: 100%;
+    font-size: x-large;
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+}
+
+.create-new span {
+    position: relative;
+    top: 0.1em;
+    margin-right: -0.25em;
+}
+
+#create-new-select {
+    margin-left: 0.5em;
+    padding: 0.5em;
+    font-size: large;
+    position: relative;
+    bottom: 0.3em;
+    margin-right: 0.5em;
+}
+
+.upload-icon {
+    position: relative;
+    top: 0.16em;
+}
+
+#import {
+    background-color: var(--green);
+    color: var(--black);
+    padding: 0.75em;
+    font-size: large;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 0.5em;
+    margin-left: 1em;
+    position: relative;
+    bottom: 0.4em;
+    transition: background-color 0.1s;
+    box-shadow: 0.25em 0.25em 0.5em var(--darkestGrey);
+    border: none;
+    cursor: pointer;
+}
+
+#import:hover {
+    background-color: var(--darkGreen);
+}
+
+.course-form, .service-role-form {
+    padding: 1em;
+    font-size: large;
+    width: 50em;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    border: 1px solid var(--black);
+    border-radius: 0.5em;
+    background-color: var(--darkerGrey);
+    align-items: flex-start;
+}
+
+.formInput {
+    margin-bottom: 0.5em;
+    display: flex;
+    flex-direction: row;
+}
+
+.formInput input, .formInput select {
+    margin-left: 0.5em;
+    position: relative;
+    bottom: 0.1em;
+    height: 1.75em;
+    border: 1px solid var(--darkestGrey);
+    border-radius: 0.3em;
+}
+
+.departmentInput {
+    margin-top: 0.5em;
+    margin-bottom: 0.9em;
+}
+
+.titleInput input {
+    width: 50%;
+}
+
+.coursecodeInput {
+    width: 40%;
+    margin-left: 1em;
+    position: relative;
+    bottom: 0.1em;
+}
+
+.coursecodeInput input {
+    width: 25%;
+    margin-right: 0;
+}
+
+#course-description, #service-role-description {
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-bottom: 1em;
+    width: 96%;
+    height: 8em;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.assign-button {
+    background-color: var(--darkestishGrey);
+    border: 1px solid var(--black);
+    color: var(--black);
+    border-radius: 0.25em;
+    width: 18em;
+    text-align: left;
+    font-weight: normal;
+    font-size: large;
+    transition: background-color 0.1s;
+    margin: 1em 0 1em 0;
+}
+
+.assign-button:hover {
+    background-color: var(--darkestGrey);
+}
+
+.assign-button:hover > .plus {
+    background-color: var(--darkestestGrey);
+}
+
+.courseYear input, .courseTerm input {
+    width: 4em;
+    margin: 0em 0em 0em 0.5em;
+}
+
+.plus {
+    border: 1px solid var(--black);
+    padding: 0.5em 0.75em 0.5em 0.75em;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    background-color: var(--darkestGrey);
+    transition: background-color 0.1s;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.finish-button {
+    color: var(--black);
+    font-size: x-large;
+    background-color: var(--green);
+    align-self: center;
+    padding: 0.75em 3em 0.75em 3em;
+    transition: background-color 0.1s;
+    box-shadow: 0.25em 0.25em 0.5em var(--darkestGrey);
+    margin-top: 1em;
+    border-radius: 0.5em;
+}
+
+.finish-button:hover {
+    background-color: var(--darkGreen);
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.courseSession {
+    margin: 0em 1em 0em 0em;
+    width: 3em;
+}
+
+.monthlyHoursRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.monthlyHoursRow span {
+    display: flex;
+    width: 5em;
+    flex-direction: column;
+    align-items: center;
+}
+
+.monthlyHours input {
+    width: 3em;
+    margin-left: 0;
+}
+
+.monthlyHours {
+    width: 40%;
+    padding: 0.75em;
+    border: solid 1px var(--darkestestGrey);
+    border-radius: 0.5em;
+    margin-bottom: 1em;
+    background-color: var(--darkGrey);
+}
+
+.DataEntry-page .remove-instructor {
+    background-color: var(--red);
+    color: var(--black);
+    margin-left: 1em;
+    height: 2.25em;
+    width: 2.25em;
+    transition: background-color 0.1s;
+    border-radius: 40%;
+}
+
+.DataEntry-page .remove-instructor:hover {
+    background-color: var(--darkRed);
+}
+
+.modal-overlay {
+    position: fixed;
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    top: 0em;
+    left: 0em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
