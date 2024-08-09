@@ -40,8 +40,8 @@
   .homepage-main {
     display: flex;
     flex-direction: column;
-    margin-left: 10em;
-    width: 40%;
+    margin-left: 16em;
+    width: 60%;
     margin-bottom: 15em;
     background-color: var(--white);
     border-radius: 1em;
