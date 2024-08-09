@@ -69,13 +69,14 @@ Report writing is started, now cleanning up the content and can get the first dr
         <td> Report
         </td>
         <!-- Status -->
-        <td> 
+        <td> Finish
         </td>
     </tr>
 </table>
 
 ### Weekly Goal Review
 
+Everything is finished, clear up the project for final presentation.
 
 ### Next Cycle Goals
-  * 
+  * Peer report evaluation and Holiday.
