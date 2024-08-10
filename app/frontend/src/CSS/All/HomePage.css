@@ -1,0 +1,71 @@
+.home-container {
+  src: url('https://fonts.googleapis.com/css?family=Plus Jakarta Sans');
+  font-family:'Plus Jakarta Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  
+}
+  
+  .homepage-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 2em 3em 0em 3em;
+    height: 5em;
+    background-color: var(--sidebarColor);
+    border-radius: 0.2em;
+  }
+
+  .homepage-header h2 {
+    font-size: 1.75em;
+   
+    margin-left: 1em;
+    line-height: 3.5em;
+    height:100%;
+  }
+
+  .homepage-header nav {
+    margin-right: 2em;
+  }
+
+  .homepage-header nav button {
+    height: 3em;
+    width: 6em;
+    margin-top: 1em;
+    font-size: 1.1em;
+    transition: background-color 0.1s;
+  }
+  
+  .homepage-main {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16em;
+    width: 60%;
+    margin-bottom: 15em;
+    background-color: var(--white);
+    border-radius: 1em;
+    padding: 1em 0 6em 2em;
+    box-shadow: 0.5em 0.5em 0.5em var(--darkestGrey);
+  }
+
+  .descHeader {
+    font-size: 3em;
+    text-decoration: none;
+    font-weight: 800;
+    line-height: 1.1em;
+  }
+
+  .homepage-main .desc {
+    
+
+  }
+
+  .footer {
+    /* bottom column container setting */
+    background-color: var(--white);
+    text-align: right;
+    padding: 3em 0 0 0;
+  }
+  
+  
